@@ -3,7 +3,6 @@ import 'package:test_app/app/presentation/view/components/custom_switch.dart';
 import 'package:test_app/app/presentation/view/components/slider_widget.dart';
 import 'package:test_app/app/presentation/view/components/supplication_widget.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
-import 'package:test_app/core/utils/sized_boxs.dart';
 
 class Morning extends StatefulWidget {
   const Morning({super.key});

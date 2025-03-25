@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/app/presentation/view/components/alert_dialog_widget.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
-import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'dart:math';
 

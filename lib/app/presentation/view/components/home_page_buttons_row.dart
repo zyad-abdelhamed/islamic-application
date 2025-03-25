@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:test_app/app/presentation/view/pages/elec_rosary_page.dart';
 import 'package:test_app/app/presentation/view/pages/rtabel_page.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
