@@ -6,19 +6,12 @@ import 'package:test_app/core/utils/base_use_case.dart';
 
 
 class GetPrayersTimesUseCase
-    extends BaseUseCaseWithParameters<Timings, TimingsParameters> {
+    extends BaseUseCaseWithoutParameters<Timings> {
   BasePrayerRepo basePrayerRepo;
 
   GetPrayersTimesUseCase({required this.basePrayerRepo});
   @override
-  Future<Either<Failure, Timings>> call({required parameters}) async {
-    return await basePrayerRepo.getPrayerTimes(parameters: parameters);
+  Future<Either<Failure, Timings>> call() async {
+    return await basePrayerRepo.getPrayerTimes();
   }
-}
-
-class TimingsParameters {
-  final String latitude;
-  final String longitude;
-
-  TimingsParameters({required this.latitude, required this.longitude});
 }

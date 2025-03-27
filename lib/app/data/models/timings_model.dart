@@ -16,4 +16,5 @@ class TimingsModel extends Timings {
       asr: json['Asr'],
       maghrib: json['Maghrib'],
       isha: json['Isha']);
+     
 }

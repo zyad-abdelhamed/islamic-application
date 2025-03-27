@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/helper_function/get_init_route.dart';
 import 'package:test_app/core/helper_function/onGenerateRoute.dart';
+import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_theme.dart';
 
 void main() {
+  DependencyInjection.init();
   runApp(const MyApp());
 }
 
