@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/app/presentation/view/components/home_page_buttons_row.dart';
 import 'package:test_app/app/presentation/view/components/home_page_drawer.dart';
 import 'package:test_app/app/presentation/view/components/prayer_times_widget.dart';
-import 'package:test_app/app/presentation/view/components/remaining_time_widget.dart';
 import 'package:test_app/app/presentation/view/components/supplications_custom_grid_view.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
@@ -28,7 +27,7 @@ class HomePage extends StatelessWidget {
             textDirection: TextDirection.rtl,
             child: Scaffold(
               appBar: AppBar(
-                iconTheme: IconThemeData(color: AppColors.thirdColor),
+                iconTheme: IconThemeData(color: AppColors.grey),
                 backgroundColor: Colors.transparent,
               ),
               drawer: Padding(
@@ -43,7 +42,6 @@ class HomePage extends StatelessWidget {
                     spacing: 50.0,
                     children: [
                       PrayerTimesWidget(),
-                      RemainingTimeWidget(),
                       HomePageButtonsRow(),
                       SupplicationsCustomGridView(),
                     ],

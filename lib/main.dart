@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:test_app/core/helper_function/get_init_route.dart';
 import 'package:test_app/core/helper_function/onGenerateRoute.dart';
-import 'package:test_app/core/services/cache_service.dart';
-import 'package:test_app/core/theme/cubit/theme_cubit.dart';
+import 'package:test_app/core/services/dependency_injection.dart';
+import 'package:test_app/core/theme/theme_provider.dart';
 
 void main() async {
-  final BaseCache baseCache = CacheImplBySharedPreferences();
   WidgetsFlutterBinding.ensureInitialized();
-  await baseCache.cacheintIalization();
+  DependencyInjection.init();
   runApp(ChangeNotifierProvider(
     create: (context) => ThemeCubit(),
     child: const MyApp()

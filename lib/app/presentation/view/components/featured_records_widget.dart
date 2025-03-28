@@ -37,7 +37,7 @@ class FeatuerdRecordsWidget extends StatelessWidget {
           TextButton(
               onPressed: () {},
               child:
-                  Text('حذف الكل', style: TextStyles.regular14_150(context).copyWith(color: AppColors.white))),
+                  Text('حذف الكل', style: TextStyles.regular14_150(context).copyWith(color: AppColors.thirdColor))),
 
           Expanded(
             child: ListView.separated(

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:test_app/app/presentation/view/components/show_custom_alert_dialog.dart';
 import 'package:test_app/app/presentation/view/components/custom_switch.dart';
 import 'package:test_app/app/presentation/view/components/draw_circle_bloc_builder.dart';
-import 'package:test_app/core/theme/cubit/theme_cubit.dart';
+import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/core/utils/sized_boxs.dart';
 
 class HomeDrawerWidget extends StatelessWidget {
@@ -21,14 +21,22 @@ class HomeDrawerWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          ShowCustomAlertDialog(text: 'التسابيح بعدالصلاة', alertDialogContent: DrawCircleBlocBuilder(),),
+          ShowCustomAlertDialog(
+            text: 'التسابيح بعدالصلاة',
+            alertDialogContent: DrawCircleBlocBuilder(),
+          ),
           Spacer(),
           Divider(),
           Padding(
             padding: const EdgeInsets.only(right: 10.0),
-            child: CustomSwitch(title: 'الوضع الداكن',mainAxisAlignment: MainAxisAlignment.start,onChanged: (bool value) {
-              Provider.of<ThemeCubit>(context,listen: false).changeTheme();
-            }, value: false,),
+            child: CustomSwitch(
+              title: 'الوضع الداكن',
+              mainAxisAlignment: MainAxisAlignment.start,
+              onChanged: (bool value) {
+                Provider.of<ThemeCubit>(context, listen: false).changeTheme();
+              },
+              value: Provider.of<ThemeCubit>(context).darkMpde,
+            ),
           ),
           SizedBoxs.sizedBoxH30
         ],
