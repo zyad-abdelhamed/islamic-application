@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/app/presentation/view/pages/alquran_alkarim_page.dart';
 import 'package:test_app/app/presentation/view/pages/elec_rosary_page.dart';
 import 'package:test_app/app/presentation/view/pages/rtabel_page.dart';
@@ -7,6 +8,7 @@ import 'package:test_app/core/constants/view_constants.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
+import 'package:test_app/timer/cubit/timer_cubit.dart';
 
 class HomePageButtonsRow extends StatelessWidget {
   const HomePageButtonsRow({super.key});
@@ -35,6 +37,9 @@ _materialButton(
         {required BuildContext context,required String text ,required double leftMargine,required var page}) =>
     GestureDetector(
       onTap: () {
+        
+        context.read<TimerCubit>().stopTimer();
+
         Navigator.push(
             context,
             MaterialPageRoute(

@@ -1,0 +1,36 @@
+import 'package:dartz/dartz.dart';
+import 'package:test_app/app/domain/usecases/delete_records_use_case.dart';
+import 'package:test_app/core/services/data_base_service.dart';
+
+abstract class RecordsLocalDataSource {
+  Future<Unit> deleteRecord({required RecordsParameters parameters});
+  Future<Unit> addRecord({required RecordsParameters parameters});
+  Future<Unit> deleteAllRecords({required RecordsParameters parameters});
+  Future<List<int>> getRecords({required RecordsParameters parameters});
+}
+class RecordsLocalDataSourceImpl extends RecordsLocalDataSource{
+  final BaseDataBaseService<int> baseDataBaseService;
+  RecordsLocalDataSourceImpl({required this.baseDataBaseService});
+  @override
+  Future<Unit> addRecord({required RecordsParameters parameters}) async{
+   await baseDataBaseService.add(parameters.id!, parameters.path!);
+    return unit;
+  }
+
+  @override
+  Future<Unit> deleteAllRecords({required RecordsParameters parameters}) async{
+  await baseDataBaseService.deleteAll(parameters.path!);
+    return unit;
+  }
+
+  @override
+  Future<Unit> deleteRecord({required RecordsParameters parameters})async {
+  await  baseDataBaseService.delete(parameters.id, parameters.path!);
+    return unit;
+  }
+
+  @override
+  Future<List<int>> getRecords({required RecordsParameters parameters})async {
+    return await baseDataBaseService.get(parameters.path!); 
+  }
+}

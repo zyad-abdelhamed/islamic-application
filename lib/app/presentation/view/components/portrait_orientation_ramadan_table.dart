@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:test_app/core/constants/view_constants.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
@@ -25,9 +26,15 @@ class PortraitOrientationWidgetToRTablePage extends StatelessWidget {
               ),
               OutlinedButton(
                 style: ButtonStyle(
-                    shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)))),
-                onPressed: () {},
+                    shape: WidgetStatePropertyAll(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)))),
+                onPressed: () {
+                   SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+                },
                 child: Text(
                   'تفعيل',
                   style: TextStyles.semiBold32(context,

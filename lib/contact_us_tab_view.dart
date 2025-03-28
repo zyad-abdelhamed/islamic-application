@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:test_app/contact_us_list_tile_widget.dart';
-import 'package:test_app/core/theme/text_styles.dart';
 
 class ContactUsTabView extends StatelessWidget {
   const ContactUsTabView({super.key});
