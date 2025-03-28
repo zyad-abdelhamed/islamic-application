@@ -45,8 +45,6 @@ class TextStyles {
   static TextStyle regular14_150(BuildContext context) {
     return TextStyle(
       fontWeight: FontWeight.w400,
-      fontStyle: FontStyle.italic,
-
       fontSize: getResponsiveFontSize(context: context, fontSize: 14),
       height: 1.5, // 150%
     );
@@ -101,8 +99,6 @@ class TextStyles {
     return TextStyle(
       color: AppColors.white,
       fontWeight: FontWeight.w600,
-      fontStyle: FontStyle.italic,
-
       fontSize: getResponsiveFontSize(context: context, fontSize: 20),
       height: 1.5, // 150%
     );

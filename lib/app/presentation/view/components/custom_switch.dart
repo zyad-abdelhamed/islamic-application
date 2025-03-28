@@ -20,7 +20,7 @@ class CustomSwitch extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyles.semiBold18(context, AppColors.thirdColor),
+          style: TextStyles.bold20(context),
         ),
         Switch(
           activeColor: AppColors.thirdColor,

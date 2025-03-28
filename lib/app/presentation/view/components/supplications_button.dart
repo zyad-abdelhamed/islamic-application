@@ -8,28 +8,26 @@ class SupplicationsButton extends StatelessWidget {
   final VoidCallback onTap;
   final String text;
   final IconData icon;
+  final double horizontalSpacing;
   const SupplicationsButton(
-      {super.key, required this.icon, required this.onTap, required this.text});
+      {super.key,
+      required this.icon,
+      required this.onTap,
+      required this.text,
+      required this.horizontalSpacing});
 
   @override
   Widget build(BuildContext context) {
-    final double supplicationsButtonWidth = ((context.width) -
-            (16 //parent padding from left and right
-                +
-                40 //space between two buttons
-            )) /
-        2; //two buttons in one row
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: EdgeInsets.only(left: 20//todo
-        , bottom: 40),
-        width: supplicationsButtonWidth,
-        height: supplicationsButtonWidth, //same value of the width
+        margin: EdgeInsets.only(
+            left: horizontalSpacing, //horizontal spacing between two buttons
+            bottom: 20 //vertical spacing between two buttons
+            ),
+        width: _getSupplicationsButtonWidth(context),
+        height: _getSupplicationsButtonWidth(context), //same value of the width
         decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(blurRadius: 6, color: AppColors.inActivePrimaryColor)
-            ],
             color: AppColors.inActivePrimaryColor,
             borderRadius: BorderRadius.circular(50)),
         child: Column(
@@ -49,4 +47,13 @@ class SupplicationsButton extends StatelessWidget {
       ),
     );
   }
+}
+
+double _getSupplicationsButtonWidth(BuildContext context) {
+  return ((context.width) -
+          (16 //parent padding from left and right
+              +
+              20 //space between two buttons
+          )) /
+      2; //two buttons in one row
 }

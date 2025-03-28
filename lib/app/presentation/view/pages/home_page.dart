@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/app/presentation/view/components/home_page_buttons_row.dart';
 import 'package:test_app/app/presentation/view/components/home_page_drawer.dart';
+import 'package:test_app/app/presentation/view/components/nearest_mosques_widget.dart';
 import 'package:test_app/app/presentation/view/components/prayer_times_widget.dart';
-import 'package:test_app/app/presentation/view/components/remaining_time_widget.dart';
-import 'package:test_app/app/presentation/view/components/supplications_grid_view.dart';
+import 'package:test_app/app/presentation/view/components/supplications_custom_grid_view.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
 
@@ -12,36 +12,35 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          iconTheme: IconThemeData(color: AppColors.thirdColor),
-          backgroundColor: Colors.transparent,
-        ),
-        drawer: Padding(
-          padding: EdgeInsets.only(
-              top: context.width * 1 / 3, bottom: context.width * 1 / 3),
-          child: HomeDrawerWidget(),
-        ),
-        body: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: SingleChildScrollView(
-            child: Column(
-              spacing: 50.0,
-              children: [
-                PrayerTimesWidget(),
-                RemainingTimeWidget(),
-                HomePageButtonsRow(),
-                SupplicationsGridView(),
-              ],
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: AppColors.grey),
+        backgroundColor: Colors.transparent,
+      ),
+      drawer: Padding(
+        padding: EdgeInsets.only(
+            top: context.width * 1 / 3, bottom: context.width * 1 / 3),
+        child: HomeDrawerWidget(),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: SingleChildScrollView(
+          child: Column(
+            spacing: 50.0,
+            children: [
+              PrayerTimesWidget(),
+              NearestMosquesWidget(),
+              HomePageButtonsRow(),
+              SupplicationsCustomGridView(),
+            ],
           ),
         ),
       ),
     );
   }
 }
+
+
 
 
 

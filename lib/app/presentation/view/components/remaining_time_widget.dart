@@ -11,12 +11,11 @@ class RemainingTimeWidget extends StatelessWidget {
       children: [
         Text(
           'الوقت المتبقي : ',
-          style: TextStyles.bold20(context)
-              .copyWith(color: AppColors.secondryColor, fontSize: 27),
+          style: TextStyles.bold20(context),
         ),
         SizedBox(
-          height: 50,//hight of Display Time Container
-          width: 50 * 3,//width of 3 Display Time Container
+          height: 50, //hight of Display Time Container
+          width: 50 * 3, //width of 3 Display Time Container
           child: Stack(
             children: <Widget>[
               Row(
@@ -35,11 +34,13 @@ class RemainingTimeWidget extends StatelessWidget {
                 ],
               ),
               Center(
-                child: FittedBox(//to fit child in stack
+                child: FittedBox(
+                  //to fit child in stack
                   child: Row(
                     children: List<SizedBox>.generate(
                         2,
-                        (index) => SizedBox(//fixed hight to Vertical Divider
+                        (index) => SizedBox(
+                            //fixed hight to Vertical Divider
                             height: 50,
                             width: 50,
                             child: VerticalDivider(

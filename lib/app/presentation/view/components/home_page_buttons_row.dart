@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:test_app/app/presentation/view/pages/alquran_alkarim_page.dart';
 import 'package:test_app/app/presentation/view/pages/elec_rosary_page.dart';
 import 'package:test_app/app/presentation/view/pages/rtabel_page.dart';
+import 'package:test_app/core/constants/view_constants.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
@@ -20,21 +22,23 @@ class HomePageButtonsRow extends StatelessWidget {
               buttonsCount,
               (index) => _materialButton(
                   context: context,
+                   text: ViewConstants.appBarTitles(withTwoLines: true)[index],
                   leftMargine: index != buttonsCount - 1
                       ? 16.0
-                      : 0.0))), //(leftMargine)spacing between buttons
+                      : 0.0,
+                      page: _pages[index]))), //(leftMargine)spacing between buttons
     );
   }
 }
 
 _materialButton(
-        {required BuildContext context, required double leftMargine}) =>
+        {required BuildContext context,required String text ,required double leftMargine,required var page}) =>
     GestureDetector(
       onTap: () {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => RamadanTabelPage(),
+              builder: (context) => page,
             ));
       },
       child: Container(
@@ -44,26 +48,31 @@ _materialButton(
           color: AppColors.primaryColor,
         ),
         height: context.height * 1 / 8,
-        width: (context.width * 1 / 2) - 8 - 8,
+        width: context.width * 1 / 2,
         child: SizedBox(
           height: context.height * 1 / 8,
           width: (context.width * 1 / 2) - 8 - 8,
           child: Row(
             spacing: 10.0,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                'السبحه\n الالكترونيه',
+                text,
                 style:
                     TextStyles.bold20(context).copyWith(color: AppColors.white),
               ),
-              Icon(
-                CupertinoIcons.table,
-                color: AppColors.white,
-                size: 60,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Icon(
+                  CupertinoIcons.table,
+                  color: AppColors.white,
+                  size: 60,
+                ),
               )
             ],
           ),
         ),
       ),
     );
+const List _pages = [AlquranAlkarimPage(),ElecRosaryPage(),RamadanTabelPage()];
