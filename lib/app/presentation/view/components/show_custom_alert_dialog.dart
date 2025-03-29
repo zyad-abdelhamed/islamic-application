@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/app/presentation/controller/cubit/alert_dialog_cubit.dart';
+import 'package:test_app/core/extentions/controllers_extention.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
@@ -8,7 +11,9 @@ class ShowCustomAlertDialog extends StatelessWidget {
   final String text;
   final Widget alertDialogContent;
   const ShowCustomAlertDialog({
-    super.key, required this.text, required this.alertDialogContent,
+    super.key,
+    required this.text,
+    required this.alertDialogContent,
   });
 
   @override
@@ -25,37 +30,40 @@ class ShowCustomAlertDialog extends StatelessWidget {
             onPressed: () {
               showCupertinoDialog(
                   context: context,
-                  builder: (context) => Center(
-                        child: Stack(
-                          children: [
-                            Container(
-                              color: AppColors.primaryColor,
-                              margin: EdgeInsets.all(15),
-                              height: context.height * 3 / 4 + 1 / 8,
-                              width: context.width * 3 / 4,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: context.width * 1 / 16,
-                                  vertical: context.height * 1 / 4),
-                              child: alertDialogContent,
-                            ),
-                            Positioned(
-                                top: 0.0,
-                                right: 0.0,
-                                child: GestureDetector(
-                                  onTap: () => Navigator.pop(context),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: AppColors.white,
-                                      borderRadius: BorderRadius.circular(200),
-                                    ),
-                                    child: Icon(
-                                      CupertinoIcons.xmark,
-                                      color: AppColors.black,
-                                      size: 30,
-                                    ),
-                                  ),
-                                ))
-                          ],
+                  builder: (context) => BlocProvider(
+                        create: (context) => AlertDialogCubit(),
+                        child: Container(
+                          margin: EdgeInsets.only(
+                              top: context.width * .50,
+                              left: 15.0,
+                              right: 15.0,
+                              bottom: 15.0),
+                          height: (context.height * .50) - 15.0,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              color: context.themeController.darkMpde
+                                ? AppColors.black
+                                : AppColors.white,
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Column(
+                            spacing: 15.0,
+                            children: [
+                              SizedBox(
+                                height: (context.height * .10) - 15.0,
+                          width: double.infinity,
+                               ),
+                              alertDialogContent,
+                              Spacer(),
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: Text(
+                                  'ْالغاء',
+                                  style: TextStyles.semiBold20(context)
+                                      .copyWith(color: AppColors.thirdColor),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ));
             },

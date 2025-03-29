@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/app/presentation/view/components/supplications_button.dart';
 import 'package:test_app/app/presentation/view/pages/supplications_page.dart';
+import 'package:test_app/core/constants/view_constants.dart';
 
 class SupplicationsCustomGridView extends StatelessWidget {
   const SupplicationsCustomGridView({super.key});
@@ -9,17 +10,19 @@ class SupplicationsCustomGridView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Wrap(
         children: List<SupplicationsButton>.generate(
-            6,
+            8,
             (index) => SupplicationsButton(
                   icon: Icons.sunny,
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SupplicationsPage(),
+                          builder: (context) => SupplicationsPage(
+                              nameOfAdhkar: ViewConstants
+                                  .supplicationsButtonsNames[index]),
                         ));
                   },
-                  text: 'أذكار الصباح',
+                  text: ViewConstants.supplicationsButtonsNames[index],
                   horizontalSpacing: _gethorizontalSpacing(index),
                 ))
         //  [

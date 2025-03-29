@@ -4,6 +4,9 @@ import 'package:test_app/core/theme/app_colors.dart';
 const double appBarBorderRadius = 50.0;
 ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    backgroundColor: Colors.transparent
+  ),
   appBarTheme: AppBarTheme(
       centerTitle: true,
       backgroundColor: AppColors.primaryColor,

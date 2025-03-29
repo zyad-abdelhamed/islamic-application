@@ -117,8 +117,6 @@ class TextStyles {
   static TextStyle semiBold32auto(BuildContext context) {
     return TextStyle(
       fontWeight: FontWeight.w600,
-      fontStyle: FontStyle.italic,
-
       fontSize: getResponsiveFontSize(context: context, fontSize: 32),
       height: null, // Auto
     );

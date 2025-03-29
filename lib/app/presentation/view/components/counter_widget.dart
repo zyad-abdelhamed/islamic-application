@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:test_app/app/presentation/controller/cubit/elec_rosary_cubit.dart';
 import 'package:test_app/core/constants/view_constants.dart';
+import 'package:test_app/core/helper_function/get_responsive_font_size.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/extentions/controllers_extention.dart';
+import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
 
 class CounterWidget extends StatelessWidget {
@@ -13,8 +16,7 @@ class CounterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: context.width * (1 / 3) / 2),
+      padding: EdgeInsets.symmetric(horizontal: context.width * (1 / 3) / 2),
       child: SizedBox(
         height: context.height * (1 / 3) / 2 + 80,
         child: Stack(
@@ -38,9 +40,9 @@ class CounterWidget extends StatelessWidget {
                         opacity: state.opacity,
                         duration: const Duration(seconds: 0),
                         child: Text(
-                          state.counter.toString(),
+                          context.elecRosaryController.counter.toString(),
                           style: TextStyles.semiBold32(context,
-                              color: AppColors.white),
+                              color: _getCounterColor(context)),
                         ),
                       ));
                 })),
@@ -71,9 +73,35 @@ class CounterWidget extends StatelessWidget {
                 ),
               ),
             ),
+            //save button
+            Positioned(
+              top: 0.0,
+              right: 20,
+              child: GestureDetector(
+                onTap: () {
+                  context.featuerdRecordsController.addFeatuerdRecord(
+                      item: context.elecRosaryController.counter);
+                },
+                child: Container(
+                  height: 60,
+                  width: 50,
+                  color: _getCounterColor(context),
+                  child: Icon(
+                    Icons.save,
+                    color: AppColors.primaryColor,
+                    size: getResponsiveFontSize(context: context, fontSize: 50),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 }
+
+Color _getCounterColor(BuildContext context) =>
+    Provider.of<ThemeCubit>(context).darkMpde
+        ? AppColors.black
+        : AppColors.white;

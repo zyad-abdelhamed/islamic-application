@@ -17,8 +17,8 @@ class DeleteRecordsUseCase
 
 class RecordsParameters extends Equatable {
   final int? id;
-  final String? path;
-  const RecordsParameters({required this.id, required this.path});
+  final int? item;
+  const RecordsParameters({this.id, this.item});
   @override
-  List<Object?> get props => [id, path];
+  List<Object?> get props => [id,item];
 }

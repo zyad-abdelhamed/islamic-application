@@ -7,12 +7,12 @@ class ThemeCubit with ChangeNotifier {
   bool get darkMpde => _darkMode;
   ThemeData _appTheme = lightTheme;
   ThemeData get appTheme => _appTheme;
-  void setVaribles(ThemeData theme,bool darkMode) {
+  void _setVaribles(ThemeData theme,bool darkMode) {
     _darkMode = darkMode;
     _appTheme = theme;
     notifyListeners();
   }
   void changeTheme() {
-    _appTheme == lightTheme ? setVaribles(darkTheme, true) : setVaribles(lightTheme, false);
+    _appTheme == lightTheme ? _setVaribles(darkTheme, true) : _setVaribles(lightTheme, false);
   }
 }

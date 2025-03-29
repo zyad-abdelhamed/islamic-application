@@ -34,6 +34,16 @@ abstract class ViewConstants {
     '🌥',
     '🌒'
   ];
+  static const List<String> supplicationsButtonsNames = <String>[
+    "أذكار الصباح",
+    "أذكار المساء",
+    "أذكار بعد السلام من الصلاة المفروضة",
+    "تسابيح",
+    "أذكار النوم",
+    "أذكار الاستيقاظ",
+    "أدعية قرآنية",
+    "أدعية الأنبياء",
+  ];
   //ramadan table
   static const List<String> namesOfPrayers = <String>[
     'فجر',
@@ -58,4 +68,6 @@ abstract class ViewConstants {
   static const List<String> list = <String>['ورد\nتلاوة', 'ورد\nتدبر'];
   static const String portraitOrientationToRTablePageText =
       'لإستخدام جدول رمضان يجب تفعيل التوجيه العرضي للموبايل.';
+  //elec rosary
+  static const String emptyList = 'القائمه فارغه';    
 }

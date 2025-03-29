@@ -54,6 +54,30 @@ class HomePage extends StatelessWidget {
   }
 }
 
+class HomeCustomBottomNavigationBar extends StatelessWidget {
+  const HomeCustomBottomNavigationBar({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+          colors: [
+          AppColors.grey,
+          AppColors.grey.withValues(alpha: .5),
+          AppColors.grey.withValues(alpha: 0.0),
+        ])
+      ),
+    );
+  }
+}
+
 
 
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/app/domain/entities/adhkar_entity.dart';
 import 'package:test_app/app/presentation/controller/cubit/supplications_cubit.dart';
 import 'package:test_app/app/presentation/view/components/circle_avatar_button.dart';
 import 'package:test_app/core/constants/view_constants.dart';
@@ -9,12 +10,12 @@ import 'package:test_app/core/utils/responsive_extention.dart';
 
 class SupplicationWidget extends StatelessWidget {
   final int index;
-  final List list;
+  final AdhkarEntity adhkarEntity;
   final SupplicationsState state;
   const SupplicationWidget(
       {super.key,
       required this.index,
-      required this.list,
+      required this.adhkarEntity,
       required this.state});
 
   @override
@@ -33,13 +34,16 @@ class SupplicationWidget extends StatelessWidget {
           spacing: 5.0,
           children: [
             Text(
-              "${list[index]['word']}",
+              adhkarEntity.content,
               style: TextStyles.bold20(context),
             ),
-            Text(
-              "${list[index]['word']}",
-              style: TextStyles.regular16_120(context,
-                  color: AppColors.secondryColor),
+            Visibility(
+              visible: adhkarEntity.description != null ,
+              child: Text(
+                 adhkarEntity.description!,
+                style: TextStyles.regular16_120(context,
+                    color: AppColors.secondryColor),
+              ),
             ),
             Container(
               alignment: Alignment.topCenter,
@@ -56,7 +60,7 @@ class SupplicationWidget extends StatelessWidget {
                     opacity: state.opacity,
                     duration: const Duration(seconds: 0),
                     child: Text(
-                      list[index]['num'].toString(),
+                      adhkarEntity.count,
                       style: TextStyles.bold20(context).copyWith(fontSize: 25),
                     )),
               ),

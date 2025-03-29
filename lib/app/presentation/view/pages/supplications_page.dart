@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/app/domain/usecases/get_adhkar_use_case.dart';
 import 'package:test_app/app/presentation/controller/cubit/supplications_cubit.dart';
 import 'package:test_app/app/presentation/view/components/custom_switch.dart';
 import 'package:test_app/app/presentation/view/components/slider_widget.dart';
 import 'package:test_app/app/presentation/view/components/supplication_widget.dart';
 import 'package:test_app/core/extentions/controllers_extention.dart';
+import 'package:test_app/core/services/dependency_injection.dart';
+import 'package:test_app/core/utils/enums.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
 
 class SupplicationsPage extends StatelessWidget {
-  const SupplicationsPage({super.key});
+  final String nameOfAdhkar;
+  const SupplicationsPage({super.key, required this.nameOfAdhkar});
 
   // final ScrollController _scrollController = ScrollController();
   // double _topPaddingValue = 0.0;
@@ -72,17 +76,26 @@ class SupplicationsPage extends StatelessWidget {
   // }
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [BlocProvider(create: (context) => SupplicationsCubit())],
+    return BlocProvider(
+      create: (context) => SupplicationsCubit(sl())
+        ..getAdhkar(
+            AdhkarParameters(nameOfAdhkar: nameOfAdhkar, context: context)),
       child: Scaffold(
           appBar: AppBar(
             bottom: PreferredSize(
                 preferredSize: Size.zero,
-                child: CustomSwitch(
-                    value: false,
-                    title: 'الحذف بعد الانتهاء',
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    onChanged: (bool value) {})),
+                child: BlocBuilder<SupplicationsCubit, SupplicationsState>(
+                  builder: (context, state) {
+                    return CustomSwitch(
+                        value: context.supplicationsController.isDeleted,
+                        title: 'الحذف بعد الانتهاء',
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        onChanged: (bool value) {
+                          context.supplicationsController
+                              .toggleIsDeletedSwitch();
+                        });
+                  },
+                )),
             toolbarHeight: context.height * .15,
             title: Text(
               "أذكار الصباح",
@@ -93,17 +106,26 @@ class SupplicationsPage extends StatelessWidget {
               scrollableWidget:
                   BlocBuilder<SupplicationsCubit, SupplicationsState>(
                 builder: (context, state) {
-                  return AnimatedList(
+                  print(state);
+                  if(state.adhkarRequestState == RequestStateEnum.failed){
+                    return Center(
+                      child: Card(child: 
+                      Text(state.adhkarErorrMessage!),),
+                    );
+                  }
+
+                 //case loading and success
+                 return AnimatedList(
                       key: context.supplicationsController.animatedListKey,
-                      initialItemCount: context.supplicationsController.wordsm.length,
+                      initialItemCount: state.adhkar.length,
                       itemBuilder: (context, index, animation) {
                         SupplicationWidget supplicationWidget =
                             SupplicationWidget(
                           index: index,
-                          list: context.supplicationsController.wordsm,
+                          adhkarEntity: state.adhkar[index],
                           state: state,
                         );
-                        return true
+                        return context.supplicationsController.isDeleted
                             ? SlideTransition(
                                 position: _removeAnimation(animation),
                                 child: supplicationWidget)
@@ -119,8 +141,6 @@ class SupplicationsPage extends StatelessWidget {
               //     : false,
               )),
     );
-    //   },
-    // );
   }
 }
 

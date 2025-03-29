@@ -7,33 +7,34 @@ import 'package:test_app/core/constants/view_constants.dart';
 part 'elec_rosary_state.dart';
 
 class ElecRosaryCubit extends Cubit<ElecRosaryState> {
+ int counter = 0;
+
   ElecRosaryCubit() : super(ElecRosaryState());
-  static ElecRosaryCubit getAuthController(BuildContext context) {
+  static ElecRosaryCubit getElecRosaryController(BuildContext context) {
     final ElecRosaryCubit controller = context.read<ElecRosaryCubit>();
     return controller;
   }
 
   //elec rosary events
   void increaseCounter() {
-    _slideAnimation(counter: state.counter + 1, slideValue: -.6);
+    counter++;
+    _slideAnimation(slideValue: -.6);
   }
 
   void resetCounter() {
-    if (state.counter != 0) {
-      _slideAnimation(counter: 0, slideValue: .6);
+    if (counter != 0) {
+      counter = 0;
+      _slideAnimation(slideValue: .6);
     }
     return;
   }
 
-  void _slideAnimation({required int counter, required double slideValue}) {
+  void _slideAnimation({required double slideValue}) {
     emit(state.copyWith(
         opacity: 0.0, offset: Offset(0, slideValue))); //start animation
 
     Future.delayed(ViewConstants.duration, () {
-      emit(state.copyWith(counter: counter, opacity: 1.0, offset: Offset.zero));
+      emit(state.copyWith(opacity: 1.0, offset: Offset.zero));
     }); //reverse animation and stop
   }
-
-  //featured events
-  //to do
 }

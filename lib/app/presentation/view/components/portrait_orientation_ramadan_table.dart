@@ -19,21 +19,17 @@ class PortraitOrientationWidgetToRTablePage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                ViewConstants.portraitOrientationToRTablePageText,
-                style: TextStyles.bold20(context)
-                    .copyWith(color: AppColors.secondryColor),
-              ),
+              Text(ViewConstants.portraitOrientationToRTablePageText,
+                  style: TextStyles.bold20(context)),
               OutlinedButton(
                 style: ButtonStyle(
-                    shape: WidgetStatePropertyAll(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)))),
+                    shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)))),
                 onPressed: () {
-                   SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
+                  SystemChrome.setPreferredOrientations([
+                    DeviceOrientation.landscapeLeft,
+                    DeviceOrientation.landscapeRight,
+                  ]);
                 },
                 child: Text(
                   'تفعيل',
