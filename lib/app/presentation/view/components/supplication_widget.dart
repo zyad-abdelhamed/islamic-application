@@ -31,7 +31,6 @@ class SupplicationWidget extends StatelessWidget {
           color: AppColors.grey1,
         ),
         child: Column(
-          spacing: 5.0,
           children: [
             Text(
               adhkarEntity.content,

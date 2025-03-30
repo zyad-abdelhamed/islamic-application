@@ -15,7 +15,7 @@ ThemeData lightTheme = ThemeData(
           color: AppColors.secondryColor,
           fontWeight: FontWeight.bold,
           fontSize: 23)),
-      iconTheme: IconThemeData(color: AppColors.purple),
+      iconTheme: IconThemeData(color: AppColors.grey),
       shape: ContinuousRectangleBorder(
           borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(appBarBorderRadius),

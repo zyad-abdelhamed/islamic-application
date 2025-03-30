@@ -33,39 +33,24 @@ class SupplicationsCubit extends Cubit<SupplicationsState> {
   }
 
   //supplications events
-  void getAdhkar(AdhkarParameters adhkarParameters) async {
-  print('================= Fetching Adhkar');
-  
-  // تعيين الحالة إلى "تحميل"
-  emit(state.copyWith(adhkarRequestState: RequestStateEnum.loading));
-
-  try {
+  void getAdhkar(AdhkarParameters adhkarParameters) async {  
+  //emit(state.copyWith(adhkarRequestState: RequestStateEnum.loading));
     var result = await getAdhkarUseCase(parameters: adhkarParameters);
 
     result.fold(
       (failure) {
-        print('❌ Fetching Failed: ${failure.message}');
         emit(state.copyWith(
           adhkarRequestState: RequestStateEnum.failed,
           adhkarErorrMessage: failure.message,
         ));
       },
       (data) {
-        print('✅ Fetching Success: $data');
         emit(state.copyWith(
           adhkarRequestState: RequestStateEnum.success,
           adhkar: data,
         ));
       },
     );
-  } catch (e, stacktrace) {
-    print('🔥 Exception: $e');
-    print('📝 Stacktrace: $stacktrace');
-    emit(state.copyWith(
-      adhkarRequestState: RequestStateEnum.failed,
-      adhkarErorrMessage: e.toString(),
-    ));
-  }
 }
 
 

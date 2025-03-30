@@ -4,12 +4,12 @@ import 'package:test_app/app/domain/usecases/get_adhkar_use_case.dart';
 import 'package:test_app/app/presentation/controller/cubit/supplications_cubit.dart';
 import 'package:test_app/app/presentation/view/components/custom_switch.dart';
 import 'package:test_app/app/presentation/view/components/erorr_widget.dart';
-import 'package:test_app/app/presentation/view/components/slider_widget.dart';
 import 'package:test_app/app/presentation/view/components/supplication_widget.dart';
 import 'package:test_app/core/extentions/controllers_extention.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/utils/enums.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
+import 'package:test_app/core/adaptive_widgets/get_adaptive_loading_widget.dart';
 
 class SupplicationsPage extends StatelessWidget {
   final String nameOfAdhkar;
@@ -78,10 +78,10 @@ class SupplicationsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SupplicationsCubit(sl())
-        ..getAdhkar(
-            AdhkarParameters(nameOfAdhkar: nameOfAdhkar, context: context)),
-      child: Scaffold(
+        create: (context) => SupplicationsCubit(sl())
+          ..getAdhkar(
+              AdhkarParameters(nameOfAdhkar: nameOfAdhkar, context: context)),
+        child: Scaffold(
           appBar: AppBar(
             bottom: PreferredSize(
                 preferredSize: Size.zero,
@@ -99,46 +99,46 @@ class SupplicationsPage extends StatelessWidget {
                 )),
             toolbarHeight: context.height * .15,
             title: Text(
-              "أذكار الصباح",
+              nameOfAdhkar,
             ),
             centerTitle: true,
           ),
-          body: SliderWidget(
-              scrollableWidget:
-                  BlocBuilder<SupplicationsCubit, SupplicationsState>(
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: BlocBuilder<SupplicationsCubit, SupplicationsState>(
                 builder: (context, state) {
-                  print(state);
-                  if(state.adhkarRequestState == RequestStateEnum.failed){
-                    return ErorrWidget(message: state.adhkarErorrMessage!);
-                  }
-
-                 //case loading and success
-                 return AnimatedList(
-                      key: context.supplicationsController.animatedListKey,
-                      initialItemCount: state.adhkar.length,
-                      itemBuilder: (context, index, animation) {
-                        SupplicationWidget supplicationWidget =
-                            SupplicationWidget(
-                          index: index,
-                          adhkarEntity: state.adhkar[index],
-                          state: state,
-                        );
-                        return context.supplicationsController.isDeleted
-                            ? SlideTransition(
-                                position: _removeAnimation(animation),
-                                child: supplicationWidget)
-                            : supplicationWidget;
-                      });
-                },
-              ),
-              topPaddingValue: 3,
-              //  _topPaddingValue,
-              visible: false
-              //  _scrollController.hasClients
-              //     ? _scrollController.position.isScrollingNotifier.value
-              //     : false,
-              )),
-    );
+              print('supplications page body');
+              if (state.adhkarRequestState == RequestStateEnum.failed) {
+                return ErorrWidget(message: state.adhkarErorrMessage!);
+              } else if (state.adhkarRequestState == RequestStateEnum.success) {
+                //case success
+                return AnimatedList(
+                    key: context.supplicationsController.animatedListKey,
+                    initialItemCount: state.adhkar.length,
+                    itemBuilder: (context, index, animation) {
+                      SupplicationWidget supplicationWidget = SupplicationWidget(
+                        index: index,
+                        adhkarEntity: state.adhkar[index],
+                        state: state,
+                      );
+                      return context.supplicationsController.isDeleted
+                          ? SlideTransition(
+                              position: _removeAnimation(animation),
+                              child: supplicationWidget)
+                          : supplicationWidget;
+                    });
+              }
+              return GetAdaptiveLoadingWidget();
+            }),
+          ),
+          // topPaddingValue: 3,
+          // //  _topPaddingValue,
+          // visible: false
+          // //  _scrollController.hasClients
+          // //     ? _scrollController.position.isScrollingNotifier.value
+          // //     : false,
+          // )),
+        ));
   }
 }
 

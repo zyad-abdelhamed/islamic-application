@@ -9,14 +9,16 @@ class GetAdaptiveLoadingWidget extends StatelessWidget {
   const GetAdaptiveLoadingWidget({super.key});
   @override
   Widget build(BuildContext context) {
-    return adaptiveWidgetDependingOnOs(
-        defaultWidget: _getWindowsLoadingWidget(context),
-        androidWidget: const CircularProgressIndicator(
-          color: AppColors.secondryColor,
-        ),
-        iosWidget:
-            const CupertinoActivityIndicator(color: AppColors.secondryColor),
-        windowsWidget: _getWindowsLoadingWidget(context));
+    return Center(
+      child: adaptiveWidgetDependingOnOs(
+          defaultWidget: _getWindowsLoadingWidget(context),
+          androidWidget: const CircularProgressIndicator(
+            color: AppColors.secondryColor,
+          ),
+          iosWidget:
+              const CupertinoActivityIndicator(color: AppColors.secondryColor),
+          windowsWidget: _getWindowsLoadingWidget(context)),
+    );
   }
 }
 
