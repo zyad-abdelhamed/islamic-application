@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:test_app/app/presentation/view/components/land_scape_ramadan_table.dart';
-import 'package:test_app/app/presentation/view/components/pages_app_bar.dart';
 import 'package:test_app/app/presentation/view/components/portrait_orientation_ramadan_table.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
 

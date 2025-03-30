@@ -14,6 +14,8 @@ import 'package:test_app/app/domain/usecases/delete_all_records_use_case.dart';
 import 'package:test_app/app/domain/usecases/delete_records_use_case.dart';
 import 'package:test_app/app/domain/usecases/get_adhkar_use_case.dart';
 import 'package:test_app/app/domain/usecases/get_next_prayer_use_case.dart';
+import 'package:test_app/app/domain/usecases/get_prayers_times_use_case.dart';
+import 'package:test_app/app/presentation/controller/cubit/prayer_times_cubit.dart';
 import 'package:test_app/app/domain/usecases/get_records_use_case.dart';
 import 'package:test_app/app/presentation/controller/cubit/featured_records_cubit.dart';
 import 'package:test_app/app/presentation/controller/cubit/supplications_cubit.dart';
@@ -26,9 +28,13 @@ GetIt sl = GetIt.instance;
 class DependencyInjection {
   static Future<void> init() async {
     // cubits
+    sl.registerFactory(() => PrayerTimesCubit(sl()));
+    sl.registerFactory(() => TimerCubit(sl()));
+    //usecases
+    sl.registerLazySingleton(
+        () => GetPrayersTimesUseCase(basePrayerRepo: sl()));
     sl.registerFactory(() => SupplicationsCubit(sl()));
     sl.registerFactory(() => FeaturedRecordsCubit(sl(), sl(), sl(), sl()));
-    sl.registerFactory(() => TimerCubit(sl()));
     //usecases
     sl.registerLazySingleton<GetAdhkarUseCase>(() => GetAdhkarUseCase(sl()));
     sl.registerLazySingleton<DeleteAllRecordsUseCase>(
@@ -55,6 +61,7 @@ class DependencyInjection {
     );
     sl.registerLazySingleton<PrayersRemoteDataSource>(
         () => PrayersRemoteDataSourceImpl(sl()));
+
     // services
     sl.registerLazySingleton<BaseDataBaseService<int>>(
       () => HiveDatabaseService(),

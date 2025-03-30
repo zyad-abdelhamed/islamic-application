@@ -1,6 +1,15 @@
 part of 'prayer_times_cubit.dart';
 
-@immutable
-sealed class PrayerTimesState {}
+class PrayerTimesState extends Equatable {
+  final Timings? prayerTimes;
+  final String errorMessageofPrayerTimes;
+  final RequestStateEnum requestStateofPrayerTimes;
+  const PrayerTimesState(
+      {this.prayerTimes ,
+      this.errorMessageofPrayerTimes = '',
+      this.requestStateofPrayerTimes = RequestStateEnum.loading});
 
-final class PrayerTimesInitial extends PrayerTimesState {}
+  @override
+  List<Object?> get props =>
+      [prayerTimes, errorMessageofPrayerTimes, requestStateofPrayerTimes];
+}

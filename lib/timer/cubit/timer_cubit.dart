@@ -24,6 +24,7 @@ class TimerCubit extends Cubit<TimerState> {
           nextPrayerRequestState: RequestStateEnum.failed));
 
     }, (nextPrayer) {
+      print(nextPrayer.nameOfNextPrayer);
       emit(state.copyWith(
          nextPrayerRequestState: RequestStateEnum.success,nextPrayer: nextPrayer
       ));

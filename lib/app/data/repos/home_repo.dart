@@ -14,7 +14,7 @@ class HomeRepo extends BaseHomeRepo {
     try {
       return Right(await adhkarLocalDataSource.getAdhkar(adhkarParameters));
     } catch (e) {
-      return const Left(Failure('error'));
+      return const Left(Failure("خطأ أثناء جلب البيانات: تحقق من المدخلات أو مصدر البيانات"));
     }
   }
 }

@@ -34,15 +34,40 @@ class SupplicationsCubit extends Cubit<SupplicationsState> {
 
   //supplications events
   void getAdhkar(AdhkarParameters adhkarParameters) async {
+  print('================= Fetching Adhkar');
+  
+  // تعيين الحالة إلى "تحميل"
+  emit(state.copyWith(adhkarRequestState: RequestStateEnum.loading));
+
+  try {
     var result = await getAdhkarUseCase(parameters: adhkarParameters);
-    result.fold((l) => emit(SupplicationsState(
+
+    result.fold(
+      (failure) {
+        print('❌ Fetching Failed: ${failure.message}');
+        emit(state.copyWith(
+          adhkarRequestState: RequestStateEnum.failed,
+          adhkarErorrMessage: failure.message,
+        ));
+      },
+      (data) {
+        print('✅ Fetching Success: $data');
+        emit(state.copyWith(
+          adhkarRequestState: RequestStateEnum.success,
+          adhkar: data,
+        ));
+      },
+    );
+  } catch (e, stacktrace) {
+    print('🔥 Exception: $e');
+    print('📝 Stacktrace: $stacktrace');
+    emit(state.copyWith(
       adhkarRequestState: RequestStateEnum.failed,
-      adhkarErorrMessage: l.message
-    )), (r) => emit(SupplicationsState(
-      adhkarRequestState: RequestStateEnum.success,
-      adhkar: r
-    )));
+      adhkarErorrMessage: e.toString(),
+    ));
   }
+}
+
 
   void decreaseCount({required int index}) {
     int count = 0;

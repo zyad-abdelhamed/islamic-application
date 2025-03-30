@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:test_app/app/presentation/controller/cubit/prayer_times_cubit.dart';
 import 'package:test_app/app/presentation/view/components/remaining_time_widget.dart';
 import 'package:test_app/core/constants/view_constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,7 +26,19 @@ class PrayerTimesWidget extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: 10, vertical: (context.width * .04) - 5),
-                child: _getRowOfPrayers(context, textList: prayerTimes),
+                child: BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
+                  builder: (context, state) {
+                    print(state);
+                    PrayerTimesCubit cubit = context.read<PrayerTimesCubit>();
+                    return _getRowOfPrayers(context,
+                        textList: switch (state.requestStateofPrayerTimes) {
+                          RequestStateEnum.loading => prayerTimes,
+                          RequestStateEnum.success =>
+                            cubit.getListOfTimings(state),
+                          RequestStateEnum.failed => prayerTimes
+                        });
+                  },
+                ),
               ),
               Container(
                 height: context.height * .22,
@@ -140,6 +153,13 @@ class PrayerTimesWidget extends StatelessWidget {
   }
 }
 
-List<String> prayerTimes = ['5:2', '5:2', '5:2', '5:2', '5:2', '5,2'];
+List<String> prayerTimes = [
+  '--:--',
+  '--:--',
+  '--:--',
+  '--:--',
+  '--:--',
+  '--:--'
+];
 BoxDecoration _boxDecoration({required Color color}) =>
     BoxDecoration(borderRadius: BorderRadius.circular(35.0), color: color);
