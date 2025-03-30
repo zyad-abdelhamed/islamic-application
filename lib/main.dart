@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:test_app/core/constants/data_base_constants.dart';
 import 'package:test_app/core/helper_function/get_init_route.dart';
@@ -10,7 +11,7 @@ import 'package:test_app/core/theme/theme_provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   DependencyInjection.init();
-  //await Hive.initFlutter();
+  await Hive.initFlutter();
   await Hive.openBox(DataBaseConstants.featuerdRecordsHiveKey);
   runApp(ChangeNotifierProvider(
     create: (context) => ThemeCubit(),

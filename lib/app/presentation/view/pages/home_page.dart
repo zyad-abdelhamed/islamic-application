@@ -59,8 +59,6 @@ class HomePage extends StatelessWidget {
         ));
   }
 }
-<<<<<<< HEAD
-=======
 
 class HomeCustomBottomNavigationBar extends StatelessWidget {
   const HomeCustomBottomNavigationBar({
@@ -90,4 +88,3 @@ class HomeCustomBottomNavigationBar extends StatelessWidget {
 
 
 
->>>>>>> 571a09bf56a0df5373c141a62ff8f0275730caac

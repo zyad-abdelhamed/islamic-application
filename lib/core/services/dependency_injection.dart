@@ -35,7 +35,6 @@ class DependencyInjection {
         () => GetPrayersTimesUseCase(basePrayerRepo: sl()));
     sl.registerFactory(() => SupplicationsCubit(sl()));
     sl.registerFactory(() => FeaturedRecordsCubit(sl(), sl(), sl(), sl()));
-    sl.registerFactory(() => TimerCubit(sl()));
     //usecases
     sl.registerLazySingleton<GetAdhkarUseCase>(() => GetAdhkarUseCase(sl()));
     sl.registerLazySingleton<DeleteAllRecordsUseCase>(
