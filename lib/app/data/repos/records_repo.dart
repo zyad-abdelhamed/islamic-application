@@ -11,12 +11,15 @@ class RecordsRepo extends BaseRecordsRepo {
   @override
   Future<Either<Failure, Unit>> addRecord(
       {required RecordsParameters parameters}) async {
-    try {
-      await recordsLocalDataSource.addRecord(parameters: parameters);
-      return const Right(unit);
-    } catch (e) {
-      return const Left(Failure('error in add'));
+    if (parameters.item! > 5000) {
+      try {
+        await recordsLocalDataSource.addRecord(parameters: parameters);
+        return const Right(unit);
+      } catch (e) {
+        return const Left(Failure('error in add'));
+      }
     }
+    return const Right(unit);
   }
 
   @override
@@ -42,11 +45,9 @@ class RecordsRepo extends BaseRecordsRepo {
   }
 
   @override
-  Future<Either<Failure, List<int>>> getRecords(
-      {required RecordsParameters parameters}) async {
+  Future<Either<Failure, List<int>>> getRecords() async {
     try {
-      List<int> result =
-          await recordsLocalDataSource.getRecords(parameters: parameters);
+      List<int> result = await recordsLocalDataSource.getRecords();
       return Right(result);
     } catch (e) {
       return const Left(Failure('error in getrecords'));

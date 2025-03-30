@@ -52,33 +52,29 @@ _materialButton(
           color: AppColors.primaryColor,
         ),
         height: context.height * 1 / 7,
-        width: context.width * 1 / 2,
-        child: SizedBox(
-          height: context.height * 1 / 7,
-          width: (context.width * 1 / 2) - 8 - 8,
-          child: Row(
-            spacing: 10.0,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                text,
-                style:
-                    TextStyles.bold20(context).copyWith(color: AppColors.white),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 3.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Image.asset(
-                    image,
-                    fit: BoxFit.fill,
-                    width: context.width * 1 / 5,
-                  ),
+        width: context.width * .55,
+        child: Row(
+          spacing: 10.0,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              text,
+              style:
+                  TextStyles.bold20(context).copyWith(color: AppColors.white,fontSize: 23),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 3.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15.0),
+                child: Image.asset(
+                  image,
+                  fit: BoxFit.fill,
+                  width: context.width * 1 / 5,
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );

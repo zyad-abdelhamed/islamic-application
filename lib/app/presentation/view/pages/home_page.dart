@@ -59,3 +59,35 @@ class HomePage extends StatelessWidget {
         ));
   }
 }
+<<<<<<< HEAD
+=======
+
+class HomeCustomBottomNavigationBar extends StatelessWidget {
+  const HomeCustomBottomNavigationBar({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+          colors: [
+          AppColors.grey,
+          AppColors.grey.withValues(alpha: .5),
+          AppColors.grey.withValues(alpha: 0.0),
+        ])
+      ),
+    );
+  }
+}
+
+
+
+
+
+>>>>>>> 571a09bf56a0df5373c141a62ff8f0275730caac

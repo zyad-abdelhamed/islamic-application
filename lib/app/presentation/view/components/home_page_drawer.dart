@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:test_app/app/presentation/view/components/show_custom_alert_dialog.dart';
 import 'package:test_app/app/presentation/view/components/custom_switch.dart';
 import 'package:test_app/app/presentation/view/components/draw_circle_bloc_builder.dart';
+import 'package:test_app/core/extentions/controllers_extention.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/core/utils/sized_boxs.dart';
 
@@ -35,7 +36,7 @@ class HomeDrawerWidget extends StatelessWidget {
               onChanged: (bool value) {
                 Provider.of<ThemeCubit>(context, listen: false).changeTheme();
               },
-              value: Provider.of<ThemeCubit>(context).darkMpde,
+              value: context.themeController.darkMpde,
             ),
           ),
           SizedBoxs.sizedBoxH30

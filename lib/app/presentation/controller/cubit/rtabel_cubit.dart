@@ -6,7 +6,6 @@ import 'package:test_app/core/services/cache_service.dart';
 part 'rtabel_state.dart';
 
 class RtabelCubit extends Cubit<RtabelState> {
-  final BaseCache baseCache = CacheImplBySharedPreferences();
   RtabelCubit() : super(RtabelState());
 
   static RtabelCubit getRamadanTableController(BuildContext context) {
@@ -15,18 +14,18 @@ class RtabelCubit extends Cubit<RtabelState> {
   }
 
   void setCheckBoxValue({required int index, required bool value}) async {
-    baseCache.insertBoolToCache(
-        key: CacheConstants.getRamadanTableCheckBoxKey(index: index),
-        value: value);
+    // baseCache.insertBoolToCache(
+    //     key: CacheConstants.getRamadanTableCheckBoxKey(index: index),
+    //     value: value);
   }
 
   void loadCheckBoxValues() async {
-    emit(RtabelState(
-        checkBoxsValues: List<bool>.generate(16 * 30, (index) {
-      return baseCache.getboolFromCache(
-              key: CacheConstants.getRamadanTableCheckBoxKey(index: index)) ??
-          false;
-    })));
+    // emit(RtabelState(
+    //     checkBoxsValues: List<bool>.generate(16 * 30, (index) {
+    //   return baseCache.getboolFromCache(
+    //           key: CacheConstants.getRamadanTableCheckBoxKey(index: index)) ??
+    //       false;
+    // })));
   }
 
   changeCheckBoxValue({required int index, required bool newValue}) {
