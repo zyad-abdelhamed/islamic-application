@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/app/domain/usecases/get_adhkar_use_case.dart';
 import 'package:test_app/app/presentation/controller/cubit/supplications_cubit.dart';
 import 'package:test_app/app/presentation/view/components/custom_switch.dart';
+import 'package:test_app/app/presentation/view/components/erorr_widget.dart';
 import 'package:test_app/app/presentation/view/components/slider_widget.dart';
 import 'package:test_app/app/presentation/view/components/supplication_widget.dart';
 import 'package:test_app/core/extentions/controllers_extention.dart';
@@ -108,10 +109,7 @@ class SupplicationsPage extends StatelessWidget {
                 builder: (context, state) {
                   print(state);
                   if(state.adhkarRequestState == RequestStateEnum.failed){
-                    return Center(
-                      child: Card(child: 
-                      Text(state.adhkarErorrMessage!),),
-                    );
+                    return ErorrWidget(message: state.adhkarErorrMessage!);
                   }
 
                  //case loading and success

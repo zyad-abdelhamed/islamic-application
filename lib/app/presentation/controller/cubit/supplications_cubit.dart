@@ -34,15 +34,14 @@ class SupplicationsCubit extends Cubit<SupplicationsState> {
 
   //supplications events
   void getAdhkar(AdhkarParameters adhkarParameters) async {
-    print('=================');
     var result = await getAdhkarUseCase(parameters: adhkarParameters);
-    result.fold((l) => SupplicationsState(
+    result.fold((l) => emit(SupplicationsState(
       adhkarRequestState: RequestStateEnum.failed,
       adhkarErorrMessage: l.message
-    ), (r) => SupplicationsState(
+    )), (r) => emit(SupplicationsState(
       adhkarRequestState: RequestStateEnum.success,
       adhkar: r
-    ));
+    )));
   }
 
   void decreaseCount({required int index}) {

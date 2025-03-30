@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test_app/core/theme/dark_theme.dart';
 import 'package:test_app/core/theme/light_theme.dart';
 
-class ThemeCubit with ChangeNotifier {
+class ThemeProvider with ChangeNotifier {
   bool _darkMode = false;
   bool get darkMpde => _darkMode;
   ThemeData _appTheme = lightTheme;

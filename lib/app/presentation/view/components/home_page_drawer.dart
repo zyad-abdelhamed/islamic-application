@@ -34,7 +34,7 @@ class HomeDrawerWidget extends StatelessWidget {
               title: 'الوضع الداكن',
               mainAxisAlignment: MainAxisAlignment.start,
               onChanged: (bool value) {
-                Provider.of<ThemeCubit>(context, listen: false).changeTheme();
+                Provider.of<ThemeProvider>(context, listen: false).changeTheme();
               },
               value: context.themeController.darkMpde,
             ),

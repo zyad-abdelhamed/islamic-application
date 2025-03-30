@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/app/presentation/controller/cubit/featured_records_cubit.dart';
+import 'package:test_app/app/presentation/view/components/erorr_widget.dart';
 import 'package:test_app/core/constants/view_constants.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
@@ -59,7 +60,7 @@ class FeatuerdRecordsWidget extends StatelessWidget {
                 print('Featured Records rebuild');
                 if (state.featuredRecordsRequestState ==
                     RequestStateEnum.failed) {
-                  return Text(state.featuredRecordsErrorMessage!);
+                  return ErorrWidget(message: state.featuredRecordsErrorMessage!);
                 }
 
                 //case  success or loading
@@ -95,3 +96,4 @@ class FeatuerdRecordsWidget extends StatelessWidget {
     );
   }
 }
+

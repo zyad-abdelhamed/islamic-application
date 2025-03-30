@@ -14,7 +14,7 @@ void main() async {
   await Hive.initFlutter();
   await Hive.openBox(DataBaseConstants.featuerdRecordsHiveKey);
   runApp(ChangeNotifierProvider(
-    create: (context) => ThemeCubit(),
+    create: (context) => ThemeProvider(),
     child: const MyApp()
      
   ));
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       builder: (context, child) =>
           Directionality(textDirection: TextDirection.rtl, child: child!),
-      theme: Provider.of<ThemeCubit>(context).appTheme,
+      theme: Provider.of<ThemeProvider>(context).appTheme,
       debugShowCheckedModeBanner: false,
       initialRoute: getInitRoute,
       onGenerateRoute: onGenerateRoute,
