@@ -75,7 +75,7 @@ class SupplicationWidget extends StatelessWidget {
                 context: context,
                 icon: Icons.minimize_outlined,
                 function: () {
-                  context.supplicationsController.decreaseCount(index: index);
+                  context.supplicationsController.decreaseCount(index: index,count: int.tryParse(adhkarEntity.count)!);
                 }),
             circleAvatarButton(
               context: context,

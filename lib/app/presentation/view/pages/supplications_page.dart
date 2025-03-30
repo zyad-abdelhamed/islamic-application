@@ -86,9 +86,13 @@ class SupplicationsPage extends StatelessWidget {
             bottom: PreferredSize(
                 preferredSize: Size.zero,
                 child: BlocBuilder<SupplicationsCubit, SupplicationsState>(
+                  buildWhen: (previous, current) => previous.isDeleted != current.isDeleted, 
                   builder: (context, state) {
+                    print(
+                        'rebuild supplications page switch switch is ${state.isDeleted}');
+                    
                     return CustomSwitch(
-                        value: context.supplicationsController.isDeleted,
+                        value: state.isDeleted,
                         title: 'الحذف بعد الانتهاء',
                         mainAxisAlignment: MainAxisAlignment.center,
                         onChanged: (bool value) {
@@ -107,7 +111,8 @@ class SupplicationsPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: BlocBuilder<SupplicationsCubit, SupplicationsState>(
                 builder: (context, state) {
-              print('supplications page body');
+              print(
+                  'rebuild supplications page body state is ${state.adhkarRequestState}');
               if (state.adhkarRequestState == RequestStateEnum.failed) {
                 return ErorrWidget(message: state.adhkarErorrMessage!);
               } else if (state.adhkarRequestState == RequestStateEnum.success) {
@@ -116,12 +121,13 @@ class SupplicationsPage extends StatelessWidget {
                     key: context.supplicationsController.animatedListKey,
                     initialItemCount: state.adhkar.length,
                     itemBuilder: (context, index, animation) {
-                      SupplicationWidget supplicationWidget = SupplicationWidget(
+                      SupplicationWidget supplicationWidget =
+                          SupplicationWidget(
                         index: index,
                         adhkarEntity: state.adhkar[index],
                         state: state,
                       );
-                      return context.supplicationsController.isDeleted
+                      return state.isDeleted
                           ? SlideTransition(
                               position: _removeAnimation(animation),
                               child: supplicationWidget)
