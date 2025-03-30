@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/app/presentation/controller/cubit/prayer_times_cubit.dart';
 import 'package:test_app/app/presentation/view/components/home_page_buttons_row.dart';
 import 'package:test_app/app/presentation/view/components/home_page_drawer.dart';
 import 'package:test_app/app/presentation/view/components/prayer_times_widget.dart';
@@ -14,9 +15,14 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) => TimerCubit(sl())..getRemainingTime(),
+    return MultiBlocProvider(
         // ignore: deprecated_member_use
+        providers: [
+          BlocProvider(
+              create: (context) => TimerCubit(sl())..getRemainingTime()),
+          BlocProvider(
+              create: (context) => PrayerTimesCubit(sl())..getPrayersTimes()),
+        ],
         child: WillPopScope(
           // زيها زى dispose in stateful widget علشان عامل dispose to timer ميحصلش اهدار للمصادر زى animation controller  لو متعملوش مثلا dispose
           onWillPop: () async {
@@ -27,8 +33,8 @@ class HomePage extends StatelessWidget {
             textDirection: TextDirection.rtl,
             child: Scaffold(
               appBar: AppBar(
+                title: Text('الصفحة الرئيسية'),
                 iconTheme: IconThemeData(color: AppColors.grey),
-                backgroundColor: Colors.transparent,
               ),
               drawer: Padding(
                 padding: EdgeInsets.only(
@@ -36,7 +42,7 @@ class HomePage extends StatelessWidget {
                 child: HomeDrawerWidget(),
               ),
               body: Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.only(left: 8.0, right: 8.0,bottom: 8,top: 40),
                 child: SingleChildScrollView(
                   child: Column(
                     spacing: 50.0,
@@ -53,8 +59,3 @@ class HomePage extends StatelessWidget {
         ));
   }
 }
-
-
-
-
-
