@@ -3,13 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/app/domain/usecases/get_adhkar_use_case.dart';
 import 'package:test_app/app/presentation/controller/cubit/supplications_cubit.dart';
 import 'package:test_app/app/presentation/view/components/custom_switch.dart';
-import 'package:test_app/app/presentation/view/components/erorr_widget.dart';
 import 'package:test_app/app/presentation/view/components/supplication_widget.dart';
 import 'package:test_app/core/extentions/controllers_extention.dart';
+import 'package:test_app/core/helper_function/get_widget_depending_on_reuest_state.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
-import 'package:test_app/core/utils/enums.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
-import 'package:test_app/core/adaptive_widgets/get_adaptive_loading_widget.dart';
 
 class SupplicationsPage extends StatelessWidget {
   final String nameOfAdhkar;
@@ -86,11 +84,12 @@ class SupplicationsPage extends StatelessWidget {
             bottom: PreferredSize(
                 preferredSize: Size.zero,
                 child: BlocBuilder<SupplicationsCubit, SupplicationsState>(
-                  buildWhen: (previous, current) => previous.isDeleted != current.isDeleted, 
+                  buildWhen: (previous, current) =>
+                      previous.isDeleted != current.isDeleted,
                   builder: (context, state) {
                     print(
                         'rebuild supplications page switch switch is ${state.isDeleted}');
-                    
+
                     return CustomSwitch(
                         value: state.isDeleted,
                         title: 'الحذف بعد الانتهاء',
@@ -113,28 +112,25 @@ class SupplicationsPage extends StatelessWidget {
                 builder: (context, state) {
               print(
                   'rebuild supplications page body state is ${state.adhkarRequestState}');
-              if (state.adhkarRequestState == RequestStateEnum.failed) {
-                return ErorrWidget(message: state.adhkarErorrMessage!);
-              } else if (state.adhkarRequestState == RequestStateEnum.success) {
-                //case success
-                return AnimatedList(
-                    key: context.supplicationsController.animatedListKey,
-                    initialItemCount: state.adhkar.length,
-                    itemBuilder: (context, index, animation) {
-                      SupplicationWidget supplicationWidget =
-                          SupplicationWidget(
-                        index: index,
-                        adhkarEntity: state.adhkar[index],
-                        state: state,
-                      );
-                      return state.isDeleted
-                          ? SlideTransition(
-                              position: _removeAnimation(animation),
-                              child: supplicationWidget)
-                          : supplicationWidget;
-                    });
-              }
-              return GetAdaptiveLoadingWidget();
+              return getWidgetDependingOnReuestState(
+                  requestStateEnum: state.adhkarRequestState,
+                  widgetIncaseSuccess: AnimatedList(
+                      key: context.supplicationsController.animatedListKey,
+                      initialItemCount: state.adhkar.length,
+                      itemBuilder: (context, index, animation) {
+                        SupplicationWidget supplicationWidget =
+                            SupplicationWidget(
+                          index: index,
+                          adhkarEntity: state.adhkar[index],
+                          state: state,
+                        );
+                        return state.isDeleted
+                            ? SlideTransition(
+                                position: _removeAnimation(animation),
+                                child: supplicationWidget)
+                            : supplicationWidget;
+                      }),
+                  erorrMessage: state.adhkarErorrMessage!);
             }),
           ),
           // topPaddingValue: 3,

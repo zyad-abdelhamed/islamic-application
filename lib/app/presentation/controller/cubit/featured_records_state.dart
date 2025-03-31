@@ -6,21 +6,27 @@ class FeaturedRecordsState extends Equatable {
   final List<int> featuredRecords;
   final String? featuredRecordsErrorMessage;
   //add
-  final RequestStateEnum addFeaturedRecordsRequestState;
+  final RequestStateEnum? addFeaturedRecordsRequestState;
   final String? addFeaturedRecordsErrorMessage;
+  //delete all
+  final RequestStateEnum? deleteAllFeaturedRecordsRequestState;
+  final String? deleteAllFeaturedRecordsErrorMessage;
   const FeaturedRecordsState(
       {this.featuredRecordsRequestState = RequestStateEnum.loading,
       this.featuredRecords = const [],
       this.featuredRecordsErrorMessage,
-      this.addFeaturedRecordsRequestState = RequestStateEnum.loading,
-      this.addFeaturedRecordsErrorMessage});
-
+      this.addFeaturedRecordsRequestState,
+      this.addFeaturedRecordsErrorMessage,
+      this.deleteAllFeaturedRecordsRequestState,
+      this.deleteAllFeaturedRecordsErrorMessage});
   @override
   List<Object?> get props => [
         featuredRecordsRequestState,
         featuredRecords,
         featuredRecordsErrorMessage,
         addFeaturedRecordsErrorMessage,
-        addFeaturedRecordsRequestState
+        addFeaturedRecordsRequestState,
+        deleteAllFeaturedRecordsRequestState,
+        deleteAllFeaturedRecordsErrorMessage
       ];
 }

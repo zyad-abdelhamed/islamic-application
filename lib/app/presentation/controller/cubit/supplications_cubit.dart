@@ -14,7 +14,7 @@ part 'supplications_state.dart';
 
 class SupplicationsCubit extends Cubit<SupplicationsState> {
   final GetAdhkarUseCase getAdhkarUseCase;
-  GlobalKey<AnimatedListState> animatedListKey = GlobalKey<AnimatedListState>();
+  final GlobalKey<AnimatedListState> animatedListKey = GlobalKey<AnimatedListState>();
   SupplicationsCubit(this.getAdhkarUseCase) : super(SupplicationsState());
   //switch
   void toggleIsDeletedSwitch() {

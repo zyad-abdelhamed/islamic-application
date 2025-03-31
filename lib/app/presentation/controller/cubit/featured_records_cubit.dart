@@ -38,16 +38,18 @@ class FeaturedRecordsCubit extends Cubit<FeaturedRecordsState> {
     );
   }
 
-  void addFeatuerdRecord({required int item}) async {
+  void addFeatuerdRecord({required int item,required BuildContext context}) async {
     Either<Failure, Unit> result =
-        await addRecordUseCase(parameters: RecordsParameters(item: item));
+        await addRecordUseCase(parameters: RecordsParameters(context: context,item: item));
     result.fold(
       (failure) => emit(FeaturedRecordsState(
           featuredRecordsRequestState: RequestStateEnum.failed,
           featuredRecordsErrorMessage: failure.message)),
-      (featuredRecords) => emit(FeaturedRecordsState(
+      (featuredRecords) {
+        emit(FeaturedRecordsState(
         featuredRecordsRequestState: RequestStateEnum.success,
-      )),
+      ));
+      },
     );
 
     getFeatuerdRecords();

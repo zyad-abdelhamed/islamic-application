@@ -12,7 +12,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   DependencyInjection.init();
   await Hive.initFlutter();
-  await Hive.openBox(DataBaseConstants.featuerdRecordsHiveKey);
+  await Hive.openBox<int>(DataBaseConstants.featuerdRecordsHiveKey);
+  await Hive.box<int>(DataBaseConstants.featuerdRecordsHiveKey).clear();
   runApp(ChangeNotifierProvider(
     create: (context) => ThemeProvider(),
     child: const MyApp()

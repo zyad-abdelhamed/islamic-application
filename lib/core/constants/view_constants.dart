@@ -9,7 +9,6 @@ abstract class ViewConstants {
       'جدول${getNewlineOrWightSpace()}رمضان'
     ];
   }
-
   //splash screen
   static const String loadingText = 'يتم التحميل...';
   //home page

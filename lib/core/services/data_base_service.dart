@@ -9,34 +9,37 @@ abstract class BaseDataBaseService<T> {
 }
 
 class HiveDatabaseService<T> implements BaseDataBaseService<T> {
+  final Box<T> box;
+
+  HiveDatabaseService({required this.box});
   @override
   Future<void> add(T item, String path) async {
-    await Hive.box(path).add(item);
+    await box.add(item);
   }
 
   @override
   Future<List<T>> get(String path) async {
-    return Future.value(Hive.box(path).values as List<T>);
+    return Future.value(box.values.toList());
   }
 
   @override
   Future<void> addAll(List<T> items, String path) async {
-    await Hive.box(path).addAll(items);
+    await box.addAll(items);
   }
 
   @override
   Future<void> delete(dynamic id, String path) async {
-    // await Hive.box(path).delete(id);
+    // await box.delete(id);
     // تأكد من أن الـ index صالح
-    if (Hive.box(path).length > id) {
+    if (box.length > id) {
       var key =
-          Hive.box(path).keyAt(id); // الحصول على المفتاح عند الفهرس المحدد
-      await Hive.box(path).delete(key); // حذف العنصر باستخدام المفتاح
+          box.keyAt(id); // الحصول على المفتاح عند الفهرس المحدد
+      await box.delete(key); // حذف العنصر باستخدام المفتاح
     }
   }
 
   @override
   Future<void> deleteAll(String path) async {
-    await Hive.box(path).clear();
+    await box.clear();
   }
 }

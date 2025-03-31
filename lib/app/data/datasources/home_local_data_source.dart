@@ -15,14 +15,12 @@ class HomeLocalDataSourceImpl extends HomeLocalDataSource {
   @override
   Future<List<AdhkarEntity>> getAdhkar(AdhkarParameters adhkarParameters) async {
     Map<String, dynamic> jsonAdhkar = await _getAdhkarFromJson();
-    // List<Map<String, dynamic>> adhkar = jsonAdhkar[adhkarParameters.nameOfAdhkar];
-    // print('=========$adhkar');
     return List<AdhkarEntity>.from((jsonAdhkar[adhkarParameters.nameOfAdhkar]as List).map((e) => AdhkarModel.fromJson(json: e)));
   }
 
   Future<Map<String, dynamic>> _getAdhkarFromJson() async {
     
-      String jsonString = await rootBundle.loadString(DataBaseConstants.adhkarjsonFileRoute);
+      final String jsonString = await rootBundle.loadString(DataBaseConstants.adhkarjsonFileRoute);
       return json.decode(jsonString);
     } 
 }
