@@ -21,9 +21,10 @@ abstract class ViewConstants {
     'مغرب',
     'عشاء'
   ];
+  
   static const List<String> imagesOfHomePageButtons = <String>[
     'assets/images/quran.jpg',
-    'assets/images/rosary.jpg',
+    'assets/images/image.jpeg',
     'assets/images/ramadan.jpg',
   ];
   static const List<String> emojisOfPrayers = <String>[

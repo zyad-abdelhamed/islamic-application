@@ -16,7 +16,9 @@ class HiveDatabaseService<T> implements BaseDataBaseService<T> {
 
   @override
   Future<List<T>> get(String path) async {
-    return Future.value(Hive.box(path).values as List<T>);
+    //return Future.value(Hive.box(path).values as List<T>);
+    var box = Hive.box<T>(path); // تأكد من أن الصندوق معرف بنوع T
+    return box.values.toList();
   }
 
   @override
@@ -26,12 +28,12 @@ class HiveDatabaseService<T> implements BaseDataBaseService<T> {
 
   @override
   Future<void> delete(dynamic id, String path) async {
-    // await Hive.box(path).delete(id);
-    // تأكد من أن الـ index صالح
-    if (Hive.box(path).length > id) {
-      var key =
-          Hive.box(path).keyAt(id); // الحصول على المفتاح عند الفهرس المحدد
-      await Hive.box(path).delete(key); // حذف العنصر باستخدام المفتاح
+    var box = await Hive.openBox<T>(path);
+    if (box.containsKey(id)) {
+      await box.delete(id); // حذف باستخدام المفتاح مباشرة إذا كان متاحًا
+    } else if (id is int && id < box.length) {
+      var key = box.keyAt(id); // إذا كان id رقمًا، نحاول استخدام keyAt
+      await box.delete(key);
     }
   }
 
@@ -39,4 +41,6 @@ class HiveDatabaseService<T> implements BaseDataBaseService<T> {
   Future<void> deleteAll(String path) async {
     await Hive.box(path).clear();
   }
+
+  
 }

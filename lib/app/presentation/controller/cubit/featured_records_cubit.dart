@@ -21,17 +21,22 @@ class FeaturedRecordsCubit extends Cubit<FeaturedRecordsState> {
       this.deleteAllRecordsUseCase, this.deleteRecordsUseCase)
       : super(const FeaturedRecordsState());
 
-  static FeaturedRecordsCubit getFeatuerdRecordsController(BuildContext context) {
-    final FeaturedRecordsCubit controller = context.read<FeaturedRecordsCubit>();
+  static FeaturedRecordsCubit getFeatuerdRecordsController(
+      BuildContext context) {
+    final FeaturedRecordsCubit controller =
+        context.read<FeaturedRecordsCubit>();
     return controller;
-  }    
+  }
 
   void getFeatuerdRecords() async {
     Either<Failure, List<int>> result = await getRecordsUseCase();
     result.fold(
-      (failure) => emit(FeaturedRecordsState(
-          featuredRecordsRequestState: RequestStateEnum.failed,
-          featuredRecordsErrorMessage: failure.message)),
+      (failure) {
+        print(failure.message);
+        emit(FeaturedRecordsState(
+            featuredRecordsRequestState: RequestStateEnum.failed,
+            featuredRecordsErrorMessage: failure.message));
+      },
       (featuredRecords) => emit(FeaturedRecordsState(
           featuredRecordsRequestState: RequestStateEnum.success,
           featuredRecords: featuredRecords)),
@@ -42,14 +47,21 @@ class FeaturedRecordsCubit extends Cubit<FeaturedRecordsState> {
     Either<Failure, Unit> result =
         await addRecordUseCase(parameters: RecordsParameters(item: item));
     result.fold(
-      (failure) => emit(FeaturedRecordsState(
-          featuredRecordsRequestState: RequestStateEnum.failed,
-          featuredRecordsErrorMessage: failure.message)),
-      (featuredRecords) => emit(FeaturedRecordsState(
-        featuredRecordsRequestState: RequestStateEnum.success,
-      )),
+      (failure) {
+        print(failure.message);
+
+        emit(FeaturedRecordsState(
+            featuredRecordsRequestState: RequestStateEnum.failed,
+            featuredRecordsErrorMessage: failure.message));
+      },
+      (featuredRecords) {
+        print('success');
+        emit(FeaturedRecordsState(
+          featuredRecordsRequestState: RequestStateEnum.success,
+        ));
+      },
     );
 
-    getFeatuerdRecords();
+    // getFeatuerdRecords();
   }
 }

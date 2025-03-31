@@ -79,6 +79,7 @@ class CounterWidget extends StatelessWidget {
               right: 20,
               child: GestureDetector(
                 onTap: () {
+                  print('add');
                   context.featuerdRecordsController.addFeatuerdRecord(
                       item: context.elecRosaryController.counter);
                 },
