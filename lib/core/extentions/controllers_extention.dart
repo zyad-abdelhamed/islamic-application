@@ -11,7 +11,7 @@ import 'package:test_app/core/theme/theme_provider.dart';
 extension ResponsiveExtention on BuildContext {
   ElecRosaryCubit get elecRosaryController =>
       ElecRosaryCubit.getElecRosaryController(this);
-  ThemeCubit get themeController => Provider.of<ThemeCubit>(this);
+  ThemeProvider get themeController => Provider.of<ThemeProvider>(this);
   AlertDialogCubit get alertDialogController =>
       BlocProvider.of<AlertDialogCubit>(this);
 

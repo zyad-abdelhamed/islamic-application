@@ -34,7 +34,6 @@ class HomePage extends StatelessWidget {
             child: Scaffold(
               appBar: AppBar(
                 title: Text('الصفحة الرئيسية'),
-                iconTheme: IconThemeData(color: AppColors.grey),
               ),
               drawer: Padding(
                 padding: EdgeInsets.only(

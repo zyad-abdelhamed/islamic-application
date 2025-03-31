@@ -19,7 +19,10 @@ void main() async {
   // List<dynamic> result = await getsoliman(DataBaseConstants.featuerdRecordsHiveKey);
   // print("$result----------");
   runApp(ChangeNotifierProvider(
-      create: (context) => ThemeCubit(), child: const MyApp()));
+    create: (context) => ThemeProvider(),
+    child: const MyApp()
+     
+  ));
 }
 
 // Future<void> addsoliman<int>(String path,int item) async {
@@ -38,7 +41,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       builder: (context, child) =>
           Directionality(textDirection: TextDirection.rtl, child: child!),
-      theme: Provider.of<ThemeCubit>(context).appTheme,
+      theme: Provider.of<ThemeProvider>(context).appTheme,
       debugShowCheckedModeBanner: false,
       initialRoute: getInitRoute,
       onGenerateRoute: onGenerateRoute,

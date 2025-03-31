@@ -31,7 +31,6 @@ class SupplicationWidget extends StatelessWidget {
           color: AppColors.grey1,
         ),
         child: Column(
-          spacing: 5.0,
           children: [
             Text(
               adhkarEntity.content,
@@ -76,7 +75,7 @@ class SupplicationWidget extends StatelessWidget {
                 context: context,
                 icon: Icons.minimize_outlined,
                 function: () {
-                  context.supplicationsController.decreaseCount(index: index);
+                  context.supplicationsController.decreaseCount(index: index,count: int.tryParse(adhkarEntity.count)!);
                 }),
             circleAvatarButton(
               context: context,

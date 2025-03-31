@@ -103,6 +103,6 @@ class CounterWidget extends StatelessWidget {
 }
 
 Color _getCounterColor(BuildContext context) =>
-    Provider.of<ThemeCubit>(context).darkMpde
+    Provider.of<ThemeProvider>(context).darkMpde
         ? AppColors.black
         : AppColors.white;

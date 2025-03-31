@@ -67,7 +67,7 @@ class DependencyInjection {
 
     // services
     sl.registerLazySingleton<BaseDataBaseService<int>>(
-      () => HiveDatabaseService<int>(),
+      () => HiveDatabaseService(),
     );
     sl.registerLazySingleton<ApiService>(() => ApiService(sl()));
     sl.registerLazySingleton<Dio>(() => Dio());

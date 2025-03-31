@@ -82,7 +82,7 @@ class DisplayTimeContainer extends StatelessWidget {
           return state.hours.toString().padLeft(2, '0'); // ساعات
         },
         builder: (context, timeValue) {
-          print('إعادة بناء النص الخاص بـ index: $index');
+        //  print('إعادة بناء النص الخاص بـ index: $index');
           return SevenSegmentDisplay(
             size: 3,
             segmentStyle: DefaultSegmentStyle(enabledColor: AppColors.purple,disabledColor: Colors.transparent),
