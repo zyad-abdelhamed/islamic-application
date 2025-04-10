@@ -7,8 +7,6 @@ import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/utils/enums.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
-import 'package:test_app/timer/cubit/timer_cubit.dart';
-import 'package:test_app/timer/cubit/timer_state.dart';
 
 class PrayerTimesWidget extends StatelessWidget {
   const PrayerTimesWidget({super.key});
@@ -61,29 +59,15 @@ class PrayerTimesWidget extends StatelessWidget {
                     Row(spacing: 5.0, children: [
                       textNextPrayer(
                           context: context, text: 'الصلاة القادمة :'),
-                      BlocConsumer<TimerCubit, TimerState>(
-                        listenWhen: (previous, current) =>
-                            previous.nextPrayer != current.nextPrayer,
-                        buildWhen: (previous, current) =>
-                            previous.nextPrayer != current.nextPrayer,
-                        listener: (context, state) {
-                          if (state.seconds == 0 &&
-                              state.minutes == 0 &&
-                              state.hours == 0) {
-                            context.read<TimerCubit>().getRemainingTime();
-                          }
-                        },
+                      BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
+                       
                         builder: (context, state) {
-                          print(
-                              "next prayer rebuild${state.nextPrayerRequestState}");
-                          if (state.nextPrayerRequestState ==
-                              RequestStateEnum.success) {
+                          
+                         
                             return textNextPrayer(
                                 context: context,
-                                text: _getNextPrayerNameInArabic(state));
-                          } else {
-                            return SizedBox();
-                          }
+                                text:  state.requestStateofPrayerTimes == RequestStateEnum.loading ? '' : state.prayerTime!.name);
+                          
                         },
                       ),
                     ])
@@ -119,22 +103,7 @@ class PrayerTimesWidget extends StatelessWidget {
         ));
   }
 
-  String _getNextPrayerNameInArabic(TimerState state) {
-    switch (state.nextPrayer!.nameOfNextPrayer) {
-      case "Fajr":
-        return "الفجر";
-      case "Dhuhr":
-        return "الظهر";
-      case "Asr":
-        return "العصر";
-      case "Maghrib":
-        return "المغرب";
-      case "Isha":
-        return "العشاء";
-      default:
-        return '';
-    }
-  }
+ 
 
   Text textNextPrayer({required BuildContext context, required String text}) {
     return Text(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:segment_display/segment_display.dart';
+import 'package:test_app/app/presentation/controller/cubit/prayer_times_cubit.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/timer/cubit/timer_cubit.dart';
@@ -73,6 +74,7 @@ class DisplayTimeContainer extends StatelessWidget {
       alignment: Alignment.center,
       child: BlocSelector<TimerCubit, TimerState, String>(
         selector: (state) {
+          
           if (index == 0) {
             return state.seconds.toString().padLeft(2, '0'); // ثواني
           }
@@ -82,7 +84,7 @@ class DisplayTimeContainer extends StatelessWidget {
           return state.hours.toString().padLeft(2, '0'); // ساعات
         },
         builder: (context, timeValue) {
-        //  print('إعادة بناء النص الخاص بـ index: $index');
+          print('إعادة بناء النص الخاص بـ index: $index');
           return SevenSegmentDisplay(
             size: 3,
             segmentStyle: DefaultSegmentStyle(enabledColor: AppColors.purple,disabledColor: Colors.transparent),

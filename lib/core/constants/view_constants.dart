@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 abstract class ViewConstants {
   //genral
   static const Duration duration = Duration(milliseconds: 100);
@@ -31,9 +33,19 @@ abstract class ViewConstants {
     '🌙',
     '🌤',
     '☀️',
-    "☀️",
+    "🌇",
     '🌥',
     '🌒'
+  ];
+  static const List supplicationIcons = [
+    Icons.wb_sunny,  // أذكار الصباح
+    Icons.nightlight_round,  // أذكار المساء
+    Icons.check_circle_outline,  // أذكار بعد السلام من الصلاة المفروضة
+    Icons.spa,  // تسابيح
+    Icons.bedtime,  // أذكار النوم
+    Icons.alarm,  // أذكار الاستيقاظ
+    Icons.book,  // أدعية قرآنية
+    Icons.group,  // أدعية الأنبياء
   ];
   static const List<String> supplicationsButtonsNames = <String>[
     "أذكار الصباح",

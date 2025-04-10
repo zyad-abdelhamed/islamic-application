@@ -19,9 +19,9 @@ class HomePage extends StatelessWidget {
         // ignore: deprecated_member_use
         providers: [
           BlocProvider(
-              create: (context) => TimerCubit(sl())..getRemainingTime()),
+              create: (context) => TimerCubit()),
           BlocProvider(
-              create: (context) => PrayerTimesCubit(sl())..getPrayersTimes()),
+              create: (context) => PrayerTimesCubit(sl())..getPrayersTimes(context)),
         ],
         child: WillPopScope(
           // زيها زى dispose in stateful widget علشان عامل dispose to timer ميحصلش اهدار للمصادر زى animation controller  لو متعملوش مثلا dispose

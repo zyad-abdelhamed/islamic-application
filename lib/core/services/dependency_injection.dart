@@ -30,7 +30,7 @@ class DependencyInjection {
   static Future<void> init() async {
     // cubits
     sl.registerFactory(() => PrayerTimesCubit(sl()));
-    sl.registerFactory(() => TimerCubit(sl()));
+    sl.registerFactory(() => TimerCubit());
     //usecases
     sl.registerLazySingleton(
         () => GetPrayersTimesUseCase(basePrayerRepo: sl()));

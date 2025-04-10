@@ -8,32 +8,33 @@ import 'package:test_app/core/utils/enums.dart';
 import 'package:test_app/timer/cubit/timer_state.dart';
 
 class TimerCubit extends Cubit<TimerState> {
-  final GetNextPrayerUseCase getNextPrayerUseCase;
+  //final GetNextPrayerUseCase getNextPrayerUseCase;
   Timer? _timer;
 
-  TimerCubit(this.getNextPrayerUseCase)
+  TimerCubit()
       : super(const TimerState(hours: 0, minutes: 0, seconds: 0));
 
-  void getRemainingTime() async {
-    emit(state.copyWith(nextPrayerRequestState: RequestStateEnum.loading));
-    Either<Failure, NextPrayerEntity> nextPrayerEither =
-        await getNextPrayerUseCase();
-    nextPrayerEither.fold((failure) {
-      emit(state.copyWith(
-          nextPrayerError: failure.message,
-          nextPrayerRequestState: RequestStateEnum.failed));
+  // void getRemainingTime() async {
+  //   emit(state.copyWith(nextPrayerRequestState: RequestStateEnum.loading));
+  //   Either<Failure, NextPrayerEntity> nextPrayerEither =
+  //       await getNextPrayerUseCase();
+  //   nextPrayerEither.fold((failure) {
+  //     emit(state.copyWith(
+  //         nextPrayerError: failure.message,
+  //         nextPrayerRequestState: RequestStateEnum.failed));
 
-    }, (nextPrayer) {
-      print(nextPrayer.nameOfNextPrayer);
-      emit(state.copyWith(
-         nextPrayerRequestState: RequestStateEnum.success,nextPrayer: nextPrayer
-      ));
-      startTimerUntil("${nextPrayer.timeOfNextPrayer}:00");
+  //   }, (nextPrayer) {
+  //     print(nextPrayer.nameOfNextPrayer);
+  //     emit(state.copyWith(
+  //        nextPrayerRequestState: RequestStateEnum.success,nextPrayer: nextPrayer
+  //     ));
+  //     startTimerUntil("${nextPrayer.timeOfNextPrayer}:00");
       
-    });
-  }
+  //   });
+  // }
 
   void startTimerUntil(String targetTime) {
+     print("🕒 بدأ العد التنازلي حتى: $targetTime");
     Duration remaining = _calculateRemainingTime(targetTime);
     DateTime now = DateTime.now();
 
@@ -52,6 +53,8 @@ class TimerCubit extends Cubit<TimerState> {
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       final currentState = state;
+        print('🕒 تحديث العد التنازلي: ${currentState.hours}:${currentState.minutes}:${currentState.seconds}');
+
       if (currentState.hours == 0 &&
           currentState.minutes == 0 &&
           currentState.seconds == 0) {

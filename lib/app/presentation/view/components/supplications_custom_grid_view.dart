@@ -12,7 +12,7 @@ class SupplicationsCustomGridView extends StatelessWidget {
         children: List<SupplicationsButton>.generate(
             8,
             (index) => SupplicationsButton(
-                  icon: Icons.sunny,
+                  icon:ViewConstants.supplicationIcons[index],
                   onTap: () {
                     Navigator.push(
                         context,
