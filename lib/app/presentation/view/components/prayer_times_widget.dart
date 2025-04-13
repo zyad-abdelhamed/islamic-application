@@ -77,18 +77,11 @@ class PrayerTimesWidget extends StatelessWidget {
             ],
           ),
         ),
+
+        
         RemainingTimeWidget(),
       ],
     );
-  }
-
-  List<Shadow> get _shadows {
-    return <BoxShadow>[
-      BoxShadow(
-          spreadRadius: 2,
-          offset: const Offset(-5.0, -5.0),
-          color: AppColors.purple.withValues(alpha: 0.2))
-    ];
   }
 
   Row _getRowOfPrayers(BuildContext context, {required List<String> textList}) {
@@ -98,6 +91,7 @@ class PrayerTimesWidget extends StatelessWidget {
           6,
           (index) => Text(
             textList[index],
+            textAlign: TextAlign.center,
             style: TextStyles.bold20(context).copyWith(color: AppColors.white),
           ),
         ));
@@ -112,7 +106,6 @@ class PrayerTimesWidget extends StatelessWidget {
           color: AppColors.secondryColor,
           shadows: [
             BoxShadow(
-                // blurRadius: 2,
                 spreadRadius: 2,
                 offset: const Offset(-5.0, -5.0),
                 color: AppColors.purple.withValues(alpha: 0.2))

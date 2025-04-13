@@ -29,11 +29,10 @@ class SecondryPage extends StatelessWidget {
                       backgroundColor: AppColors.white,
                       radius: 90,
                       child: ClipOval(
-                        // تأكد من استخدام ClipOval لتقطيع الصورة بشكل دائري
                         child: Image.asset(
                           images[index],
                           fit: BoxFit
-                              .fill, // أو جرب BoxFit.contain أو BoxFit.fill حسب الحاجة
+                              .fill,
                         ),
                       ),
                     ),
@@ -58,7 +57,7 @@ class SecondryPage extends StatelessWidget {
                 count: features.length,
                 effect: ExpandingDotsEffect(
                   dotColor: Colors.grey,
-                  activeDotColor: Colors.blue,
+                  activeDotColor: AppColors.secondryColor,
                   dotHeight: 10,
                   dotWidth: 10,
                   spacing: 8,
@@ -94,19 +93,19 @@ class SecondryPage extends StatelessWidget {
   }
 }
 
-List<String> features = [
+const List<String> features = <String>[
   'اوقات الصلاة',
   'الاذكار',
   'السبحة الالكترونية',
   'القران الكريم'
 ];
-List<String> texts = [
+const List<String> texts = <String>[
   'يتيح لك التطبيق معرفة مواقيت الصلاة بدقة حسب موقعك، مع عد تنازلي يوضح الوقت المتبقي لكل صلاة ، لتكون دائمًا في الموعد وتعيش يومك بإيقاع إيماني منتظم، مع تنبيهات دقيقة تُبقيك على استعداد دائم.',
   "عيش يومك بسلام داخلي مع ميزة الأذكار اليومية، التي توفر لك نصوصًا من الأذكار مع تنبيهات ذكية لتذكيرك بها في أوقات مناسبة، بالإضافة إلى عدّاد زمني ينبهك للمواعيد المهمة وقراءة القرآن الكريم بأعلى درجات السلاسة.",
   'استمتع بتجربة روحانية متكاملة مع السبحة الإلكترونية التي تساعدك في تتبع عدد الذكر، مع إمكانية تسجيل الرقم وحفظه تلقائيًا، أو مسحه بسهولة.',
   'ستمتع بتجربة روحانية مميزة مع عرض كامل للقرآن الكريم، بخط واضح وواجهة مريحة للعين، مع إمكانية التنقل السلس بين السور والأجزاء و مع دعم للوضع الليلي',
 ];
-List<String> images = [
+const List<String> images = <String>[
   'assets/images/صلاة.jpg',
   'assets/images/اذكار.png',
   'assets/images/image.jpeg',

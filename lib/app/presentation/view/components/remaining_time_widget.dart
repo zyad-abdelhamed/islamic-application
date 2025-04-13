@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:segment_display/segment_display.dart';
-import 'package:test_app/app/presentation/controller/cubit/prayer_times_cubit.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/timer/cubit/timer_cubit.dart';
@@ -43,7 +42,7 @@ class RemainingTimeWidget extends StatelessWidget {
                           thickness: 3,
                           indent: 10,
                           endIndent: 10,
-                          color: AppColors.white.withOpacity(0.5),
+                          color: AppColors.white.withValues(alpha: 0.5),
                         ),
                       ),
                     ),
@@ -74,7 +73,6 @@ class DisplayTimeContainer extends StatelessWidget {
       alignment: Alignment.center,
       child: BlocSelector<TimerCubit, TimerState, String>(
         selector: (state) {
-          
           if (index == 0) {
             return state.seconds.toString().padLeft(2, '0'); // ثواني
           }
@@ -87,10 +85,11 @@ class DisplayTimeContainer extends StatelessWidget {
           print('إعادة بناء النص الخاص بـ index: $index');
           return SevenSegmentDisplay(
             size: 3,
-            segmentStyle: DefaultSegmentStyle(enabledColor: AppColors.purple,disabledColor: Colors.transparent),
+            segmentStyle: DefaultSegmentStyle(
+                enabledColor: AppColors.purple,
+                disabledColor: AppColors.purple.withValues(alpha: .1)),
             backgroundColor: Colors.transparent,
-            value:  timeValue,
-            // style: TextStyles.semiBold32(context, color: AppColors.purple),
+            value: timeValue,
           );
         },
       ),
@@ -99,11 +98,12 @@ class DisplayTimeContainer extends StatelessWidget {
 }
 
 List<BorderRadiusGeometry> _getBorderRadiuses() {
+  const double borderRadius = 10.0;
   return <BorderRadiusGeometry>[
     const BorderRadius.only(
-        topLeft: Radius.circular(10), bottomLeft: Radius.circular(10)),
-    BorderRadius.circular(10),
+        topLeft: Radius.circular(borderRadius), bottomLeft: Radius.circular(borderRadius)),
+    BorderRadius.circular(borderRadius),
     const BorderRadius.only(
-        topRight: Radius.circular(10), bottomRight: Radius.circular(10)),
+        topRight: Radius.circular(borderRadius), bottomRight: Radius.circular(borderRadius)),
   ];
 }

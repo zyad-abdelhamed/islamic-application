@@ -1,38 +1,11 @@
 import 'dart:async';
-import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_app/app/domain/entities/next_prayer_entity.dart';
-import 'package:test_app/app/domain/usecases/get_next_prayer_use_case.dart';
-import 'package:test_app/core/errors/failures.dart';
-import 'package:test_app/core/utils/enums.dart';
 import 'package:test_app/timer/cubit/timer_state.dart';
 
 class TimerCubit extends Cubit<TimerState> {
-  //final GetNextPrayerUseCase getNextPrayerUseCase;
-  Timer? _timer;
-
   TimerCubit()
       : super(const TimerState(hours: 0, minutes: 0, seconds: 0));
-
-  // void getRemainingTime() async {
-  //   emit(state.copyWith(nextPrayerRequestState: RequestStateEnum.loading));
-  //   Either<Failure, NextPrayerEntity> nextPrayerEither =
-  //       await getNextPrayerUseCase();
-  //   nextPrayerEither.fold((failure) {
-  //     emit(state.copyWith(
-  //         nextPrayerError: failure.message,
-  //         nextPrayerRequestState: RequestStateEnum.failed));
-
-  //   }, (nextPrayer) {
-  //     print(nextPrayer.nameOfNextPrayer);
-  //     emit(state.copyWith(
-  //        nextPrayerRequestState: RequestStateEnum.success,nextPrayer: nextPrayer
-  //     ));
-  //     startTimerUntil("${nextPrayer.timeOfNextPrayer}:00");
-      
-  //   });
-  // }
-
+  Timer? _timer;
   void startTimerUntil(String targetTime) {
      print("🕒 بدأ العد التنازلي حتى: $targetTime");
     Duration remaining = _calculateRemainingTime(targetTime);

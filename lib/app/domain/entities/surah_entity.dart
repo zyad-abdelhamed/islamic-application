@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 
-class QuranEntity extends Equatable {
+class SurahEntity extends Equatable {
   final String surah;
   final String numberOfAyat;
   final int pageNumber;
 
-  const QuranEntity(
+  const SurahEntity(
       {required this.surah,
       required this.numberOfAyat,
       required this.pageNumber});

@@ -14,7 +14,7 @@ class IndexWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            PartsWidget(),
+           // PartsWidget(),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),

@@ -57,7 +57,7 @@ class MainPage extends StatelessWidget {
             bottom: context.height * .52,
             left: context.width * .31,
             child: CircleAvatar(
-              backgroundColor: AppColors.thirdColor,
+              backgroundColor: AppColors.secondryColor,
               radius: context.width * .19,
               child: SvgPicture.asset('assets/images/Vector.svg'),
             ),

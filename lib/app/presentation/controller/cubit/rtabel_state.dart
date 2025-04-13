@@ -1,13 +1,16 @@
 part of 'rtabel_cubit.dart';
 
 @immutable
-class RtabelState {
-  final  List<bool>? checkBoxsValues;
+class RtabelState extends Equatable {
+  const RtabelState(
+      {this.checkBoxsValues = const [],
+      this.errorMessage,
+      this.requestState = RequestStateEnum.loading});
 
- const RtabelState({this.checkBoxsValues});
+  final List<bool> checkBoxsValues;
+  final String? errorMessage;
+  final RequestStateEnum requestState;
 
+  @override
+  List<Object?> get props => [checkBoxsValues, errorMessage, requestState];
 }
-
-// final class RtabelInitial extends RtabelState {}
-// final class Rtabelloadvalues extends RtabelState {}
-// final class Rtabelcangevalue extends RtabelState {}
