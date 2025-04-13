@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:test_app/app/data/datasources/home_local_data_source.dart';
+import 'package:test_app/app/data/datasources/prayers_local_data_source.dart';
 import 'package:test_app/app/data/datasources/prayers_remote_data_source.dart';
 import 'package:test_app/app/data/datasources/records_local_data_source.dart';
 import 'package:test_app/app/data/repos/home_repo.dart';
@@ -28,7 +29,7 @@ class DependencyInjection {
   static Future<void> init() async {
     // cubits
     sl.registerFactory(() => PrayerTimesCubit(sl()));
-    sl.registerFactory(() => TimerCubit(sl()));
+    sl.registerFactory(() => TimerCubit());
     //usecases
     sl.registerLazySingleton(
         () => GetPrayersTimesUseCase(basePrayerRepo: sl()));
@@ -50,9 +51,11 @@ class DependencyInjection {
     sl.registerLazySingleton<BaseRecordsRepo>(
       () => RecordsRepo(recordsLocalDataSource: sl()),
     );
-    sl.registerLazySingleton<BasePrayerRepo>(
-        () => PrayerRepo(prayersRemoteDataSource: sl()));
+    sl.registerLazySingleton<BasePrayerRepo>(() => PrayerRepo(
+        prayersRemoteDataSource: sl(), prayersLocalDataSource: sl()));
     // data sources
+    sl.registerLazySingleton<PrayersLocalDataSource>(
+        () => PrayersLocalDataSourceImpl());
     sl.registerLazySingleton<HomeLocalDataSource>(
         () => HomeLocalDataSourceImpl());
     sl.registerLazySingleton<RecordsLocalDataSource>(

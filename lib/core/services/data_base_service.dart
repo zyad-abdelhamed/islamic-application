@@ -54,4 +54,6 @@ class HiveDatabaseService<T> implements BaseDataBaseService<T> {
   Future<void> put(T item, String path) {
     return box.put(path, item);
   }
+
+  
 }
