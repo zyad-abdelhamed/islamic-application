@@ -2,10 +2,20 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/app/presentation/view/pages/home_page.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
+import 'package:test_app/onboarding/presentation/view/pages/main_page.dart';
+import 'package:test_app/onboarding/presentation/view/pages/secondry_page.dart';
 import 'package:test_app/splash_screen.dart';
 
 Route<dynamic> onGenerateRoute(RouteSettings settings) {
   switch (settings.name) {
+    case RoutesConstants.secondryPageOnBoarding:
+      return MaterialPageRoute<SecondryPage>(
+        builder: (BuildContext context) =>  SecondryPage(),
+      );
+    case RoutesConstants.mainPageOnBoarding:
+      return MaterialPageRoute<MainPage>(
+        builder: (BuildContext context) => const MainPage(),
+      );
     case RoutesConstants.homePageRouteName:
       return MaterialPageRoute<HomePage>(
         builder: (BuildContext context) => const HomePage(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:test_app/core/helper_function/get_responsive_font_size.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 
@@ -129,6 +130,14 @@ class TextStyles {
       fontSize: getResponsiveFontSize(context: context, fontSize: 32),
       height: 1.5, // 150%
     );
+  }
+  static TextStyle semiBold32Decoreted(BuildContext context, {required Color color}) {
+    return GoogleFonts.cairo(textStyle: TextStyle(
+      color: color,
+      fontWeight: FontWeight.w600,
+      fontSize: getResponsiveFontSize(context: context, fontSize: 32),
+      height: 1.5, // 150%
+    ) );
   }
 
   static TextStyle regular16_120(BuildContext context, {required Color color}) {

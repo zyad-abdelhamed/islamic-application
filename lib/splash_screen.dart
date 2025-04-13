@@ -10,7 +10,7 @@ class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    _goToHomePage(context);
+    _goToMainPage(context);
     // final randomIndex = random.nextInt(ran.length);
     // final randomItem = ran[randomIndex];
     return const ColoredBox(
@@ -31,6 +31,15 @@ class SplashScreen extends StatelessWidget {
         () => Navigator.pushNamedAndRemoveUntil(
               context,
               RoutesConstants.homePageRouteName,
+              (route) => false,
+            ));
+  }
+  void _goToMainPage(BuildContext context) {
+    Future.delayed(
+        Duration(seconds: 2),
+        () => Navigator.pushNamedAndRemoveUntil(
+              context,
+              RoutesConstants.mainPageOnBoarding,
               (route) => false,
             ));
   }
