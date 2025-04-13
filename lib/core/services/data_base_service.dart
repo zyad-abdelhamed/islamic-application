@@ -1,8 +1,10 @@
 import 'package:hive/hive.dart';
 
 abstract class BaseDataBaseService<T> {
-  Future<void> add(T item, String path);
+  Future<void> add(T item, String? path);
+  Future<void> put(T item, String path);
   Future<List<T>> get(String path);
+  T? getValue(String path);
   Future<void> addAll(List<T> items, String path);
   Future<void> delete(dynamic id, String path);
   Future<void> deleteAll(String path);
@@ -13,7 +15,7 @@ class HiveDatabaseService<T> implements BaseDataBaseService<T> {
 
   HiveDatabaseService({required this.box});
   @override
-  Future<void> add(T item, String path) async {
+  Future<void> add(T item, String? path) async {
     await box.add(item);
   }
 
@@ -41,5 +43,15 @@ class HiveDatabaseService<T> implements BaseDataBaseService<T> {
   @override
   Future<void> deleteAll(String path) async {
     await box.clear();
+  }
+  
+  @override
+  T? getValue(String path) {
+    return box.get(path);
+  }
+  
+  @override
+  Future<void> put(T item, String path) {
+    return box.put(path, item);
   }
 }

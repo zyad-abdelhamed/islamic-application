@@ -20,72 +20,87 @@ class SupplicationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(spacing: 15.0, children: [
-      Container(
-        margin: EdgeInsets.only(
-          top: index != 0 ? 30.0 : 0.0, //space between items
-        ),
-        padding: EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: AppColors.grey1,
-        ),
+    return AnimatedSlide(
+      duration: ViewConstants.mediumDuration,
+      offset: state.adhkarWidgetsOffsets![index],
+      child: Visibility(
+        visible: state.adhkarWidgetsMaintainingSize![index],
         child: Column(
-          children: [
-            Text(
-              adhkarEntity.content,
-              style: TextStyles.bold20(context),
+          spacing: 15.0,
+           children: [
+          Container(
+            margin: EdgeInsets.only(
+              top: index != 0 ? 30.0 : 0.0, //space between items
             ),
-            Visibility(
-              visible: adhkarEntity.description != null ,
-              child: Text(
-                 adhkarEntity.description!,
-                style: TextStyles.regular16_120(context,
-                    color: AppColors.secondryColor),
-              ),
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: AppColors.grey1,
             ),
-            Container(
-              alignment: Alignment.topCenter,
-              width: 80,
-              height: 40,
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  borderRadius: BorderRadius.circular(10),
-                  color: AppColors.grey2),
-              child: AnimatedSlide(
-                duration: ViewConstants.duration,
-                offset: state.offset,
-                child: AnimatedOpacity(
-                    opacity: state.opacity,
-                    duration: const Duration(seconds: 0),
-                    child: Text(
-                      adhkarEntity.count,
-                      style: TextStyles.bold20(context).copyWith(fontSize: 25),
-                    )),
-              ),
-            )
-          ],
-        ),
+            child: Column(
+              children: [
+                Text(
+                  adhkarEntity.content,
+                  style: TextStyles.bold20(context),
+                ),
+                Visibility(
+                  visible: adhkarEntity.description != null,
+                  child: Text(
+                    adhkarEntity.description!,
+                    style: TextStyles.regular16_120(context,
+                        color: AppColors.secondryColor),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.topCenter,
+                  width: 80,
+                  height: 40,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black),
+                      borderRadius: BorderRadius.circular(10),
+                      color: AppColors.grey2),
+                  child: AnimatedSlide(
+                    duration: ViewConstants.lowDuration,
+                    offset: state.selectedIndexOfChildAnimation != index
+                        ? Offset.zero
+                        : Offset(0, .3),
+                    child: AnimatedOpacity(
+                        opacity: state.selectedIndexOfChildAnimation != index
+                            ? 1.0
+                            : 0.0,
+                        duration: const Duration(seconds: 0),
+                        child: Text(
+                          state.adhkarcounts[index].toString(),
+                          style:
+                              TextStyles.bold20(context).copyWith(fontSize: 25),
+                        )),
+                  ),
+                )
+              ],
+            ),
+          ),
+          Row(
+              spacing: context.width * .10,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <GestureDetector>[
+                circleAvatarButton(
+                    context: context,
+                    icon: Icons.minimize_outlined,
+                    function: () {
+                      context.supplicationsController
+                          .decreaseCount(index: index);
+                    }),
+                circleAvatarButton(
+                  context: context,
+                  icon: Icons.loop,
+                  function: () {
+                    context.supplicationsController
+                        .resetCount(index: index, count: adhkarEntity.count);
+                  },
+                )
+              ])
+        ]),
       ),
-      Row(
-          spacing: context.width * .10,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <GestureDetector>[
-            circleAvatarButton(
-                context: context,
-                icon: Icons.minimize_outlined,
-                function: () {
-                  context.supplicationsController.decreaseCount(index: index,count: int.tryParse(adhkarEntity.count)!);
-                }),
-            circleAvatarButton(
-              context: context,
-              icon: Icons.loop,
-              function: () {
-                // context.supplicationsController
-                //     .decreaseCount();
-              },
-            )
-          ])
-    ]);
+    );
   }
 }

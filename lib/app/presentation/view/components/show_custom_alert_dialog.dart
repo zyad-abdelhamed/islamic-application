@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/app/presentation/controller/cubit/alert_dialog_cubit.dart';
-import 'package:test_app/core/extentions/controllers_extention.dart';
+import 'package:test_app/core/helper_function/get_responsive_font_size.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
@@ -19,7 +19,7 @@ class ShowCustomAlertDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(right: 8.0),
       child: Row(
         children: [
           CircleAvatar(
@@ -33,35 +33,36 @@ class ShowCustomAlertDialog extends StatelessWidget {
                   builder: (context) => BlocProvider(
                         create: (context) => AlertDialogCubit(),
                         child: Container(
+                          padding: const EdgeInsets.all(8.0),
                           margin: EdgeInsets.only(
                               top: context.width * .50,
-                              left: 15.0,
-                              right: 15.0,
-                              bottom: 15.0),
+                              left: 5.0,
+                              right: 5.0,
+                              bottom: 10.0),
                           height: (context.height * .50) - 15.0,
                           width: double.infinity,
                           decoration: BoxDecoration(
-                              color: context.themeController.darkMpde
-                                ? AppColors.black
-                                : AppColors.white,
-                              borderRadius: BorderRadius.circular(15)),
+                              color: AppColors.primaryColor,
+                              borderRadius: BorderRadius.circular(35)),
                           child: Column(
-                            spacing: 15.0,
                             children: [
-                              SizedBox(
-                                height: (context.height * .10) - 15.0,
-                          width: double.infinity,
-                               ),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: GestureDetector(
+                                  onTap: () => Navigator.pop(context),
+                                  child: CircleAvatar(
+                                    backgroundColor: AppColors.white,
+                                    child: Icon(
+                                      CupertinoIcons.xmark,
+                                      color: AppColors.black,
+                                      size: getResponsiveFontSize(context: context, fontSize: 37),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Spacer(),
                               alertDialogContent,
                               Spacer(),
-                              TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: Text(
-                                  'ْالغاء',
-                                  style: TextStyles.semiBold20(context)
-                                      .copyWith(color: AppColors.thirdColor),
-                                ),
-                              )
                             ],
                           ),
                         ),
@@ -69,9 +70,8 @@ class ShowCustomAlertDialog extends StatelessWidget {
             },
             child: Text(
               text,
-              style: TextStyles.semiBold20(context).copyWith(
-                  decoration: TextDecoration.underline,
-                  color: AppColors.thirdColor),
+              style: TextStyles.semiBold20(context)
+                  .copyWith(color: AppColors.thirdColor),
             ),
           ),
         ],

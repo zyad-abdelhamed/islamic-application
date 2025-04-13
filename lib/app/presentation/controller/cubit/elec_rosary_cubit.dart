@@ -31,7 +31,7 @@ class ElecRosaryCubit extends Cubit<ElecRosaryState> {
     emit(state.copyWith(
         opacity: 0.0, offset: Offset(0, slideValue))); //start animation
 
-    Future.delayed(ViewConstants.duration, () {
+    Future.delayed(ViewConstants.lowDuration, () {
       emit(state.copyWith(opacity: 1.0, offset: Offset.zero));
     }); //reverse animation and stop
   }

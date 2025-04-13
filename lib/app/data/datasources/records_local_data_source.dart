@@ -32,7 +32,6 @@ class RecordsLocalDataSourceImpl extends RecordsLocalDataSource{
 
   @override
   Future<List<int>> getRecords()async {
-    print('=========${baseDataBaseService.get(DataBaseConstants.featuerdRecordsHiveKey)}=========');
     return await baseDataBaseService.get(DataBaseConstants.featuerdRecordsHiveKey); 
   }
 }

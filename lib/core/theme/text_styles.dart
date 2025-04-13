@@ -8,7 +8,6 @@ class TextStyles {
     return TextStyle(
       color: color,
       fontWeight: FontWeight.w600,
-      fontStyle: FontStyle.italic,
       fontSize: getResponsiveFontSize(context: context, fontSize: 16),
       height: 1.5, // 150%
     );
