@@ -5,8 +5,8 @@ import 'package:test_app/app/presentation/controller/cubit/featured_records_cubi
 import 'package:test_app/app/presentation/view/components/counter_widget.dart';
 import 'package:test_app/app/presentation/view/components/featured_records_widget.dart';
 import 'package:test_app/app/presentation/view/components/pages_app_bar.dart';
+import 'package:test_app/core/adaptive_widgets/adaPtive_layout.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
-import 'package:test_app/core/utils/responsive_extention.dart';
 
 class ElecRosaryPage extends StatelessWidget {
   const ElecRosaryPage({super.key});
@@ -14,23 +14,66 @@ class ElecRosaryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => ElecRosaryCubit()),
-        BlocProvider(
-            create: (context) => FeaturedRecordsCubit(sl(), sl(), sl(), sl())..getFeatuerdRecords()),
-      ],
-      child: Scaffold(
-          appBar: pagesAppBar[1],
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+        providers: [
+          BlocProvider(create: (context) => ElecRosaryCubit()),
+          BlocProvider(
+              create: (context) => FeaturedRecordsCubit(sl(), sl(), sl(), sl())
+                ..getFeatuerdRecords()),
+        ],
+        child: AdaptiveLayout(
+            mobileLayout: (context) => ElecRosaryMobileLayout(),
+            tabletLayout: (context) => ElecRosaryTabletAndWindowsLayout(),
+            desktopLayout: (context) => ElecRosaryTabletAndWindowsLayout()));
+  }
+}
+
+class ElecRosaryMobileLayout extends StatelessWidget {
+  const ElecRosaryMobileLayout({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: pagesAppBar[1],
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Padding(
-                padding: EdgeInsets.only(right: context.width * .50,top: 20.0,bottom: 50),
-                child: FeatuerdRecordsWidget(),
+              Row(
+                children: [
+                  Spacer(),
+                  Spacer(),
+                  Spacer(),
+                  Spacer(),
+                  FeatuerdRecordsWidget(),
+                  Spacer()
+                ],
               ),
               CounterWidget(),
             ],
-          )),
-    );
+          ),
+        ));
+  }
+}
+
+class ElecRosaryTabletAndWindowsLayout extends StatelessWidget {
+  const ElecRosaryTabletAndWindowsLayout({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: pagesAppBar[1],
+        body: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              CounterWidget(),
+              FeatuerdRecordsWidget(),
+            ],
+          ),
+        ));
   }
 }

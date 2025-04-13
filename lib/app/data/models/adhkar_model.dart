@@ -7,7 +7,7 @@ class AdhkarModel extends AdhkarEntity {
       required super.content});
   factory AdhkarModel.fromJson( {required Map<String, dynamic> json}) =>
       AdhkarModel(
-          count: json['count'],
+          count: int.parse(json['count']),
           description: json['description'],
           content: json['content']);
 }

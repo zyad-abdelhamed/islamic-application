@@ -9,7 +9,8 @@ import 'package:test_app/core/utils/enums.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
 
 class PrayerTimesWidget extends StatelessWidget {
-  const PrayerTimesWidget({super.key});
+  const PrayerTimesWidget({super.key,required this.width});
+  final double width;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,6 @@ class PrayerTimesWidget extends StatelessWidget {
                     horizontal: 10, vertical: (context.width * .04) - 5),
                 child: BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
                   builder: (context, state) {
-                    print(state);
                     PrayerTimesCubit cubit = context.read<PrayerTimesCubit>();
                     return _getRowOfPrayers(context,
                         textList: switch (state.requestStateofPrayerTimes) {
@@ -40,7 +40,7 @@ class PrayerTimesWidget extends StatelessWidget {
               ),
               Container(
                 height: context.height * .22,
-                width: double.infinity,
+                width: width,
                 decoration: _boxDecoration(
                     color:
                         AppColors.inActivePrimaryColor.withValues(alpha: .3)),

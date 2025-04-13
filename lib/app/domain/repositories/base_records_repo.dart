@@ -7,7 +7,6 @@ abstract class BaseRecordsRepo {
       {required RecordsParameters parameters});
   Future<Either<Failure, Unit>> addRecord(
       {required RecordsParameters parameters});
-  Future<Either<Failure, Unit>> deleteAllRecords(
-      {required RecordsParameters parameters});
+  Future<Either<Failure, Unit>> deleteAllRecords();
   Future<Either<Failure, List<int>>> getRecords();
 }

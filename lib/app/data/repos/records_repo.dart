@@ -3,6 +3,7 @@ import 'package:test_app/app/data/datasources/records_local_data_source.dart';
 import 'package:test_app/app/domain/repositories/base_records_repo.dart';
 import 'package:test_app/app/domain/usecases/delete_records_use_case.dart';
 import 'package:test_app/core/errors/failures.dart';
+import 'package:test_app/core/extentions/controllers_extention.dart';
 
 class RecordsRepo extends BaseRecordsRepo {
   final RecordsLocalDataSource recordsLocalDataSource;
@@ -11,22 +12,28 @@ class RecordsRepo extends BaseRecordsRepo {
   @override
   Future<Either<Failure, Unit>> addRecord(
       {required RecordsParameters parameters}) async {
-    if (parameters.item! > 5000) {
+    final int baseNumberOfRecords = 5;
+    if (parameters.item! > baseNumberOfRecords) {
       try {
         await recordsLocalDataSource.addRecord(parameters: parameters);
+        parameters.context!.elecRosaryController
+            .resetCounter(); //reset elec rosary counter
+
         return const Right(unit);
       } catch (e) {
         return const Left(Failure('error in add'));
       }
+    } else if (parameters.item! == 0) {
+      return const Left(Failure('لا يمكن حفظ ريكورد خالي'));
+    } else {
+      return left(Failure('لا يمكن حفظ ريكورد أقل من $baseNumberOfRecords'));
     }
-    return const Right(unit);
   }
 
   @override
-  Future<Either<Failure, Unit>> deleteAllRecords(
-      {required RecordsParameters parameters}) async {
+  Future<Either<Failure, Unit>> deleteAllRecords() async {
     try {
-      await recordsLocalDataSource.deleteAllRecords(parameters: parameters);
+      await recordsLocalDataSource.deleteAllRecords();
       return const Right(unit);
     } catch (e) {
       return const Left(Failure('error in deleteallrecords'));

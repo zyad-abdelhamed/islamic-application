@@ -2,47 +2,66 @@ part of 'supplications_cubit.dart';
 
 @immutable
 class SupplicationsState extends Equatable {
-  final Offset offset;
-  final double opacity;
+  final double progress;
+  final int? selectedIndexOfChildAnimation;
+  final List<Offset>? adhkarWidgetsOffsets;
+  final List<bool>? adhkarWidgetsMaintainingSize;
+  final int dummyCounterState;
   final bool isDeleted;
-  final int? index;
   final List<AdhkarEntity> adhkar;
+  final List<int> adhkarcounts;
   final RequestStateEnum adhkarRequestState;
   final String? adhkarErorrMessage;
 
   const SupplicationsState(
-      {this.offset = Offset.zero,
-      this.opacity = 1.0,
-      this.index,
+      {this.progress = 0.0,
+      this.selectedIndexOfChildAnimation,
+      this.adhkarWidgetsOffsets,
+      this.adhkarWidgetsMaintainingSize,
+      this.dummyCounterState = 0,
       this.isDeleted = false,
       this.adhkar = const [],
+      this.adhkarcounts = const [],
       this.adhkarErorrMessage,
       this.adhkarRequestState = RequestStateEnum.loading});
+
   SupplicationsState copyWith(
-      {Offset? offset,
-      double? opacity,
+      {double? progress,
+      int? selectedIndexOfChildAnimation,
+      List<Offset>? adhkarWidgetsOffsets,
+      List<bool>? adhkarWidgetsMaintainingSize,
+      int? selectedIndexOfVisibilty,
       bool? isDeleted,
-      int? index,
       List<AdhkarEntity>? adhkar,
+      List<int>? adhkarcounts,
       RequestStateEnum? adhkarRequestState,
       String? adhkarErorrMessage}) {
     return SupplicationsState(
-        offset: offset ?? this.offset,
-        opacity: opacity ?? this.opacity,
+        progress: progress ?? this.progress,
         isDeleted: isDeleted ?? this.isDeleted,
         adhkar: adhkar ?? this.adhkar,
-        index: index ?? this.index,
+        adhkarcounts: adhkarcounts ?? this.adhkarcounts,
+        selectedIndexOfChildAnimation:
+            selectedIndexOfChildAnimation ?? this.selectedIndexOfChildAnimation,
+        adhkarWidgetsOffsets: adhkarWidgetsOffsets ?? this.adhkarWidgetsOffsets,
+        adhkarWidgetsMaintainingSize:
+            adhkarWidgetsMaintainingSize ?? this.adhkarWidgetsMaintainingSize,
+        dummyCounterState:
+            selectedIndexOfVisibilty ?? this.dummyCounterState,
         adhkarRequestState: adhkarRequestState ?? this.adhkarRequestState,
         adhkarErorrMessage: adhkarErorrMessage ?? this.adhkarErorrMessage);
   }
 
   @override
-  List<Object?> get props => [
-        offset,
-        opacity,
-        index,
+  List<Object?> get props => <dynamic>[
+        progress,
+        selectedIndexOfChildAnimation,
+        adhkarWidgetsOffsets,
+        adhkarWidgetsMaintainingSize,
+        dummyCounterState,
         isDeleted,
         adhkar,
+        adhkarcounts,
         adhkarRequestState,
         adhkarErorrMessage
       ];

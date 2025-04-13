@@ -40,6 +40,7 @@ class SupplicationsButton extends StatelessWidget {
             ),
             Text(
               text,
+              textAlign: TextAlign.center,
               style: TextStyles.semiBold18(context, AppColors.primaryColor),
             )
           ],

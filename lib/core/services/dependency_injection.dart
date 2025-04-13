@@ -21,7 +21,6 @@ import 'package:test_app/app/domain/usecases/get_records_use_case.dart';
 import 'package:test_app/app/presentation/controller/cubit/featured_records_cubit.dart';
 import 'package:test_app/app/presentation/controller/cubit/supplications_cubit.dart';
 import 'package:test_app/core/services/api_services.dart';
-import 'package:test_app/core/services/data_base_service.dart';
 import 'package:test_app/timer/cubit/timer_cubit.dart';
 
 GetIt sl = GetIt.instance;
@@ -60,15 +59,15 @@ class DependencyInjection {
     sl.registerLazySingleton<HomeLocalDataSource>(
         () => HomeLocalDataSourceImpl());
     sl.registerLazySingleton<RecordsLocalDataSource>(
-      () => RecordsLocalDataSourceImpl(baseDataBaseService: sl()),
+      () => RecordsLocalDataSourceImpl(),
     );
     sl.registerLazySingleton<PrayersRemoteDataSource>(
         () => PrayersRemoteDataSourceImpl(sl()));
 
     // services
-    sl.registerLazySingleton<BaseDataBaseService<int>>(
-      () => HiveDatabaseService(),
-    );
+    // sl.registerLazySingleton<BaseDataBaseService<int>>(
+    //   () => HiveDatabaseService(),
+    // );
     sl.registerLazySingleton<ApiService>(() => ApiService(sl()));
     sl.registerLazySingleton<Dio>(() => Dio());
   }
