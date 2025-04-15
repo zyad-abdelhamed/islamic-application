@@ -32,40 +32,7 @@ class ShowCustomAlertDialog extends StatelessWidget {
                   context: context,
                   builder: (context) => BlocProvider(
                         create: (context) => AlertDialogCubit(),
-                        child: Container(
-                          padding: const EdgeInsets.all(8.0),
-                          margin: EdgeInsets.only(
-                              top: context.width * .50,
-                              left: 5.0,
-                              right: 5.0,
-                              bottom: 10.0),
-                          height: (context.height * .50) - 15.0,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              color: AppColors.primaryColor,
-                              borderRadius: BorderRadius.circular(35)),
-                          child: Column(
-                            children: [
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: GestureDetector(
-                                  onTap: () => Navigator.pop(context),
-                                  child: CircleAvatar(
-                                    backgroundColor: AppColors.white,
-                                    child: Icon(
-                                      CupertinoIcons.xmark,
-                                      color: AppColors.black,
-                                      size: getResponsiveFontSize(context: context, fontSize: 37),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Spacer(),
-                              alertDialogContent,
-                              Spacer(),
-                            ],
-                          ),
-                        ),
+                        child: CustomAlertDialog(alertDialogContent: alertDialogContent),
                       ));
             },
             child: Text(
@@ -74,6 +41,53 @@ class ShowCustomAlertDialog extends StatelessWidget {
                   .copyWith(color: AppColors.thirdColor),
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class CustomAlertDialog extends StatelessWidget {
+  const CustomAlertDialog({
+    super.key,
+    required this.alertDialogContent,
+  });
+
+  final Widget alertDialogContent;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      margin: EdgeInsets.only(
+          top: context.width * .50,
+          left: 5.0,
+          right: 5.0,
+          bottom: 10.0),
+      height: (context.height * .50) - 15.0,
+      width: double.infinity,
+      decoration: BoxDecoration(
+          color: AppColors.primaryColor,
+          borderRadius: BorderRadius.circular(35)),
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.topRight,
+            child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: CircleAvatar(
+                backgroundColor: AppColors.white,
+                child: Icon(
+                  CupertinoIcons.xmark,
+                  color: AppColors.black,
+                  size: getResponsiveFontSize(context: context, fontSize: 37),
+                ),
+              ),
+            ),
+          ),
+          Spacer(),
+          alertDialogContent,
+          Spacer(),
         ],
       ),
     );

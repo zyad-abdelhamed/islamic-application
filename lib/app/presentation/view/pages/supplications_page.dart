@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_app/app/domain/usecases/get_adhkar_use_case.dart';
+import 'package:test_app/app/data/models/adhkar_parameters.dart';
 import 'package:test_app/app/presentation/controller/cubit/supplications_cubit.dart';
 import 'package:test_app/app/presentation/view/components/circle_painter.dart';
 import 'package:test_app/app/presentation/view/components/supplication_widget.dart';

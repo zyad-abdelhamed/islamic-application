@@ -1,4 +1,4 @@
-part of 'prayer_times_cubit.dart';
+part of 'home_cubit.dart';
 
 class PrayerTimesState extends Equatable {
   final Timings? prayerTimes;

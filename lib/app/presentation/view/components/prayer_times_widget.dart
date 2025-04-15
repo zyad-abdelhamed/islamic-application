@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:test_app/app/presentation/controller/cubit/prayer_times_cubit.dart';
+import 'package:test_app/app/presentation/controller/cubit/home_cubit.dart';
 import 'package:test_app/app/presentation/view/components/remaining_time_widget.dart';
 import 'package:test_app/core/constants/view_constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,9 +25,9 @@ class PrayerTimesWidget extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: 10, vertical: (context.width * .04) - 5),
-                child: BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
+                child: BlocBuilder<HomeCubit, PrayerTimesState>(
                   builder: (context, state) {
-                    PrayerTimesCubit cubit = context.read<PrayerTimesCubit>();
+                    HomeCubit cubit = context.read<HomeCubit>();
                     return _getRowOfPrayers(context,
                         textList: switch (state.requestStateofPrayerTimes) {
                           RequestStateEnum.loading => prayerTimes,
@@ -59,7 +59,7 @@ class PrayerTimesWidget extends StatelessWidget {
                     Row(spacing: 5.0, children: [
                       textNextPrayer(
                           context: context, text: 'الصلاة القادمة :'),
-                      BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
+                      BlocBuilder<HomeCubit, PrayerTimesState>(
                        
                         builder: (context, state) {
                           

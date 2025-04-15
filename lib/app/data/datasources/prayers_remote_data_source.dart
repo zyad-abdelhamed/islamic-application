@@ -10,7 +10,7 @@ abstract class PrayersRemoteDataSource {
 }
 
 class PrayersRemoteDataSourceImpl implements PrayersRemoteDataSource {
-  ApiService apiService;
+  final ApiService apiService;
   PrayersRemoteDataSourceImpl(this.apiService);
   @override
   Future<TimingsModel> getPrayersTimes() async {

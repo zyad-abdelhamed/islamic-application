@@ -1,23 +1,54 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:test_app/app/domain/entities/hadith.dart';
 import 'package:test_app/app/domain/entities/timings.dart';
 import 'package:test_app/app/domain/usecases/get_prayers_times_use_case.dart';
+import 'package:test_app/app/domain/usecases/get_today_hadith_use_case.dart';
+import 'package:test_app/app/presentation/view/components/show_custom_alert_dialog.dart';
 import 'package:test_app/core/errors/failures.dart';
+import 'package:test_app/core/theme/app_colors.dart';
+import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/utils/enums.dart';
 import 'package:test_app/timer/cubit/timer_cubit.dart';
 
-part 'prayer_times_state.dart';
+part 'home_state.dart';
 
-class PrayerTimesCubit extends Cubit<PrayerTimesState> {
-  final GetPrayersTimesUseCase getPrayersTimesUseCase;
-  PrayerTimesCubit(
+class HomeCubit extends Cubit<PrayerTimesState> {
+  HomeCubit(
     this.getPrayersTimesUseCase,
+    this.getTodayHadithUseCase,
   ) : super(PrayerTimesState());
 
+  final GetPrayersTimesUseCase getPrayersTimesUseCase;
+  final GetTodayHadithUseCase getTodayHadithUseCase;
+
+  void showTodatHadith(BuildContext context) async {
+    Either<Failure, Hadith> result = await getTodayHadithUseCase();
+    result.fold(
+        (l) => null,
+        (hadith) => showCupertinoDialog(
+            context: context,
+            builder: (context) => CustomAlertDialog(
+                alertDialogContent: Column(
+                  children: <Text>[
+                    Text('حديث اليوم|',
+                    textAlign: TextAlign.start,
+                    style: TextStyles.bold20(context).copyWith(color: AppColors.secondryColor,fontSize: 23)),
+
+                    Text(hadith.content,
+                        textAlign: TextAlign.center,
+                        style: TextStyles.semiBold32auto(context)
+                            .copyWith(color: AppColors.white)),
+                  ],
+                ))));
+  }
+  
+  //  ===prayer times===
   List<String> getListOfTimings(PrayerTimesState state) {
     return [
       state.prayerTimes!.fajr,

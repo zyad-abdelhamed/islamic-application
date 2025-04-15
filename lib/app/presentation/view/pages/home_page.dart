@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_app/app/presentation/controller/cubit/prayer_times_cubit.dart';
+import 'package:test_app/app/presentation/controller/cubit/home_cubit.dart';
 import 'package:test_app/app/presentation/view/components/home_page_buttons_row.dart';
 import 'package:test_app/app/presentation/view/components/home_page_drawer.dart';
 import 'package:test_app/app/presentation/view/components/prayer_times_widget.dart';
@@ -21,7 +21,7 @@ class HomePage extends StatelessWidget {
           BlocProvider(
               create: (context) => TimerCubit()),
           BlocProvider(
-              create: (context) => PrayerTimesCubit(sl())..getPrayersTimes(context)),
+              create: (context) => HomeCubit(sl(),sl())..showTodatHadith(context)..getPrayersTimes(context)),
         ],
         child: WillPopScope(
           // زيها زى dispose in stateful widget علشان عامل dispose to timer ميحصلش اهدار للمصادر زى animation controller  لو متعملوش مثلا dispose

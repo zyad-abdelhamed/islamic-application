@@ -1,13 +1,19 @@
+import 'dart:math';
+
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:test_app/app/data/datasources/home_local_data_source.dart';
+import 'package:test_app/app/data/datasources/home_remote_data_source.dart';
+import 'package:test_app/app/data/models/adhkar_parameters.dart';
 import 'package:test_app/app/domain/entities/adhkar_entity.dart';
+import 'package:test_app/app/domain/entities/hadith.dart';
 import 'package:test_app/app/domain/repositories/home_repo.dart';
-import 'package:test_app/app/domain/usecases/get_adhkar_use_case.dart';
 import 'package:test_app/core/errors/failures.dart';
 
 class HomeRepo extends BaseHomeRepo {
   final HomeLocalDataSource adhkarLocalDataSource;
-  HomeRepo(this.adhkarLocalDataSource);
+  final BaseHomeRemoteDataSource baseHomeRemoteDataSource;
+  HomeRepo(this.adhkarLocalDataSource, this.baseHomeRemoteDataSource);
   @override
   Future<Either<Failure, List<AdhkarEntity>>> getAdhkar(
       {required AdhkarParameters adhkarParameters}) async {
@@ -16,5 +22,20 @@ class HomeRepo extends BaseHomeRepo {
     } catch (e) {
       return const Left(Failure("خطأ أثناء جلب البيانات: تحقق من المدخلات أو مصدر البيانات"));
     }
+  }
+  
+  @override
+  Future<Either<Failure, Hadith>> getRandomHadith() async{
+    try {
+  final Random random = Random();
+  List<Hadith> ahadith = await baseHomeRemoteDataSource.getAhadiths();
+  return right(ahadith[random.nextInt(ahadith.length)]);
+} catch(e){
+  if (e is DioException) {
+        return left(ServerFailure.fromDiorError(e));
+      }
+      return left(ServerFailure(e.toString()));
+}
+
   }
 }

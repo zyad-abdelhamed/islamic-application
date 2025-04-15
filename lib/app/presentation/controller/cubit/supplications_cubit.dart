@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/app/data/models/adhkar_parameters.dart';
 import 'package:test_app/app/domain/entities/adhkar_entity.dart';
 import 'package:test_app/app/domain/usecases/get_adhkar_use_case.dart';
 import 'package:test_app/core/constants/view_constants.dart';
