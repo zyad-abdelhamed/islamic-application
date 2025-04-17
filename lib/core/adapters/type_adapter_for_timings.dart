@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:test_app/app/domain/entities/timings.dart';
+import 'package:test_app/features/app/domain/entities/timings.dart';
 
 class TypeAdapterForTimings extends TypeAdapter<Timings> {
   @override

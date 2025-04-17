@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
-import 'package:test_app/app/presentation/view/pages/home_page.dart';
+import 'package:test_app/features/app/presentation/view/pages/home_page.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
-import 'package:test_app/onboarding/presentation/view/pages/main_page.dart';
-import 'package:test_app/onboarding/presentation/view/pages/secondry_page.dart';
-import 'package:test_app/splash_screen.dart';
+import 'package:test_app/features/onboarding/presentation/view/pages/main_page.dart';
+import 'package:test_app/features/onboarding/presentation/view/pages/secondry_page.dart';
+import 'package:test_app/features/splash_screen.dart';
 
 Route<dynamic> onGenerateRoute(RouteSettings settings) {
   switch (settings.name) {
