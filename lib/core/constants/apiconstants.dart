@@ -10,4 +10,6 @@ class Apiconstants {
 
   static String getnextPrayersUrl =
       "https://api.aladhan.com/v1/nextPrayer?latitude=$_latitude&method=8&longitude=$_longitude";
+
+  static const String ahadithUrl = '';    
 }
