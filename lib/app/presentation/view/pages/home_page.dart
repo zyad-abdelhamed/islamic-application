@@ -8,6 +8,7 @@ import 'package:test_app/app/presentation/view/components/supplications_custom_g
 import 'package:test_app/core/adaptive_widgets/adaPtive_layout.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
+import 'package:test_app/splash_screen.dart';
 import 'package:test_app/timer/cubit/timer_cubit.dart';
 
 class HomePage extends StatelessWidget {
@@ -45,34 +46,42 @@ class HomeMobileAndTabletLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('الصفحة الرئيسية'),
-      ),
-      drawer: Padding(
-        padding: EdgeInsets.only(
-            top: context.width * 1 / 3, bottom: context.width * 1 / 3),
-        child: Drawer(
-          shape: ContinuousRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(double.infinity),
-              bottomLeft: Radius.circular(double.infinity))),
-      child: HomeDrawerWidget()
-        ),
-      ),
-      body: Padding(
-        padding: EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8, top: 40),
-        child: SingleChildScrollView(
-          child: Column(
-            spacing: 50.0,
-            children: [
-              PrayerTimesWidget(width: double.infinity,),
-              HomePageButtonsRow(),
-              SupplicationsCustomGridView(),
-            ],
+    return Stack(
+      children: [
+        
+        Scaffold(
+
+          appBar: AppBar(
+            title: Text('الصفحة الرئيسية'),
+          ),
+          drawer: Padding(
+            padding: EdgeInsets.only(
+                top: context.width * 1 / 3, bottom: context.width * 1 / 3),
+            child: Drawer(
+              shape: ContinuousRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(double.infinity),
+                  bottomLeft: Radius.circular(double.infinity))),
+          child: HomeDrawerWidget()
+            ),
+          ),
+          body: Padding(
+            padding: EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8, top: 40),
+            child: SingleChildScrollView(
+              child: Column(
+                spacing: 50.0,
+                children: [
+                  PrayerTimesWidget(width: double.infinity,),
+                  HomePageButtonsRow(),
+                  SupplicationsCustomGridView(),
+                ],
+              ),
+            ),
           ),
         ),
-      ),
+           SplashScreen()
+
+      ],
     );
   }
 }
