@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/view_constants.dart';
-import 'package:test_app/core/helper_function/adaptive_widget_depending_on_os.dart';
+import 'package:test_app/core/adaptive/adaptive_widget_depending_on_os.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 

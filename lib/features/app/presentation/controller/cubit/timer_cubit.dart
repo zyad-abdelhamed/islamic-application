@@ -3,18 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/timer_state.dart';
 
 class TimerCubit extends Cubit<TimerState> {
-  TimerCubit()
-      : super(const TimerState(hours: 0, minutes: 0, seconds: 0));
+  TimerCubit() : super(const TimerState(hours: 0, minutes: 0, seconds: 0));
   Timer? _timer;
   void startTimerUntil(String targetTime) {
-     print("🕒 بدأ العد التنازلي حتى: $targetTime");
     Duration remaining = _calculateRemainingTime(targetTime);
-    DateTime now = DateTime.now();
-
-    //طباعة التوقيت بنظام 24 ساعة
-    String formattedTime =
-        "${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}:${now.second.toString().padLeft(2, '0')}";
-
     startTimer(
         remaining.inHours, remaining.inMinutes % 60, remaining.inSeconds % 60);
   }
@@ -26,7 +18,6 @@ class TimerCubit extends Cubit<TimerState> {
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       final currentState = state;
-        print('🕒 تحديث العد التنازلي: ${currentState.hours}:${currentState.minutes}:${currentState.seconds}');
 
       if (currentState.hours == 0 &&
           currentState.minutes == 0 &&

@@ -5,7 +5,6 @@ import 'package:test_app/features/app/presentation/view/components/draw_circle_l
 import 'package:test_app/core/constants/view_constants.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
-import 'package:test_app/core/utils/responsive_extention.dart';
 
 class RosaryRingWidget extends StatelessWidget {
   const RosaryRingWidget({super.key});
@@ -14,7 +13,7 @@ class RosaryRingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double customPaintSize = context.width * .45;
+    final double customPaintSize = 150;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -22,11 +21,13 @@ class RosaryRingWidget extends StatelessWidget {
             customPaintSize: customPaintSize,
             maxProgress: maxProgress,
             functionality: DrawCircleLineBlocBuilderFunctionality.ringRosary),
-        Column(
-          spacing: 35.0,
-          children: List<BlocBuilder>.generate(
-            ViewConstants.ringRosaryTexts.length,
-            (index) => _customContainer(index: index),
+        SingleChildScrollView(
+          child: Column(
+            spacing: 35.0,
+            children: List<BlocBuilder>.generate(
+              ViewConstants.ringRosaryTexts.length,
+              (index) => _customContainer(index: index),
+            ),
           ),
         )
       ],

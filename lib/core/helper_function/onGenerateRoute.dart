@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:test_app/features/app/presentation/view/pages/home_page.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
@@ -22,8 +21,8 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       );
     case RoutesConstants.splashScreenRouteName:
       return MaterialPageRoute<SplashScreen>(
-        builder: (BuildContext context) =>  SplashScreen(),
-      );  
+        builder: (BuildContext context) => const SplashScreen(),
+      );    
     default:
       return MaterialPageRoute<Scaffold>(
         builder: (BuildContext context) => const Scaffold(),

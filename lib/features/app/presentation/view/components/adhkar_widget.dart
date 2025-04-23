@@ -8,11 +8,11 @@ import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/extentions/controllers_extention.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
 
-class SupplicationWidget extends StatelessWidget {
+class AdhkarWidget extends StatelessWidget {
   final int index;
   final AdhkarEntity adhkarEntity;
-  final SupplicationsState state;
-  const SupplicationWidget(
+  final AdhkarState state;
+  const AdhkarWidget(
       {super.key,
       required this.index,
       required this.adhkarEntity,

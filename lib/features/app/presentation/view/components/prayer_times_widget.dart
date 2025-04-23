@@ -6,26 +6,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/utils/enums.dart';
-import 'package:test_app/core/utils/responsive_extention.dart';
 
 class PrayerTimesWidget extends StatelessWidget {
-  const PrayerTimesWidget({super.key,required this.width});
-  final double width;
+  const PrayerTimesWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
-          margin: EdgeInsets.only(bottom: 10.0), //spacing
+          padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
+          margin: const EdgeInsets.only(bottom: 10.0), //spacing
           decoration: _boxDecoration(color: AppColors.primaryColor),
           child: Column(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: 10, vertical: (context.width * .04) - 5),
-                child: BlocBuilder<HomeCubit, PrayerTimesState>(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 10, vertical: 10),
+                child: BlocBuilder<HomeCubit, HomeState>(
                   builder: (context, state) {
                     HomeCubit cubit = context.read<HomeCubit>();
                     return _getRowOfPrayers(context,
@@ -39,8 +37,8 @@ class PrayerTimesWidget extends StatelessWidget {
                 ),
               ),
               Container(
-                height: context.height * .22,
-                width: width,
+                height: 200,
+                width: double.infinity,
                 decoration: _boxDecoration(
                     color:
                         AppColors.inActivePrimaryColor.withValues(alpha: .3)),
@@ -56,10 +54,13 @@ class PrayerTimesWidget extends StatelessWidget {
                         textList: ViewConstants.namesOfPrayers1),
                     _getRowOfPrayers(context,
                         textList: ViewConstants.emojisOfPrayers),
+
+                    Spacer(),
+
                     Row(spacing: 5.0, children: [
                       textNextPrayer(
                           context: context, text: 'الصلاة القادمة :'),
-                      BlocBuilder<HomeCubit, PrayerTimesState>(
+                      BlocBuilder<HomeCubit, HomeState>(
                        
                         builder: (context, state) {
                           

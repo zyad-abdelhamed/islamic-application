@@ -11,10 +11,10 @@ import 'package:test_app/core/utils/enums.dart';
 
 part 'supplications_state.dart';
 
-class SupplicationsCubit extends Cubit<SupplicationsState> {
+class AdhkarCubit extends Cubit<AdhkarState> {
   final GetAdhkarUseCase getAdhkarUseCase;
   final ScrollController supplicationsScrollController = ScrollController();
-  SupplicationsCubit(this.getAdhkarUseCase) : super(SupplicationsState()) {
+  AdhkarCubit(this.getAdhkarUseCase) : super(AdhkarState()) {
     supplicationsScrollController.addListener(() => emit(state.copyWith(
         progress: supplicationsScrollController.position.pixels)));
   }

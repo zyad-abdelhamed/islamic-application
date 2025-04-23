@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/features/app/presentation/view/pages/alquran_alkarim_page.dart';
+import 'package:test_app/features/app/presentation/view/pages/elec_rosary_page.dart';
+import 'package:test_app/features/app/presentation/view/pages/rtabel_page.dart';
 
 abstract class ViewConstants {
   //genral
@@ -16,7 +19,8 @@ abstract class ViewConstants {
     return <String>[
       'القرآن${getNewlineOrWightSpace()}الكريم',
       'السبحه${getNewlineOrWightSpace()}الالكترونيه',
-      'جدول${getNewlineOrWightSpace()}رمضان'
+      'جدول${getNewlineOrWightSpace()}رمضان',
+      'القبله'
     ];
   }
 
@@ -81,6 +85,11 @@ abstract class ViewConstants {
     "أدعية قرآنية",
     "أدعية الأنبياء",
   ];
+  static const List<StatelessWidget> pages = <StatelessWidget>[
+  AlquranAlkarimPage(),
+  ElecRosaryPage(),
+  RamadanTabelPage()
+];
   //ramadan table
   static const List<String> namesOfPrayers = <String>[
     'فجر',

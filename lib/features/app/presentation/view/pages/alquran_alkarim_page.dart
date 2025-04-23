@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:test_app/core/constants/view_constants.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/quran_cubit.dart';
-import 'package:test_app/features/app/presentation/view/components/pages_app_bar.dart';
-import 'package:test_app/features/app/presentation/view/components/parts_widget.dart';
+import 'package:test_app/features/app/presentation/view/components/index_widget.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 
@@ -17,7 +17,10 @@ class AlquranAlkarimPage extends StatelessWidget {
         child: BlocBuilder<QuranCubit, QuranState>(
           builder: (context, state) {
             return Scaffold(
-                appBar: pagesAppBar[0],
+                appBar: AppBar(
+                  title:
+                      Text(ViewConstants.appBarTitles(withTwoLines: false)[0]),
+                ),
                 floatingActionButton: Align(
                   alignment: Alignment.bottomRight,
                   child: Padding(
@@ -41,7 +44,7 @@ class AlquranAlkarimPage extends StatelessWidget {
                 ),
                 body: Stack(
                   children: [
-                     BlocBuilder<QuranCubit, QuranState>(
+                    BlocBuilder<QuranCubit, QuranState>(
                       builder: (context, state) {
                         return state.filePath == null
                             ? Center(child: CircularProgressIndicator())
@@ -54,15 +57,13 @@ class AlquranAlkarimPage extends StatelessWidget {
                               );
                       },
                     ),
-                     Align(
-                       alignment: Alignment.centerRight,
-                       child: PartsWidget(
-                            height: state.height,
-                            width: state.width,
-                          
-                        
-                                           ),
-                     ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: IndexWidget(
+                        height: state.height,
+                        width: state.width,
+                      ),
+                    ),
                   ],
                 ));
           },

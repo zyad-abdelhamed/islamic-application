@@ -39,7 +39,7 @@ class DependencyInjection {
     // cubits
     sl.registerFactory(() => HomeCubit(sl(),sl()));
     sl.registerFactory(() => TimerCubit());
-    sl.registerFactory(() => SupplicationsCubit(sl()));
+    sl.registerFactory(() => AdhkarCubit(sl()));
     sl.registerFactory(() => FeaturedRecordsCubit(sl(), sl(), sl(), sl()));
     sl.registerFactory(() => RtabelCubit(sl(), sl(), sl()));
     //usecases
@@ -70,7 +70,7 @@ class DependencyInjection {
     sl.registerLazySingleton<BasePrayerRepo>(() => PrayerRepo(
         prayersRemoteDataSource: sl(), prayersLocalDataSource: sl()));
     // data sources
-    sl.registerLazySingleton(() => HomeRemoteDataSource(apiService: sl()));
+    sl.registerLazySingleton<BaseHomeRemoteDataSource>(() => HomeRemoteDataSource(apiService: sl()));
     sl.registerLazySingleton<RTableLocalDataSource>(
         () => RTableLocalDataSourceImpl());
     sl.registerLazySingleton<PrayersLocalDataSource>(
