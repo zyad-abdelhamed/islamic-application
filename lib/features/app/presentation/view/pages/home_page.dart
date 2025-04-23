@@ -4,6 +4,7 @@ import 'package:test_app/core/adaptive/orentation_layout.dart';
 import 'package:test_app/core/constants/view_constants.dart';
 import 'package:test_app/core/utils/sized_boxs.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/home_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/timer_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/home_page_buttons_row.dart';
 import 'package:test_app/features/app/presentation/view/components/home_page_drawer.dart';
 import 'package:test_app/features/app/presentation/view/components/land_scape_to_home_page.dart';
@@ -12,7 +13,7 @@ import 'package:test_app/features/app/presentation/view/components/adhkar_custom
 import 'package:test_app/core/adaptive/adaPtive_layout.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
-import 'package:test_app/features/app/presentation/controller/cubit/timer_cubit.dart';
+import 'package:test_app/features/splash_screen.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
