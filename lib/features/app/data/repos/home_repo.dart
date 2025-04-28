@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:test_app/features/app/data/datasources/home_local_data_source.dart';
@@ -20,22 +18,21 @@ class HomeRepo extends BaseHomeRepo {
     try {
       return Right(await adhkarLocalDataSource.getAdhkar(adhkarParameters));
     } catch (e) {
-      return const Left(Failure("خطأ أثناء جلب البيانات: تحقق من المدخلات أو مصدر البيانات"));
+      return const Left(
+          Failure("خطأ أثناء جلب البيانات: تحقق من المدخلات أو مصدر البيانات"));
     }
   }
-  
+
   @override
-  Future<Either<Failure, Hadith>> getRandomHadith() async{
+  Future<Either<Failure, Hadith>> getRandomHadith() async {
     try {
-  final Random random = Random();
-  List<Hadith> ahadith = await baseHomeRemoteDataSource.getAhadiths();
-  return right(ahadith[random.nextInt(ahadith.length)]);
-} catch(e){
-  if (e is DioException) {
+      Hadith ahadith = await baseHomeRemoteDataSource.getAhadiths();
+      return right(ahadith);
+    } catch (e) {
+      if (e is DioException) {
         return left(ServerFailure.fromDiorError(e));
       }
       return left(ServerFailure(e.toString()));
-}
-
+    }
   }
 }

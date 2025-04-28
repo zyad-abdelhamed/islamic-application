@@ -41,9 +41,7 @@ class AlquranAlkarimPage extends StatelessWidget {
                 ),
                 body: Stack(
                   children: [
-                     BlocBuilder<QuranCubit, QuranState>(
-                      builder: (context, state) {
-                        return state.filePath == null
+                     state.filePath == null
                             ? Center(child: CircularProgressIndicator())
                             : PDFView(
                                 filePath: state.filePath,
@@ -51,18 +49,25 @@ class AlquranAlkarimPage extends StatelessWidget {
                                 pageSnap: true,
                                 autoSpacing: false,
                                 fitEachPage: true,
-                              );
-                      },
+                                onViewCreated: (controller) {
+                                  QuranCubit.getQuranController(context)
+                                      .setPdfController(controller);
+                                },
+                                onRender: (pages) {
+                                  if (pages != null) {
+                                    QuranCubit.getQuranController(context)
+                                        .updateTotalPages(pages);
+                                  }
+                                },
+                              )
+                      ,
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: PartsWidget(
+                        height: state.height,
+                        width: state.width,
+                      ),
                     ),
-                     Align(
-                       alignment: Alignment.centerRight,
-                       child: PartsWidget(
-                            height: state.height,
-                            width: state.width,
-                          
-                        
-                                           ),
-                     ),
                   ],
                 ));
           },

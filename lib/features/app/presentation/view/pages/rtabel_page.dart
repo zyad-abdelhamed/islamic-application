@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/rtabel_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/land_scape_ramadan_table.dart';
 import 'package:test_app/features/app/presentation/view/components/portrait_orientation_ramadan_table.dart';
-import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/constants/view_constants.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 

@@ -13,23 +13,39 @@ abstract class RTableLocalDataSource {
 class RTableLocalDataSourceImpl extends RTableLocalDataSource {
   final BaseDataBaseService<bool> rTableHiveObject = HiveDatabaseService<bool>(
       box: Hive.box(DataBaseConstants.rTableBoxHiveKey));
+
   @override
   Future<List<bool>> getBooleans() async {
-    return rTableHiveObject.get(DataBaseConstants.rTableBoxHiveKey);
+    final data = await rTableHiveObject.get(DataBaseConstants.rTableBoxHiveKey);
+
+    if (data.isEmpty || data.length != 30 * 16) {
+      await rTableHiveObject.deleteAll(DataBaseConstants.rTableBoxHiveKey);
+      
+      
+      final Map<int, bool> entries = {
+        for (int i = 0; i < 30 * 16; i++) i: false
+      };
+      await rTableHiveObject.putAll(entries);
+
+      return List.filled(30 * 16, false);
+    }
+
+    return data;
   }
 
   @override
   Future<Unit> resetBooleans({required BooleansParameters parameters}) async {
-    for (int key = 0; key >= 30 * 16; key++) {
-      await rTableHiveObject.add(false,DataBaseConstants.rTableBoxHiveKey);
-    }
-
+    await rTableHiveObject.deleteAll(DataBaseConstants.rTableBoxHiveKey);
+    final Map<int, bool> entries = {
+      for (int i = 0; i < 30 * 16; i++) i: false
+    };
+    await rTableHiveObject.putAll(entries);
     return unit;
   }
 
   @override
   Future<Unit> updateBooleans({required BooleansParameters parameters}) async {
-    await rTableHiveObject.putAt(parameters.value, parameters.key);
+    await rTableHiveObject.put(parameters.key, parameters.value);
     return unit;
   }
 }

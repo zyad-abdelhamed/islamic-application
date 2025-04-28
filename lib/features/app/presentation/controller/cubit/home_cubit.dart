@@ -29,25 +29,26 @@ class HomeCubit extends Cubit<PrayerTimesState> {
 
   void showTodatHadith(BuildContext context) async {
     Either<Failure, Hadith> result = await getTodayHadithUseCase();
-    result.fold(
-        (l) => null,
-        (hadith) => showCupertinoDialog(
-            context: context,
-            builder: (context) => CustomAlertDialog(
-                alertDialogContent: Column(
-                  children: <Text>[
-                    Text('حديث اليوم|',
-                    textAlign: TextAlign.start,
-                    style: TextStyles.bold20(context).copyWith(color: AppColors.secondryColor,fontSize: 23)),
-
-                    Text(hadith.content,
-                        textAlign: TextAlign.center,
-                        style: TextStyles.semiBold32auto(context)
-                            .copyWith(color: AppColors.white)),
-                  ],
-                ))));
+    result.fold((l) => print(l.message), (hadith) {
+      print('solllu');
+      showCupertinoDialog(
+          context: context,
+          builder: (context) => CustomAlertDialog(
+                  alertDialogContent: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Text>[
+                  Text('حديث اليوم|',
+                      style: TextStyles.semiBold32auto(context)
+                          .copyWith(color: AppColors.secondryColor)),
+                  Text(hadith.content,
+                      textAlign: TextAlign.start,
+                      style: TextStyles.bold20(context)
+                          .copyWith(color: AppColors.white, fontSize: 23)),
+                ],
+              )));
+    });
   }
-  
+
   //  ===prayer times===
   List<String> getListOfTimings(PrayerTimesState state) {
     return [
