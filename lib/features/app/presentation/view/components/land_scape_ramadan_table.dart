@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test_app/features/app/presentation/view/components/check_boxs_widget.dart';
 import 'package:test_app/features/app/presentation/view/components/ramadan_calendar_widget.dart';
 import 'package:test_app/features/app/presentation/view/components/ramadan_table_column.dart';
-import 'package:test_app/core/constants/view_constants.dart';
+import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 class LandScapeWidgetToRTablePage extends StatelessWidget {
@@ -62,7 +62,7 @@ class LandScapeWidgetToRTablePage extends StatelessWidget {
                                             constraints.maxWidth /
                                                 16,
                                         title: 'الفروض',
-                                        listOfStrings: ViewConstants
+                                        listOfStrings: AppStrings
                                             .namesOfPrayers,
                                         count: 5,
                                       ),
@@ -74,7 +74,7 @@ class LandScapeWidgetToRTablePage extends StatelessWidget {
                                               constraints.maxWidth /
                                                   16,
                                           title: 'النوافل',
-                                          listOfStrings: ViewConstants
+                                          listOfStrings: AppStrings
                                               .namesOfVoluntaryPrayers,
                                           count: 4,
                                         )),
@@ -90,7 +90,7 @@ class LandScapeWidgetToRTablePage extends StatelessWidget {
                               width: constraints.maxWidth / 16,
                               title: 'ألاذكار',
                               listOfStrings:
-                                  ViewConstants.supplications,
+                                  AppStrings.supplications,
                               count: 5),
                         ),
                         Flexible(
@@ -98,7 +98,7 @@ class LandScapeWidgetToRTablePage extends StatelessWidget {
                           child: RamadanTableColumn(
                               width: constraints.maxWidth / 16,
                               title: 'قران',
-                              listOfStrings: ViewConstants.list,
+                              listOfStrings: AppStrings.list,
                               count: 2),
                         ),
                       ],

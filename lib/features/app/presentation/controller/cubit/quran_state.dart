@@ -5,7 +5,7 @@ class QuranState extends Equatable {
   final double width;
   final double height;
   final String floatingActionButtonString;
-  const QuranState({this.filePath,this.height = 0.0,this.width = 0.0,this.floatingActionButtonString = 'الفهرس'});
+  const QuranState({this.filePath,this.height = 0.0,this.width = 0.0,this.floatingActionButtonString = AppStrings.theIndex});
 
   @override
   List<Object?> get props => [filePath,height,width];

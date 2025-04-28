@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/features/app/data/models/adhkar_parameters.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/supplications_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/circle_painter.dart';
 import 'package:test_app/features/app/presentation/view/components/adhkar_widget.dart';
 import 'package:test_app/features/app/presentation/view/components/adhkar_page_app_bar.dart';
-import 'package:test_app/core/constants/view_constants.dart';
 import 'package:test_app/core/extentions/controllers_extention.dart';
 import 'package:test_app/core/helper_function/get_widget_depending_on_reuest_state.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
@@ -74,7 +74,7 @@ Positioned _getCustomCircleSlider(BuildContext context,
     bottom: 20.0,
     left: 20.0,
     child: AnimatedOpacity(
-      duration: ViewConstants.mediumDuration,
+      duration: AppDurations.mediumDuration,
       opacity: context
               .supplicationsController.supplicationsScrollController.hasClients
           ? context.supplicationsController.supplicationsScrollController

@@ -3,11 +3,11 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/features/app/domain/usecases/add_record_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/delete_all_records_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/delete_records_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/get_records_use_case.dart';
-import 'package:test_app/core/constants/view_constants.dart';
 import 'package:test_app/core/errors/failures.dart';
 import 'package:test_app/core/utils/enums.dart';
 import 'package:test_app/core/widgets/app_sneak_bar.dart';
@@ -65,7 +65,7 @@ class FeaturedRecordsCubit extends Cubit<FeaturedRecordsState> {
         getFeatuerdRecords();
         if (_isScrollable) {
           featuredRecordsScrollController.animateTo(featuredRecordsScrollController.position.maxScrollExtent + 100,
-              duration: ViewConstants.mediumDuration, curve: Curves.easeInOut);
+              duration: AppDurations.mediumDuration, curve: Curves.easeInOut);
         }
         emit(state.copyWith(
           dummyCounterState: state.dummyCounterState + 1,

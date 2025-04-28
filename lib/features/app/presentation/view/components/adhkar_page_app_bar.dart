@@ -8,8 +8,12 @@ import 'package:test_app/core/theme/text_styles.dart';
 AppBar adhkarPageAppBar(BuildContext context,
     {required String appBarTitle}) {
   return AppBar(
-      title: Text(
-        appBarTitle,
+      title: Column(
+        children: [
+          Text(
+            appBarTitle,
+          ),
+        ],
       ),
       bottom: PreferredSize(
           preferredSize: Size.zero,

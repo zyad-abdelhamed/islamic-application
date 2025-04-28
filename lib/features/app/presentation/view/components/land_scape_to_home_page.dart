@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_app/core/constants/view_constants.dart';
+import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/home_cubit.dart';
@@ -33,7 +33,7 @@ class LandScapeToHomePage extends StatelessWidget {
                         icon: Icon(Icons.menu, color: AppColors.grey)),
                   ),
                   AnimatedContainer(
-                    duration: ViewConstants.longDuration,
+                    duration: AppDurations.longDuration,
                     width: state.width,
                     height: double.infinity,
                     child: ColoredBox(
@@ -69,7 +69,7 @@ class LandScapeToHomePage extends StatelessWidget {
                             )),
                 BlocBuilder<HomeCubit, HomeState>(
                   builder: (context, state) {
-                    return AnimatedOpacity(duration: ViewConstants.longDuration,opacity: state.opacity,
+                    return AnimatedOpacity(duration:AppDurations.longDuration,opacity: state.opacity,
                                   child: Visibility(visible: state.isVisible,
                                     child: GestureDetector(                                                onTap: homeCubit.hideDawerInCaseLandScape,
                                                         

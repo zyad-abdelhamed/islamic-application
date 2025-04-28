@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/core/constants/view_constants.dart';
+import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 
@@ -18,7 +18,7 @@ class IndexWidget extends StatelessWidget {
 
     return AnimatedContainer(
       transformAlignment: Alignment.bottomRight,
-      duration: ViewConstants.mediumDuration,
+      duration: AppDurations.mediumDuration,
       decoration: BoxDecoration(
           color: AppColors.primaryColor,
           borderRadius: BorderRadius.only(
@@ -34,7 +34,7 @@ class IndexWidget extends StatelessWidget {
           children: List<AnimatedContainer>.generate(
               30,
               (index) => AnimatedContainer(
-                  duration: ViewConstants.lowDuration,
+                  duration: AppDurations.lowDuration,
                   color:
                       index == 5 ? AppColors.secondryColor : Colors.transparent,
                   child: Text(

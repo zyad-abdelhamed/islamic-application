@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_app/core/constants/view_constants.dart';
+import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/elec_rosary_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/featured_records_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/counter_widget.dart';
@@ -22,7 +22,7 @@ class ElecRosaryPage extends StatelessWidget {
         ],
         child: Scaffold(
           appBar: AppBar(
-            title: Text(ViewConstants.appBarTitles(withTwoLines: false)[1]),
+            title: Text(AppStrings.appBarTitles(withTwoLines: false)[1]),
           ),
           body: AdaptiveLayout(
               mobileLayout: (context) => getElecRosaryMobileLayout,

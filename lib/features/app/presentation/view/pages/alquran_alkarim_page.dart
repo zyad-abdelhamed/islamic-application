@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
-import 'package:test_app/core/constants/view_constants.dart';
+import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/quran_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/index_widget.dart';
 import 'package:test_app/core/theme/app_colors.dart';
@@ -19,7 +19,7 @@ class AlquranAlkarimPage extends StatelessWidget {
             return Scaffold(
                 appBar: AppBar(
                   title:
-                      Text(ViewConstants.appBarTitles(withTwoLines: false)[0]),
+                      Text(AppStrings.appBarTitles(withTwoLines: false)[0]),
                 ),
                 floatingActionButton: Align(
                   alignment: Alignment.bottomRight,
@@ -27,8 +27,8 @@ class AlquranAlkarimPage extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 30),
                     child: GestureDetector(
                       onTap: () {
-                        QuranCubit.getQuranController(context)
-                            .showOrHideIndex(context);
+                        // QuranCubit.getQuranController(context)
+                        //     .showOrHideIndex(context);
                       },
                       child: CircleAvatar(
                           radius: 35,

@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:test_app/core/constants/view_constants.dart';
+import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
 import 'package:test_app/features/app/domain/entities/hadith.dart';
 import 'package:test_app/features/app/domain/entities/timings.dart';
@@ -59,7 +59,7 @@ class HomeCubit extends Cubit<HomeState> {
        opacity: 0.0,
         width: 0.0));
 
-  Future.delayed(ViewConstants.longDuration,() => emit(state.copyWith(isVisible: false)));
+  Future.delayed(AppDurations.longDuration,() => emit(state.copyWith(isVisible: false)));
   }
 
   //  ===prayer times===

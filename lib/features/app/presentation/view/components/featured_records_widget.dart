@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/features/app/presentation/view/components/featuerd_records_bloc_builder.dart';
 import 'package:test_app/core/extentions/controllers_extention.dart';
 import 'package:test_app/core/theme/app_colors.dart';
@@ -31,7 +32,7 @@ class FeatuerdRecordsWidget extends StatelessWidget {
           ),
           Center(
             child: Text(
-              'الريكوردات المميزه',
+              AppStrings.featuerdRecords,
             ),
           ),
           Column(
@@ -47,7 +48,7 @@ class FeatuerdRecordsWidget extends StatelessWidget {
                               .deleteAllFeatuerdRecords(context);
                         },
                       ),
-                  child: Text('  حذف الكل',
+                  child: Text(AppStrings.deleteAll,
                       style: TextStyles.regular14_150(context)
                           .copyWith(color: AppColors.thirdColor))),
               Divider(
@@ -70,20 +71,20 @@ void showDeleteAlertDialog(BuildContext context,
     builder: (context) {
       return AlertDialog.adaptive(
         actionsAlignment: MainAxisAlignment.start,
-        title: Text('هل أنت متأكد؟'),
+        title: Text(AppStrings.areYouSure),
         actions: [
           OutlinedButton(
               onPressed: deleteFunction,
               style: _outlinedButtonStyle,
               child: Text(
-                'نعم',
+                AppStrings.yes,
                 style: TextStyles.regular16_120(context,
                     color: AppColors.primaryColor),
               )),
           OutlinedButton(
               onPressed: () => Navigator.pop(context),
               style: _outlinedButtonStyle,
-              child: Text('لا',
+              child: Text(AppStrings.no,
                   style: TextStyles.regular16_120(context,
                       color: AppColors.primaryColor)))
         ],

@@ -2,10 +2,10 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/features/app/data/models/adhkar_parameters.dart';
 import 'package:test_app/features/app/domain/entities/adhkar_entity.dart';
 import 'package:test_app/features/app/domain/usecases/get_adhkar_use_case.dart';
-import 'package:test_app/core/constants/view_constants.dart';
 import 'package:test_app/core/errors/failures.dart';
 import 'package:test_app/core/utils/enums.dart';
 
@@ -77,7 +77,7 @@ class AdhkarCubit extends Cubit<AdhkarState> {
     emit(
         state.copyWith(selectedIndexOfChildAnimation: index)); //start animation
 
-    Future.delayed(ViewConstants.lowDuration, () {
+    Future.delayed(AppDurations.lowDuration, () {
       _decreaseCount(index);
       emit(state.copyWith(selectedIndexOfChildAnimation: -1));
     }); //reverse animation and stop
@@ -88,7 +88,7 @@ class AdhkarCubit extends Cubit<AdhkarState> {
     state.adhkarWidgetsOffsets![index] = Offset(1, 0);
     emit(state.copyWith(
         selectedIndexOfVisibilty: state.dummyCounterState + 1));
-    Future.delayed(ViewConstants.mediumDuration, () {
+    Future.delayed(AppDurations.mediumDuration, () {
       state.adhkarWidgetsMaintainingSize![index] = false;
       emit(state.copyWith(
           selectedIndexOfVisibilty: state.dummyCounterState + 1));

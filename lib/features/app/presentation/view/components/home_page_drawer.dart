@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:test_app/features/app/presentation/view/components/draw_circle_line_bloc_builder.dart';
 import 'package:test_app/features/app/presentation/view/components/rosary_ring_widget.dart';
 import 'package:test_app/features/app/presentation/view/components/home_drawer_text_button.dart';
-import 'package:test_app/core/constants/view_constants.dart';
+import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/extentions/controllers_extention.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
@@ -25,11 +25,13 @@ class HomeDrawerWidget extends StatelessWidget {
           functionality:
               DrawCircleLineBlocBuilderFunctionality.rosariesAfterPrayer),
       RosaryRingWidget(),
-      Text(
-        ViewConstants.khetmAlquran,
-        textAlign: TextAlign.center,
-        style:
-            TextStyles.semiBold32auto(context).copyWith(color: AppColors.white),
+      SingleChildScrollView(
+        child: Text(
+          AppStrings.khetmAlquran,
+          textAlign: TextAlign.center,
+          style:
+              TextStyles.semiBold32auto(context).copyWith(color: AppColors.white),
+        ),
       )
     ];
 
@@ -39,7 +41,7 @@ class HomeDrawerWidget extends StatelessWidget {
         ...List<HomeDrawerTextButton>.generate(
             textButtonsAlertDialogWidgets.length,
             (index) => HomeDrawerTextButton(
-                  text: ViewConstants.homeDrawerTextButtons[index],
+                  text: AppStrings.homeDrawerTextButtons[index],
                   alertDialogContent: textButtonsAlertDialogWidgets[index],
                 )),
         Spacer(),

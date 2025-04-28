@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/featured_records_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/circle_painter.dart';
 import 'package:test_app/features/app/presentation/view/components/featured_records_widget.dart';
-import 'package:test_app/core/constants/view_constants.dart';
+import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/extentions/controllers_extention.dart';
 import 'package:test_app/core/helper_function/get_widget_depending_on_reuest_state.dart';
 import 'package:test_app/core/theme/app_colors.dart';
@@ -29,7 +30,7 @@ class FeatuerdRecordsBlocBuilder extends StatelessWidget {
                           right: _getCircleSliderPositioned(context),
                           child: Row(spacing: 5, children: [
                             AnimatedOpacity(
-                              duration: ViewConstants.mediumDuration,
+                              duration: AppDurations.mediumDuration,
                               opacity: _iscircleSliderComponentVisible(context),
                               child: CustomPaint(
                                   size: Size(
@@ -44,7 +45,7 @@ class FeatuerdRecordsBlocBuilder extends StatelessWidget {
                             ...List.generate(
                                 3,
                                 (index) => AnimatedOpacity(
-                                      duration: ViewConstants
+                                      duration: AppDurations
                                           .circleAvatarsDurations[index],
                                       opacity: _iscircleSliderComponentVisible(
                                           context),
@@ -58,7 +59,7 @@ class FeatuerdRecordsBlocBuilder extends StatelessWidget {
                       Positioned(
                           right: _getCircleSliderPositioned(context),
                           child: AnimatedOpacity(
-                            duration: ViewConstants.mediumDuration,
+                            duration: AppDurations.mediumDuration,
                             opacity: _iscircleSliderComponentVisible(context),
                             child: CustomPaint(
                                 size: Size(
@@ -122,7 +123,7 @@ class FeatuerdRecordsBlocBuilder extends StatelessWidget {
                   )
                 : Center(
                     child: Text(
-                    ViewConstants.emptyList,
+                    AppStrings.emptyList,
                     style: TextStyles.regular16_120(context,
                         color: AppColors.secondryColor),
                   )),

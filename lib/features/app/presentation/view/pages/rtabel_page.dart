@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/adaptive/orentation_layout.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/rtabel_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/land_scape_ramadan_table.dart';
-import 'package:test_app/core/constants/view_constants.dart';
+import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
@@ -33,7 +33,7 @@ class RamadanTabelPage extends StatelessWidget {
                   },
                   icon: Icon(Icons.arrow_back)),
               title: Text(
-                ViewConstants.appBarTitles(withTwoLines: false)[2],
+                AppStrings.appBarTitles(withTwoLines: false)[2],
               ),
             ),
             body: OrentationLayout(
@@ -49,7 +49,7 @@ class RamadanTabelPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                  ViewConstants
+                                  AppStrings
                                       .portraitOrientationToRTablePageText,
                                   style: TextStyles.bold20(context)),
                               OutlinedButton(

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/alert_dialog_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/draw_circle_line_bloc_builder.dart';
-import 'package:test_app/core/constants/view_constants.dart';
+import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 
@@ -25,7 +26,7 @@ class RosaryRingWidget extends StatelessWidget {
           child: Column(
             spacing: 35.0,
             children: List<BlocBuilder>.generate(
-              ViewConstants.ringRosaryTexts.length,
+              AppStrings.ringRosaryTexts.length,
               (index) => _customContainer(index: index),
             ),
           ),
@@ -40,7 +41,7 @@ class RosaryRingWidget extends StatelessWidget {
           previous.getContainerColor(index) != current.getContainerColor(index),
       builder: (context, state) {
         return AnimatedContainer(
-          duration: ViewConstants.mediumDuration,
+          duration: AppDurations.mediumDuration,
           alignment: Alignment.center,
           width: 150,
           decoration: BoxDecoration(
@@ -49,7 +50,7 @@ class RosaryRingWidget extends StatelessWidget {
               color: state.getContainerColor(index)),
           child: FittedBox(
             child: Text(
-              ViewConstants.ringRosaryTexts[index],
+              AppStrings.ringRosaryTexts[index],
               style: TextStyles.semiBold18(context, AppColors.white)
                   .copyWith(fontSize: 23),
             ),

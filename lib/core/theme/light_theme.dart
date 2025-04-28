@@ -11,10 +11,10 @@ ThemeData lightTheme = ThemeData(
   appBarTheme: AppBarTheme(
       centerTitle: true,
       backgroundColor: AppColors.primaryColor,
-      // titleTextStyle: GoogleFonts.cairo(textStyle: TextStyle(
-      //     color: AppColors.secondryColor,
-      //     fontWeight: FontWeight.bold,
-      //     fontSize: 23)),
+      titleTextStyle: GoogleFonts.cairo(textStyle: TextStyle(
+          color: AppColors.secondryColor,
+          fontWeight: FontWeight.bold,
+          fontSize: 23)),
       iconTheme: IconThemeData(color: AppColors.grey),
       shape: ContinuousRectangleBorder(
           borderRadius: BorderRadius.only(

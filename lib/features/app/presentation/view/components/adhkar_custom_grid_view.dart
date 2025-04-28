@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/features/app/presentation/view/components/adhkar_button.dart';
 import 'package:test_app/features/app/presentation/view/pages/adhkar_page.dart';
-import 'package:test_app/core/constants/view_constants.dart';
+import 'package:test_app/core/constants/app_strings.dart';
 
 class AdhkarCustomGridView extends StatelessWidget {
   const AdhkarCustomGridView({super.key, required this.crossAxisCount});
@@ -19,17 +19,17 @@ class AdhkarCustomGridView extends StatelessWidget {
         children: List<AdhkarButton>.generate(
             8,
             (index) => AdhkarButton(
-                  icon: ViewConstants.supplicationIcons[index],
+                  icon: AppStrings.supplicationIcons[index],
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => AdhkarPage(
-                              nameOfAdhkar: ViewConstants
+                              nameOfAdhkar: AppStrings
                                   .supplicationsButtonsNames[index]),
                         ));
                   },
-                  text: ViewConstants.supplicationsButtonsNames[index],
+                  text: AppStrings.supplicationsButtonsNames[index],
                 )));
   }
 }

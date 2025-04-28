@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/elec_rosary_cubit.dart';
-import 'package:test_app/core/constants/view_constants.dart';
 import 'package:test_app/core/helper_function/get_responsive_font_size.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
@@ -30,7 +30,7 @@ class CounterWidget extends StatelessWidget {
                   builder: (context, state) {
                 print('ElecRosaryCubit rebuild');
                 return AnimatedSlide(
-                    duration: ViewConstants.lowDuration,
+                    duration: AppDurations.lowDuration,
                     offset: state.offset,
                     child: AnimatedOpacity(
                       opacity: state.opacity,
