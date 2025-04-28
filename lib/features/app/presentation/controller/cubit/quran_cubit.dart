@@ -3,29 +3,26 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-<<<<<<< HEAD
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
-=======
 import 'package:test_app/core/constants/data_base_constants.dart';
 import 'package:test_app/core/constants/app_strings.dart';
->>>>>>> 4d4877b0bef4608b9bd8e741abcd1943d6454fb7
 
 part 'quran_state.dart';
 
 class QuranCubit extends Cubit<QuranState> {
   QuranCubit() : super(QuranState());
 
-  static QuranCubit getQuranController(BuildContext context) => context.read<QuranCubit>();
+  static QuranCubit getQuranController(BuildContext context) =>
+      context.read<QuranCubit>();
 
   late PDFViewController _pdfViewController;
   int totalPages = 0;
   void changeCIndex(int index) {
-  emit(state.copyWith(cIndex: index));
-}
-
+    emit(state.copyWith(cIndex: index));
+  }
 
   void setPdfController(PDFViewController controller) {
     _pdfViewController = controller;
@@ -36,30 +33,28 @@ class QuranCubit extends Cubit<QuranState> {
   }
 
   Future<void> loadPdfFromAssets() async {
-    final bytes = await rootBundle.load(DataBaseConstants.alquranAlkarimPdfPath);
+    final bytes =
+        await rootBundle.load(DataBaseConstants.alquranAlkarimPdfPath);
     final dir = await getTemporaryDirectory();
     final file = File('${dir.path}/القران الكريم.pdf');
     await file.writeAsBytes(bytes.buffer.asUint8List());
     emit(state.copyWith(filePath: file.path));
   }
-<<<<<<< HEAD
 
- void goToPageByNumber(int pageNumber) {
-  print('Requested page: $pageNumber, Total pages: $totalPages');
+  void goToPageByNumber(int pageNumber) {
+    print('Requested page: $pageNumber, Total pages: $totalPages');
 
-  if (pageNumber >= 0 && pageNumber < totalPages) {
-    _pdfViewController.setPage(pageNumber);
-    emit(state.copyWith());
-  } else {
-    print('Page request out of range!');
+    if (pageNumber >= 0 && pageNumber < totalPages) {
+      _pdfViewController.setPage(pageNumber);
+      emit(state.copyWith());
+    } else {
+      print('Page request out of range!');
+    }
   }
-}
-
-
 
   void goToPageBySurah(String surahName) {
-    if (surahPages.containsKey(surahName)) {
-      final page = surahPages[surahName]! - 1; // zero-based index
+    if (AppStrings.surahPages.containsKey(surahName)) {
+      final page = AppStrings.surahPages[surahName]! - 1; // zero-based index
       goToPageByNumber(page);
     }
   }
@@ -79,123 +74,4 @@ class QuranCubit extends Cubit<QuranState> {
       ));
     }
   }
-
-  Map<String, int> surahPages = {
-    'الفاتحة': 1,
-    'البقرة': 2,
-    'آل عمران': 50,
-    'النساء': 77,
-    'المائدة': 106,
-    'الأنعام': 128,
-    'الأعراف': 151,
-    'الأنفال': 177,
-    'التوبة': 187,
-    'يونس': 208,
-    'هود': 221,
-    'يوسف': 235,
-    'الرعد': 249,
-    'إبراهيم': 255,
-    'الحجر': 262,
-    'النحل': 267,
-    'الإسراء': 282,
-    'الكهف': 293,
-    'مريم': 305,
-    'طه': 312,
-    'الأنبياء': 322,
-    'الحج': 332,
-    'المؤمنون': 342,
-    'النور': 350,
-    'الفرقان': 359,
-    'الشعراء': 367,
-    'النمل': 377,
-    'القصص': 385,
-    'العنكبوت': 396,
-    'الروم': 404,
-    'لقمان': 411,
-    'السجدة': 415,
-    'الأحزاب': 418,
-    'سبأ': 428,
-    'فاطر': 434,
-    'يس': 440,
-    'الصافات': 446,
-    'ص': 453,
-    'الزمر': 458,
-    'غافر': 467,
-    'فصلت': 477,
-    'الشورى': 483,
-    'الزخرف': 489,
-    'الدخان': 496,
-    'الجاثية': 499,
-    'الأحقاف': 502,
-    'محمد': 507,
-    'الفتح': 511,
-    'الحجرات': 515,
-    'ق': 518,
-    'الذاريات': 520,
-    'الطور': 523,
-    'النجم': 526,
-    'القمر': 528,
-    'الرحمن': 531,
-    'الواقعة': 534,
-    'الحديد': 537,
-    'المجادلة': 542,
-    'الحشر': 545,
-    'الممتحنة': 549,
-    'الصف': 551,
-    'الجمعة': 553,
-    'المنافقون': 554,
-    'التغابن': 556,
-    'الطلاق': 558,
-    'التحريم': 560,
-    'الملك': 562,
-    'القلم': 564,
-    'الحاقة': 566,
-    'المعارج': 568,
-    'نوح': 570,
-    'الجن': 572,
-    'المزمل': 574,
-    'المدثر': 575,
-    'القيامة': 577,
-    'الإنسان': 578,
-    'المرسلات': 580,
-    'النبأ': 582,
-    'النازعات': 583,
-    'عبس': 585,
-    'التكوير': 586,
-    'الانفطار': 587,
-    'المطففين': 587,
-    'الانشقاق': 589,
-    'البروج': 590,
-    'الطارق': 591,
-    'الأعلى': 591,
-    'الغاشية': 592,
-    'الفجر': 593,
-    'البلد': 594,
-    'الشمس': 595,
-    'الليل': 595,
-    'الضحى': 596,
-    'الشرح': 596,
-    'التين': 597,
-    'العلق': 597,
-    'القدر': 598,
-    'البينة': 598,
-    'الزلزلة': 599,
-    'العاديات': 599,
-    'القارعة': 600,
-    'التكاثر': 600,
-    'العصر': 601,
-    'الهمزة': 601,
-    'الفيل': 601,
-    'قريش': 602,
-    'الماعون': 602,
-    'الكوثر': 602,
-    'الكافرون': 603,
-    'النصر': 603,
-    'المسد': 603,
-    'الإخلاص': 604,
-    'الفلق': 604,
-    'الناس': 604,
-  };
-=======
->>>>>>> 4d4877b0bef4608b9bd8e741abcd1943d6454fb7
 }

@@ -6,6 +6,7 @@ import 'package:test_app/features/app/presentation/controller/cubit/quran_cubit.
 import 'package:test_app/features/app/presentation/view/components/index_widget.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
+import 'package:test_app/features/app/presentation/view/components/parts_widget.dart';
 
 class AlquranAlkarimPage extends StatelessWidget {
   const AlquranAlkarimPage({super.key});
@@ -44,13 +45,7 @@ class AlquranAlkarimPage extends StatelessWidget {
                 ),
                 body: Stack(
                   children: [
-<<<<<<< HEAD
                      state.filePath == null
-=======
-                    BlocBuilder<QuranCubit, QuranState>(
-                      builder: (context, state) {
-                        return state.filePath == null
->>>>>>> 4d4877b0bef4608b9bd8e741abcd1943d6454fb7
                             ? Center(child: CircularProgressIndicator())
                             : PDFView(
                                 filePath: state.filePath,
@@ -77,16 +72,6 @@ class AlquranAlkarimPage extends StatelessWidget {
                         width: state.width,
                       ),
                     ),
-<<<<<<< HEAD
-=======
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: IndexWidget(
-                        height: state.height,
-                        width: state.width,
-                      ),
-                    ),
->>>>>>> 4d4877b0bef4608b9bd8e741abcd1943d6454fb7
                   ],
                 ));
           },

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_app/core/constants/view_constants.dart';
+import 'package:test_app/core/constants/app_durations.dart';
+import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/quran_cubit.dart';
@@ -21,7 +22,7 @@ class PartsWidget extends StatelessWidget {
 
     return AnimatedContainer(
       transformAlignment: Alignment.bottomRight,
-      duration: ViewConstants.mediumDuration,
+      duration: AppDurations.mediumDuration,
       decoration: BoxDecoration(
         color: AppColors.primaryColor,
         borderRadius: const BorderRadius.only(
@@ -36,9 +37,9 @@ class PartsWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: List.generate(
-            QuranCubit.getQuranController(context).surahPages.length,
+            AppStrings.surahPages.length,
             (index) {
-              int pageNum = QuranCubit.getQuranController(context)
+              int pageNum = AppStrings
                       .surahPages
                       .values
                       .elementAt(index) -
@@ -47,7 +48,7 @@ class PartsWidget extends StatelessWidget {
               return BlocBuilder<QuranCubit, QuranState>(
                 builder: (context, state) {
                   return AnimatedContainer(
-                    duration: ViewConstants.lowDuration,
+                    duration: AppDurations.lowDuration,
                     color: index == state.cIndex
                         ? AppColors.secondryColor
                         : Colors.transparent,
@@ -59,7 +60,7 @@ class PartsWidget extends StatelessWidget {
                             .goToPageByNumber(pageNum);
                       },
                       child: Text(
-                        'سورة ${QuranCubit.getQuranController(context).surahPages.keys.elementAt(index)}',
+                        'سورة ${AppStrings.surahPages.keys.elementAt(index)}',
                         style: TextStyles.bold20(context).copyWith(
                           color: AppColors.white,
                           fontSize: 23,

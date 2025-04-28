@@ -11,15 +11,8 @@ class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
    
-    return BlocBuilder<HomeCubit, PrayerTimesState>(
-=======
-   // _goToMainPage(context);
-    // final randomIndex = random.nextInt(ran.length);
-    // final randomItem = ran[randomIndex];
     return BlocBuilder<HomeCubit, HomeState>(
->>>>>>> 4d4877b0bef4608b9bd8e741abcd1943d6454fb7
       builder: (context, state) {
         return Visibility(
           visible: state.requestStateofPrayerTimes == RequestStateEnum.loading,

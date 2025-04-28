@@ -22,67 +22,47 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit(
     this.getPrayersTimesUseCase,
     this.getTodayHadithUseCase,
-  ) : super(HomeState());
+  ) : super(const HomeState());
 
   final GetPrayersTimesUseCase getPrayersTimesUseCase;
   final GetTodayHadithUseCase getTodayHadithUseCase;
 
   void showTodatHadith(BuildContext context) async {
     Either<Failure, Hadith> result = await getTodayHadithUseCase();
-<<<<<<< HEAD
     result.fold((l) => print(l.message), (hadith) {
       print('solllu');
       showCupertinoDialog(
           context: context,
           builder: (context) => CustomAlertDialog(
-                  alertDialogContent: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Text>[
-                  Text('حديث اليوم|',
-                      style: TextStyles.semiBold32auto(context)
-                          .copyWith(color: AppColors.secondryColor)),
-                  Text(hadith.content,
-                      textAlign: TextAlign.start,
-                      style: TextStyles.bold20(context)
-                          .copyWith(color: AppColors.white, fontSize: 23)),
-                ],
-              )));
+              alertDialogContent: (context) => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Text>[
+                      Text('حديث اليوم|',
+                          style: TextStyles.semiBold32auto(context)
+                              .copyWith(color: AppColors.secondryColor)),
+                      Text(hadith.content,
+                          textAlign: TextAlign.start,
+                          style: TextStyles.bold20(context)
+                              .copyWith(color: AppColors.white, fontSize: 23)),
+                    ],
+                  )));
     });
   }
-=======
-    result.fold(
-        (l) => null,
-        (hadith) => showCupertinoDialog(
-            context: context,
-            builder: (context) => CustomAlertDialog(
-                alertDialogContent: (context) => Column(
-                      children: <Text>[
-                        Text('حديث اليوم|',
-                            textAlign: TextAlign.start,
-                            style: TextStyles.bold20(context).copyWith(
-                                color: AppColors.secondryColor, fontSize: 23)),
-                        Text(hadith.content,
-                            textAlign: TextAlign.center,
-                            style: TextStyles.semiBold32auto(context)
-                                .copyWith(color: AppColors.white)),
-                      ],
-                    ))));
-  }
+
   void showDawerInCaseLandScape(BuildContext context) {
-    emit(state.copyWith(isVisible: true,
+    emit(state.copyWith(
+      isVisible: true,
       opacity: .8,
-        width: context.width * 1 / 4,
-        ));
+      width: context.width * 1 / 4,
+    ));
   }
 
   void hideDawerInCaseLandScape() {
-    emit(state.copyWith(
-       opacity: 0.0,
-        width: 0.0));
+    emit(state.copyWith(opacity: 0.0, width: 0.0));
 
-  Future.delayed(AppDurations.longDuration,() => emit(state.copyWith(isVisible: false)));
+    Future.delayed(AppDurations.longDuration,
+        () => emit(state.copyWith(isVisible: false)));
   }
->>>>>>> 4d4877b0bef4608b9bd8e741abcd1943d6454fb7
 
   //  ===prayer times===
   List<String> getListOfTimings(HomeState state) {

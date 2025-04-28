@@ -12,11 +12,7 @@ class ThemeProvider with ChangeNotifier {
     _darkMode = darkMode;
     _appTheme = theme;
     notifyListeners();
-<<<<<<< HEAD
-    hiveCacheVariblesInstance.put('darkMode', darkMode);
-=======
-   // hiveCacheVariblesInstance.put(darkMode, 'darkMode');
->>>>>>> 4d4877b0bef4608b9bd8e741abcd1943d6454fb7
+  //  hiveCacheVariblesInstance.put('darkMode', darkMode);
   }
 
   void changeTheme() {
