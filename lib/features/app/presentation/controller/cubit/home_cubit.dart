@@ -1,15 +1,15 @@
-import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:test_app/core/constants/app_durations.dart';
+import 'package:test_app/core/utils/responsive_extention.dart';
 import 'package:test_app/features/app/domain/entities/hadith.dart';
 import 'package:test_app/features/app/domain/entities/timings.dart';
 import 'package:test_app/features/app/domain/usecases/get_prayers_times_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/get_today_hadith_use_case.dart';
-import 'package:test_app/features/app/presentation/view/components/show_custom_alert_dialog.dart';
+import 'package:test_app/features/app/presentation/view/components/custom_alert_dialog.dart';
 import 'package:test_app/core/errors/failures.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
@@ -18,17 +18,18 @@ import 'package:test_app/features/app/presentation/controller/cubit/timer_cubit.
 
 part 'home_state.dart';
 
-class HomeCubit extends Cubit<PrayerTimesState> {
+class HomeCubit extends Cubit<HomeState> {
   HomeCubit(
     this.getPrayersTimesUseCase,
     this.getTodayHadithUseCase,
-  ) : super(PrayerTimesState());
+  ) : super(HomeState());
 
   final GetPrayersTimesUseCase getPrayersTimesUseCase;
   final GetTodayHadithUseCase getTodayHadithUseCase;
 
   void showTodatHadith(BuildContext context) async {
     Either<Failure, Hadith> result = await getTodayHadithUseCase();
+<<<<<<< HEAD
     result.fold((l) => print(l.message), (hadith) {
       print('solllu');
       showCupertinoDialog(
@@ -48,9 +49,43 @@ class HomeCubit extends Cubit<PrayerTimesState> {
               )));
     });
   }
+=======
+    result.fold(
+        (l) => null,
+        (hadith) => showCupertinoDialog(
+            context: context,
+            builder: (context) => CustomAlertDialog(
+                alertDialogContent: (context) => Column(
+                      children: <Text>[
+                        Text('حديث اليوم|',
+                            textAlign: TextAlign.start,
+                            style: TextStyles.bold20(context).copyWith(
+                                color: AppColors.secondryColor, fontSize: 23)),
+                        Text(hadith.content,
+                            textAlign: TextAlign.center,
+                            style: TextStyles.semiBold32auto(context)
+                                .copyWith(color: AppColors.white)),
+                      ],
+                    ))));
+  }
+  void showDawerInCaseLandScape(BuildContext context) {
+    emit(state.copyWith(isVisible: true,
+      opacity: .8,
+        width: context.width * 1 / 4,
+        ));
+  }
+
+  void hideDawerInCaseLandScape() {
+    emit(state.copyWith(
+       opacity: 0.0,
+        width: 0.0));
+
+  Future.delayed(AppDurations.longDuration,() => emit(state.copyWith(isVisible: false)));
+  }
+>>>>>>> 4d4877b0bef4608b9bd8e741abcd1943d6454fb7
 
   //  ===prayer times===
-  List<String> getListOfTimings(PrayerTimesState state) {
+  List<String> getListOfTimings(HomeState state) {
     return [
       state.prayerTimes!.fajr,
       state.prayerTimes!.sunrise,
@@ -65,26 +100,21 @@ class HomeCubit extends Cubit<PrayerTimesState> {
     Either<Failure, Timings> result = await getPrayersTimesUseCase();
     result.fold(
       (l) {
-        print('error');
-        emit(PrayerTimesState(
+        emit(HomeState(
             errorMessageofPrayerTimes: l.message,
             requestStateofPrayerTimes: RequestStateEnum.failed));
       },
       (r) {
-        print('success');
         PrayerTime nextPrayerTime = nextPrayer(
             fajr: r.fajr,
             dhuhr: r.dhuhr,
             asr: r.asr,
             maghrib: r.maghrib,
             isha: r.isha);
-        emit(PrayerTimesState(
+        emit(HomeState(
             prayerTime: nextPrayerTime,
             prayerTimes: r,
             requestStateofPrayerTimes: RequestStateEnum.success));
-        print("الصلاة القادمة: ${nextPrayerTime.name}");
-        print("وقت الصلاة القادمة: ${nextPrayerTime.time}");
-
         context.read<TimerCubit>().startTimerUntil("${nextPrayerTime.time}:00");
       },
     );

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/features/app/domain/entities/adhkar_entity.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/supplications_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/circle_avatar_button.dart';
-import 'package:test_app/core/constants/view_constants.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/extentions/controllers_extention.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
 
-class SupplicationWidget extends StatelessWidget {
+class AdhkarWidget extends StatelessWidget {
   final int index;
   final AdhkarEntity adhkarEntity;
-  final SupplicationsState state;
-  const SupplicationWidget(
+  final AdhkarState state;
+  const AdhkarWidget(
       {super.key,
       required this.index,
       required this.adhkarEntity,
@@ -21,7 +21,7 @@ class SupplicationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedSlide(
-      duration: ViewConstants.mediumDuration,
+      duration: AppDurations.mediumDuration,
       offset: state.adhkarWidgetsOffsets![index],
       child: Visibility(
         visible: state.adhkarWidgetsMaintainingSize![index],
@@ -60,7 +60,7 @@ class SupplicationWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       color: AppColors.grey2),
                   child: AnimatedSlide(
-                    duration: ViewConstants.lowDuration,
+                    duration: AppDurations.lowDuration,
                     offset: state.selectedIndexOfChildAnimation != index
                         ? Offset.zero
                         : Offset(0, .3),

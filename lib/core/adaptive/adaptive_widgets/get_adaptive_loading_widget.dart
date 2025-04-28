@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:test_app/core/constants/view_constants.dart';
-import 'package:test_app/core/helper_function/adaptive_widget_depending_on_os.dart';
+import 'package:test_app/core/constants/app_strings.dart';
+import 'package:test_app/core/adaptive/adaptive_widget_depending_on_os.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 
@@ -27,7 +27,7 @@ Container _getWindowsLoadingWidget(BuildContext context) {
     padding: const EdgeInsets.all(8.0),
     color: AppColors.white,
     child: Text(
-      ViewConstants.loadingText,
+      AppStrings.loadingText,
       style: TextStyles.bold20(context).copyWith( color: AppColors.black),
     ),
   );

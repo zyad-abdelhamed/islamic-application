@@ -68,8 +68,6 @@ class TextStyles {
   static TextStyle semiBold16_120(BuildContext context) {
     return TextStyle(
       fontWeight: FontWeight.w600,
-      fontStyle: FontStyle.italic,
-
       fontSize: getResponsiveFontSize(context: context, fontSize: 16),
       height: 1.2, // 120%
     );
@@ -85,32 +83,12 @@ class TextStyles {
     );
   }
 
-  static TextStyle light12(BuildContext context) {
-    return TextStyle(
-      fontWeight: FontWeight.w300,
-      fontStyle: FontStyle.italic,
-
-      fontSize: getResponsiveFontSize(context: context, fontSize: 12),
-      height: 1.5, // 150%
-    );
-  }
-
   static TextStyle semiBold20(BuildContext context) {
     return TextStyle(
       color: AppColors.white,
       fontWeight: FontWeight.w600,
       fontSize: getResponsiveFontSize(context: context, fontSize: 20),
       height: 1.5, // 150%
-    );
-  }
-
-  static TextStyle semiBold14auto(BuildContext context) {
-    return TextStyle(
-      fontWeight: FontWeight.w600,
-      fontStyle: FontStyle.italic,
-
-      fontSize: getResponsiveFontSize(context: context, fontSize: 14),
-      height: null, // Auto
     );
   }
 

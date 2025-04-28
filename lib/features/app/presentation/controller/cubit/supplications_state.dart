@@ -1,7 +1,7 @@
 part of 'supplications_cubit.dart';
 
 @immutable
-class SupplicationsState extends Equatable {
+class AdhkarState extends Equatable {
   final double progress;
   final int? selectedIndexOfChildAnimation;
   final List<Offset>? adhkarWidgetsOffsets;
@@ -13,7 +13,7 @@ class SupplicationsState extends Equatable {
   final RequestStateEnum adhkarRequestState;
   final String? adhkarErorrMessage;
 
-  const SupplicationsState(
+  const AdhkarState(
       {this.progress = 0.0,
       this.selectedIndexOfChildAnimation,
       this.adhkarWidgetsOffsets,
@@ -25,7 +25,7 @@ class SupplicationsState extends Equatable {
       this.adhkarErorrMessage,
       this.adhkarRequestState = RequestStateEnum.loading});
 
-  SupplicationsState copyWith(
+  AdhkarState copyWith(
       {double? progress,
       int? selectedIndexOfChildAnimation,
       List<Offset>? adhkarWidgetsOffsets,
@@ -36,7 +36,7 @@ class SupplicationsState extends Equatable {
       List<int>? adhkarcounts,
       RequestStateEnum? adhkarRequestState,
       String? adhkarErorrMessage}) {
-    return SupplicationsState(
+    return AdhkarState(
         progress: progress ?? this.progress,
         isDeleted: isDeleted ?? this.isDeleted,
         adhkar: adhkar ?? this.adhkar,

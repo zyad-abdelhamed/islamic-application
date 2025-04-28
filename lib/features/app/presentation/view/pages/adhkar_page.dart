@@ -1,34 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/features/app/data/models/adhkar_parameters.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/supplications_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/circle_painter.dart';
-import 'package:test_app/features/app/presentation/view/components/supplication_widget.dart';
-import 'package:test_app/features/app/presentation/view/components/supplications_page_app_bar.dart';
-import 'package:test_app/core/constants/view_constants.dart';
+import 'package:test_app/features/app/presentation/view/components/adhkar_widget.dart';
+import 'package:test_app/features/app/presentation/view/components/adhkar_page_app_bar.dart';
 import 'package:test_app/core/extentions/controllers_extention.dart';
 import 'package:test_app/core/helper_function/get_widget_depending_on_reuest_state.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
 
-class SupplicationsPage extends StatelessWidget {
+class AdhkarPage extends StatelessWidget {
   final String nameOfAdhkar;
-  const SupplicationsPage({super.key, required this.nameOfAdhkar});
+  const AdhkarPage({super.key, required this.nameOfAdhkar});
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => SupplicationsCubit(sl())
+        create: (context) => AdhkarCubit(sl())
           ..getAdhkar(
               AdhkarParameters(nameOfAdhkar: nameOfAdhkar, context: context)),
         child: Scaffold(
-            appBar: supplicationsPageAppBar(context, appBarTitle: nameOfAdhkar),
-            body: BlocBuilder<SupplicationsCubit, SupplicationsState>(
+            appBar: adhkarPageAppBar(context, appBarTitle: nameOfAdhkar),
+            body: BlocBuilder<AdhkarCubit, AdhkarState>(
                 buildWhen: (previous, current) =>
                     previous.isDeleted ==
                     current.isDeleted, //to avoid rebuild when change switch
                 builder: (context, state) {
-                  print('rebuild supplications page body');
+                  print('rebuild adhkar page body');
                   return Stack(children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -39,7 +39,7 @@ class SupplicationsPage extends StatelessWidget {
                                   .supplicationsScrollController,
                               itemCount: state.adhkar.length,
                               itemBuilder: (context, index) =>
-                                  SupplicationWidget(
+                                  AdhkarWidget(
                                     index: index,
                                     adhkarEntity: state.adhkar[index],
                                     state: state,
@@ -74,7 +74,7 @@ Positioned _getCustomCircleSlider(BuildContext context,
     bottom: 20.0,
     left: 20.0,
     child: AnimatedOpacity(
-      duration: ViewConstants.mediumDuration,
+      duration: AppDurations.mediumDuration,
       opacity: context
               .supplicationsController.supplicationsScrollController.hasClients
           ? context.supplicationsController.supplicationsScrollController

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/features/app/presentation/view/components/erorr_widget.dart';
-import 'package:test_app/core/adaptive_widgets/get_adaptive_loading_widget.dart';
+import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
 import 'package:test_app/core/utils/enums.dart';
 
 Widget getWidgetDependingOnReuestState(

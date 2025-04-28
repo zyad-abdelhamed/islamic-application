@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_app/core/constants/view_constants.dart';
+import 'package:test_app/core/constants/app_durations.dart';
 
 part 'elec_rosary_state.dart';
 
@@ -31,7 +31,7 @@ class ElecRosaryCubit extends Cubit<ElecRosaryState> {
     emit(state.copyWith(
         opacity: 0.0, offset: Offset(0, slideValue))); //start animation
 
-    Future.delayed(ViewConstants.lowDuration, () {
+    Future.delayed(AppDurations.lowDuration, () {
       emit(state.copyWith(opacity: 1.0, offset: Offset.zero));
     }); //reverse animation and stop
   }

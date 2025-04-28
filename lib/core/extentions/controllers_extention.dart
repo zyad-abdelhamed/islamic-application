@@ -15,8 +15,8 @@ extension ResponsiveExtention on BuildContext {
   AlertDialogCubit get alertDialogController =>
       BlocProvider.of<AlertDialogCubit>(this);
 
-  SupplicationsCubit get supplicationsController =>
-      BlocProvider.of<SupplicationsCubit>(this);
+  AdhkarCubit get supplicationsController =>
+      BlocProvider.of<AdhkarCubit>(this);
 
   RtabelCubit get ramadanTableController =>
       RtabelCubit.getRamadanTableController(this);

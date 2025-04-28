@@ -1,37 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/features/app/presentation/view/pages/alquran_alkarim_page.dart';
-import 'package:test_app/features/app/presentation/view/pages/elec_rosary_page.dart';
-import 'package:test_app/features/app/presentation/view/pages/rtabel_page.dart';
-import 'package:test_app/core/constants/view_constants.dart';
+import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
-import 'package:test_app/core/utils/responsive_extention.dart';
 
 class HomePageButtonsRow extends StatelessWidget {
   const HomePageButtonsRow({super.key});
-  final int buttonsCount = 3;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: context.height * 1 / 7, //same hight of button
+      height: 100, //same hight of button
       child: ListView(
           physics: BouncingScrollPhysics(),
           scrollDirection: Axis.horizontal,
           children: List.generate(
-              buttonsCount,
-              (index) => _materialButton(
+              AppStrings.pages.length,
+              (index) => homeButton(
                   context: context,
-                  text: ViewConstants.appBarTitles(withTwoLines: true)[index],
-                  leftMargine: index != buttonsCount - 1
+                  text: AppStrings.appBarTitles(withTwoLines: true)[index],
+                  leftMargine: index != AppStrings.pages.length - 1
                       ? 16.0
                       : 0.0, //(leftMargine)spacing between buttons
-                  page: _pages[index],
-                  image: ViewConstants.imagesOfHomePageButtons[index]))),
+                  page: AppStrings.pages[index],
+                  image: AppStrings.imagesOfHomePageButtons[index]))),
     );
   }
 }
 
-_materialButton(
+homeButton(
         {required BuildContext context,
         required String text,
         required double leftMargine,
@@ -39,7 +34,6 @@ _materialButton(
         required String image}) =>
     GestureDetector(
       onTap: () {
-       
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -52,8 +46,8 @@ _materialButton(
           borderRadius: BorderRadius.circular(15.0),
           color: AppColors.primaryColor,
         ),
-        height: context.height * 1 / 7,
-        width: context.width * .55,
+        height: 100,
+        width: 200,
         child: Row(
           spacing: 10.0,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -61,8 +55,8 @@ _materialButton(
           children: [
             Text(
               text,
-              style:
-                  TextStyles.bold20(context).copyWith(color: AppColors.white,fontSize: 23),
+              style: TextStyles.bold20(context)
+                  .copyWith(color: AppColors.white, fontSize: 23),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 3.0),
@@ -71,7 +65,7 @@ _materialButton(
                 child: Image.asset(
                   image,
                   fit: BoxFit.fill,
-                  width: context.width * 1 / 5,
+                  width: 200 - 120,
                 ),
               ),
             )
@@ -79,8 +73,3 @@ _materialButton(
         ),
       ),
     );
-const List<dynamic> _pages = <dynamic>[
-  AlquranAlkarimPage(),
-  ElecRosaryPage(),
-  RamadanTabelPage()
-];

@@ -3,10 +3,15 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+<<<<<<< HEAD
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
+=======
+import 'package:test_app/core/constants/data_base_constants.dart';
+import 'package:test_app/core/constants/app_strings.dart';
+>>>>>>> 4d4877b0bef4608b9bd8e741abcd1943d6454fb7
 
 part 'quran_state.dart';
 
@@ -31,12 +36,13 @@ class QuranCubit extends Cubit<QuranState> {
   }
 
   Future<void> loadPdfFromAssets() async {
-    final bytes = await rootBundle.load('assets/pdfs/القران الكريم.pdf');
+    final bytes = await rootBundle.load(DataBaseConstants.alquranAlkarimPdfPath);
     final dir = await getTemporaryDirectory();
     final file = File('${dir.path}/القران الكريم.pdf');
     await file.writeAsBytes(bytes.buffer.asUint8List());
     emit(state.copyWith(filePath: file.path));
   }
+<<<<<<< HEAD
 
  void goToPageByNumber(int pageNumber) {
   print('Requested page: $pageNumber, Total pages: $totalPages');
@@ -190,4 +196,6 @@ class QuranCubit extends Cubit<QuranState> {
     'الفلق': 604,
     'الناس': 604,
   };
+=======
+>>>>>>> 4d4877b0bef4608b9bd8e741abcd1943d6454fb7
 }

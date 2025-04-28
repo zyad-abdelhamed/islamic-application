@@ -7,14 +7,13 @@ class AlertDialogState {
   final int selectedIndex;
   String get getText {
     if (progress < 33) {
-      return ViewConstants.ringRosaryTexts[0];
+      return AppStrings.ringRosaryTexts[0];
     } else if (progress < 66) {
-      return ViewConstants.ringRosaryTexts[1];
+      return AppStrings.ringRosaryTexts[1];
     } else if (progress < 99) {
-      return ViewConstants.ringRosaryTexts[2];
-    } else {
-      return ViewConstants.ringRosaryTexts[3];
+      return AppStrings.ringRosaryTexts[2];
     }
+    return AppStrings.ringRosaryTexts[3];
   }
 
   Color getContainerColor(int index) {
@@ -26,14 +25,14 @@ class AlertDialogState {
 
   String get getRingText {
     if (selectedIndex == 0) {
-      return ViewConstants.ringRosaryTexts[0];
+      return AppStrings.ringRosaryTexts[0];
     } else if (selectedIndex == 1) {
-      return ViewConstants.ringRosaryTexts[1];
+      return AppStrings.ringRosaryTexts[1];
     } else if (selectedIndex == 2) {
-      return ViewConstants.ringRosaryTexts[2];
+      return AppStrings.ringRosaryTexts[2];
     } else if (selectedIndex == 3) {
-      return ViewConstants.ringRosaryTexts[3];
+      return AppStrings.ringRosaryTexts[3];
     }
-    return ViewConstants.ringRosaryTexts[0];
+    return AppStrings.done; //when terminate
   }
 }

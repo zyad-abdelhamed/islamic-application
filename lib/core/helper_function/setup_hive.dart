@@ -7,7 +7,6 @@ Future<void> setupHive() async {
   await Hive.initFlutter();
   Hive.registerAdapter(TypeAdapterForTimings());
   await Hive.openBox<int>(DataBaseConstants.featuerdRecordsHiveKey);
-  await Hive.openBox<bool>(DataBaseConstants.cacheVariblesHiveKey);
   await Hive.openBox<bool>(DataBaseConstants.rTableBoxHiveKey);
   //await Hive.box<bool>(DataBaseConstants.rTableBoxHiveKey).clear();
     for (int key = 0; key >= (30 * 16); key++) {

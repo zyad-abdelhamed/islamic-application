@@ -39,7 +39,7 @@ class DependencyInjection {
     // cubits
     sl.registerFactory(() => HomeCubit(sl(),sl()));
     sl.registerFactory(() => TimerCubit());
-    sl.registerFactory(() => SupplicationsCubit(sl()));
+    sl.registerFactory(() => AdhkarCubit(sl()));
     sl.registerFactory(() => FeaturedRecordsCubit(sl(), sl(), sl(), sl()));
     sl.registerFactory(() => RtabelCubit(sl(), sl(), sl()));
     //usecases

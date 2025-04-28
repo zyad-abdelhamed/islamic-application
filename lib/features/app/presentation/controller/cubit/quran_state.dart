@@ -5,6 +5,7 @@ class QuranState extends Equatable {
   final double width;
   final double height;
   final String floatingActionButtonString;
+<<<<<<< HEAD
    int cIndex;
 
    QuranState({
@@ -31,6 +32,9 @@ class QuranState extends Equatable {
           floatingActionButtonString ?? this.floatingActionButtonString,
     );
   }
+=======
+  const QuranState({this.filePath,this.height = 0.0,this.width = 0.0,this.floatingActionButtonString = AppStrings.theIndex});
+>>>>>>> 4d4877b0bef4608b9bd8e741abcd1943d6454fb7
 
   @override
   List<Object?> get props =>
