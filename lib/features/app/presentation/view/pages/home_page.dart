@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => TimerCubit()),
-          BlocProvider(create: (context) => HomeCubit(sl(), sl())),
+          BlocProvider(create: (context) => HomeCubit(sl(), sl())..getPrayersTimes(context)..showTodatHadith(context)),
         ],
         child: adaptiveWidgetDependingOnOs(defaultWidget: HomePageToDesktop(), androidWidget: HomePageToAndroidAndIos(), iosWidget: HomePageToAndroidAndIos()));
   }

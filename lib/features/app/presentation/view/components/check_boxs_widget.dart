@@ -26,7 +26,7 @@ class CheckBoxsWidget extends StatelessWidget {
                         (index) {
                           return Container(
                             width: constraints.maxWidth / 16 - 10, // To make the checkbox fit
-                            height: 50, // Height of each checkbox container
+                            height: 40, // Height of each checkbox container
                             decoration: BoxDecoration(
                               border: Border.all(color: AppColors.grey1),
                             ),

@@ -34,17 +34,19 @@ class HomeCubit extends Cubit<HomeState> {
       showCupertinoDialog(
           context: context,
           builder: (context) => CustomAlertDialog(
-              alertDialogContent: (context) => Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Text>[
-                      Text('حديث اليوم|',
-                          style: TextStyles.semiBold32auto(context)
-                              .copyWith(color: AppColors.secondryColor)),
-                      Text(hadith.content,
-                          textAlign: TextAlign.start,
-                          style: TextStyles.bold20(context)
-                              .copyWith(color: AppColors.white, fontSize: 23)),
-                    ],
+              alertDialogContent: (context) => SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Text>[
+                        Text('حديث اليوم|',
+                            style: TextStyles.semiBold32auto(context)
+                                .copyWith(color: AppColors.secondryColor)),
+                        Text(hadith.content,
+                            textAlign: TextAlign.start,
+                            style: TextStyles.bold20(context).copyWith(
+                                color: AppColors.white, fontSize: 23)),
+                      ],
+                    ),
                   )));
     });
   }
@@ -76,6 +78,22 @@ class HomeCubit extends Cubit<HomeState> {
     ];
   }
 
+  intializeTimeListener(BuildContext context) {
+    context.read<TimerCubit>().onTimerFinished = () {
+      final timings = state.prayerTimes!;
+      final nextPrayerTime = nextPrayer(
+        fajr: timings.fajr,
+        dhuhr: timings.dhuhr,
+        asr: timings.asr,
+        maghrib: timings.maghrib,
+        isha: timings.isha,
+      );
+
+      emit(state.copyWith(prayerTime: nextPrayerTime));
+      context.read<TimerCubit>().startTimerUntil("${nextPrayerTime.time}:00");
+    };
+  }
+
   getPrayersTimes(BuildContext context) async {
     Either<Failure, Timings> result = await getPrayersTimesUseCase();
     result.fold(
@@ -96,6 +114,7 @@ class HomeCubit extends Cubit<HomeState> {
             prayerTimes: r,
             requestStateofPrayerTimes: RequestStateEnum.success));
         context.read<TimerCubit>().startTimerUntil("${nextPrayerTime.time}:00");
+        intializeTimeListener(context);
       },
     );
   }

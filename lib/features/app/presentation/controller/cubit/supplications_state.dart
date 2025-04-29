@@ -19,7 +19,7 @@ class AdhkarState extends Equatable {
       this.adhkarWidgetsOffsets,
       this.adhkarWidgetsMaintainingSize,
       this.dummyCounterState = 0,
-      this.isDeleted = false,
+      this.isDeleted = true,
       this.adhkar = const [],
       this.adhkarcounts = const [],
       this.adhkarErorrMessage,

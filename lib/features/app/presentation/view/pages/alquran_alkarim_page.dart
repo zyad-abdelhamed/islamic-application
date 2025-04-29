@@ -28,8 +28,8 @@ class AlquranAlkarimPage extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 30),
                     child: GestureDetector(
                       onTap: () {
-                        // QuranCubit.getQuranController(context)
-                        //     .showOrHideIndex(context);
+                        QuranCubit.getQuranController(context)
+                            .showOrHideIndex(context);
                       },
                       child: CircleAvatar(
                           radius: 35,
@@ -53,6 +53,7 @@ class AlquranAlkarimPage extends StatelessWidget {
                                 pageSnap: true,
                                 autoSpacing: false,
                                 fitEachPage: true,
+                               
                                 onViewCreated: (controller) {
                                   QuranCubit.getQuranController(context)
                                       .setPdfController(controller);

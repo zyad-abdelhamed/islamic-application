@@ -39,23 +39,27 @@ class PartsWidget extends StatelessWidget {
           children: List.generate(
             AppStrings.surahPages.length,
             (index) {
-              int pageNum = AppStrings
-                      .surahPages
-                      .values
-                      .elementAt(index) -
-                  1;
+              int pageNum = AppStrings.surahPages.values.elementAt(index) - 1;
 
               return BlocBuilder<QuranCubit, QuranState>(
                 builder: (context, state) {
                   return AnimatedContainer(
-                    duration: AppDurations.lowDuration,
-                    color: index == state.cIndex
-                        ? AppColors.secondryColor
-                        : Colors.transparent,
+                    decoration: BoxDecoration(
+                        color: index == state.cIndex
+                            ? AppColors.secondryColor
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.only(
+                            topLeft:
+                                Radius.circular(index == 0 ? borderRadius : 0),
+                            bottomLeft: Radius.circular(
+                                index == AppStrings.surahPages.length - 1
+                                    ? borderRadius
+                                    : 0))),
+                    duration: AppDurations.mediumDuration,
                     child: TextButton(
                       onPressed: () {
                         BlocProvider.of<QuranCubit>(context)
-                            .changeCIndex(index); 
+                            .changeCIndex(index);
                         QuranCubit.getQuranController(context)
                             .goToPageByNumber(pageNum);
                       },

@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:test_app/core/helper_function/onGenerateRoute.dart';
@@ -8,6 +9,8 @@ import 'package:test_app/features/app/presentation/view/pages/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+
   DependencyInjection.init();
   await setupHive();
   runApp(ChangeNotifierProvider(
