@@ -11,9 +11,6 @@ class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
   @override
   Widget build(BuildContext context) {
-   // _goToMainPage(context);
-    // final randomIndex = random.nextInt(ran.length);
-    // final randomItem = ran[randomIndex];
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
         return Visibility(

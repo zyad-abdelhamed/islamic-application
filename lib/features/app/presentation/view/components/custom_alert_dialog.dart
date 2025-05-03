@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:test_app/core/helper_function/get_responsive_font_size.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 
 class CustomAlertDialog extends StatelessWidget {
@@ -13,6 +12,7 @@ class CustomAlertDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double radius = 37.0;
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Column(
@@ -29,26 +29,28 @@ class CustomAlertDialog extends StatelessWidget {
                   color: AppColors.primaryColor,
                   borderRadius: BorderRadius.circular(35)),
               child: Stack(
-                  children: [
-
-                    Center(child: alertDialogContent(context)),
-                    Positioned(top: 0.0,right: 0.0,
+                children: [
+                  Positioned(
+                      top: (radius * 2) + 10,
+                      child: alertDialogContent(context)),
+                  //   ===pop button===
+                  Positioned(
+                      top: 0.0,
+                      right: 0.0,
                       child: GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: CircleAvatar(
-                    backgroundColor: AppColors.white,
-                    child: Icon(
-                      CupertinoIcons.xmark,
-                      color: AppColors.black,
-                      size:
-                          getResponsiveFontSize(context: context, fontSize: 37),
-                    ),
-                  ),
-                ))
-                  ],
-                ),
+                        onTap: () => Navigator.maybePop(context),
+                        child: CircleAvatar(
+                          backgroundColor: AppColors.white,
+                          child: Icon(
+                            CupertinoIcons.xmark,
+                            color: AppColors.black,
+                            size: radius,
+                          ),
+                        ),
+                      ))
+                ],
               ),
-           
+            ),
           ),
         ],
       ),
