@@ -14,15 +14,22 @@ class CheckBoxsWidget extends StatelessWidget {
       return BlocBuilder<RtabelCubit, RtabelState>(
         builder: (context, state) {
           return getWidgetDependingOnReuestState(
-              requestStateEnum: state.requestState,
-              widgetIncaseSuccess: Wrap(
-                  children: List.generate(
-                      16 * 30,
-                      (index) => Container(
+            requestStateEnum: state.requestState,
+            widgetIncaseSuccess: state.checkBoxsValues.isEmpty
+                ? const Center(child: CircularProgressIndicator()) // Prevent empty list error
+                : SingleChildScrollView(
+                    child: Wrap(
+                      spacing: 10, // space between checkboxes horizontally
+                      runSpacing: 10, // space between checkboxes vertically
+                      children: List.generate(
+                        30 * 16, // Total checkboxes (30 * 16)
+                        (index) {
+                          return Container(
+                            width: constraints.maxWidth / 16 - 10, // To make the checkbox fit
+                            height: 40, // Height of each checkbox container
                             decoration: BoxDecoration(
-                                border: Border.all(color: AppColors.grey1)),
-                            width: constraints.maxWidth / 16,
-                            height: 50, //50 for hight (day container)
+                              border: Border.all(color: AppColors.grey1),
+                            ),
                             child: Center(
                               child: Checkbox(
                                 value: state.checkBoxsValues[index],
@@ -34,8 +41,13 @@ class CheckBoxsWidget extends StatelessWidget {
                                 },
                               ),
                             ),
-                          ))),
-              erorrMessage: state.errorMessage);
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+            erorrMessage: state.errorMessage,
+          );
         },
       );
     });

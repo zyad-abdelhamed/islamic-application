@@ -14,9 +14,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-        providers: <BlocProvider>[
-          BlocProvider<TimerCubit>(create: (context) => TimerCubit()),
-          BlocProvider(create: (context) => HomeCubit(sl(), sl())),
+        providers: [
+          BlocProvider(create: (context) => TimerCubit()),
+          BlocProvider(create: (context) => HomeCubit(sl(), sl())..getPrayersTimes(context)..showTodatHadith(context)),
         ],
         child: Stack(
           children: [

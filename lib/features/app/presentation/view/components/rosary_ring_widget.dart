@@ -26,7 +26,7 @@ class RosaryRingWidget extends StatelessWidget {
           child: Column(
             spacing: 35.0,
             children: List<BlocBuilder>.generate(
-              AppStrings.ringRosaryTexts.length,
+              AppStrings.adhkarList.length,
               (index) => _customContainer(index: index),
             ),
           ),
@@ -50,7 +50,7 @@ class RosaryRingWidget extends StatelessWidget {
               color: state.getContainerColor(index)),
           child: FittedBox(
             child: Text(
-              AppStrings.ringRosaryTexts[index],
+              AppStrings.adhkarList[index],
               style: TextStyles.semiBold18(context, AppColors.white)
                   .copyWith(fontSize: 23),
             ),

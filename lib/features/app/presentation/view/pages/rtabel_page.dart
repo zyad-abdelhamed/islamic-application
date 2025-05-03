@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/adaptive/orentation_layout.dart';
+import 'package:test_app/core/constants/app_strings.dart';
+import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/rtabel_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/land_scape_ramadan_table.dart';
-import 'package:test_app/core/constants/app_strings.dart';
-import 'package:test_app/core/theme/app_colors.dart';
-import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 
 class RamadanTabelPage extends StatelessWidget {
@@ -18,6 +16,16 @@ class RamadanTabelPage extends StatelessWidget {
             RtabelCubit(sl(), sl(), sl())..loadCheckBoxValues(),
         child: Scaffold(
             appBar: AppBar(
+              actions: [
+                Visibility(
+                    visible: MediaQuery.of(context).orientation ==
+                        Orientation.landscape,
+                    child: IconButton(
+                        onPressed: () {
+                          context.read<RtabelCubit>().resetAllCheckBoxes();
+                        },
+                        icon: Icon(Icons.refresh, color: Colors.white)))
+              ],
               leading: IconButton(
                   onPressed: () {
                     Navigator.pop(context);
@@ -26,10 +34,6 @@ class RamadanTabelPage extends StatelessWidget {
                     //   RoutesConstants.homePageRouteName,
                     //   (route) => false,
                     // );
-                    SystemChrome.setPreferredOrientations([
-                      DeviceOrientation.portraitUp,
-                      DeviceOrientation.portraitDown,
-                    ]);
                   },
                   icon: Icon(Icons.arrow_back)),
               title: Text(
@@ -52,24 +56,6 @@ class RamadanTabelPage extends StatelessWidget {
                                   AppStrings
                                       .portraitOrientationToRTablePageText,
                                   style: TextStyles.bold20(context)),
-                              OutlinedButton(
-                                style: ButtonStyle(
-                                    shape: WidgetStatePropertyAll(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15)))),
-                                onPressed: () {
-                                  SystemChrome.setPreferredOrientations([
-                                    DeviceOrientation.landscapeLeft,
-                                    DeviceOrientation.landscapeRight,
-                                  ]);
-                                },
-                                child: Text(
-                                  'تفعيل',
-                                  style: TextStyles.semiBold32(context,
-                                      color: AppColors.primaryColor),
-                                ),
-                              )
                             ],
                           ),
                         ),

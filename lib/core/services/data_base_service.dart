@@ -2,20 +2,21 @@ import 'package:hive/hive.dart';
 
 abstract class BaseDataBaseService<T> {
   Future<void> add(T item, String? path);
-  Future<void> put(T item, String path);
-    Future<void> putAt(T item, int index);
-
+  Future<void> put(dynamic key, T item); 
+  Future<void> putAt(int index, T item);
   Future<List<T>> get(String path);
   T? getValue(String path);
   Future<void> addAll(List<T> items, String path);
   Future<void> delete(dynamic id, String path);
   Future<void> deleteAll(String path);
+  Future<void> putAll(Map<dynamic, T> entries); 
 }
 
 class HiveDatabaseService<T> implements BaseDataBaseService<T> {
   final Box<T> box;
-  
+
   HiveDatabaseService({required this.box});
+
   @override
   Future<void> add(T item, String? path) async {
     await box.add(item);
@@ -23,7 +24,11 @@ class HiveDatabaseService<T> implements BaseDataBaseService<T> {
 
   @override
   Future<List<T>> get(String path) async {
-    return Future.value(box.values.toList());
+    List<T> list = [];
+    for (int i = 0; i < box.length; i++) {
+      list.add(box.getAt(i)!);
+    }
+    return list;
   }
 
   @override
@@ -33,12 +38,9 @@ class HiveDatabaseService<T> implements BaseDataBaseService<T> {
 
   @override
   Future<void> delete(dynamic id, String path) async {
-    // await box.delete(id);
-    // تأكد من أن الـ index صالح
     if (box.length > id) {
-      var key =
-          box.keyAt(id); // الحصول على المفتاح عند الفهرس المحدد
-      await box.delete(key); // حذف العنصر باستخدام المفتاح
+      var key = box.keyAt(id);
+      await box.delete(key);
     }
   }
 
@@ -46,21 +48,24 @@ class HiveDatabaseService<T> implements BaseDataBaseService<T> {
   Future<void> deleteAll(String path) async {
     await box.clear();
   }
-  
+
   @override
   T? getValue(String path) {
     return box.get(path);
   }
-  
+
   @override
-  Future<void> put(T item, String path) {
-    return box.put(path, item);
-  }
-  
-  @override
-  Future<void> putAt(T item, int index) {
-   return box.putAt(index, item);
+  Future<void> put(dynamic key, T item) {
+    return box.put(key, item);
   }
 
-  
+  @override
+  Future<void> putAt(int index, T item) {
+    return box.putAt(index, item);
+  }
+
+  @override
+  Future<void> putAll(Map<dynamic, T> entries) async {
+    await box.putAll(entries);
+  }
 }

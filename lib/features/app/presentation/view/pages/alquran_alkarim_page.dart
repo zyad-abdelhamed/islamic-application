@@ -6,6 +6,7 @@ import 'package:test_app/features/app/presentation/controller/cubit/quran_cubit.
 import 'package:test_app/features/app/presentation/view/components/index_widget.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
+import 'package:test_app/features/app/presentation/view/components/parts_widget.dart';
 
 class AlquranAlkarimPage extends StatelessWidget {
   const AlquranAlkarimPage({super.key});
@@ -27,8 +28,8 @@ class AlquranAlkarimPage extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 30),
                     child: GestureDetector(
                       onTap: () {
-                        // QuranCubit.getQuranController(context)
-                        //     .showOrHideIndex(context);
+                        QuranCubit.getQuranController(context)
+                            .showOrHideIndex(context);
                       },
                       child: CircleAvatar(
                           radius: 35,
@@ -44,9 +45,7 @@ class AlquranAlkarimPage extends StatelessWidget {
                 ),
                 body: Stack(
                   children: [
-                    BlocBuilder<QuranCubit, QuranState>(
-                      builder: (context, state) {
-                        return state.filePath == null
+                     state.filePath == null
                             ? Center(child: CircularProgressIndicator())
                             : PDFView(
                                 filePath: state.filePath,
@@ -54,12 +53,22 @@ class AlquranAlkarimPage extends StatelessWidget {
                                 pageSnap: true,
                                 autoSpacing: false,
                                 fitEachPage: true,
-                              );
-                      },
-                    ),
+                               
+                                onViewCreated: (controller) {
+                                  QuranCubit.getQuranController(context)
+                                      .setPdfController(controller);
+                                },
+                                onRender: (pages) {
+                                  if (pages != null) {
+                                    QuranCubit.getQuranController(context)
+                                        .updateTotalPages(pages);
+                                  }
+                                },
+                              )
+                      ,
                     Align(
                       alignment: Alignment.centerRight,
-                      child: IndexWidget(
+                      child: PartsWidget(
                         height: state.height,
                         width: state.width,
                       ),

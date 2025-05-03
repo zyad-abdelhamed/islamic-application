@@ -4,6 +4,6 @@ class HadithModel extends Hadith{
   const HadithModel({required super.content});
 
   factory HadithModel.fromJson(Map<String,dynamic> jsonHadith){
-   return HadithModel(content: jsonHadith['']);
+   return HadithModel(content: jsonHadith['arab']);
   }
 }

@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/timer_state.dart';
 
 class TimerCubit extends Cubit<TimerState> {
   TimerCubit() : super(const TimerState(hours: 0, minutes: 0, seconds: 0));
   Timer? _timer;
+  VoidCallback? onTimerFinished;
+
   void startTimerUntil(String targetTime) {
     Duration remaining = _calculateRemainingTime(targetTime);
     startTimer(
@@ -24,6 +27,9 @@ class TimerCubit extends Cubit<TimerState> {
           currentState.seconds == 0) {
         timer.cancel();
         emit(currentState.copyWith(isRunning: false));
+        if (onTimerFinished != null) {
+          onTimerFinished!();
+        }
       } else {
         int newHours = currentState.hours;
         int newMinutes = currentState.minutes;
@@ -73,4 +79,5 @@ class TimerCubit extends Cubit<TimerState> {
     _timer?.cancel();
     emit(state.copyWith(isRunning: false));
   }
+ 
 }

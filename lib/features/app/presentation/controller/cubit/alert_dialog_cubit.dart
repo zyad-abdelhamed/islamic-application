@@ -33,7 +33,7 @@ class AlertDialogCubit extends Cubit<AlertDialogState> {
   //helper function
   int _incrementSelectedIndex() => state.selectedIndex + 1;
   void _pop(BuildContext context) {
-    if (state.selectedIndex == AppStrings.ringRosaryTexts.length - 1) {
+    if (state.selectedIndex == AppStrings.adhkarList.length - 1) {
       Future.delayed(
           AppDurations.longDuration, () => Navigator.pop(context));
     }

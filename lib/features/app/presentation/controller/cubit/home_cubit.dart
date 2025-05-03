@@ -22,44 +22,48 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit(
     this.getPrayersTimesUseCase,
     this.getTodayHadithUseCase,
-  ) : super(HomeState());
+  ) : super(const HomeState());
 
   final GetPrayersTimesUseCase getPrayersTimesUseCase;
   final GetTodayHadithUseCase getTodayHadithUseCase;
 
   void showTodatHadith(BuildContext context) async {
     Either<Failure, Hadith> result = await getTodayHadithUseCase();
-    result.fold(
-        (l) => null,
-        (hadith) => showCupertinoDialog(
-            context: context,
-            builder: (context) => CustomAlertDialog(
-                alertDialogContent: (context) => Column(
+    result.fold((l) => print(l.message), (hadith) {
+      print('solllu');
+      showCupertinoDialog(
+          context: context,
+          builder: (context) => CustomAlertDialog(
+              alertDialogContent: (context) => SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Text>[
                         Text('حديث اليوم|',
+                            style: TextStyles.semiBold32auto(context)
+                                .copyWith(color: AppColors.secondryColor)),
+                        Text(hadith.content,
                             textAlign: TextAlign.start,
                             style: TextStyles.bold20(context).copyWith(
-                                color: AppColors.secondryColor, fontSize: 23)),
-                        Text(hadith.content,
-                            textAlign: TextAlign.center,
-                            style: TextStyles.semiBold32auto(context)
-                                .copyWith(color: AppColors.white)),
+                                color: AppColors.white, fontSize: 23)),
                       ],
-                    ))));
+                    ),
+                  )));
+    });
   }
+
   void showDawerInCaseLandScape(BuildContext context) {
-    emit(state.copyWith(isVisible: true,
+    emit(state.copyWith(
+      isVisible: true,
       opacity: .8,
-        width: context.width * 1 / 4,
-        ));
+      width: context.width * 1 / 4,
+    ));
   }
 
   void hideDawerInCaseLandScape() {
-    emit(state.copyWith(
-       opacity: 0.0,
-        width: 0.0));
+    emit(state.copyWith(opacity: 0.0, width: 0.0));
 
-  Future.delayed(AppDurations.longDuration,() => emit(state.copyWith(isVisible: false)));
+    Future.delayed(AppDurations.longDuration,
+        () => emit(state.copyWith(isVisible: false)));
   }
 
   //  ===prayer times===
@@ -72,6 +76,22 @@ class HomeCubit extends Cubit<HomeState> {
       state.prayerTimes!.maghrib,
       state.prayerTimes!.isha
     ];
+  }
+
+  intializeTimeListener(BuildContext context) {
+    context.read<TimerCubit>().onTimerFinished = () {
+      final timings = state.prayerTimes!;
+      final nextPrayerTime = nextPrayer(
+        fajr: timings.fajr,
+        dhuhr: timings.dhuhr,
+        asr: timings.asr,
+        maghrib: timings.maghrib,
+        isha: timings.isha,
+      );
+
+      emit(state.copyWith(prayerTime: nextPrayerTime));
+      context.read<TimerCubit>().startTimerUntil("${nextPrayerTime.time}:00");
+    };
   }
 
   getPrayersTimes(BuildContext context) async {
@@ -94,6 +114,7 @@ class HomeCubit extends Cubit<HomeState> {
             prayerTimes: r,
             requestStateofPrayerTimes: RequestStateEnum.success));
         context.read<TimerCubit>().startTimerUntil("${nextPrayerTime.time}:00");
+        intializeTimeListener(context);
       },
     );
   }

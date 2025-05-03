@@ -1,3 +1,5 @@
+import 'package:test_app/core/helper_function/get_random.dart';
+
 class Apiconstants {
   static final String _latitude = '30.0444';
   static final String _longitude = '31.2357';
@@ -11,5 +13,6 @@ class Apiconstants {
   static String getnextPrayersUrl =
       "https://api.aladhan.com/v1/nextPrayer?latitude=$_latitude&method=8&longitude=$_longitude";
 
-  static const String ahadithUrl = '';    
+  static  String get ahadithUrl =>
+      'https://hadis-api-id.vercel.app/hadith/abu-dawud?page=${getRandomNumber(4419)}&limit=1';
 }

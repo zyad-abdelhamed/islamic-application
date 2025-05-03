@@ -5,7 +5,7 @@ import 'package:test_app/core/models/api_service_input_model.dart';
 import 'package:test_app/core/services/api_services.dart';
 
 abstract class BaseHomeRemoteDataSource {
-  Future<List<Hadith>> getAhadiths();
+  Future<Hadith> getAhadiths();
 }
 
 class HomeRemoteDataSource implements BaseHomeRemoteDataSource {
@@ -14,14 +14,11 @@ class HomeRemoteDataSource implements BaseHomeRemoteDataSource {
   final ApiService apiService;
 
   @override
-  Future<List<Hadith>> getAhadiths() async {
+  Future<Hadith> getAhadiths() async {
     Map<String, dynamic> jsonBody = await apiService.get(
         apiServiceInputModel:
             ApiServiceInputModel(url: Apiconstants.ahadithUrl));
 
-    List<Map<String, dynamic>> jsonAhadith = jsonBody[''];
-    return List<Hadith>.from(jsonAhadith
-        .map((jsonHadith) => HadithModel.fromJson(jsonHadith))
-        .toList());
+    return HadithModel.fromJson(jsonBody['items'][0]);
   }
 }
