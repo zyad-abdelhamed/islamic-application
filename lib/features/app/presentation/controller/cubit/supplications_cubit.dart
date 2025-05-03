@@ -15,8 +15,12 @@ class AdhkarCubit extends Cubit<AdhkarState> {
   final GetAdhkarUseCase getAdhkarUseCase;
   final ScrollController supplicationsScrollController = ScrollController();
   AdhkarCubit(this.getAdhkarUseCase) : super(AdhkarState()) {
-    supplicationsScrollController.addListener(() => emit(state.copyWith(
-        progress: supplicationsScrollController.position.pixels)));
+    supplicationsScrollController.addListener(() {
+      emit(state.copyWith(
+        progress: supplicationsScrollController.position.pixels));
+
+      if(state.adhkarWidgetsMaintainingSize?.every((element) => element == false) ?? false) ;   
+    });
   }
 
   //supplications events
@@ -55,7 +59,8 @@ class AdhkarCubit extends Cubit<AdhkarState> {
   }
 
   void decreaseCount({required int index}) {
-    if (state.adhkarcounts[index] > 1 || (state.adhkarcounts[index] == 1 && !state.isDeleted)) {
+    if (state.adhkarcounts[index] > 1 ||
+        (state.adhkarcounts[index] == 1 && !state.isDeleted)) {
       _slideAnimation(index);
     } else if (state.adhkarcounts[index] == 1 && state.isDeleted) {
       _removeAnimation(index);
@@ -86,8 +91,7 @@ class AdhkarCubit extends Cubit<AdhkarState> {
   void _removeAnimation(int index) {
     _decreaseCount(index);
     state.adhkarWidgetsOffsets![index] = Offset(1, 0);
-    emit(state.copyWith(
-        selectedIndexOfVisibilty: state.dummyCounterState + 1));
+    emit(state.copyWith(selectedIndexOfVisibilty: state.dummyCounterState + 1));
     Future.delayed(AppDurations.mediumDuration, () {
       state.adhkarWidgetsMaintainingSize![index] = false;
       emit(state.copyWith(

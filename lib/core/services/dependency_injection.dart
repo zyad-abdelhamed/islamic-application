@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:test_app/core/services/internet_connection.dart';
 import 'package:test_app/features/app/data/datasources/home_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/home_remote_data_source.dart';
 import 'package:test_app/features/app/data/datasources/prayers_local_data_source.dart';
@@ -37,7 +38,7 @@ GetIt sl = GetIt.instance;
 class DependencyInjection {
   static Future<void> init() async {
     // cubits
-    sl.registerFactory(() => HomeCubit(sl(),sl()));
+    sl.registerFactory(() => HomeCubit(sl(), sl()));
     sl.registerFactory(() => TimerCubit());
     sl.registerFactory(() => AdhkarCubit(sl()));
     sl.registerFactory(() => FeaturedRecordsCubit(sl(), sl(), sl(), sl()));
@@ -63,14 +64,17 @@ class DependencyInjection {
     //repositories
     sl.registerLazySingleton<BaseRTableRepo>(
         () => RTableRepo(rTableLocalDataSource: sl()));
-    sl.registerLazySingleton<BaseHomeRepo>(() => HomeRepo(sl(),sl()));
+    sl.registerLazySingleton<BaseHomeRepo>(() => HomeRepo(sl(), sl()));
     sl.registerLazySingleton<BaseRecordsRepo>(
       () => RecordsRepo(recordsLocalDataSource: sl()),
     );
     sl.registerLazySingleton<BasePrayerRepo>(() => PrayerRepo(
-        prayersRemoteDataSource: sl(), prayersLocalDataSource: sl()));
+        prayersRemoteDataSource: sl(),
+        prayersLocalDataSource: sl(),
+        internetConnection: sl<InternetConnection>()));
     // data sources
-    sl.registerLazySingleton<BaseHomeRemoteDataSource>(() => HomeRemoteDataSource(apiService: sl()));
+    sl.registerLazySingleton<BaseHomeRemoteDataSource>(
+        () => HomeRemoteDataSource(apiService: sl()));
     sl.registerLazySingleton<RTableLocalDataSource>(
         () => RTableLocalDataSourceImpl());
     sl.registerLazySingleton<PrayersLocalDataSource>(
@@ -84,6 +88,8 @@ class DependencyInjection {
         () => PrayersRemoteDataSourceImpl(sl()));
 
     // services
+    sl.registerLazySingleton<InternetConnection>(
+        () => InternetConnectionImpl());
     sl.registerLazySingleton<ApiService>(() => ApiService(sl()));
     sl.registerLazySingleton<Dio>(() => Dio());
   }
