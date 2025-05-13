@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:test_app/core/theme/dark_theme.dart';
 import 'package:test_app/core/theme/light_theme.dart';
 
+class ThemeCubit extends HydratedCubit<bool> {
+  ThemeCubit() : super(false); // false = light mode by default
 
-class ThemeProvider with ChangeNotifier {
-  bool _darkMode = false;
-  bool get darkMode => _darkMode;
-  ThemeData _appTheme = lightTheme;
-  ThemeData get appTheme => _appTheme;
-  void _setVaribles(ThemeData theme, bool darkMode) {
-    _darkMode = darkMode;
-    _appTheme = theme;
-    notifyListeners();
-  //  hiveCacheVariblesInstance.put('darkMode', darkMode);
+  ThemeData get theme => state ? darkTheme : lightTheme;
+
+  void toggleTheme() => emit(!state);
+
+  @override
+  bool fromJson(Map<String, dynamic> json) {
+    return json['isDark'] as bool? ?? false;
   }
 
-  void changeTheme() {
-    _appTheme == lightTheme
-        ? _setVaribles(darkTheme, true)
-        : _setVaribles(lightTheme, false);
+  @override
+  Map<String, dynamic> toJson(bool state) {
+    return {'isDark': state};
   }
 }

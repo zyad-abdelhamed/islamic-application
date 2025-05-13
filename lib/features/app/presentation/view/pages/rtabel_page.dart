@@ -9,57 +9,60 @@ import 'package:test_app/core/services/dependency_injection.dart';
 
 class RamadanTabelPage extends StatelessWidget {
   const RamadanTabelPage({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) =>
-            RtabelCubit(sl(), sl(), sl())..loadCheckBoxValues(),
-        child: Scaffold(
-            appBar: AppBar(
-              actions: [
-                Visibility(
-                    visible: MediaQuery.of(context).orientation ==
-                        Orientation.landscape,
-                    child: IconButton(
-                        onPressed: () {
-                          context.read<RtabelCubit>().resetAllCheckBoxes();
-                        },
-                        icon: Icon(Icons.refresh, color: Colors.white)))
-              ],
-              leading: IconButton(
+  
+ @override
+Widget build(BuildContext context) {
+  return BlocProvider(
+    create: (context) => RtabelCubit(sl(), sl(), sl())..loadCheckBoxValues(),
+    child: Builder(
+      builder: (context) {
+        return Scaffold(
+          appBar: AppBar(
+            actions: [
+              Visibility(
+                visible: MediaQuery.of(context).orientation == Orientation.landscape,
+                child: IconButton(
                   onPressed: () {
-                    Navigator.pop(context);
-                    // Navigator.pushNamedAndRemoveUntil(
-                    //   context,
-                    //   RoutesConstants.homePageRouteName,
-                    //   (route) => false,
-                    // );
+                    context.read<RtabelCubit>().resetAllCheckBoxes();
                   },
-                  icon: Icon(Icons.arrow_back)),
-              title: Text(
-                AppStrings.appBarTitles(withTwoLines: false)[2],
+                  icon: Icon(Icons.refresh, color: Colors.white),
+                ),
+              )
+            ],
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.arrow_back),
+            ),
+            title: Text(
+              AppStrings.appBarTitles(withTwoLines: false)[2],
+            ),
+          ),
+          body: OrentationLayout(
+            landScapeWidget: (context) => LandScapeWidgetToRTablePage(),
+            portraitWidget: (context) => Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 200.0),
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0, right: 8.0, left: 8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        AppStrings.portraitOrientationToRTablePageText,
+                        style: TextStyles.bold20(context),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
-            body: OrentationLayout(
-                landScapeWidget: (context) => LandScapeWidgetToRTablePage(),
-                portraitWidget: (context) => Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0, vertical: 200.0),
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              bottom: 8.0, right: 8.0, left: 8.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                  AppStrings
-                                      .portraitOrientationToRTablePageText,
-                                  style: TextStyles.bold20(context)),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ))));
-  }
+          ),
+        );
+      },
+    ),
+  );
+}
+
 }

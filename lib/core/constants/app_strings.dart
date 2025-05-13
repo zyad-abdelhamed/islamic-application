@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/features/app/presentation/view/pages/alquran_alkarim_page.dart';
+import 'package:test_app/features/app/presentation/view/pages/compass.dart';
 import 'package:test_app/features/app/presentation/view/pages/elec_rosary_page.dart';
 import 'package:test_app/features/app/presentation/view/pages/rtabel_page.dart';
 
@@ -11,7 +12,7 @@ abstract class AppStrings {
       'القرآن${getNewlineOrWightSpace()}الكريم',
       'السبحه${getNewlineOrWightSpace()}الالكترونيه',
       'جدول${getNewlineOrWightSpace()}رمضان',
-      'القبله'
+      'اتجاه${getNewlineOrWightSpace()}القبله' 
     ];
   }
 
@@ -76,9 +77,10 @@ abstract class AppStrings {
   ];
 
   static const List<String> imagesOfHomePageButtons = <String>[
-    'assets/images/quran.jpg',
-    'assets/images/image.jpeg',
-    'assets/images/ramadan.jpg',
+    'assets/images/quran.png',
+    'assets/images/ramadan.png',
+    'assets/images/mosque.png',
+    'assets/images/compass.png'
   ];
   static const List<String> emojisOfPrayers = <String>[
     '🌙',
@@ -111,7 +113,8 @@ abstract class AppStrings {
   static const List<StatelessWidget> pages = <StatelessWidget>[
     AlquranAlkarimPage(),
     ElecRosaryPage(),
-    RamadanTabelPage()
+    RamadanTabelPage(),
+    QiblaPage(),
   ];
   //   ===Alquran Alkarim Page===
   static const theIndex = 'الفهرس';

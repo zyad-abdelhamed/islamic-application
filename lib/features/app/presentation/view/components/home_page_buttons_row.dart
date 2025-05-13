@@ -17,7 +17,7 @@ class HomePageButtonsRow extends StatelessWidget {
               (index) => homeButton(
                   context: context,
                   text: AppStrings.appBarTitles(withTwoLines: true)[index],
-                  leftMargine: index != AppStrings.pages.length - 1
+                  leftMargin: index != AppStrings.pages.length - 1
                       ? 16.0
                       : 0.0, //(leftMargine)spacing between buttons
                   page: AppStrings.pages[index],
@@ -29,7 +29,7 @@ class HomePageButtonsRow extends StatelessWidget {
 homeButton(
         {required BuildContext context,
         required String text,
-        required double leftMargine,
+        required double leftMargin,
         required dynamic page,
         required String image}) =>
     GestureDetector(
@@ -41,7 +41,7 @@ homeButton(
             ));
       },
       child: Container(
-        margin: EdgeInsets.only(left: leftMargine),
+        margin: EdgeInsets.only(left: leftMargin),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15.0),
           color: AppColors.primaryColor,

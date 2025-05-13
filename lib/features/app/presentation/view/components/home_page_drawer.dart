@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/presentation/view/components/draw_circle_line_bloc_builder.dart';
 import 'package:test_app/features/app/presentation/view/components/rosary_ring_widget.dart';
 import 'package:test_app/features/app/presentation/view/components/home_drawer_text_button.dart';
@@ -7,7 +8,6 @@ import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/extentions/controllers_extention.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/core/utils/sized_boxs.dart';
 
 class HomeDrawerWidget extends StatelessWidget {
@@ -29,8 +29,8 @@ class HomeDrawerWidget extends StatelessWidget {
         child: Text(
           AppStrings.khetmAlquran,
           textAlign: TextAlign.center,
-          style:
-              TextStyles.semiBold32auto(context).copyWith(color: AppColors.white),
+          style: TextStyles.semiBold32auto(context)
+              .copyWith(color: AppColors.white),
         ),
       )
     ];
@@ -56,16 +56,16 @@ class HomeDrawerWidget extends StatelessWidget {
                     'الوضع الداكن',
                     style: TextStyles.bold20(context).copyWith(fontSize: 18),
                   ),
-                  Switch.adaptive(
-                      activeColor: AppColors.thirdColor,
-                      activeTrackColor:
-                          AppColors.thirdColor.withValues(alpha: .8),
-                      inactiveThumbColor: AppColors.black,
-                      inactiveTrackColor: AppColors.inActiveBlackColor,
-                      value: context.themeController.darkMode,
-                      onChanged: (bool value) =>
-                          Provider.of<ThemeProvider>(context, listen: false)
-                              .changeTheme())
+                   Switch.adaptive(
+                          activeColor: AppColors.thirdColor,
+                          activeTrackColor:
+                              AppColors.thirdColor.withValues(alpha: .8),
+                          inactiveThumbColor: AppColors.black,
+                          inactiveTrackColor: AppColors.inActiveBlackColor,
+                          value: context.watch<ThemeCubit>().state,
+                          onChanged: (bool value) =>
+                              context.themeController.toggleTheme())
+                   
                 ])),
         SizedBoxs.sizedBoxH30
       ],

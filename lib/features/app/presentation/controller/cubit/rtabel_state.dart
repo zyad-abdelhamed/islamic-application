@@ -1,6 +1,6 @@
 part of 'rtabel_cubit.dart';
 
-class RtabelState extends Equatable {
+class RtabelState  {
   final List<bool> checkBoxsValues;
   final RequestStateEnum requestState;
   final String errorMessage;
@@ -23,6 +23,5 @@ class RtabelState extends Equatable {
     );
   }
 
-  @override
-  List<Object> get props => [checkBoxsValues, requestState, errorMessage];
+  
 }

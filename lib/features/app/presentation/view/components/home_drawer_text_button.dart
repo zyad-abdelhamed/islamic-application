@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_app/core/extentions/controllers_extention.dart';
+import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/alert_dialog_cubit.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
@@ -33,16 +33,18 @@ class HomeDrawerTextButton extends StatelessWidget {
                   builder: (context) => BlocProvider(
                         create: (context) => AlertDialogCubit(),
                         child: CustomAlertDialog(
-                            alertDialogContent: (context) => alertDialogContent),
+                            alertDialogContent: (context) =>
+                                alertDialogContent),
                       ));
             },
             child: Text(
-              text,
-              style: TextStyles.semiBold16_120(context).copyWith(
-                  color: context.themeController.darkMode
-                      ? AppColors.white
-                      : AppColors.black),
-            ),
+                  text,
+                  style: TextStyles.semiBold16_120(context).copyWith(
+                      color:context.watch<ThemeCubit>().state
+                          ? AppColors.white
+                          : AppColors.black),
+                )
+          
           ),
         ],
       ),

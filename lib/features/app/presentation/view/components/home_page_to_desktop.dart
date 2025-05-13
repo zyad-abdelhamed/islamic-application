@@ -47,7 +47,7 @@ class HomePageToDesktop extends StatelessWidget {
                                 context: context,
                                 text: AppStrings.appBarTitles(
                                     withTwoLines: true)[index],
-                                leftMargine: index !=
+                                leftMargin: index !=
                                         AppStrings.pages.length - 1
                                     ? 16.0
                                     : 0.0, //(leftMargine)spacing between buttons

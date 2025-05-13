@@ -7,6 +7,8 @@ import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/qibla_cubit.dart';
 
 class QiblaPage extends StatelessWidget {
+  const QiblaPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/elec_rosary_cubit.dart';
 import 'package:test_app/core/helper_function/get_responsive_font_size.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/extentions/controllers_extention.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
 
 class CounterWidget extends StatelessWidget {
   const CounterWidget({super.key});
@@ -100,6 +98,6 @@ class CounterWidget extends StatelessWidget {
 }
 
 Color _getCounterColor(BuildContext context) =>
-    Provider.of<ThemeProvider>(context).darkMode
+   context.themeController.state
         ? AppColors.black
         : AppColors.white;
