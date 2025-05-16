@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/elec_rosary_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/featured_records_cubit.dart';
@@ -22,6 +23,7 @@ class ElecRosaryPage extends StatelessWidget {
         ],
         child: Scaffold(
           appBar: AppBar(
+            leading: GetAdaptiveBackButtonWidget(),
             title: Text(AppStrings.appBarTitles(withTwoLines: false)[1]),
           ),
           body: AdaptiveLayout(

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:test_app/core/helper_function/get_init_route.dart';
 import 'package:test_app/core/helper_function/onGenerateRoute.dart';
 import 'package:test_app/core/helper_function/setup_hive.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/dark_theme.dart';
 import 'package:test_app/core/theme/light_theme.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
-import 'package:test_app/features/app/presentation/view/pages/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
             ),
             theme: isDarkMode ? darkTheme : lightTheme,
             debugShowCheckedModeBanner: false,
-            home: const HomePage(),
+            initialRoute: getInitRoute,
             onGenerateRoute: onGenerateRoute,
           );
         },

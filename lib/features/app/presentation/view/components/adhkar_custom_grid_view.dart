@@ -21,15 +21,15 @@ class AdhkarCustomGridView extends StatelessWidget {
             (index) => AdhkarButton(
                   icon: AppStrings.supplicationIcons[index],
                   onTap: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) => AdhkarPage(
                               nameOfAdhkar: AppStrings
-                                  .supplicationsButtonsNames[index]),
+                                  .adhkarButtonsNames[index]),
                         ));
                   },
-                  text: AppStrings.supplicationsButtonsNames[index],
+                  text: AppStrings.adhkarButtonsNames[index],
                 )));
   }
 }

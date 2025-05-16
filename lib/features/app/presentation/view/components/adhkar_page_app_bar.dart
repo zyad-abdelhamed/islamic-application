@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/supplications_cubit.dart';
 import 'package:test_app/core/extentions/controllers_extention.dart';
 import 'package:test_app/core/theme/app_colors.dart';
@@ -8,6 +9,7 @@ import 'package:test_app/core/theme/text_styles.dart';
 AppBar adhkarPageAppBar(BuildContext context, {required String appBarTitle}) {
   return AppBar(
     title: Text(appBarTitle),
+    leading: GetAdaptiveBackButtonWidget(),
     centerTitle: true,
     bottom: PreferredSize(
       preferredSize: const Size.fromHeight(60), // تحكم بارتفاع البوتوم

@@ -34,7 +34,7 @@ homeButton(
         required String image}) =>
     GestureDetector(
       onTap: () {
-        Navigator.push(
+        Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => page,

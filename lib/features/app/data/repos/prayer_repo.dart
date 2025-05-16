@@ -25,9 +25,11 @@ class PrayerRepo extends BasePrayerRepo {
       if (isConnected) {
         try {
           timings = await prayersRemoteDataSource.getPrayersTimes();
+          print('remote');
           await prayersLocalDataSource.putPrayersTimes(timings);
         } on DioException catch (_) {
           timings = await prayersLocalDataSource.getLocalPrayersTimes();
+          print('local1');
           if (timings == null) {
             return Left(Failure(
                 'No internet connection and no cached data available.'));
@@ -35,6 +37,7 @@ class PrayerRepo extends BasePrayerRepo {
         }
       } else {
         timings = await prayersLocalDataSource.getLocalPrayersTimes();
+        print('local2');
         if (timings == null) {
           return Left(
               Failure('No internet connection and no cached data available.'));

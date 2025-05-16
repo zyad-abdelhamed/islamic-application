@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/quran_cubit.dart';
-import 'package:test_app/features/app/presentation/view/components/index_widget.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/features/app/presentation/view/components/parts_widget.dart';
@@ -19,8 +19,8 @@ class AlquranAlkarimPage extends StatelessWidget {
           builder: (context, state) {
             return Scaffold(
                 appBar: AppBar(
-                  title:
-                      Text(AppStrings.appBarTitles(withTwoLines: false)[0]),
+                  leading: GetAdaptiveBackButtonWidget(),
+                  title: Text(AppStrings.appBarTitles(withTwoLines: false)[0]),
                 ),
                 floatingActionButton: Align(
                   alignment: Alignment.bottomRight,
@@ -45,27 +45,25 @@ class AlquranAlkarimPage extends StatelessWidget {
                 ),
                 body: Stack(
                   children: [
-                     state.filePath == null
-                            ? Center(child: CircularProgressIndicator())
-                            : PDFView(
-                                filePath: state.filePath,
-                                swipeHorizontal: true,
-                                pageSnap: true,
-                                autoSpacing: false,
-                                fitEachPage: true,
-                               
-                                onViewCreated: (controller) {
-                                  QuranCubit.getQuranController(context)
-                                      .setPdfController(controller);
-                                },
-                                onRender: (pages) {
-                                  if (pages != null) {
-                                    QuranCubit.getQuranController(context)
-                                        .updateTotalPages(pages);
-                                  }
-                                },
-                              )
-                      ,
+                    state.filePath == null
+                        ? Center(child: CircularProgressIndicator())
+                        : PDFView(
+                            filePath: state.filePath,
+                            swipeHorizontal: true,
+                            pageSnap: true,
+                            autoSpacing: false,
+                            fitEachPage: true,
+                            onViewCreated: (controller) {
+                              QuranCubit.getQuranController(context)
+                                  .setPdfController(controller);
+                            },
+                            onRender: (pages) {
+                              if (pages != null) {
+                                QuranCubit.getQuranController(context)
+                                    .updateTotalPages(pages);
+                              }
+                            },
+                          ),
                     Align(
                       alignment: Alignment.centerRight,
                       child: PartsWidget(
