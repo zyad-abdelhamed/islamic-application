@@ -5,7 +5,7 @@ import 'package:test_app/features/app/presentation/controller/cubit/alert_dialog
 import 'package:test_app/features/app/presentation/controller/cubit/elec_rosary_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/featured_records_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/rtabel_cubit.dart';
-import 'package:test_app/features/app/presentation/controller/cubit/supplications_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/adhkar_cubit.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
 
 extension ResponsiveExtention on BuildContext {

@@ -53,7 +53,6 @@ class TimerCubit extends Cubit<TimerState> {
     });
   }
 
-  // 🔹 دالة لحساب الوقت المتبقي حتى وقت معين
   Duration _calculateRemainingTime(String targetTime) {
     List<String> parts = targetTime.split(":");
     if (parts.length != 3) return Duration.zero;
@@ -66,7 +65,6 @@ class TimerCubit extends Cubit<TimerState> {
     DateTime targetDateTime =
         DateTime(now.year, now.month, now.day, hours, minutes, seconds);
 
-    // إذا كان الوقت المستهدف قد مر، أضف يومًا ليصبح في الغد
     if (targetDateTime.isBefore(now)) {
       targetDateTime = targetDateTime.add(const Duration(days: 1));
     }
@@ -79,5 +77,4 @@ class TimerCubit extends Cubit<TimerState> {
     _timer?.cancel();
     emit(state.copyWith(isRunning: false));
   }
- 
 }

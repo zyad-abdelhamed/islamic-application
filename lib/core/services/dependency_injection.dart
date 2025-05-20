@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:test_app/core/services/internet_connection.dart';
+import 'package:test_app/core/services/position_service.dart';
 import 'package:test_app/features/app/data/datasources/home_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/home_remote_data_source.dart';
 import 'package:test_app/features/app/data/datasources/prayers_local_data_source.dart';
@@ -20,7 +21,6 @@ import 'package:test_app/features/app/domain/usecases/delete_all_records_use_cas
 import 'package:test_app/features/app/domain/usecases/delete_records_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/get_adhkar_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/get_booleans_use_case.dart';
-import 'package:test_app/features/app/domain/usecases/get_next_prayer_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/get_prayers_times_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/get_today_hadith_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/reset_booleans_use_case.dart';
@@ -28,8 +28,9 @@ import 'package:test_app/features/app/domain/usecases/update_booleans_use_case.d
 import 'package:test_app/features/app/presentation/controller/cubit/home_cubit.dart';
 import 'package:test_app/features/app/domain/usecases/get_records_use_case.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/featured_records_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/prayer_times_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/rtabel_cubit.dart';
-import 'package:test_app/features/app/presentation/controller/cubit/supplications_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/adhkar_cubit.dart';
 import 'package:test_app/core/services/api_services.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/timer_cubit.dart';
 
@@ -38,7 +39,8 @@ GetIt sl = GetIt.instance;
 class DependencyInjection {
   static Future<void> init() async {
     // cubits
-    sl.registerFactory(() => HomeCubit(sl(), sl()));
+    sl.registerFactory(() => PrayerTimesCubit(sl()));
+    sl.registerFactory(() => HomeCubit(sl()));
     sl.registerFactory(() => TimerCubit());
     sl.registerFactory(() => AdhkarCubit(sl()));
     sl.registerFactory(() => FeaturedRecordsCubit(sl(), sl(), sl(), sl()));
@@ -60,7 +62,6 @@ class DependencyInjection {
         () => AddRecordUseCase(baseRecordsRepo: sl()));
     sl.registerLazySingleton<GetRecordsUseCase>(
         () => GetRecordsUseCase(baseRecordsRepo: sl()));
-    sl.registerLazySingleton(() => GetNextPrayerUseCase(basePrayerRepo: sl()));
     //repositories
     sl.registerLazySingleton<BaseRTableRepo>(
         () => RTableRepo(rTableLocalDataSource: sl()));
@@ -88,6 +89,7 @@ class DependencyInjection {
         () => PrayersRemoteDataSourceImpl(sl()));
 
     // services
+    sl.registerSingleton<BasePositionService>(PositionServiceImplByGeolocator());
     sl.registerLazySingleton<InternetConnection>(
         () => InternetConnectionImpl());
     sl.registerLazySingleton<ApiService>(() => ApiService(sl()));

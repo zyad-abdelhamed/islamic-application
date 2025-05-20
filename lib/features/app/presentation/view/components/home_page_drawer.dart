@@ -8,7 +8,6 @@ import 'package:test_app/core/extentions/controllers_extention.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
-import 'package:test_app/core/utils/sized_boxs.dart';
 
 class HomeDrawerWidget extends StatelessWidget {
   const HomeDrawerWidget({
@@ -25,13 +24,11 @@ class HomeDrawerWidget extends StatelessWidget {
           functionality:
               DrawCircleLineBlocBuilderFunctionality.rosariesAfterPrayer),
       RosaryRingWidget(),
-      SingleChildScrollView(
-        child: Text(
-          AppStrings.khetmAlquran,
-          textAlign: TextAlign.center,
-          style:
-              TextStyles.semiBold32auto(context).copyWith(color: AppColors.white),
-        ),
+      Text(
+        AppStrings.khetmAlquran,
+        textAlign: TextAlign.center,
+        style:
+            TextStyles.semiBold20(context).copyWith(color: AppColors.white),
       )
     ];
 
@@ -41,13 +38,14 @@ class HomeDrawerWidget extends StatelessWidget {
         ...List<HomeDrawerTextButton>.generate(
             textButtonsAlertDialogWidgets.length,
             (index) => HomeDrawerTextButton(
+                  index: index,
                   text: AppStrings.homeDrawerTextButtons[index],
                   alertDialogContent: textButtonsAlertDialogWidgets[index],
                 )),
         Spacer(),
         Divider(),
         Padding(
-            padding: const EdgeInsets.only(right: 10.0),
+            padding: const EdgeInsets.only(right: 10.0, bottom: 30),
             child: Row(
                 spacing: 10.0,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -67,7 +65,6 @@ class HomeDrawerWidget extends StatelessWidget {
                           Provider.of<ThemeProvider>(context, listen: false)
                               .changeTheme())
                 ])),
-        SizedBoxs.sizedBoxH30
       ],
     );
   }

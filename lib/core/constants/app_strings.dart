@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/quran_cubit.dart';
 import 'package:test_app/features/app/presentation/view/pages/alquran_alkarim_page.dart';
 import 'package:test_app/features/app/presentation/view/pages/elec_rosary_page.dart';
 import 'package:test_app/features/app/presentation/view/pages/rtabel_page.dart';
@@ -21,6 +23,7 @@ abstract class AppStrings {
   static const String mainPage = 'الصفحة الرئيسية';
   static const String nextPrayer = 'الصلاة القادمة :';
   static const String remainingTime = 'الوقت المتبقي : ';
+  static const String todayHadith = 'حديث اليوم';
   static const List<String> homeDrawerTextButtons = <String>[
     'التسابيح بعدالصلاة',
     'حلقه التسبيح',
@@ -108,8 +111,10 @@ abstract class AppStrings {
     "أدعية قرآنية",
     "أدعية الأنبياء",
   ];
-  static const List<StatelessWidget> pages = <StatelessWidget>[
-    AlquranAlkarimPage(),
+  static  List pages = [
+   BlocProvider(
+        create: (context) => QuranCubit()..loadPdfFromAssets(),
+        child:  AlquranAlkarimPage()),
     ElecRosaryPage(),
     RamadanTabelPage()
   ];

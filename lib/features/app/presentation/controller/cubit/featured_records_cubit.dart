@@ -118,4 +118,11 @@ class FeaturedRecordsCubit extends Cubit<FeaturedRecordsState> {
       },
     );
   }
+
+  @override
+  Future<void> close() {
+    featuredRecordsScrollController.dispose();
+    print("dispose featuredRecords scroll controller");
+    return super.close();
+  }
 }

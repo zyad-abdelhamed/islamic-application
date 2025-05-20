@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/features/app/data/models/adhkar_parameters.dart';
-import 'package:test_app/features/app/presentation/controller/cubit/supplications_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/adhkar_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/circle_painter.dart';
 import 'package:test_app/features/app/presentation/view/components/adhkar_widget.dart';
 import 'package:test_app/features/app/presentation/view/components/adhkar_page_app_bar.dart';
@@ -28,7 +28,6 @@ class AdhkarPage extends StatelessWidget {
                     previous.isDeleted ==
                     current.isDeleted, //to avoid rebuild when change switch
                 builder: (context, state) {
-                  print('rebuild adhkar page body');
                   return Stack(children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -36,7 +35,7 @@ class AdhkarPage extends StatelessWidget {
                           requestStateEnum: state.adhkarRequestState,
                           widgetIncaseSuccess: ListView.builder(
                               controller: context.supplicationsController
-                                  .supplicationsScrollController,
+                                  .adhkarScrollController,
                               itemCount: state.adhkar.length,
                               itemBuilder: (context, index) =>
                                   AdhkarWidget(
@@ -76,8 +75,8 @@ Positioned _getCustomCircleSlider(BuildContext context,
     child: AnimatedOpacity(
       duration: AppDurations.mediumDuration,
       opacity: context
-              .supplicationsController.supplicationsScrollController.hasClients
-          ? context.supplicationsController.supplicationsScrollController
+              .supplicationsController.adhkarScrollController.hasClients
+          ? context.supplicationsController.adhkarScrollController
                   .position.isScrollingNotifier.value
               ? 1.0
               : 0.0
@@ -92,8 +91,8 @@ Positioned _getCustomCircleSlider(BuildContext context,
 
 double _getMaxProgress(BuildContext context) {
   return context
-          .supplicationsController.supplicationsScrollController.hasClients
-      ? context.supplicationsController.supplicationsScrollController.position
+          .supplicationsController.adhkarScrollController.hasClients
+      ? context.supplicationsController.adhkarScrollController.position
           .maxScrollExtent
       : double.infinity;
 }

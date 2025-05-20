@@ -1,81 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
 import 'package:test_app/core/constants/app_strings.dart';
+import 'package:test_app/core/extentions/controllers_extention.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/quran_cubit.dart';
-import 'package:test_app/features/app/presentation/view/components/index_widget.dart';
 import 'package:test_app/core/theme/app_colors.dart';
-import 'package:test_app/core/theme/text_styles.dart';
-import 'package:test_app/features/app/presentation/view/components/parts_widget.dart';
+import 'package:test_app/features/app/presentation/view/components/surahs_widget.dart';
 
 class AlquranAlkarimPage extends StatelessWidget {
   const AlquranAlkarimPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) => QuranCubit()..loadPdfFromAssets(),
-        child: BlocBuilder<QuranCubit, QuranState>(
-          builder: (context, state) {
-            return Scaffold(
-                appBar: AppBar(
-                  title:
-                      Text(AppStrings.appBarTitles(withTwoLines: false)[0]),
-                ),
-                floatingActionButton: Align(
-                  alignment: Alignment.bottomRight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 30),
-                    child: GestureDetector(
-                      onTap: () {
+    return Scaffold(
+        appBar: AppBar(
+            title: Text(AppStrings.appBarTitles(withTwoLines: false)[0])),
+        drawer: const Drawer(
+          backgroundColor: AppColors.primaryColor,
+          shape: LinearBorder(),
+          child: SurahsWidget(),
+        ),
+        body: BlocSelector<QuranCubit, QuranState, String?>(
+            selector: (state) => state.filePath,
+            builder: (context, filePath) {
+              print("rebuild Alquran Alkarim Page");
+              return filePath == null
+                  ? GetAdaptiveLoadingWidget()
+                  : PDFView(
+                      filePath: filePath,
+                      nightMode: context.themeController.darkMode,
+                      swipeHorizontal: true,
+                      pageSnap: true,
+                      autoSpacing: true,
+                      fitEachPage: true,
+                      defaultPage: 0,
+                      onViewCreated: (controller) {
                         QuranCubit.getQuranController(context)
-                            .showOrHideIndex(context);
+                            .setPdfController(controller);
                       },
-                      child: CircleAvatar(
-                          radius: 35,
-                          backgroundColor: AppColors.primaryColor,
-                          child: Text(
-                            state.floatingActionButtonString,
-                            textAlign: TextAlign.center,
-                            style: TextStyles.bold20(context)
-                                .copyWith(color: AppColors.white),
-                          )),
-                    ),
-                  ),
-                ),
-                body: Stack(
-                  children: [
-                     state.filePath == null
-                            ? Center(child: CircularProgressIndicator())
-                            : PDFView(
-                                filePath: state.filePath,
-                                swipeHorizontal: true,
-                                pageSnap: true,
-                                autoSpacing: false,
-                                fitEachPage: true,
-                               
-                                onViewCreated: (controller) {
-                                  QuranCubit.getQuranController(context)
-                                      .setPdfController(controller);
-                                },
-                                onRender: (pages) {
-                                  if (pages != null) {
-                                    QuranCubit.getQuranController(context)
-                                        .updateTotalPages(pages);
-                                  }
-                                },
-                              )
-                      ,
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: PartsWidget(
-                        height: state.height,
-                        width: state.width,
-                      ),
-                    ),
-                  ],
-                ));
-          },
-        ));
+                      onRender: (pages) {
+                        if (pages != null) {
+                          QuranCubit.getQuranController(context)
+                              .updateTotalPages(pages);
+                        }
+                      },
+                    );
+            }));
   }
 }

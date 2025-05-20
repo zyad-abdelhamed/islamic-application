@@ -14,49 +14,41 @@ class RosaryRingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double customPaintSize = 150;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    const double customPaintSize = 150;
+    const double spacing = 5.0;
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      spacing: 35,
       children: [
+        Wrap(
+          spacing: spacing,
+          runSpacing: spacing,
+          children: List<AnimatedContainer>.generate(
+            AppStrings.adhkarList.length,
+            (index) => _customContainer(context, index: index),
+          ),
+        ),
         DrawCircleLineBlocBuilder(
             customPaintSize: customPaintSize,
             maxProgress: maxProgress,
             functionality: DrawCircleLineBlocBuilderFunctionality.ringRosary),
-        SingleChildScrollView(
-          child: Column(
-            spacing: 35.0,
-            children: List<BlocBuilder>.generate(
-              AppStrings.adhkarList.length,
-              (index) => _customContainer(index: index),
-            ),
-          ),
-        )
       ],
     );
   }
 
-  BlocBuilder _customContainer({required int index}) {
-    return BlocBuilder<AlertDialogCubit, AlertDialogState>(
-      buildWhen: (previous, current) =>
-          previous.getContainerColor(index) != current.getContainerColor(index),
-      builder: (context, state) {
-        return AnimatedContainer(
+  AnimatedContainer _customContainer(BuildContext context, {required int index}) {
+    return AnimatedContainer(
           duration: AppDurations.mediumDuration,
-          alignment: Alignment.center,
-          width: 150,
+          padding: const EdgeInsets.all(5),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50.0),
               border: Border.all(color: AppColors.secondryColor, width: 3),
-              color: state.getContainerColor(index)),
-          child: FittedBox(
-            child: Text(
-              AppStrings.adhkarList[index],
-              style: TextStyles.semiBold18(context, AppColors.white)
-                  .copyWith(fontSize: 23),
-            ),
+              color: context.watch<AlertDialogCubit>().state.getContainerColor(index)),
+          child: Text(
+            AppStrings.adhkarList[index],
+            style: TextStyles.semiBold18(context, AppColors.white),
           ),
         );
-      },
-    );
-  }
+        }
 }

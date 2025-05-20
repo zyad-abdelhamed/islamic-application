@@ -1,10 +1,11 @@
 import 'package:equatable/equatable.dart';
 
-class NextPrayerEntity extends Equatable {
-  final String nameOfNextPrayer, timeOfNextPrayer;
+class NextPrayer extends Equatable{
+  final String name;
+  final String time;
 
-  const NextPrayerEntity(
-      {required this.nameOfNextPrayer, required this.timeOfNextPrayer});
+  const NextPrayer({required this.name, required this.time});
+  
   @override
-  List<Object?> get props => [nameOfNextPrayer, timeOfNextPrayer];
+  List<Object?> get props => [name, time];
 }

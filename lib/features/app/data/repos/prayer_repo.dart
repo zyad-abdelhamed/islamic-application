@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 import 'package:test_app/core/services/internet_connection.dart';
 import 'package:test_app/features/app/data/datasources/prayers_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/prayers_remote_data_source.dart';
-import 'package:test_app/features/app/domain/entities/next_prayer_entity.dart';
 import 'package:test_app/features/app/domain/entities/timings.dart';
 import 'package:test_app/features/app/domain/repositories/base_prayer_repo.dart';
 import 'package:test_app/core/errors/failures.dart';
@@ -44,17 +43,6 @@ class PrayerRepo extends BasePrayerRepo {
       return Right(timings);
     } catch (e) {
       return Left(Failure('Unexpected error: $e'));
-    }
-  }
-
-  @override
-  Future<Either<Failure, NextPrayerEntity>> getNextPrayer() async {
-    try {
-      NextPrayerEntity result =
-          await prayersRemoteDataSource.getRemainingTimeToNextPrayer();
-      return Right(result);
-    } catch (e) {
-      return Left(Failure('error'));
     }
   }
 }

@@ -5,13 +5,13 @@ import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_wid
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/utils/enums.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
-import 'package:test_app/features/app/presentation/controller/cubit/home_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/prayer_times_cubit.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeState>(
+    return BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
       builder: (context, state) {
         return Visibility(
           visible: state.requestStateofPrayerTimes == RequestStateEnum.loading,

@@ -7,7 +7,7 @@ import 'package:test_app/core/utils/base_use_case.dart';
 
 class GetPrayersTimesUseCase
     extends BaseUseCaseWithoutParameters<Timings> {
-  BasePrayerRepo basePrayerRepo;
+  final BasePrayerRepo basePrayerRepo;
 
   GetPrayersTimesUseCase({required this.basePrayerRepo});
   @override

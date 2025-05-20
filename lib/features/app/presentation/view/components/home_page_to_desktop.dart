@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/utils/sized_boxs.dart';
-import 'package:test_app/features/app/presentation/view/components/adhkar_custom_grid_view.dart';
-import 'package:test_app/features/app/presentation/view/components/home_page_buttons_row.dart';
+import 'package:test_app/features/app/presentation/view/components/adhkar_button.dart';
+import 'package:test_app/features/app/presentation/view/components/home_button.dart';
 import 'package:test_app/features/app/presentation/view/components/home_page_drawer.dart';
 import 'package:test_app/features/app/presentation/view/components/prayer_times_widget.dart';
+import 'package:test_app/features/app/presentation/view/pages/adhkar_page.dart';
 
 class HomePageToDesktop extends StatelessWidget {
   const HomePageToDesktop({
@@ -20,7 +21,28 @@ class HomePageToDesktop extends StatelessWidget {
             preferredSize: Size(double.infinity, 130),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5.0),
-              child: AdhkarCustomGridView(crossAxisCount: 8),
+              child: GridView(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 8,
+                      mainAxisSpacing: 15,
+                      crossAxisSpacing: 15),
+                  children: List<AdhkarButton>.generate(
+                      8,
+                      (index) => AdhkarButton(
+                            icon: AppStrings.supplicationIcons[index],
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AdhkarPage(
+                                        nameOfAdhkar: AppStrings
+                                            .supplicationsButtonsNames[index]),
+                                  ));
+                            },
+                            text: AppStrings.supplicationsButtonsNames[index],
+                          ))),
             )),
       ),
       body: Row(
@@ -43,17 +65,13 @@ class HomePageToDesktop extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: List.generate(
                             AppStrings.pages.length,
-                            (index) => homeButton(
-                                context: context,
+                            (index) => HomeButton(
                                 text: AppStrings.appBarTitles(
                                     withTwoLines: true)[index],
-                                leftMargine: index !=
-                                        AppStrings.pages.length - 1
-                                    ? 16.0
-                                    : 0.0, //(leftMargine)spacing between buttons
+                                index: index,
                                 page: AppStrings.pages[index],
-                                image: AppStrings
-                                    .imagesOfHomePageButtons[index])))
+                                image:
+                                    AppStrings.imagesOfHomePageButtons[index])))
                   ],
                 ),
               )),
