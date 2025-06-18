@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/alert_dialog_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/elec_rosary_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/featured_records_cubit.dart';
@@ -11,7 +10,7 @@ import 'package:test_app/core/theme/theme_provider.dart';
 extension ResponsiveExtention on BuildContext {
   ElecRosaryCubit get elecRosaryController =>
       ElecRosaryCubit.getElecRosaryController(this);
-  ThemeProvider get themeController => Provider.of<ThemeProvider>(this);
+  ThemeCubit get themeController => BlocProvider.of<ThemeCubit>(this);
   AlertDialogCubit get alertDialogController =>
       BlocProvider.of<AlertDialogCubit>(this);
 

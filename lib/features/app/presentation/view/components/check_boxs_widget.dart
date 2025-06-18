@@ -22,7 +22,7 @@ class CheckBoxsWidget extends StatelessWidget {
                       spacing: 10, // space between checkboxes horizontally
                       runSpacing: 10, // space between checkboxes vertically
                       children: List.generate(
-                        30 * 16, // Total checkboxes (30 * 16)
+                        30 * 16, // Total checkboxes (30 * 16);
                         (index) {
                           return Container(
                             width: constraints.maxWidth / 16 - 10, // To make the checkbox fit

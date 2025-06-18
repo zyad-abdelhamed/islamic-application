@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/quran_cubit.dart';
 import 'package:test_app/features/app/presentation/view/pages/alquran_alkarim_page.dart';
+import 'package:test_app/features/app/presentation/view/pages/compass.dart';
 import 'package:test_app/features/app/presentation/view/pages/elec_rosary_page.dart';
 import 'package:test_app/features/app/presentation/view/pages/rtabel_page.dart';
 
@@ -13,10 +14,27 @@ abstract class AppStrings {
       'القرآن${getNewlineOrWightSpace()}الكريم',
       'السبحه${getNewlineOrWightSpace()}الالكترونيه',
       'جدول${getNewlineOrWightSpace()}رمضان',
-      'القبله'
+      'اتجاه${getNewlineOrWightSpace()}القبله'
     ];
   }
 
+  //   ===on boarding===
+  static const String skip = 'تخطى';
+  static const String next = 'التالى';
+  static const List<String> features = <String>[
+    'اوقات الصلاة',
+    'الاذكار',
+    'السبحة الالكترونية',
+    'القران الكريم',
+    'اتجاه القبله'
+  ];
+  static const List<String> texts = <String>[
+    'يتيح لك التطبيق معرفة مواقيت الصلاة بدقة حسب موقعك، مع عد تنازلي يوضح الوقت المتبقي لكل صلاة ، لتكون دائمًا في الموعد وتعيش يومك بإيقاع إيماني منتظم، مع تنبيهات دقيقة تُبقيك على استعداد دائم.',
+    "عيش يومك بسلام داخلي مع ميزة الأذكار اليومية، التي توفر لك نصوصًا من الأذكار مع تنبيهات ذكية لتذكيرك بها في أوقات مناسبة.",
+    'استمتع بتجربة روحانية متكاملة مع السبحة الإلكترونية التي تساعدك في تتبع عدد الذكر، مع إمكانية تسجيل الرقم وحفظه تلقائيًا، أو مسحه بسهولة.',
+    'ستمتع بتجربة روحانية مميزة مع عرض كامل للقرآن الكريم، بخط واضح وواجهة مريحة للعين، مع إمكانية التنقل السلس بين السور والأجزاء و مع دعم للوضع الليلي',
+    'استمتع بسهولة تحديد اتجاه القبلة بدقة، عبر بوصلة مدمجة وداعمة للوضع الليلي.'
+  ];
   //   ===splash screen===
   static const String loadingText = 'يتم التحميل...';
   //   ===home page===
@@ -79,9 +97,10 @@ abstract class AppStrings {
   ];
 
   static const List<String> imagesOfHomePageButtons = <String>[
-    'assets/images/quran.jpg',
-    'assets/images/image.jpeg',
-    'assets/images/ramadan.jpg',
+    'assets/images/quran.png',
+    'assets/images/ramadan.png',
+    'assets/images/mosque.png',
+    'assets/images/compass.png'
   ];
   static const List<String> emojisOfPrayers = <String>[
     '🌙',
@@ -101,7 +120,7 @@ abstract class AppStrings {
     Icons.book, // أدعية قرآنية
     Icons.group, // أدعية الأنبياء
   ];
-  static const List<String> supplicationsButtonsNames = <String>[
+  static const List<String> adhkarButtonsNames = <String>[
     "أذكار الصباح",
     "أذكار المساء",
     "أذكار بعد السلام من الصلاة المفروضة",
@@ -116,7 +135,8 @@ abstract class AppStrings {
         create: (context) => QuranCubit()..loadPdfFromAssets(),
         child:  AlquranAlkarimPage()),
     ElecRosaryPage(),
-    RamadanTabelPage()
+    RamadanTabelPage(),
+    QiblaPage(),
   ];
   //   ===Alquran Alkarim Page===
   static const theIndex = 'الفهرس';

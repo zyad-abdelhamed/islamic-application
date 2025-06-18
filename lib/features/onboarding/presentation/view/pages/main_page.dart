@@ -11,6 +11,7 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double radius = 80;
     return Scaffold(
       body: Stack(
         children: [
@@ -54,11 +55,12 @@ class MainPage extends StatelessWidget {
             ],
           ),
           Positioned(
-            bottom: context.height * .52,
-            left: context.width * .31,
+            bottom: context.height * .6 - radius ,
+            left: 0,
+            right: 0,
             child: CircleAvatar(
-              backgroundColor: AppColors.secondryColor,
-              radius: context.width * .19,
+              backgroundColor: AppColors.thirdColor,
+              radius:radius,
               child: SvgPicture.asset('assets/images/Vector.svg'),
             ),
           )

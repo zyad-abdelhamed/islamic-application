@@ -8,15 +8,26 @@ class TimerCubit extends Cubit<TimerState> {
   Timer? _timer;
   VoidCallback? onTimerFinished;
 
+  // المتغير لحفظ الوقت المتبقي للصلاة القادمة
+  int? lastHours;
+  int? lastMinutes;
+  int? lastSeconds;
+
+  // دالة لبدء التايمر حتى وقت الصلاة المحدد
   void startTimerUntil(String targetTime) {
     Duration remaining = _calculateRemainingTime(targetTime);
     startTimer(
         remaining.inHours, remaining.inMinutes % 60, remaining.inSeconds % 60);
   }
 
+  // دالة لبدء التايمر من الساعات والدقائق والثواني المحددة
   void startTimer(int hours, int minutes, int seconds) {
+    int startHours = lastHours ?? hours;
+    int startMinutes = lastMinutes ?? minutes;
+    int startSeconds = lastSeconds ?? seconds;
+
     emit(state.copyWith(
-        hours: hours, minutes: minutes, seconds: seconds, isRunning: true));
+        hours: startHours, minutes: startMinutes, seconds: startSeconds, isRunning: true));
 
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -72,8 +83,13 @@ class TimerCubit extends Cubit<TimerState> {
     return targetDateTime.difference(now);
   }
 
+  // إيقاف التايمر وحفظ الوقت المتبقي
   void stopTimer() {
-    //dispose
+    final currentState = state;
+    lastHours = currentState.hours;
+    lastMinutes = currentState.minutes;
+    lastSeconds = currentState.seconds;
+
     _timer?.cancel();
     emit(state.copyWith(isRunning: false));
   }

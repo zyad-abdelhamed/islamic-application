@@ -22,7 +22,8 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case RoutesConstants.splashScreenRouteName:
       return MaterialPageRoute<SplashScreen>(
         builder: (BuildContext context) => const SplashScreen(),
-      );    
+      );  
+       
     default:
       return MaterialPageRoute<Scaffold>(
         builder: (BuildContext context) => const Scaffold(),

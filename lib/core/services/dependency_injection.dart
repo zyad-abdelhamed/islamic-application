@@ -25,6 +25,7 @@ import 'package:test_app/features/app/domain/usecases/get_prayers_times_use_case
 import 'package:test_app/features/app/domain/usecases/get_today_hadith_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/reset_booleans_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/update_booleans_use_case.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/hadith_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/home_cubit.dart';
 import 'package:test_app/features/app/domain/usecases/get_records_use_case.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/featured_records_cubit.dart';
@@ -33,15 +34,19 @@ import 'package:test_app/features/app/presentation/controller/cubit/rtabel_cubit
 import 'package:test_app/features/app/presentation/controller/cubit/adhkar_cubit.dart';
 import 'package:test_app/core/services/api_services.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/timer_cubit.dart';
+import 'package:test_app/features/onboarding/presentation/controller/on_boarding_cubit.dart';
 
 GetIt sl = GetIt.instance;
 
 class DependencyInjection {
   static Future<void> init() async {
     // cubits
-    sl.registerFactory(() => PrayerTimesCubit(sl()));
-    sl.registerFactory(() => HomeCubit(sl()));
+        sl.registerFactory(() => OnBoardingCubit());
+
+    sl.registerFactory(() => HomeCubit(sl(), sl()));
     sl.registerFactory(() => TimerCubit());
+        sl.registerFactory(() => HadithCubit(sl()));
+
     sl.registerFactory(() => AdhkarCubit(sl()));
     sl.registerFactory(() => FeaturedRecordsCubit(sl(), sl(), sl(), sl()));
     sl.registerFactory(() => RtabelCubit(sl(), sl(), sl()));
