@@ -14,9 +14,11 @@ class CounterWidget extends StatelessWidget {
     const double containerHight = 80;
     const double containerWidth = 250;
     const double spacing = 15;
-
+    const double resetCircleAvatarRadius = 10;
     return SizedBox(
-      height: containerHight + spacing + (containerWidth * 1 / 2),
+      height: containerHight +
+          spacing +
+          containerWidth * 1 / 2,
       child: Stack(children: [
         Container(
             alignment: Alignment.center,
@@ -42,8 +44,7 @@ class CounterWidget extends StatelessWidget {
                   ));
             })),
         Positioned(
-          top: containerHight +
-              spacing, //80 for container hight and 15 for spacing.
+          top: containerHight + spacing,
           right: 0.0,
           child: GestureDetector(
             onTap: () => context.elecRosaryController.resetCounter(),
@@ -51,21 +52,21 @@ class CounterWidget extends StatelessWidget {
               alignment: Alignment.topLeft,
               child: const CircleAvatar(
                 backgroundColor: AppColors.secondryColor,
-                radius: 10,
+                radius: resetCircleAvatarRadius,
               ),
             ),
           ),
         ),
         Positioned(
-          top: containerHight +
-              spacing, //80 for container hight and 15 for spacing.
-          left: 0.0, right: 0.0,
+          top: containerHight + spacing,
+          left: 0.0,
+          right: 0.0,
           child: GestureDetector(
             onTap: () {
               context.elecRosaryController.increaseCounter();
             },
             child: CircleAvatar(
-              radius: (containerWidth * 1 / 2) / 2, //half of counter container
+              radius: (containerWidth * 1/2) / 2, //half of counter container
               backgroundColor: AppColors.primaryColor,
             ),
           ),

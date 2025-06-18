@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:test_app/core/adaptive/adaptive_widget_depending_on_os.dart';
+import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 
@@ -21,7 +22,7 @@ class GetAdaptiveBackButtonWidget extends StatelessWidget {
 
   Widget _getDefaultBackButton(BuildContext context) {
     return IconButton(
-      icon: const Icon(Icons.arrow_back, color: AppColors.secondryColor),
+      icon: const Icon(Icons.arrow_back),
       onPressed: () => _goBack(context),
     );
   }
@@ -30,7 +31,7 @@ class GetAdaptiveBackButtonWidget extends StatelessWidget {
     return CupertinoButton(
       padding: EdgeInsets.zero,
       onPressed: () => _goBack(context),
-      child: const Icon(CupertinoIcons.back, color: AppColors.secondryColor),
+      child: const Icon(CupertinoIcons.back),
     );
   }
 
@@ -39,12 +40,13 @@ class GetAdaptiveBackButtonWidget extends StatelessWidget {
       onPressed: () => _goBack(context),
       icon: const Icon(Icons.arrow_back, color: AppColors.black),
       label: const Text(
-        'Back',
+        AppStrings.back,
         style: TextStyle(color: AppColors.black),
       ),
     );
   }
-}
 
-void _goBack(context)  {
+  void _goBack(context)  {
 Navigator.pushNamedAndRemoveUntil(context, RoutesConstants.homePageRouteName , (route) => false);}
+
+}

@@ -36,7 +36,7 @@ class HadithCubit extends HydratedCubit<String> {
                           color: AppColors.white, fontSize: 23)),
                 ],
               ),
-            ),
+            ), title: '',
           ),
         );
       });

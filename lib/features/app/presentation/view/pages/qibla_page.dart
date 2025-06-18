@@ -3,14 +3,14 @@ import 'dart:math' as math;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-<<<<<<< HEAD:lib/features/app/presentation/view/pages/qibla_page.dart
+import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
+import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/services/position_service.dart';
-=======
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
->>>>>>> 527e5130049de17c9eaec1c7b97749f986e16b45:lib/features/app/presentation/view/pages/compass.dart
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/qibla_cubit.dart';
+import 'package:test_app/features/app/presentation/view/components/erorr_widget.dart';
 
 class QiblaPage extends StatelessWidget {
   const QiblaPage({super.key});
@@ -18,20 +18,29 @@ class QiblaPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => QiblaCubit(sl<BasePositionService>())..initQibla(),
+      create: (_) => QiblaCubit(sl<BaseLocatationService>())..initQibla(),
       child: Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
             leading: GetAdaptiveBackButtonWidget(),
-            title: Text('اتجاه القبلة')),
+            title: Text(AppStrings.appBarTitles(withTwoLines: false)[3])),
         body: BlocBuilder<QiblaCubit, QiblaState>(
           builder: (context, state) {
             if (state is QiblaLoading) {
-              return Center(child: CircularProgressIndicator());
+              return GetAdaptiveLoadingWidget();
             } else if (state is QiblaError) {
-              return Center(child: Text(state.message));
+              const double spacing = 5;
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                spacing: spacing,
+                children: [Spacer(),
+                  ErorrWidget(message: state.message),Spacer(),
+                  OutlinedButton(onPressed: () async{
+                    await sl<BaseLocatationService>().requestPermission;
+                  },child: Text('request location permission',style: TextStyle(color: AppColors.primaryColor),),)
+                ],
+              );
             } else if (state is QiblaLoaded) {
-              final angle =
+              final double angle =
                   (state.qiblaDirection - state.deviceDirection) * (pi / 180);
               return Center(
                 child: Column(
@@ -45,7 +54,7 @@ class QiblaPage extends StatelessWidget {
                         color: AppColors.primaryColor,
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Text(
                         'زاوية القبلة: ${state.qiblaDirection.toStringAsFixed(2)}°'),
                     Text(

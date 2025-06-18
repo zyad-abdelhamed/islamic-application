@@ -1,16 +1,12 @@
-import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_app/core/constants/app_durations.dart';
-import 'package:test_app/core/constants/app_strings.dart';
-import 'package:test_app/core/utils/responsive_extention.dart';
-import 'package:test_app/features/app/domain/entities/hadith.dart';
+import 'package:test_app/core/services/dependency_injection.dart';
+import 'package:test_app/core/services/internet_connection.dart';
 import 'package:test_app/features/app/domain/usecases/get_today_hadith_use_case.dart';
-import 'package:test_app/features/app/presentation/view/components/custom_alert_dialog.dart';
-import 'package:test_app/core/errors/failures.dart';
-import 'package:test_app/core/theme/app_colors.dart';
-import 'package:test_app/core/theme/text_styles.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:test_app/core/services/position_service.dart';
+import 'package:test_app/core/widgets/app_sneak_bar.dart';
 
 part 'home_state.dart';
 
@@ -20,36 +16,26 @@ class HomeCubit extends Cubit<HomeState> {
   ) : super(const HomeState());
 
   final GetTodayHadithUseCase getTodayHadithUseCase;
-
-  void showTodatHadith(BuildContext context) async {
-    Either<Failure, Hadith> result = await getTodayHadithUseCase();
-    result.fold((l) => null, (hadith) {
-      showCupertinoDialog(
+  
+  void checkLocationPermission(BuildContext context) async {
+    if (await sl<BaseLocatationService>().checkPermission ==
+        LocationPermission.denied) {
+      appSneakBar(
           context: context,
-          builder: (context) => CustomAlertDialog(
-            title: AppStrings.todayHadith,
-              alertDialogContent: (context) => SingleChildScrollView(
-                    child: Text(hadith.content,
-                        textAlign: TextAlign.start,
-                        style: TextStyles.bold20(context).copyWith(
-                            color: AppColors.white, fontSize: 23)),
-                  )));
-    });
+          message: 'تم رفض صلاحية الموقعتم رفض صلاحية الموقع',
+          label: "صلاحية الموقع",
+          onPressed: () async => await sl<BaseLocatationService>().requestPermission,
+          isError: true);
+    }
   }
-
-  void showDawerInCaseLandScape(BuildContext context) {
-    emit(state.copyWith(
-      isVisible: true,
-      opacity: .8,
-      width: context.width * 1 / 4,
-    ));
-  }
-
-  void hideDawerInCaseLandScape() {
-    emit(state.copyWith(opacity: 0.0, width: 0.0));
-
-    Future.delayed(AppDurations.longDuration,
-        () => emit(state.copyWith(isVisible: false)));
+  
+  void checkInternetConnection(BuildContext context) async {
+    if (await sl<InternetConnection>().checkInternetConnection()) {
+      appSneakBar(
+          context: context,
+          message: "No internet connection",
+          isError: true);
+    }
   }
 }
 

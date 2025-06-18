@@ -18,26 +18,18 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       : super(const PrayerTimesState());
   final GetPrayersTimesUseCase getPrayersTimesUseCase;
 
-  List<String> getListOfTimings(PrayerTimesState state) {
-    return [
-      state.prayerTimes!.fajr,
-      state.prayerTimes!.sunrise,
-      state.prayerTimes!.dhuhr,
-      state.prayerTimes!.asr,
-      state.prayerTimes!.maghrib,
-      state.prayerTimes!.isha
-    ];
-  }
+  static PrayerTimesCubit controller(BuildContext context) =>
+      context.read<PrayerTimesCubit>();
 
   intializeTimeListener(BuildContext context) {
     context.read<TimerCubit>().onTimerFinished = () {
-      final timings = state.prayerTimes!;
+      final timings = state.prayerTimes;
       final nextPrayerTime = nextPrayer(
-        fajr: timings.fajr,
-        dhuhr: timings.dhuhr,
-        asr: timings.asr,
-        maghrib: timings.maghrib,
-        isha: timings.isha,
+        fajr: timings[0],
+        dhuhr: timings[2],
+        asr: timings[3],
+        maghrib: timings[4],
+        isha: timings[5],
       );
 
       emit(state.copyWith(nextPrayer: nextPrayerTime));
@@ -53,16 +45,23 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
             errorMessageofPrayerTimes: l.message,
             requestStateofPrayerTimes: RequestStateEnum.failed));
       },
-      (r) {
+      (prayerTimes) {
         NextPrayer nextPrayerTime = nextPrayer(
-            fajr: r.fajr,
-            dhuhr: r.dhuhr,
-            asr: r.asr,
-            maghrib: r.maghrib,
-            isha: r.isha);
+            fajr: prayerTimes.fajr,
+            dhuhr: prayerTimes.dhuhr,
+            asr: prayerTimes.asr,
+            maghrib: prayerTimes.maghrib,
+            isha: prayerTimes.isha);
         emit(state.copyWith(
             nextPrayer: nextPrayerTime,
-            prayerTimes: r,
+            prayerTimes: [
+              prayerTimes.fajr,
+              prayerTimes.sunrise,
+              prayerTimes.dhuhr,
+              prayerTimes.asr,
+              prayerTimes.maghrib,
+              prayerTimes.isha
+            ],
             requestStateofPrayerTimes: RequestStateEnum.success));
         context.read<TimerCubit>().startTimerUntil("${nextPrayerTime.time}:00");
         intializeTimeListener(context);

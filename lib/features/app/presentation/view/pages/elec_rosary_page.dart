@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
 import 'package:test_app/core/constants/app_strings.dart';
-import 'package:test_app/core/extentions/controllers_extention.dart';
-import 'package:test_app/core/theme/app_colors.dart';
-import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/elec_rosary_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/featured_records_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/counter_widget.dart';
@@ -28,21 +25,6 @@ class ElecRosaryPage extends StatelessWidget {
           appBar: AppBar(
             leading: GetAdaptiveBackButtonWidget(),
             title: Text(AppStrings.appBarTitles(withTwoLines: false)[1]),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GestureDetector(
-                onTap: () {
-                  context.featuerdRecordsController.addFeatuerdRecord(
-                      context: context,
-                      item: context.elecRosaryController.counter);
-                },
-                child: Text("حفظ",
-                    style: TextStyles.semiBold20(context)
-                        .copyWith(color: AppColors.white, fontSize: 23)),
-                            ),
-              )
-            ],
           ),
           body: AdaptiveLayout(
               mobileLayout: (context) => getElecRosaryMobileLayout,
@@ -54,23 +36,16 @@ class ElecRosaryPage extends StatelessWidget {
   Column get getElecRosaryMobileLayout => Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Row(
-            children: [
-              Expanded(flex: 4, child: SizedBox()),
-              FeatuerdRecordsWidget(),
-              Expanded(child: SizedBox(),)
-            ],
-          ),
-          Center(child: CounterWidget()),
+          FeatuerdRecordsWidget(),
+          CounterWidget(),
         ],
       );
 
   Center get getElecRosaryTabletAndDesktopLayout => Center(
           child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          CounterWidget(),
-          FeatuerdRecordsWidget(),
+          Expanded(child: Center(child: CounterWidget())),
+          Expanded(child: FeatuerdRecordsWidget()),
         ],
       ));
 }

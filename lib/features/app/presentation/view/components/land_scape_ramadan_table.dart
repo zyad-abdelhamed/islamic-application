@@ -12,116 +12,113 @@ class LandScapeWidgetToRTablePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 1.0),
-      child: Column(
-        children: [
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                     decoration: BoxDecoration(
-                                        border: Border(bottom: BorderSide(
-                                            color: AppColors.purple)),
-                      color: AppColors.secondryColor),
-                      child: Center(
-                          child: FittedBox(
-                        child: Text('اليوم',
-                            style: TextStyles.semiBold20(context).copyWith(color: AppColors.purple)),
-                      ))),
-                ),
-                Expanded(
-                  flex: 16,
-                  child: LayoutBuilder(
-                    builder: (context, constraints) => Row(
-                      children: [
-                        Flexible(
-                          flex: 9,
-                          child: Column(
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: AppColors.grey1)),
-                                    child: const Center(
-                                        child: Text('الصلاة'))),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 5,
+    return Column(
+      children: [
+        Expanded(
+          child: Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Container(
+                   decoration: BoxDecoration(
+                                      border: Border(bottom: BorderSide(
+                                          color: AppColors.purple)),
+                    color: AppColors.secondryColor),
+                    child: Center(
+                        child: FittedBox(
+                      child: Text('اليوم',
+                          style: TextStyles.semiBold20(context).copyWith(color: AppColors.purple)),
+                    ))),
+              ),
+              Expanded(
+                flex: 16,
+                child: LayoutBuilder(
+                  builder: (context, constraints) => Row(
+                    children: [
+                      Flexible(
+                        flex: 9,
+                        child: Column(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: AppColors.grey1)),
+                                  child: const Center(
+                                      child: Text('الصلاة'))),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex: 5,
+                                    child: RamadanTableColumn(
+                                      width:
+                                          constraints.maxWidth /
+                                              16,
+                                      title: 'الفروض',
+                                      listOfStrings: AppStrings
+                                          .namesOfPrayers,
+                                      count: 5,
+                                    ),
+                                  ),
+                                  Expanded(
+                                      flex: 4,
                                       child: RamadanTableColumn(
                                         width:
                                             constraints.maxWidth /
                                                 16,
-                                        title: 'الفروض',
+                                        title: 'النوافل',
                                         listOfStrings: AppStrings
-                                            .namesOfPrayers,
-                                        count: 5,
-                                      ),
-                                    ),
-                                    Expanded(
-                                        flex: 4,
-                                        child: RamadanTableColumn(
-                                          width:
-                                              constraints.maxWidth /
-                                                  16,
-                                          title: 'النوافل',
-                                          listOfStrings: AppStrings
-                                              .namesOfVoluntaryPrayers,
-                                          count: 4,
-                                        )),
-                                  ],
-                                ),
+                                            .namesOfVoluntaryPrayers,
+                                        count: 4,
+                                      )),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        Flexible(
-                          flex: 5,
-                          child: RamadanTableColumn(
-                              width: constraints.maxWidth / 16,
-                              title: 'ألاذكار',
-                              listOfStrings:
-                                  AppStrings.supplications,
-                              count: 5),
-                        ),
-                        Flexible(
-                          flex: 2,
-                          child: RamadanTableColumn(
-                              width: constraints.maxWidth / 16,
-                              title: 'قران',
-                              listOfStrings: AppStrings.list,
-                              count: 2),
-                        ),
-                      ],
-                    ),
+                      ),
+                      Flexible(
+                        flex: 5,
+                        child: RamadanTableColumn(
+                            width: constraints.maxWidth / 16,
+                            title: 'ألاذكار',
+                            listOfStrings:
+                                AppStrings.supplications,
+                            count: 5),
+                      ),
+                      Flexible(
+                        flex: 2,
+                        child: RamadanTableColumn(
+                            width: constraints.maxWidth / 16,
+                            title: 'قران',
+                            listOfStrings: AppStrings.list,
+                            count: 2),
+                      ),
+                    ],
                   ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
-          Expanded(flex: 2,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                        flex: 2, child: RamadanCalendarWidget()),
-                    Expanded(flex: 16, child: CheckBoxsWidget())
-                  ]),
-            ),
-          )
-        ],
-      ),
+        ),
+        Expanded(flex: 2,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                      flex: 2, child: RamadanCalendarWidget()),
+                  Expanded(flex: 16, child: CheckBoxsWidget())
+                ]),
+          ),
+        )
+      ],
     );
   }
 }

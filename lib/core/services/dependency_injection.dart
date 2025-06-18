@@ -41,12 +41,11 @@ GetIt sl = GetIt.instance;
 class DependencyInjection {
   static Future<void> init() async {
     // cubits
-        sl.registerFactory(() => OnBoardingCubit());
-
-    sl.registerFactory(() => HomeCubit(sl(), sl()));
+    sl.registerLazySingleton(() => OnBoardingCubit());
+    sl.registerFactory(() => HomeCubit(sl()));
     sl.registerFactory(() => TimerCubit());
-        sl.registerFactory(() => HadithCubit(sl()));
-
+    sl.registerFactory(() => PrayerTimesCubit(sl()));
+    sl.registerFactory(() => HadithCubit(sl()));
     sl.registerFactory(() => AdhkarCubit(sl()));
     sl.registerFactory(() => FeaturedRecordsCubit(sl(), sl(), sl(), sl()));
     sl.registerFactory(() => RtabelCubit(sl(), sl(), sl()));
@@ -94,7 +93,8 @@ class DependencyInjection {
         () => PrayersRemoteDataSourceImpl(sl()));
 
     // services
-    sl.registerSingleton<BasePositionService>(PositionServiceImplByGeolocator());
+    sl.registerSingleton<BaseLocatationService>(
+        LocatationServiceImplByGeolocator());
     sl.registerLazySingleton<InternetConnection>(
         () => InternetConnectionImpl());
     sl.registerLazySingleton<ApiService>(() => ApiService(sl()));

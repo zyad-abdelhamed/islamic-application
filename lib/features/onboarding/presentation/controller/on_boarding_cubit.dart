@@ -7,6 +7,7 @@ class OnBoardingCubit extends HydratedCubit<bool> {
   OnBoardingCubit() : super( false);
   final PageController pageController = PageController();
   int isLastPage = 0;
+  
   void animateToNextPage({required BuildContext context}) {
     isLastPage = pageController.page!.round();
     if (isLastPage == 4) {
@@ -30,5 +31,11 @@ class OnBoardingCubit extends HydratedCubit<bool> {
   @override
   Map<String, dynamic> toJson(bool state) {
     return {CacheConstants.isDisplayed: state};
+  }
+
+  @override
+  Future<void> close() {
+    print("onBoarding cubit close");
+    return super.close();
   }
 }

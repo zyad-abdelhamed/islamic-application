@@ -23,8 +23,11 @@ class HomePage extends StatelessWidget {
           create: (context) => sl<HadithCubit>()..showTodatHadith(context),
         ),
         BlocProvider(
-          create: (context) => HomeCubit(sl(), sl())..getPrayersTimes(context),
+          create: (context) => sl<HomeCubit>()..checkLocationPermission(context)..checkInternetConnection(context),
         ),
+        BlocProvider(
+          create: (context) => sl<PrayerTimesCubit>()..getPrayersTimes(context),
+        )
       ],
       child: adaptiveWidgetDependingOnOs(
         defaultWidget: HomePageToDesktop(),

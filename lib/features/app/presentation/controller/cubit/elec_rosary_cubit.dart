@@ -5,7 +5,7 @@ import 'package:test_app/core/constants/app_durations.dart';
 part 'elec_rosary_state.dart';
 
 class ElecRosaryCubit extends Cubit<ElecRosaryState> {
- int counter = 1000000;
+ int counter = 0;
 
   ElecRosaryCubit() : super(ElecRosaryState());
   static ElecRosaryCubit getElecRosaryController(BuildContext context) {

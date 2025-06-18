@@ -6,31 +6,20 @@ import 'package:geolocator/geolocator.dart';
 import 'package:test_app/core/services/position_service.dart';
 
 part 'qibla_state.dart';
+
 class QiblaCubit extends Cubit<QiblaState> {
   QiblaCubit(this.basePositionService) : super(QiblaInitial());
 
   StreamSubscription<CompassEvent>? _compassSubscription;
-  final BasePositionService basePositionService;
+  final BaseLocatationService basePositionService;
 
   Future<void> initQibla() async {
+    emit(QiblaLoading());
+
     try {
-      emit(QiblaLoading());
-
-      
-      if (!await basePositionService.isServiceEnabled) {
-        emit(QiblaError('GPS غير مفعل'));
-        return;
-      }
-
-      if (await basePositionService.checkPermission == LocationPermission.denied) {
-        if (await basePositionService.requestPermission == LocationPermission.denied) {
-          emit(QiblaError('تم رفض صلاحية الموقع'));
-          return;
-        }
-      }
-
       final Position position = await basePositionService.position;
-      final qiblaDir = _calculateQiblaDirection(position.latitude, position.longitude);
+      final qiblaDir =
+          _calculateQiblaDirection(position.latitude, position.longitude);
 
       _compassSubscription = FlutterCompass.events!.listen((event) {
         final heading = event.heading;
@@ -42,7 +31,14 @@ class QiblaCubit extends Cubit<QiblaState> {
         }
       });
     } catch (e) {
-      emit(QiblaError('حدث خطأ: $e'));
+      if (await basePositionService.checkPermission ==
+          LocationPermission.denied) {
+        emit(QiblaError('تم رفض صلاحية الموقع'));
+      } else if (!await basePositionService.isServiceEnabled) {
+        emit(QiblaError('GPS غير مفعل'));
+      } else {
+        emit(QiblaError(e.toString()));
+      }
     }
   }
 

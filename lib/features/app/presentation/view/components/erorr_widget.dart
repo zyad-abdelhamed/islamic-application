@@ -15,7 +15,8 @@ class ErorrWidget extends StatelessWidget {
       shape: ContinuousRectangleBorder(
           borderRadius: BorderRadius.circular(10.0)),
       child: Text(
-        message,
+        "حدث خطأ: $message",
+        textAlign: TextAlign.center,
         style: TextStyles.semiBold18(
             context, AppColors.secondryColor),
       ),

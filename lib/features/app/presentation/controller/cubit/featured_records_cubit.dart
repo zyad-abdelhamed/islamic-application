@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/constants/app_durations.dart';
@@ -19,10 +18,8 @@ class FeaturedRecordsCubit extends Cubit<FeaturedRecordsState> {
       this.deleteAllRecordsUseCase, this.deleteRecordsUseCase)
       : super(const FeaturedRecordsState()) {
     featuredRecordsScrollController.addListener(() {
-      emit(state.copyWith(
-        progress: featuredRecordsScrollController.position.pixels));
-
-      _isScrollable = featuredRecordsScrollController.position.maxScrollExtent > 0.0;  
+      _isScrollable =
+          featuredRecordsScrollController.position.maxScrollExtent > 0.0;
     });
   }
 
@@ -64,12 +61,12 @@ class FeaturedRecordsCubit extends Cubit<FeaturedRecordsState> {
       (featuredRecords) {
         getFeatuerdRecords();
         if (_isScrollable) {
-          featuredRecordsScrollController.animateTo(featuredRecordsScrollController.position.maxScrollExtent + 100,
-              duration: AppDurations.mediumDuration, curve: Curves.easeInOut);
+          featuredRecordsScrollController.animateTo(
+              featuredRecordsScrollController.position.maxScrollExtent + 100,
+              duration: AppDurations.mediumDuration,
+              curve: Curves.easeInOut);
         }
-        emit(state.copyWith(
-          dummyCounterState: state.dummyCounterState + 1,
-        ));
+        emit(state.copyWith());
 
         appSneakBar(
             context: context,
@@ -86,9 +83,7 @@ class FeaturedRecordsCubit extends Cubit<FeaturedRecordsState> {
           context: context, message: failure.message, isError: true),
       (featuredRecords) {
         getFeatuerdRecords();
-        emit(state.copyWith(
-          dummyCounterState: state.dummyCounterState + 1,
-        ));
+        emit(state.copyWith());
 
         appSneakBar(
             context: context,
@@ -107,9 +102,7 @@ class FeaturedRecordsCubit extends Cubit<FeaturedRecordsState> {
           context: context, message: failure.message, isError: true),
       (featuredRecords) {
         getFeatuerdRecords();
-        emit(state.copyWith(
-          dummyCounterState: state.dummyCounterState + 1,
-        ));
+        emit(state.copyWith());
 
         appSneakBar(
             context: context,
@@ -122,7 +115,6 @@ class FeaturedRecordsCubit extends Cubit<FeaturedRecordsState> {
   @override
   Future<void> close() {
     featuredRecordsScrollController.dispose();
-    print("dispose featuredRecords scroll controller");
     return super.close();
   }
 }

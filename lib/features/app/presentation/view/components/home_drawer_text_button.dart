@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/constants/app_strings.dart';
-import 'package:test_app/core/extentions/controllers_extention.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/alert_dialog_cubit.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
@@ -43,10 +42,8 @@ class HomeDrawerTextButton extends StatelessWidget {
             ),
             Text(
               text,
-              style: TextStyles.semiBold16_120(context).copyWith(
-                  color: context.themeController.darkMode
-                      ? AppColors.white
-                      : AppColors.black),
+              style: TextStyles.semiBold16_120(context)
+                  .copyWith(color: AppColors.white),
             ),
           ],
         ),

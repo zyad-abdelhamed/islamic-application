@@ -29,22 +29,20 @@ class AdhkarPage extends StatelessWidget {
                     current.isDeleted, //to avoid rebuild when change switch
                 builder: (context, state) {
                   return Stack(children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: getWidgetDependingOnReuestState(
-                          requestStateEnum: state.adhkarRequestState,
-                          widgetIncaseSuccess: ListView.builder(
-                              controller: context.supplicationsController
-                                  .adhkarScrollController,
-                              itemCount: state.adhkar.length,
-                              itemBuilder: (context, index) =>
-                                  AdhkarWidget(
-                                    index: index,
-                                    adhkarEntity: state.adhkar[index],
-                                    state: state,
-                                  )),
-                          erorrMessage: state.adhkarErorrMessage),
-                    ),
+                    getWidgetDependingOnReuestState(
+                        requestStateEnum: state.adhkarRequestState,
+                        widgetIncaseSuccess: ListView.builder(
+                            padding: const EdgeInsets.all(8.0),
+                            controller: context.supplicationsController
+                                .adhkarScrollController,
+                            itemCount: state.adhkar.length,
+                            itemBuilder: (context, index) =>
+                                AdhkarWidget(
+                                  index: index,
+                                  adhkarEntity: state.adhkar[index],
+                                  state: state,
+                                )),
+                        erorrMessage: state.adhkarErorrMessage),
 
                     //circle slider
                     _getCustomCircleSlider(context,

@@ -28,7 +28,7 @@ class RamadanTabelPage extends StatelessWidget {
                     onPressed: () {
                       context.read<RtabelCubit>().resetAllCheckBoxes();
                     },
-                    icon: Icon(Icons.refresh, color: Colors.white),
+                    icon: Icon(Icons.refresh),
                   ),
                 )
               ],
@@ -38,23 +38,11 @@ class RamadanTabelPage extends StatelessWidget {
             ),
             body: OrentationLayout(
               landScapeWidget: (context) => LandScapeWidgetToRTablePage(),
-              portraitWidget: (context) => Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 8.0, vertical: 200.0),
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        bottom: 8.0, right: 8.0, left: 8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          AppStrings.portraitOrientationToRTablePageText,
-                          style: TextStyles.bold20(context),
-                        ),
-                      ],
-                    ),
-                  ),
+              portraitWidget: (context) => Center(
+                child: Text(
+                  AppStrings.portraitOrientationToRTablePageText,
+                  textAlign: TextAlign.center,
+                  style: TextStyles.bold20(context),
                 ),
               ),
             ),

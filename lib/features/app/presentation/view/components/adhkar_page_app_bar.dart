@@ -26,7 +26,6 @@ AppBar adhkarPageAppBar(BuildContext context, {required String appBarTitle}) {
               buildWhen: (previous, current) =>
                   previous.isDeleted != current.isDeleted,
               builder: (context, state) {
-                print('rebuild adhkar page switch');
                 return Switch.adaptive(
                   activeColor: AppColors.thirdColor,
                   activeTrackColor: AppColors.thirdColor.withValues(alpha: 0.8),

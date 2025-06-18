@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/quran_cubit.dart';
 import 'package:test_app/features/app/presentation/view/pages/alquran_alkarim_page.dart';
-import 'package:test_app/features/app/presentation/view/pages/compass.dart';
 import 'package:test_app/features/app/presentation/view/pages/elec_rosary_page.dart';
+import 'package:test_app/features/app/presentation/view/pages/qibla_page.dart';
 import 'package:test_app/features/app/presentation/view/pages/rtabel_page.dart';
 
 abstract class AppStrings {
@@ -17,7 +17,8 @@ abstract class AppStrings {
       'اتجاه${getNewlineOrWightSpace()}القبله'
     ];
   }
-
+  
+  static const String back = "العوده";
   //   ===on boarding===
   static const String skip = 'تخطى';
   static const String next = 'التالى';
@@ -25,7 +26,7 @@ abstract class AppStrings {
     'اوقات الصلاة',
     'الاذكار',
     'السبحة الالكترونية',
-    'القران الكريم',
+    'القرآن الكريم',
     'اتجاه القبله'
   ];
   static const List<String> texts = <String>[
@@ -38,6 +39,7 @@ abstract class AppStrings {
   //   ===splash screen===
   static const String loadingText = 'يتم التحميل...';
   //   ===home page===
+  static const String darkMode = 'الوضع الداكن';
   static const String mainPage = 'الصفحة الرئيسية';
   static const String nextPrayer = 'الصلاة القادمة :';
   static const String remainingTime = 'الوقت المتبقي : ';
