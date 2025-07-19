@@ -31,6 +31,7 @@ class HomePageToAndroidAndIos extends StatelessWidget {
       ),
       drawer: Drawer(child: HomeDrawerWidget()),
       endDrawer: Drawer(
+       
         backgroundColor: ThemeCubit.controller(context).state ? AppColors.black : AppColors.white,
         shape: LinearBorder(),
         child: SizedBox()),

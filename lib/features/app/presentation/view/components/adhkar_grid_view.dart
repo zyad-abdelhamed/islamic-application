@@ -24,7 +24,7 @@ class AdhkarGridView extends StatelessWidget {
             (index) => AdhkarButton(
                   icon: AppStrings.supplicationIcons[index],
                   onTap: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) => AdhkarPage(

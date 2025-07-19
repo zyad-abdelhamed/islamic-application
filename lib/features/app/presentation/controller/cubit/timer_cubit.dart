@@ -27,7 +27,10 @@ class TimerCubit extends Cubit<TimerState> {
     int startSeconds = lastSeconds ?? seconds;
 
     emit(state.copyWith(
-        hours: startHours, minutes: startMinutes, seconds: startSeconds, isRunning: true));
+        hours: startHours,
+        minutes: startMinutes,
+        seconds: startSeconds,
+        isRunning: true));
 
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -92,5 +95,11 @@ class TimerCubit extends Cubit<TimerState> {
 
     _timer?.cancel();
     emit(state.copyWith(isRunning: false));
+  }
+
+  @override
+  Future<void> close() {
+    _timer?.cancel(); // إلغاء التايمر إذا كان شغال
+    return super.close();
   }
 }

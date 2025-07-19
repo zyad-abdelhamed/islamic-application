@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:test_app/core/services/internet_connection.dart';
 import 'package:test_app/core/services/position_service.dart';
 import 'package:test_app/features/app/data/datasources/home_local_data_source.dart';
@@ -26,7 +27,6 @@ import 'package:test_app/features/app/domain/usecases/get_today_hadith_use_case.
 import 'package:test_app/features/app/domain/usecases/reset_booleans_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/update_booleans_use_case.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/hadith_cubit.dart';
-import 'package:test_app/features/app/presentation/controller/cubit/home_cubit.dart';
 import 'package:test_app/features/app/domain/usecases/get_records_use_case.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/featured_records_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/prayer_times_cubit.dart';
@@ -35,14 +35,15 @@ import 'package:test_app/features/app/presentation/controller/cubit/adhkar_cubit
 import 'package:test_app/core/services/api_services.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/timer_cubit.dart';
 import 'package:test_app/features/onboarding/presentation/controller/on_boarding_cubit.dart';
+import 'package:test_app/features/splash_screen.dart';
 
 GetIt sl = GetIt.instance;
 
 class DependencyInjection {
   static Future<void> init() async {
+    sl.registerLazySingleton(()=> GetPrayersTimesController(getPrayersTimesUseCase: sl()));
     // cubits
     sl.registerLazySingleton(() => OnBoardingCubit());
-    sl.registerFactory(() => HomeCubit(sl()));
     sl.registerFactory(() => TimerCubit());
     sl.registerFactory(() => PrayerTimesCubit(sl()));
     sl.registerFactory(() => HadithCubit(sl()));
@@ -93,11 +94,12 @@ class DependencyInjection {
         () => PrayersRemoteDataSourceImpl(sl()));
 
     // services
-    sl.registerSingleton<BaseLocatationService>(
+    sl.registerSingleton<BaseLocationService>(
         LocatationServiceImplByGeolocator());
     sl.registerLazySingleton<InternetConnection>(
-        () => InternetConnectionImpl());
+        () => InternetConnectionImpl2());
     sl.registerLazySingleton<ApiService>(() => ApiService(sl()));
     sl.registerLazySingleton<Dio>(() => Dio());
+   
   }
 }

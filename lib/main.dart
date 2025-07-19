@@ -15,7 +15,7 @@ void main() async {
 
   DependencyInjection.init();
   await setupHive();
-
+  
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory:
         HydratedStorageDirectory((await getTemporaryDirectory()).path),

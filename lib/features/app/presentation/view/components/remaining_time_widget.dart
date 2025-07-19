@@ -75,6 +75,7 @@ class DisplayTimeContainer extends StatelessWidget {
       child: BlocSelector<TimerCubit, TimerState, String>(
         selector: (state) {
           if (index == 0) {
+            print('seconds: ${state.seconds}');
             return state.seconds.toString().padLeft(2, '0'); // ثواني
           }
           if (index == 1) {

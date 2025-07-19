@@ -18,7 +18,7 @@ class QiblaPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => QiblaCubit(sl<BaseLocatationService>())..initQibla(),
+      create: (_) => QiblaCubit(sl<BaseLocationService>())..initQibla(),
       child: Scaffold(
         appBar: AppBar(
             leading: GetAdaptiveBackButtonWidget(),
@@ -35,7 +35,7 @@ class QiblaPage extends StatelessWidget {
                 children: [Spacer(),
                   ErorrWidget(message: state.message),Spacer(),
                   OutlinedButton(onPressed: () async{
-                    await sl<BaseLocatationService>().requestPermission;
+                    await sl<BaseLocationService>().requestPermission;
                   },child: Text('request location permission',style: TextStyle(color: AppColors.primaryColor),),)
                 ],
               );
