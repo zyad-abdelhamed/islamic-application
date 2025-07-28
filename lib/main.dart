@@ -14,6 +14,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   DependencyInjection.init();
+  
   await setupHive();
   
   HydratedBloc.storage = await HydratedStorage.build(

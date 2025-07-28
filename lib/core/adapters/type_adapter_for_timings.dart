@@ -11,6 +11,9 @@ class TypeAdapterForTimings extends TypeAdapter<Timings> {
       asr: reader.readString(),
       maghrib: reader.readString(),
       isha: reader.readString(),
+      hijriDay: reader.readString(),
+      hijriMonthNameArabic: reader.readString(),
+      hijriYear: reader.readString(),
     );
   }
 
@@ -25,5 +28,8 @@ class TypeAdapterForTimings extends TypeAdapter<Timings> {
     writer.writeString(obj.asr);
     writer.writeString(obj.maghrib);
     writer.writeString(obj.isha);
+    writer.writeString(obj.hijriDay);
+    writer.writeString(obj.hijriMonthNameArabic);
+    writer.writeString(obj.hijriYear);
   }
 }

@@ -15,6 +15,7 @@ class PrayersRemoteDataSourceImpl implements PrayersRemoteDataSource {
     var responseBody = await apiService.get(
         apiServiceInputModel:
             ApiServiceInputModel(url: await Apiconstants.getTimingsUrl));
-    return TimingsModel.fromJson(responseBody['data']['timings']);
+
+    return TimingsModel.fromJson(responseBody['data']);
   }
 }

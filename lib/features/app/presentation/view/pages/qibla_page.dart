@@ -9,6 +9,7 @@ import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/services/position_service.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
 import 'package:test_app/core/theme/app_colors.dart';
+import 'package:test_app/core/utils/responsive_extention.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/qibla_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/erorr_widget.dart';
 
@@ -47,12 +48,8 @@ class QiblaPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Transform.rotate(
-                      angle: angle - math.pi / 4,
-                      child: Icon(
-                        CupertinoIcons.compass_fill,
-                        size: 200,
-                        color: AppColors.primaryColor,
-                      ),
+                      angle: angle ,
+                      child:Image.asset('assets/images/ooooo.png',fit: BoxFit.fill,)
                     ),
                     const SizedBox(height: 20),
                     Text(

@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:test_app/core/services/city_name_service.dart';
 import 'package:test_app/core/services/internet_connection.dart';
 import 'package:test_app/core/services/position_service.dart';
 import 'package:test_app/features/app/data/datasources/home_local_data_source.dart';
@@ -41,7 +41,8 @@ GetIt sl = GetIt.instance;
 
 class DependencyInjection {
   static Future<void> init() async {
-    sl.registerLazySingleton(()=> GetPrayersTimesController(getPrayersTimesUseCase: sl()));
+    sl.registerLazySingleton(
+        () => GetPrayersTimesController(getPrayersTimesUseCase: sl()));
     // cubits
     sl.registerLazySingleton(() => OnBoardingCubit());
     sl.registerFactory(() => TimerCubit());
@@ -94,12 +95,13 @@ class DependencyInjection {
         () => PrayersRemoteDataSourceImpl(sl()));
 
     // services
+    sl.registerLazySingleton<LocationNameService>(
+        () => LocationNameServiceImpl());
     sl.registerSingleton<BaseLocationService>(
         LocatationServiceImplByGeolocator());
     sl.registerLazySingleton<InternetConnection>(
         () => InternetConnectionImpl2());
     sl.registerLazySingleton<ApiService>(() => ApiService(sl()));
     sl.registerLazySingleton<Dio>(() => Dio());
-   
   }
 }

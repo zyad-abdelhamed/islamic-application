@@ -34,9 +34,9 @@ class _HomePageState extends State<HomePage> {
 
     // تهيئة PrayerTimesCubit
     WidgetsBinding.instance.addPostFrameCallback((_) {
-     
+      
       context.read<PrayerTimesCubit>().init(
-            timings: sl<GetPrayersTimesController>().timings,
+            timings: sl<GetPrayersTimesController>().timings!,
             context: context,
           );
            context.read<HadithCubit>().showTodayHadith(context);

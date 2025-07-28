@@ -75,7 +75,6 @@ class DisplayTimeContainer extends StatelessWidget {
       child: BlocSelector<TimerCubit, TimerState, String>(
         selector: (state) {
           if (index == 0) {
-            print('seconds: ${state.seconds}');
             return state.seconds.toString().padLeft(2, '0'); // ثواني
           }
           if (index == 1) {
@@ -84,7 +83,6 @@ class DisplayTimeContainer extends StatelessWidget {
           return state.hours.toString().padLeft(2, '0'); // ساعات
         },
         builder: (context, timeValue) {
-          //print('إعادة بناء النص الخاص بـ index: $index');
           return SevenSegmentDisplay(
             size: 3,
             segmentStyle: DefaultSegmentStyle(

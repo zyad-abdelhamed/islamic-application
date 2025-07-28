@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_strings.dart';
+import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 
@@ -23,8 +24,18 @@ class HomeButton extends StatelessWidget {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => page,
-            ));
+                builder: (context) =>  WillPopScope(
+  onWillPop: () async {
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      RoutesConstants.homePageRouteName,
+      (route) => false,
+    );
+    return false;
+  },
+  child: page,
+),
+));
       },
       child: Container(
         margin: EdgeInsets.only(
