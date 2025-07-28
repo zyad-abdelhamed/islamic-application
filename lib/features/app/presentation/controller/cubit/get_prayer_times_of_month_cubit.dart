@@ -30,13 +30,13 @@ class GetPrayerTimesOfMonthCubit extends Cubit<GetPrayerTimesOfMonthState> {
         await getPrayerTimesOfMonthUseCase(
             parameters: getPrayerTimesOfMonthPrameters);
     result.fold(
-      (l) {
+      (l) {print("////////+++++++//////////");
         emit(GetPrayerTimesOfMonthState(
-            getPrayerTimesOfMonthErrorMeassage: l.message));
+            getPrayerTimesOfMonthErrorMeassage: l.message,getPrayerTimesOfMonthState: RequestStateEnum.failed));
       },
-      (prayerTimesOfMonth) {
+      (prayerTimesOfMonth) {print("////////////////////");
         emit(
-            GetPrayerTimesOfMonthState(prayerTimesOfMonth: prayerTimesOfMonth));
+            GetPrayerTimesOfMonthState(prayerTimesOfMonth: prayerTimesOfMonth,getPrayerTimesOfMonthState: RequestStateEnum.success));
       },
     );
   }

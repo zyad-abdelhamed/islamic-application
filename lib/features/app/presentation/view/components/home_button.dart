@@ -24,18 +24,18 @@ class HomeButton extends StatelessWidget {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) =>  WillPopScope(
-  onWillPop: () async {
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      RoutesConstants.homePageRouteName,
-      (route) => false,
-    );
-    return false;
-  },
-  child: page,
-),
-));
+              builder: (context) => WillPopScope(
+                onWillPop: () async {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    RoutesConstants.homePageRouteName,
+                    (route) => false,
+                  );
+                  return false;
+                },
+                child: page,
+              ),
+            ));
       },
       child: Container(
         margin: EdgeInsets.only(

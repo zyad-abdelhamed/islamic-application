@@ -31,7 +31,7 @@ class PrayerRepo extends BasePrayerRepo {
         try {
           timings = await prayersRemoteDataSource.getPrayersTimes();
           print('remote');
-          await prayersLocalDataSource.putPrayersTimes(timings);
+         // await prayersLocalDataSource.putPrayersTimes(timings);
         } on DioException catch (_) {
           timings = await prayersLocalDataSource.getLocalPrayersTimes();
           print('local1');
@@ -57,9 +57,12 @@ class PrayerRepo extends BasePrayerRepo {
 
   @override
   Future<Either<Failure, List<Timings>>> getPrayerTimesOfMonth(
-      GetPrayerTimesOfMonthPrameters getPrayerTimesOfMonthPrameters) {
-    // TODO: implement getPrayerTimesOfMonth
-    throw UnimplementedError();
+      GetPrayerTimesOfMonthPrameters getPrayerTimesOfMonthPrameters) async{
+    try {
+   return right(await prayersRemoteDataSource.getPrayerTimesOfMonth(getPrayerTimesOfMonthPrameters));
+} on Exception catch (e) {
+  return left(Failure(e.toString()));
+}
   }
 
   @override

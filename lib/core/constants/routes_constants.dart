@@ -5,5 +5,5 @@ abstract class RoutesConstants {
   static const String secondryPageOnBoarding = 'SecondryPageOnBoarding';
   static const String qiblaPageRouteName = 'qiblaPage';
   static const String qAndAPageRouteName = 'qAndAPage';
-  static const String prayersTimePageSettings = 'PrayersTimePageSettingsPage';
+  static const String prayersTimePage = 'PrayersTimePageSettingsPage';
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_durations.dart';
+import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/adhkar_page_controller.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_adhkar_controller.dart';
@@ -38,45 +39,56 @@ class _AdhkarPageState extends State<AdhkarPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: adhkarPageAppBar(context,
-            appBarTitle: widget.nameOfAdhkar,
-            adhkarPageController: adhkarPageController),
-        body: Stack(children: [
-          //data
-          AnimatedList(
-              padding: const EdgeInsets.all(8.0),
-              key: adhkarPageController.animatedLIstKey,
-              controller: adhkarPageController.adhkarScrollController,
-              initialItemCount: widget.getAdhkarController.adhkar.length,
-              itemBuilder: (context, index, animation) => AdhkarWidget(
-                adhkarPageController: adhkarPageController,
-                    index: index,
-                    adhkarEntity:
-                        widget.getAdhkarController.adhkar.elementAt(index),
-                  )),
-          //circle slider
-          ValueListenableBuilder<double>(
-            valueListenable: adhkarPageController.progressNotfier,
-            builder: (_, __, ___) => Stack(children: [
-              _getCustomCircleSlider(context,
-                  customPainter: CirclePainter(
-                      lineSize: 5.0,
-                      progress: adhkarPageController.maxProgress,
-                      context: context,
-                      lineColor: AppColors.inActiveThirdColor,
-                      maxProgress: adhkarPageController.maxProgress)),
-              _getCustomCircleSlider(context,
-                  customPainter: CirclePainter(
-                      lineSize: 5.0,
-                      progress: adhkarPageController.progressNotfier.value,
-                      context: context,
-                      lineColor: AppColors.thirdColor,
-                      maxProgress: adhkarPageController.maxProgress))
-            ]),
-          )
-        ]));
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          RoutesConstants.homePageRouteName,
+          (route) => false,
+        );
+        return false;
+      },
+      child: Scaffold(
+          appBar: adhkarPageAppBar(context,
+              appBarTitle: widget.nameOfAdhkar,
+              adhkarPageController: adhkarPageController),
+          body: Stack(children: [
+            //data
+            AnimatedList(
+                padding: const EdgeInsets.all(8.0),
+                key: adhkarPageController.animatedLIstKey,
+                controller: adhkarPageController.adhkarScrollController,
+                initialItemCount: widget.getAdhkarController.adhkar.length,
+                itemBuilder: (context, index, animation) => AdhkarWidget(
+                      adhkarPageController: adhkarPageController,
+                      index: index,
+                      adhkarEntity:
+                          widget.getAdhkarController.adhkar.elementAt(index),
+                    )),
+            //circle slider
+            ValueListenableBuilder<double>(
+              valueListenable: adhkarPageController.progressNotfier,
+              builder: (_, __, ___) => Stack(children: [
+                _getCustomCircleSlider(context,
+                    customPainter: CirclePainter(
+                        lineSize: 5.0,
+                        progress: adhkarPageController.maxProgress,
+                        context: context,
+                        lineColor: AppColors.inActiveThirdColor,
+                        maxProgress: adhkarPageController.maxProgress)),
+                _getCustomCircleSlider(context,
+                    customPainter: CirclePainter(
+                        lineSize: 5.0,
+                        progress: adhkarPageController.progressNotfier.value,
+                        context: context,
+                        lineColor: AppColors.thirdColor,
+                        maxProgress: adhkarPageController.maxProgress))
+              ]),
+            )
+          ])),
+    );
   }
+
 //   ===helper functions===
   Positioned _getCustomCircleSlider(BuildContext context,
       {required CustomPainter customPainter}) {

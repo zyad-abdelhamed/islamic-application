@@ -17,7 +17,7 @@ class SecondaryPrayerTimesWidget extends StatelessWidget {
           height: 35,
           child: FittedBox(
             fit: BoxFit.scaleDown,
-            child: Text("2025-07-25",
+            child: Text(timings.gregoriandate,
                 maxLines: 1,
                 textAlign: TextAlign.center,
                 style: TextStyles.semiBold20(
@@ -33,7 +33,9 @@ class SecondaryPrayerTimesWidget extends StatelessWidget {
               _getColumnOfPrayers(context,
                   textList: AppStrings.emojisOfPrayers),
               Spacer(),
-              _getColumnOfPrayers(context, textList: AppStrings.namesOfPrayers1)
+              _getColumnOfPrayers(context, textList: [
+                timings.fajr,timings.sunrise,timings.dhuhr,timings.asr,timings.maghrib,timings.isha
+              ])
             ],
           ),
         )

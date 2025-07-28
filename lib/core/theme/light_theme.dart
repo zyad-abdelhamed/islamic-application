@@ -6,9 +6,10 @@ const double appBarBorderRadius = 50.0;
 ThemeData lightTheme = ThemeData(
   useMaterial3: true,
   brightness: Brightness.light,
- fontFamily: 'SemiBoldCairo', 
+  primaryColor: AppColors.primaryColor,
+  colorScheme: ColorScheme.light(primary: AppColors.primaryColor),
+  fontFamily: 'SemiBoldCairo',
   textTheme: const TextTheme().apply(
-  //  fontFamily: 'Cairo',
     bodyColor: Colors.black,
     displayColor: Colors.black,
   ),

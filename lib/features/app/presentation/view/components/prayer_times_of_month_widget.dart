@@ -16,36 +16,41 @@ class PrayerTimesOfMonthWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _widgetInCaseSucces();
+    return BlocBuilder<GetPrayerTimesOfMonthCubit, GetPrayerTimesOfMonthState>(
+      builder: (context, state) {
+        return getWidgetDependingOnReuestState(
+            requestStateEnum: state.getPrayerTimesOfMonthState!,
+            widgetIncaseSuccess: _widgetInCaseSucces(state.prayerTimesOfMonth),
+            erorrMessage: state.getPrayerTimesOfMonthErrorMeassage);
+      },
+    );
   }
 
-  Row _widgetInCaseSucces() {
+  Row _widgetInCaseSucces(List<Timings> listOfTimings) {
     return Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _swapButton(
-                  iconData: CupertinoIcons.chevron_right,
-                  onPressed: () =>
-                      prayerTimesPageController.animateTopreviousPage(),
-                  visibleNotifier: prayerTimesPageController
-                      .previousButtonVisibleNotifier),
-              Expanded(
-                child: PageView.builder(
-                  controller: prayerTimesPageController.pageController,
-                  onPageChanged: prayerTimesPageController.onPageChanged,
-                  itemCount: 3,
-                  itemBuilder: (context, index) =>
-                      SecondaryPrayerTimesWidget(timings: Timings(date: '', fajr: 'fajr', sunrise: 'sunrise', dhuhr: 'dhuhr', asr: 'asr', maghrib: 'maghrib', isha: 'isha')),
-                ),
-              ),
-              _swapButton(
-                  iconData: CupertinoIcons.chevron_left,
-                  onPressed: () =>
-                      prayerTimesPageController.animateToNextPage(),
-                  visibleNotifier:
-                      prayerTimesPageController.nextButtonVisibleNotifier),
-            ],
-          );
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _swapButton(
+            iconData: CupertinoIcons.chevron_right,
+            onPressed: () => prayerTimesPageController.animateTopreviousPage(),
+            visibleNotifier:
+                prayerTimesPageController.previousButtonVisibleNotifier),
+        Expanded(
+          child: PageView.builder(
+            controller: prayerTimesPageController.pageController,
+            onPageChanged: prayerTimesPageController.onPageChanged,
+            itemCount: listOfTimings.length,  
+            itemBuilder: (context, index) =>
+                SecondaryPrayerTimesWidget(timings: listOfTimings[index]),
+          ),
+        ),
+        _swapButton(
+            iconData: CupertinoIcons.chevron_left,
+            onPressed: () => prayerTimesPageController.animateToNextPage(),
+            visibleNotifier:
+                prayerTimesPageController.nextButtonVisibleNotifier),
+      ],
+    );
   }
 
   ValueListenableBuilder<bool> _swapButton(

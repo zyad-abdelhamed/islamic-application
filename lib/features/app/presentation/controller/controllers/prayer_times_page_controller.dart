@@ -4,15 +4,22 @@ import 'package:test_app/core/constants/app_durations.dart';
 class PrayerTimesPageController {
   late final PageController pageController;
   late final int itemCount;
-  late final ValueNotifier<bool> nextButtonVisibleNotifier;
-  late final ValueNotifier<bool> previousButtonVisibleNotifier;
+  final ValueNotifier<bool> nextButtonVisibleNotifier =
+      ValueNotifier<bool>(true);
+  final ValueNotifier<bool> previousButtonVisibleNotifier =
+      ValueNotifier<bool>(false);
   late final ValueNotifier<DateTime> dateNotifier;
 
   initState() {
     itemCount = 2;
-    pageController = PageController();
-    nextButtonVisibleNotifier = ValueNotifier<bool>(true);
-    previousButtonVisibleNotifier = ValueNotifier<bool>(false);
+    pageController = PageController(initialPage: DateTime.now().day - 1);
+    pageController.addListener(() {
+      if (pageController.hasClients) {
+        nextButtonVisibleNotifier.value = pageController.page!.round() == 29;
+        previousButtonVisibleNotifier.value = pageController.page!.round() != 0;
+        print(pageController.page!.round() != 0);
+      }
+    });
     dateNotifier = ValueNotifier<DateTime>(DateTime.now());
   }
 

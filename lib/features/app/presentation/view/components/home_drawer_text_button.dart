@@ -43,7 +43,7 @@ class HomeDrawerTextButton extends StatelessWidget {
             Text(
               text,
               style: TextStyles.semiBold16_120(context)
-                  .copyWith(color: Colors.grey[400]),
+                  .copyWith(color: AppColors.grey400),
             ),
           ],
         ),

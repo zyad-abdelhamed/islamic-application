@@ -40,7 +40,7 @@ abstract class AppStrings {
   //   ===home page===
   static const String darkMode = 'الوضع الداكن';
   static const String mainPage = 'الصفحة الرئيسية';
-  static const String nextPrayer = 'الصلاة القادمة :';
+  static const String nextPrayer = 'الصلاة القادمة';
   static const String remainingTime = 'الوقت المتبقي : ';
   static const String todayHadith = 'حديث اليوم';
   static const List<String> homeDrawerTextButtons = <String>[

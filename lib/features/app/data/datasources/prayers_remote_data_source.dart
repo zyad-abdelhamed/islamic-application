@@ -24,8 +24,11 @@ class PrayersRemoteDataSourceImpl implements PrayersRemoteDataSource {
 
   @override
   Future<List<TimingsModel>> getPrayerTimesOfMonth(
-      GetPrayerTimesOfMonthPrameters getPrayerTimesOfMonthPrameters) {
-    // TODO: implement getPrayerTimesOfMonth
-    throw UnimplementedError();
+      GetPrayerTimesOfMonthPrameters getPrayerTimesOfMonthPrameters) async{
+    var responseBody = await apiService.get(
+        apiServiceInputModel:
+            ApiServiceInputModel(url: await Apiconstants.getTimingsOfMonthUrl(getPrayerTimesOfMonthPrameters)));
+
+    return List.from((responseBody["data"] as List).map((e) => TimingsModel.fromJson(e)));
   }
 }

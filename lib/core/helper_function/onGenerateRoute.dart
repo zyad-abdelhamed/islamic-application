@@ -7,10 +7,10 @@ import 'package:test_app/features/app/presentation/controller/cubit/timer_cubit.
 import 'package:test_app/features/app/presentation/view/pages/home_page.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/features/app/presentation/view/pages/q_and_a_page.dart';
-import 'package:test_app/features/app/presentation/view/pages/prayers_time_settings.dart';
 import 'package:test_app/features/onboarding/presentation/view/pages/main_page.dart';
 import 'package:test_app/features/onboarding/presentation/view/pages/secondry_page.dart';
 import 'package:test_app/features/splash_screen.dart';
+import 'package:test_app/features/app/presentation/view/pages/prayer_times_page.dart';
 
 Route<dynamic> onGenerateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -41,17 +41,15 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       );
     case RoutesConstants.splashScreenRouteName:
       return MaterialPageRoute<SplashScreen>(
-        builder: (BuildContext context) => const SplashScreen(),
+        builder: (BuildContext context) => SplashScreen(),
       );  
     case RoutesConstants.qAndAPageRouteName:
       return MaterialPageRoute<QAndAPage>(
         builder: (BuildContext context) =>  const QAndAPage(),
-      );   
-        builder: (BuildContext context) => SplashScreen(),
       );
-    case RoutesConstants.prayersTimePageSettings:
-      return MaterialPageRoute<PrayersTimeSettings>(
-        builder: (BuildContext context) => PrayersTimeSettings(),
+    case RoutesConstants.prayersTimePage:
+      return MaterialPageRoute<PrayerTimesPage>(
+        builder: (BuildContext context) => PrayerTimesPage.inatance,
       );
      
     default:

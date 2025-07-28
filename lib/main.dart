@@ -12,16 +12,12 @@ import 'package:test_app/core/theme/theme_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   DependencyInjection.init();
-  
-  await setupHive();
-  
+  await setupHive(); 
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory:
         HydratedStorageDirectory((await getTemporaryDirectory()).path),
   );
-
   runApp(MyApp());
 }
 

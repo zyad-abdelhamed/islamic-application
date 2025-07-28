@@ -55,6 +55,7 @@ class _AdhkarWidgetState extends State<AdhkarWidget> {
                       Text(
                         widget.adhkarEntity.content,
                         style: TextStyles.bold20(context).copyWith(
+                          fontFamily: 'DataFontFamily',
                             fontSize: widget
                                 .adhkarPageController.fontSizeNotfier.value),
                       ),

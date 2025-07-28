@@ -18,12 +18,9 @@ class SplashScreen extends StatelessWidget {
   final ValueNotifier<double> opacityNotifier = ValueNotifier<double>(0.0);
 
   void start(BuildContext context) {
-    // نبدأ الأنميشن بعد لحظة بسيطة
     Future.delayed(const Duration(milliseconds: 300), () {
       opacityNotifier.value = 1.0;
     });
-
-    // نستدعي API بتاعك عادي
     sl<GetPrayersTimesController>().getPrayersTimes(context);
   }
 

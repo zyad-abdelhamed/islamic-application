@@ -5,11 +5,10 @@ ThemeData darkTheme = ThemeData(
   primaryColor: AppColors.primaryColor,
   colorScheme: ColorScheme.dark(primary: AppColors.primaryColor),
   brightness: Brightness.dark,
-  fontFamily: 'Cairo',
-  textTheme: const TextTheme(
-    bodyLarge: TextStyle(fontSize: 18),
-    bodyMedium: TextStyle(fontSize: 16),
-    titleLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+  fontFamily: 'SemiBoldCairo',
+  textTheme: const TextTheme().apply(
+    bodyColor: Colors.grey,
+    displayColor: Colors.grey,
   ),
   appBarTheme: const AppBarTheme(
     centerTitle: true,
