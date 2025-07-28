@@ -11,7 +11,7 @@ class QiblaCubit extends Cubit<QiblaState> {
   QiblaCubit(this.basePositionService) : super(QiblaInitial());
 
   StreamSubscription<CompassEvent>? _compassSubscription;
-  final BaseLocatationService basePositionService;
+  final BaseLocationService basePositionService;
 
   Future<void> initQibla() async {
     emit(QiblaLoading());

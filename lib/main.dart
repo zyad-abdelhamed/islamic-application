@@ -9,15 +9,14 @@ import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/dark_theme.dart';
 import 'package:test_app/core/theme/light_theme.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
-import 'package:test_app/prayer_times_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   DependencyInjection.init();
-
+  
   await setupHive();
-
+  
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory:
         HydratedStorageDirectory((await getTemporaryDirectory()).path),

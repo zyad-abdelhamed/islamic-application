@@ -1,13 +1,13 @@
 import 'package:geolocator/geolocator.dart';
 
-abstract class BaseLocatationService {
+abstract class BaseLocationService {
   Future<bool> get isServiceEnabled;
   Future<LocationPermission> get checkPermission;
   Future<LocationPermission> get requestPermission;
   Future<Position> get position;
 }
 
-class LocatationServiceImplByGeolocator extends BaseLocatationService {
+class LocatationServiceImplByGeolocator extends BaseLocationService {
   @override
   Future<bool> get isServiceEnabled async=> await Geolocator.isLocationServiceEnabled();
 

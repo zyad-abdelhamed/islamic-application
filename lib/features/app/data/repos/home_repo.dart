@@ -9,14 +9,14 @@ import 'package:test_app/features/app/domain/repositories/home_repo.dart';
 import 'package:test_app/core/errors/failures.dart';
 
 class HomeRepo extends BaseHomeRepo {
-  final HomeLocalDataSource adhkarLocalDataSource;
+  final HomeLocalDataSource homeLocalDataSource;
   final BaseHomeRemoteDataSource baseHomeRemoteDataSource;
-  HomeRepo(this.adhkarLocalDataSource, this.baseHomeRemoteDataSource);
+  HomeRepo(this.homeLocalDataSource, this.baseHomeRemoteDataSource);
   @override
   Future<Either<Failure, List<AdhkarEntity>>> getAdhkar(
       {required AdhkarParameters adhkarParameters}) async {
     try {
-      return Right(await adhkarLocalDataSource.getAdhkar(adhkarParameters));
+      return Right(await homeLocalDataSource.getAdhkar(adhkarParameters));
     } catch (e) {
       return const Left(
           Failure("خطأ أثناء جلب البيانات: تحقق من المدخلات أو مصدر البيانات"));
@@ -26,13 +26,11 @@ class HomeRepo extends BaseHomeRepo {
   @override
   Future<Either<Failure, Hadith>> getRandomHadith() async {
     try {
-      Hadith ahadith = await baseHomeRemoteDataSource.getAhadiths();
+      Hadith ahadith = await homeLocalDataSource.getAhadiths();
       return right(ahadith);
     } catch (e) {
-      if (e is DioException) {
-        return left(ServerFailure.fromDiorError(e));
-      }
-      return left(ServerFailure(e.toString()));
+      return const Left(
+          Failure("خطأ أثناء جلب البيانات: تحقق من المدخلات أو مصدر البيانات"));
     }
   }
 }

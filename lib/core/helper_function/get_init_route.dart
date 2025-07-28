@@ -4,4 +4,4 @@ import 'package:test_app/features/onboarding/presentation/controller/on_boarding
 
 String get getInitRoute => sl<OnBoardingCubit>().state
     ? RoutesConstants.splashScreenRouteName
-    : RoutesConstants.mainPageOnBoarding;
+    : RoutesConstants.splashScreenRouteName;

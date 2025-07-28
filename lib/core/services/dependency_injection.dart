@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:test_app/core/services/city_name_service.dart';
 import 'package:test_app/core/services/internet_connection.dart';
 import 'package:test_app/core/services/position_service.dart';
 import 'package:test_app/features/app/data/datasources/home_local_data_source.dart';
@@ -37,11 +38,14 @@ import 'package:test_app/features/app/presentation/controller/cubit/rtabel_cubit
 import 'package:test_app/core/services/api_services.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/timer_cubit.dart';
 import 'package:test_app/features/onboarding/presentation/controller/on_boarding_cubit.dart';
+import 'package:test_app/features/splash_screen.dart';
 
 GetIt sl = GetIt.instance;
 
 class DependencyInjection {
   static Future<void> init() async {
+    sl.registerLazySingleton(
+        () => GetPrayersTimesController(getPrayersTimesUseCase: sl()));
     // cubits
     sl.registerLazySingleton(() => OnBoardingCubit());
     sl.registerFactory(() => GetPrayerTimesOfMonthCubit(sl()));
@@ -101,10 +105,12 @@ class DependencyInjection {
         () => PrayersRemoteDataSourceImpl(sl()));
 
     // services
-    sl.registerSingleton<BaseLocatationService>(
+    sl.registerLazySingleton<LocationNameService>(
+        () => LocationNameServiceImpl());
+    sl.registerSingleton<BaseLocationService>(
         LocatationServiceImplByGeolocator());
     sl.registerLazySingleton<InternetConnection>(
-        () => InternetConnectionImpl());
+        () => InternetConnectionImpl2());
     sl.registerLazySingleton<ApiService>(() => ApiService(sl()));
     sl.registerLazySingleton<Dio>(() => Dio());
   }

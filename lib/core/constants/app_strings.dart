@@ -44,7 +44,7 @@ abstract class AppStrings {
   static const String remainingTime = 'الوقت المتبقي : ';
   static const String todayHadith = 'حديث اليوم';
   static const List<String> homeDrawerTextButtons = <String>[
-    'التسابيح بعدالصلاة',
+    'التسبيح بعدالصلاة',
     'حلقه التسبيح',
     'ختم القرآن'
   ];
