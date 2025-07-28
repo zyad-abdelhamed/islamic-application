@@ -5,6 +5,7 @@ class TypeAdapterForTimings extends TypeAdapter<Timings> {
   @override
   Timings read(BinaryReader reader) {
     return Timings(
+      date: reader.readString(),
       fajr: reader.readString(),
       sunrise: reader.readString(),
       dhuhr: reader.readString(),
@@ -19,6 +20,7 @@ class TypeAdapterForTimings extends TypeAdapter<Timings> {
 
   @override
   void write(BinaryWriter writer, Timings obj) {
+    writer.writeString(obj.date);
     writer.writeString(obj.fajr);
     writer.writeString(obj.sunrise);
     writer.writeString(obj.dhuhr);

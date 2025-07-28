@@ -13,7 +13,7 @@ class HomeButton extends StatelessWidget {
 
   final String text;
   final int index;
-  final StatelessWidget page;
+  final dynamic page;
   final String image;
 
   @override

@@ -17,7 +17,6 @@ abstract class AppStrings {
       'اتجاه${getNewlineOrWightSpace()}القبله'
     ];
   }
-  
   static const String back = "العوده";
   //   ===on boarding===
   static const String skip = 'تخطى';
@@ -258,6 +257,9 @@ abstract class AppStrings {
     'الفلق': 569,
     'الناس': 569,
   };
+  //   ===adhkar page===
+  static const String fontSizeButtonText = "ض";
+  static const String adhkarPageSwitchText = "الحذف بعد الانتهاء";
   //   ===ramadan table===
   static const List<String> namesOfPrayers = <String>[
     'فجر',

@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/constants/app_durations.dart';
+import 'package:test_app/features/app/data/models/number_animation_model.dart';
 import 'package:test_app/features/app/domain/usecases/add_record_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/delete_all_records_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/delete_records_use_case.dart';
@@ -16,12 +17,7 @@ part 'featured_records_state.dart';
 class FeaturedRecordsCubit extends Cubit<FeaturedRecordsState> {
   FeaturedRecordsCubit(this.getRecordsUseCase, this.addRecordUseCase,
       this.deleteAllRecordsUseCase, this.deleteRecordsUseCase)
-      : super(const FeaturedRecordsState()) {
-    featuredRecordsScrollController.addListener(() {
-      _isScrollable =
-          featuredRecordsScrollController.position.maxScrollExtent > 0.0;
-    });
-  }
+      : super(const FeaturedRecordsState());
 
   //variables
   final GetRecordsUseCase getRecordsUseCase;
@@ -29,14 +25,9 @@ class FeaturedRecordsCubit extends Cubit<FeaturedRecordsState> {
   final DeleteAllRecordsUseCase deleteAllRecordsUseCase;
   final DeleteRecordsUseCase deleteRecordsUseCase;
   final ScrollController featuredRecordsScrollController = ScrollController();
-  bool _isScrollable = false;
 
-  static FeaturedRecordsCubit getFeatuerdRecordsController(
-      BuildContext context) {
-    final FeaturedRecordsCubit controller =
-        context.read<FeaturedRecordsCubit>();
-    return controller;
-  }
+  static FeaturedRecordsCubit controller(BuildContext context) =>
+      context.read<FeaturedRecordsCubit>();
 
 //events
   void getFeatuerdRecords() async {
@@ -52,21 +43,25 @@ class FeaturedRecordsCubit extends Cubit<FeaturedRecordsState> {
   }
 
   void addFeatuerdRecord(
-      {required int item, required BuildContext context}) async {
+      {required ValueNotifier<NumberAnimationModel> counterNotifier,
+      required BuildContext context}) async {
     Either<Failure, Unit> result = await addRecordUseCase(
-        parameters: RecordsParameters(context: context, item: item));
+        parameters: RecordsParameters(
+            context: context, item: counterNotifier.value.number));
     result.fold(
       (failure) => appSneakBar(
           context: context, message: failure.message, isError: true),
       (featuredRecords) {
         getFeatuerdRecords();
-        if (_isScrollable) {
+
+        if (featuredRecordsScrollController.positions.isNotEmpty){// this check for avoid app crash in case featured records list is empty
           featuredRecordsScrollController.animateTo(
-              featuredRecordsScrollController.position.maxScrollExtent + 100,
-              duration: AppDurations.mediumDuration,
-              curve: Curves.easeInOut);
+            featuredRecordsScrollController.position.maxScrollExtent + 100,
+            duration: AppDurations.mediumDuration,
+            curve: Curves.easeInOut);
         }
-        emit(state.copyWith());
+
+        counterNotifier.value = NumberAnimationModel(number: 0);
 
         appSneakBar(
             context: context,

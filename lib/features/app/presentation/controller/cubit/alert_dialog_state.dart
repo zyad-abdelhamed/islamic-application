@@ -18,7 +18,7 @@ class AlertDialogState {
 
   Color getContainerColor(int index) {
     if (selectedIndex > index) {
-      return AppColors.secondryColor;
+      return AppColors.primaryColor;
     }
     return Colors.transparent;
   }

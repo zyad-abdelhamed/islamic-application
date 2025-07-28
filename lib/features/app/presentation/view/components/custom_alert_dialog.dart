@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
+import 'package:test_app/core/theme/theme_provider.dart';
 
 class CustomAlertDialog extends StatelessWidget {
   const CustomAlertDialog({
@@ -24,7 +25,7 @@ class CustomAlertDialog extends StatelessWidget {
           height: double.infinity,
           width: double.infinity,
           decoration: BoxDecoration(
-              color: AppColors.primaryColor,
+              color: ThemeCubit.controller(context).state ? AppColors.black : AppColors.white,
               borderRadius: BorderRadius.circular(35)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -32,20 +33,17 @@ class CustomAlertDialog extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () => Navigator.pop(context),
-                child: CircleAvatar(
-                  backgroundColor: AppColors.white,
-                  child: Icon(
-                    CupertinoIcons.xmark,
-                    color: AppColors.black,
-                    size: radius,
-                  ),
+                child: Icon(
+                  CupertinoIcons.xmark,
+                  size: radius,
                 ),
               ),
               Center(
                 child: Text(title,
                     style: TextStyles.semiBold32auto(context)
-                        .copyWith(color: AppColors.secondryColor)),
+                        .copyWith(color: AppColors.primaryColor)),
               ),
+              Divider(),
               Expanded(
                   child: Center(
                       child: SingleChildScrollView(

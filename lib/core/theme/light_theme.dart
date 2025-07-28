@@ -5,7 +5,10 @@ import 'package:test_app/core/theme/app_colors.dart';
 const double appBarBorderRadius = 50.0;
 
 ThemeData lightTheme = ThemeData(
+  useMaterial3: true,
   brightness: Brightness.light,
+  primaryColor: AppColors.primaryColor,
+  colorScheme: ColorScheme.light(primary: AppColors.primaryColor),
   bottomNavigationBarTheme:
       BottomNavigationBarThemeData(backgroundColor: Colors.transparent),
   appBarTheme: AppBarTheme(
@@ -25,4 +28,7 @@ ThemeData lightTheme = ThemeData(
       style: ButtonStyle(
           shape: WidgetStatePropertyAll(ContinuousRectangleBorder(
               borderRadius: BorderRadius.circular(15.0))))),
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(foregroundColor: AppColors.primaryColor)
+  )            
 );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/constants/app_durations.dart';
+import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/alert_dialog_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/draw_circle_line_bloc_builder.dart';
 import 'package:test_app/core/constants/app_strings.dart';
@@ -24,7 +25,7 @@ class RosaryRingWidget extends StatelessWidget {
         Wrap(
           spacing: spacing,
           runSpacing: spacing,
-          children: List<AnimatedContainer>.generate(
+          children: List.generate(
             AppStrings.adhkarList.length,
             (index) => _customContainer(context, index: index),
           ),
@@ -37,18 +38,26 @@ class RosaryRingWidget extends StatelessWidget {
     );
   }
 
-  AnimatedContainer _customContainer(BuildContext context, {required int index}) {
-    return AnimatedContainer(
+  _customContainer(BuildContext context, {required int index}) {
+    return BlocBuilder<AlertDialogCubit, AlertDialogState>(
+      builder: (context, state) {
+        return AnimatedContainer(
           duration: AppDurations.mediumDuration,
           padding: const EdgeInsets.all(5),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50.0),
-              border: Border.all(color: AppColors.secondryColor, width: 3),
-              color: context.watch<AlertDialogCubit>().state.getContainerColor(index)),
+              border: Border.all(color: AppColors.primaryColor, width: 3),
+              color: state.getContainerColor(index)),
           child: Text(
             AppStrings.adhkarList[index],
-            style: TextStyles.semiBold18(context, AppColors.white),
+            style: TextStyles.semiBold18(
+                context,
+                ThemeCubit.controller(context).state
+                    ? AppColors.white
+                    : AppColors.black),
           ),
         );
-        }
+      },
+    );
+  }
 }

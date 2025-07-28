@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 
 ThemeData darkTheme = ThemeData(
+  primaryColor: AppColors.primaryColor,
+  colorScheme: ColorScheme.dark(primary: AppColors.primaryColor),
   brightness: Brightness.dark,
   appBarTheme: AppBarTheme(
       centerTitle: true,
@@ -21,4 +23,7 @@ ThemeData darkTheme = ThemeData(
       style: ButtonStyle(
           shape: WidgetStatePropertyAll(ContinuousRectangleBorder(
               borderRadius: BorderRadius.circular(15.0))))),
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(foregroundColor: AppColors.primaryColor)
+  )             
 );

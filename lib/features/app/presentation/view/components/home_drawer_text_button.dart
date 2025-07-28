@@ -38,12 +38,12 @@ class HomeDrawerTextButton extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 5.0,
-              backgroundColor: AppColors.secondryColor,
+              backgroundColor: AppColors.inActivePrimaryColor,
             ),
             Text(
               text,
               style: TextStyles.semiBold16_120(context)
-                  .copyWith(color: AppColors.white),
+                  .copyWith(color: Colors.grey[400]),
             ),
           ],
         ),

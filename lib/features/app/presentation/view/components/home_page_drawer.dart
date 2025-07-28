@@ -5,7 +5,6 @@ import 'package:test_app/features/app/presentation/view/components/draw_circle_l
 import 'package:test_app/features/app/presentation/view/components/rosary_ring_widget.dart';
 import 'package:test_app/features/app/presentation/view/components/home_drawer_text_button.dart';
 import 'package:test_app/core/constants/app_strings.dart';
-import 'package:test_app/core/extentions/controllers_extention.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 
@@ -28,7 +27,7 @@ class HomeDrawerWidget extends StatelessWidget {
         AppStrings.khetmAlquran,
         textAlign: TextAlign.center,
         style:
-            TextStyles.semiBold20(context).copyWith(color: AppColors.white),
+            TextStyles.semiBold20(context).copyWith(color: AppColors.primaryColor),
       )
     ];
 
@@ -63,7 +62,7 @@ class HomeDrawerWidget extends StatelessWidget {
                             inactiveTrackColor: AppColors.inActiveBlackColor,
                             value: context.watch<ThemeCubit>().state,
                             onChanged: (bool value) =>
-                                context.themeController.toggleTheme())
+                                ThemeCubit.controller(context).toggleTheme())
                      
                   ])),
         ],

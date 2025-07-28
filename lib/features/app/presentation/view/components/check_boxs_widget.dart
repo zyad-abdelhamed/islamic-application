@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/rtabel_cubit.dart';
-import 'package:test_app/core/extentions/controllers_extention.dart';
 import 'package:test_app/core/helper_function/get_widget_depending_on_reuest_state.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 
@@ -32,7 +31,7 @@ class CheckBoxsWidget extends StatelessWidget {
                               value: state.checkBoxsValues[index],
                               activeColor: AppColors.primaryColor,
                               onChanged: (value) {
-                                context.ramadanTableController
+                                RtabelCubit.controller(context)
                                     .changeCheckBoxValue(
                                         index: index, newValue: value!);
                               },

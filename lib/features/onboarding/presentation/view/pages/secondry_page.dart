@@ -12,7 +12,6 @@ class SecondryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -30,7 +29,7 @@ class SecondryPage extends StatelessWidget {
                       backgroundColor: AppColors.white,
                       radius: 90,
                       child: Image.asset(
-                       images[index],
+                        images[index],
                         fit: BoxFit.fill,
                       ),
                     ),
@@ -42,7 +41,7 @@ class SecondryPage extends StatelessWidget {
                     Text(
                       AppStrings.texts[index],
                       style: TextStyles.semiBold16(
-                          context: context, color: AppColors.black),
+                          context: context, color: AppColors.secondryColor),
                     )
                   ],
                 );
@@ -53,9 +52,9 @@ class SecondryPage extends StatelessWidget {
               child: SmoothPageIndicator(
                 controller: sl<OnBoardingCubit>().pageController,
                 count: AppStrings.features.length,
-                effect: ExpandingDotsEffect(
-                  dotColor: Colors.grey,
-                  activeDotColor: AppColors.secondryColor,
+                effect: ScrollingDotsEffect(
+                  dotColor: AppColors.inActivePrimaryColor,
+                  activeDotColor: AppColors.primaryColor,
                   dotHeight: 10,
                   dotWidth: 10,
                   spacing: 8,
@@ -65,17 +64,21 @@ class SecondryPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextButton(
-                    onPressed: () {
-                     sl<OnBoardingCubit>().goToHomePage(context: context);
-                    },
-                    child: const Text(AppStrings.skip)),
                 onBoardingButton(
                   context: context,
                   name: AppStrings.next,
                   onPressed: () =>
                       sl<OnBoardingCubit>().animateToNextPage(context: context),
-                ),   
+                ),
+                TextButton(
+                    onPressed: () {
+                      sl<OnBoardingCubit>().goToHomePage(context: context);
+                    },
+                    child: Text(
+                      AppStrings.skip,
+                      style: TextStyles.semiBold16(
+                          context: context, color: Colors.grey),
+                    )),
               ],
             ),
             SizedBox(

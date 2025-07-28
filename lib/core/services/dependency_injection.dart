@@ -4,6 +4,7 @@ import 'package:test_app/core/services/internet_connection.dart';
 import 'package:test_app/core/services/position_service.dart';
 import 'package:test_app/features/app/data/datasources/home_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/home_remote_data_source.dart';
+import 'package:test_app/features/app/data/datasources/location_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/prayers_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/prayers_remote_data_source.dart';
 import 'package:test_app/features/app/data/datasources/r_table_local_data_source.dart';
@@ -21,17 +22,18 @@ import 'package:test_app/features/app/domain/usecases/delete_all_records_use_cas
 import 'package:test_app/features/app/domain/usecases/delete_records_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/get_adhkar_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/get_booleans_use_case.dart';
+import 'package:test_app/features/app/domain/usecases/get_prayer_times_of_month_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/get_prayers_times_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/get_today_hadith_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/reset_booleans_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/update_booleans_use_case.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/get_adhkar_controller.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/get_prayer_times_of_month_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/hadith_cubit.dart';
-import 'package:test_app/features/app/presentation/controller/cubit/home_cubit.dart';
 import 'package:test_app/features/app/domain/usecases/get_records_use_case.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/featured_records_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/prayer_times_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/rtabel_cubit.dart';
-import 'package:test_app/features/app/presentation/controller/cubit/adhkar_cubit.dart';
 import 'package:test_app/core/services/api_services.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/timer_cubit.dart';
 import 'package:test_app/features/onboarding/presentation/controller/on_boarding_cubit.dart';
@@ -42,14 +44,17 @@ class DependencyInjection {
   static Future<void> init() async {
     // cubits
     sl.registerLazySingleton(() => OnBoardingCubit());
-    sl.registerFactory(() => HomeCubit(sl()));
+    sl.registerFactory(() => GetPrayerTimesOfMonthCubit(sl()));
     sl.registerFactory(() => TimerCubit());
     sl.registerFactory(() => PrayerTimesCubit(sl()));
     sl.registerFactory(() => HadithCubit(sl()));
-    sl.registerFactory(() => AdhkarCubit(sl()));
     sl.registerFactory(() => FeaturedRecordsCubit(sl(), sl(), sl(), sl()));
     sl.registerFactory(() => RtabelCubit(sl(), sl(), sl()));
+    //controllers
+    sl.registerLazySingleton(() => GetAdhkarController(getAdhkarUseCase: sl()));
     //usecases
+    sl.registerLazySingleton(
+        () => GetPrayerTimesOfMonthUseCase(basePrayerRepo: sl()));
     sl.registerLazySingleton(() => GetTodayHadithUseCase(baseHomeRepo: sl()));
     sl.registerLazySingleton(
         () => GetPrayersTimesUseCase(basePrayerRepo: sl()));
@@ -76,8 +81,11 @@ class DependencyInjection {
     sl.registerLazySingleton<BasePrayerRepo>(() => PrayerRepo(
         prayersRemoteDataSource: sl(),
         prayersLocalDataSource: sl(),
-        internetConnection: sl<InternetConnection>()));
+        internetConnection: sl<InternetConnection>(),
+        baseLocationLocalDataSource: sl<BaseLocationLocalDataSource>()));
     // data sources
+    sl.registerLazySingleton<BaseLocationLocalDataSource>(
+        () => LocationLocalDataSourceImpl());
     sl.registerLazySingleton<BaseHomeRemoteDataSource>(
         () => HomeRemoteDataSource(apiService: sl()));
     sl.registerLazySingleton<RTableLocalDataSource>(

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
@@ -40,11 +41,11 @@ class HomePageToAndroidAndIos extends StatelessWidget {
           spacing: 30.0,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-                width: isPortraitOrientation
-                    ? double.infinity
-                    : (context.width * 3 / 4) - 20,
-                child: PrayerTimesWidget()),
+            // SizedBox(
+            //     width: isPortraitOrientation
+            //         ? double.infinity
+            //         : (context.width * 3 / 4) - 20,
+            //     child: PrayerTimesWidget()),
             SizedBox(
               height: 100, //same hight of button
               child: ListView(

@@ -1,44 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/helper_function/get_responsive_font_size.dart';
+import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
+import 'package:test_app/features/app/data/models/adhkar_parameters.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/get_adhkar_controller.dart';
 
-class AdhkarButton extends StatelessWidget {
-  final VoidCallback onTap;
+class AdhkarButton extends StatefulWidget {
+  const AdhkarButton({
+    super.key,
+    required this.icon,
+    required this.index,
+    required this.text,
+  });
+
+  final int index;
   final String text;
   final IconData icon;
-  const AdhkarButton(
-      {super.key,
-      required this.icon,
-      required this.onTap,
-      required this.text});
+
+  @override
+  State<AdhkarButton> createState() => _AdhkarButtonState();
+}
+
+class _AdhkarButtonState extends State<AdhkarButton> {
+  late double buttonScale;
+
+  @override
+  void initState() {
+    buttonScale = 1.0;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.all(10),
-        decoration: BoxDecoration(
-            color: AppColors.inActivePrimaryColor,
-            borderRadius: BorderRadius.circular(50)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              color: AppColors.primaryColor,
-              size: getResponsiveFontSize(context: context, fontSize: 60),
-            ),
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                text,
-                textAlign: TextAlign.center,
-                style: TextStyles.semiBold18(context, AppColors.primaryColor),
+      onTap: () {
+        setState(() {
+          buttonScale = .9;
+        });
+        sl<GetAdhkarController>().getAdhkar(AdhkarParameters(
+            nameOfAdhkar: AppStrings.adhkarButtonsNames[widget.index],
+            context: context));
+      },
+      child: AnimatedScale(
+        duration: Duration.zero,
+        scale: buttonScale,
+        child: Container(
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+              color: AppColors.inActivePrimaryColor, borderRadius: BorderRadius.circular(50)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                widget.icon,
+                color: AppColors.primaryColor,
+                size: getResponsiveFontSize(context: context, fontSize: 60),
               ),
-            )
-          ],
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  widget.text,
+                  textAlign: TextAlign.center,
+                  style: TextStyles.semiBold18(context, AppColors.primaryColor),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
