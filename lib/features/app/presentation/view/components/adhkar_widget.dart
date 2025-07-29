@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/helper_function/get_responsive_font_size.dart';
+import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/data/models/number_animation_model.dart';
 import 'package:test_app/features/app/domain/entities/adhkar_entity.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/adhkar_page_controller.dart';
@@ -55,7 +56,10 @@ class _AdhkarWidgetState extends State<AdhkarWidget> {
                       Text(
                         widget.adhkarEntity.content,
                         style: TextStyles.bold20(context).copyWith(
-                          fontFamily: 'DataFontFamily',
+                            fontFamily: 'DataFontFamily',
+                            color: ThemeCubit.controller(context).state
+                                ? AppColors.grey400
+                                : Colors.black,
                             fontSize: widget
                                 .adhkarPageController.fontSizeNotfier.value),
                       ),
@@ -94,8 +98,12 @@ class _AdhkarWidgetState extends State<AdhkarWidget> {
                           child: Text(
                             widget.adhkarEntity.countNotifier.value.number
                                 .toString(),
-                            style: TextStyles.bold20(context)
-                                .copyWith(fontSize: 25),
+                            style: TextStyles.bold20(context).copyWith(
+                                fontSize: 25,
+                                color: ThemeCubit.controller(context).state
+                                    ? AppColors.grey400
+                                    : Colors.black,
+                                fontFamily: 'normal'),
                           )),
                     ),
                   ),
@@ -145,7 +153,7 @@ class _AdhkarWidgetState extends State<AdhkarWidget> {
           child: Icon(
             icon,
             size: getResponsiveFontSize(context: context, fontSize: 40),
-            color: AppColors.primaryColor,
+            color: AppColors.primaryColor(context),
           ),
         ),
       );

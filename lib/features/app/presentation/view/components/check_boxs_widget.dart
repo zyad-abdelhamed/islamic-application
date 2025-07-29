@@ -29,7 +29,7 @@ class CheckBoxsWidget extends StatelessWidget {
                             ),
                             child: Checkbox(
                               value: state.checkBoxsValues[index],
-                              activeColor: AppColors.primaryColor,
+                              activeColor: AppColors.primaryColor(context),
                               onChanged: (value) {
                                 RtabelCubit.controller(context)
                                     .changeCheckBoxValue(

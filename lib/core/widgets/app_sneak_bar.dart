@@ -11,7 +11,7 @@ appSneakBar(
     ScaffoldMessenger.of(context).showSnackBar(label == null
         ? SnackBar(
             backgroundColor:
-                isError ? AppColors.inActiveThirdColor : AppColors.primaryColor,
+                isError ? AppColors.inActiveThirdColor : AppColors.primaryColor(context),
             content: Text(
               message,
               textAlign: TextAlign.center,
@@ -22,7 +22,7 @@ appSneakBar(
         : SnackBar(
             duration: const Duration(seconds: 8),
             backgroundColor:
-                isError ? AppColors.inActiveThirdColor : AppColors.primaryColor,
+                isError ? AppColors.inActiveThirdColor : AppColors.primaryColor(context),
             content: Text(
               message,
               style: TextStyles.regular16_120(context,
@@ -30,6 +30,6 @@ appSneakBar(
             ),
             action: SnackBarAction(
                 label: label,
-                textColor: AppColors.primaryColor,
+                textColor: AppColors.primaryColor(context),
                 onPressed: onPressed ?? () {}),
           ));

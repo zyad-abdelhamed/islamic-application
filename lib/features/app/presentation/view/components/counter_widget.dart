@@ -35,7 +35,8 @@ class CounterWidget extends StatelessWidget {
                   width: double.infinity,
                   height: 100,
                   decoration: BoxDecoration(
-                    border: Border.all(width: 3, color: AppColors.primaryColor),
+                    border: Border.all(
+                        width: 3, color: AppColors.primaryColor(context)),
                     borderRadius: const BorderRadius.all(Radius.circular(18)),
                   ),
                   child: ValueListenableBuilder<NumberAnimationModel>(
@@ -50,7 +51,7 @@ class CounterWidget extends StatelessWidget {
                             counterNotifier.value.number.toString(),
                             style: TextStyles.semiBold32auto(
                               context,
-                            ),
+                            ).copyWith(fontFamily: 'normal'),
                           ),
                         )),
                   )),

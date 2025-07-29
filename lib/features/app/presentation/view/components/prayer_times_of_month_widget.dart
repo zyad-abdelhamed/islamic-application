@@ -20,17 +20,19 @@ class PrayerTimesOfMonthWidget extends StatelessWidget {
       builder: (context, state) {
         return getWidgetDependingOnReuestState(
             requestStateEnum: state.getPrayerTimesOfMonthState!,
-            widgetIncaseSuccess: _widgetInCaseSucces(state.prayerTimesOfMonth),
+            widgetIncaseSuccess:
+                _widgetInCaseSucces(context, state.prayerTimesOfMonth),
             erorrMessage: state.getPrayerTimesOfMonthErrorMeassage);
       },
     );
   }
 
-  Row _widgetInCaseSucces(List<Timings> listOfTimings) {
+  Row _widgetInCaseSucces(BuildContext context, List<Timings> listOfTimings) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _swapButton(
+            context: context,
             iconData: CupertinoIcons.chevron_right,
             onPressed: () => prayerTimesPageController.animateTopreviousPage(),
             visibleNotifier:
@@ -38,13 +40,14 @@ class PrayerTimesOfMonthWidget extends StatelessWidget {
         Expanded(
           child: PageView.builder(
             controller: prayerTimesPageController.pageController,
-            onPageChanged: prayerTimesPageController.onPageChanged,
-            itemCount: listOfTimings.length,  
+            onPageChanged: (value) =>  prayerTimesPageController.onPageChanged(context, value),
+            itemCount: listOfTimings.length,
             itemBuilder: (context, index) =>
                 SecondaryPrayerTimesWidget(timings: listOfTimings[index]),
           ),
         ),
         _swapButton(
+            context: context,
             iconData: CupertinoIcons.chevron_left,
             onPressed: () => prayerTimesPageController.animateToNextPage(),
             visibleNotifier:
@@ -56,6 +59,7 @@ class PrayerTimesOfMonthWidget extends StatelessWidget {
   ValueListenableBuilder<bool> _swapButton(
       {required IconData iconData,
       required void Function() onPressed,
+      required BuildContext context,
       required ValueNotifier<bool> visibleNotifier}) {
     return ValueListenableBuilder<bool>(
         valueListenable: visibleNotifier,
@@ -67,7 +71,8 @@ class PrayerTimesOfMonthWidget extends StatelessWidget {
             maintainState: true,
             child: IconButton(
                 onPressed: onPressed,
-                icon: Icon(iconData, size: 35, color: AppColors.primaryColor)),
+                icon: Icon(iconData,
+                    size: 35, color: AppColors.primaryColor(context))),
           );
         });
   }

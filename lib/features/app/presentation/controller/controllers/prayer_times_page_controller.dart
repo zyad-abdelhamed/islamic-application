@@ -1,26 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_durations.dart';
+import 'package:test_app/features/app/data/models/get_prayer_times_of_month_prameters.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/get_prayer_times_of_month_cubit.dart';
 
 class PrayerTimesPageController {
-  late final PageController pageController;
-  late final int itemCount;
-  final ValueNotifier<bool> nextButtonVisibleNotifier =
-      ValueNotifier<bool>(true);
-  final ValueNotifier<bool> previousButtonVisibleNotifier =
-      ValueNotifier<bool>(false);
+  late PageController pageController;
+  late final ValueNotifier<bool> nextButtonVisibleNotifier;
+  late final ValueNotifier<bool> previousButtonVisibleNotifier;
   late final ValueNotifier<DateTime> dateNotifier;
 
-  initState() {
-    itemCount = 2;
+  initState(BuildContext context) {
     pageController = PageController(initialPage: DateTime.now().day - 1);
-    pageController.addListener(() {
-      if (pageController.hasClients) {
-        nextButtonVisibleNotifier.value = pageController.page!.round() == 29;
-        previousButtonVisibleNotifier.value = pageController.page!.round() != 0;
-        print(pageController.page!.round() != 0);
-      }
-    });
-    dateNotifier = ValueNotifier<DateTime>(DateTime.now());
+        dateNotifier = ValueNotifier<DateTime>(DateTime.now());
+
+    previousButtonVisibleNotifier =
+        ValueNotifier<bool>(_getPreviousButtonNotifierValue);
+        nextButtonVisibleNotifier =
+        ValueNotifier<bool>(_getNextButtonNotifierValue);
   }
 
   dispose() {
@@ -46,10 +42,26 @@ class PrayerTimesPageController {
     }
   }
 
-  void onPageChanged(int value) {
+  void sendButtonOnTap(BuildContext context) {
+    pageController = PageController(
+        //reinitialize pageController object to set init page value
+        initialPage: dateNotifier.value.day - 1);
+    previousButtonVisibleNotifier.value =
+        _getPreviousButtonNotifierValue;
+    nextButtonVisibleNotifier.value = _getNextButtonNotifierValue;
+    GetPrayerTimesOfMonthCubit.controller(context).getPrayerTimesOfMonth(
+        GetPrayerTimesOfMonthPrameters(date: dateNotifier.value));
+  }
+
+  bool get _getNextButtonNotifierValue =>
+      dateNotifier.value.day- 1 != 30;
+  bool get _getPreviousButtonNotifierValue =>
+      dateNotifier.value.day - 1 != 0;
+
+  void onPageChanged(BuildContext context, int value) {
     if (value == 0) {
       previousButtonVisibleNotifier.value = false;
-    } else if (value == itemCount) {
+    } else if (value == _itemCount(context)) {
       nextButtonVisibleNotifier.value = false;
     } else {
       if (!previousButtonVisibleNotifier.value) {
@@ -60,6 +72,13 @@ class PrayerTimesPageController {
       }
     }
   }
+
+  int _itemCount(BuildContext context) =>
+      GetPrayerTimesOfMonthCubit.controller(context)
+          .state
+          .prayerTimesOfMonth
+          .length -
+      1;
 
   animateToNextPage() {
     pageController.nextPage(

@@ -46,8 +46,8 @@ class RosaryRingWidget extends StatelessWidget {
           padding: const EdgeInsets.all(5),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50.0),
-              border: Border.all(color: AppColors.primaryColor, width: 3),
-              color: state.getContainerColor(index)),
+              border: Border.all(color: AppColors.primaryColor(context), width: 3),
+              color: state.getContainerColor(context, index)),
           child: Text(
             AppStrings.adhkarList[index],
             style: TextStyles.semiBold18(

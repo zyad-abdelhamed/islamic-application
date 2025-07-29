@@ -3,6 +3,7 @@ import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
+import 'package:test_app/core/theme/theme_provider.dart';
 
 class HomeButton extends StatelessWidget {
   const HomeButton(
@@ -45,7 +46,7 @@ class HomeButton extends StatelessWidget {
 
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15.0),
-          color: AppColors.primaryColor,
+          color: AppColors.primaryColor(context),
         ),
         height: 100,
         width: 200,
@@ -57,7 +58,7 @@ class HomeButton extends StatelessWidget {
             Text(
               text,
               style: TextStyles.bold20(context)
-                  .copyWith(color: AppColors.white, fontSize: 23),
+                  .copyWith(color: ThemeCubit.controller(context).state ? AppColors.blueGrey800 : AppColors.white, fontSize: 23),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 3.0),

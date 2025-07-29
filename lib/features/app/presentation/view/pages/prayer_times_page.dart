@@ -14,8 +14,6 @@ import 'package:test_app/features/app/presentation/view/components/prayer_times_
 class PrayerTimesPage extends StatefulWidget {
   const PrayerTimesPage({super.key});
 
-  static PrayerTimesPage get inatance => const PrayerTimesPage();
-
   @override
   State<PrayerTimesPage> createState() => _PrayerTimesPageState();
 }
@@ -26,7 +24,7 @@ class _PrayerTimesPageState extends State<PrayerTimesPage> {
   @override
   void initState() {
     prayerTimesPageController = PrayerTimesPageController();
-    prayerTimesPageController.initState();
+    prayerTimesPageController.initState(context);
     super.initState();
   }
 
@@ -65,7 +63,7 @@ class _PrayerTimesPageState extends State<PrayerTimesPage> {
                 ),
                 SizedBoxs.sizedBoxH30,
                 SizedBox(
-                  height: (context.height * .50) - 100,
+                  height: (context.height * .50) - 50,
                   child: PrayerTimesOfMonthWidget(
                       prayerTimesPageController: prayerTimesPageController),
                 ),

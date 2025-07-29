@@ -69,9 +69,9 @@ class FeatuerdRecordsWidget extends StatelessWidget {
         decoration: BoxDecoration(
             color: AppColors.inActivePrimaryColor,
             borderRadius: BorderRadius.circular(23)),
-        child: const Icon(
+        child: Icon(
           Icons.save,
-          color: AppColors.primaryColor,
+          color: AppColors.primaryColor(context),
           size: 40,
         ),
       ),

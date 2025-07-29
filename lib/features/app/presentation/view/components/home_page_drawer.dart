@@ -27,7 +27,7 @@ class HomeDrawerWidget extends StatelessWidget {
         AppStrings.khetmAlquran,
         textAlign: TextAlign.center,
         style:
-            TextStyles.semiBold20(context).copyWith(color: AppColors.primaryColor),
+            TextStyles.semiBold20(context).copyWith(color: AppColors.primaryColor(context)),
       )
     ];
 
@@ -35,13 +35,15 @@ class HomeDrawerWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          ...List<HomeDrawerTextButton>.generate(
+          Wrap(
+            children: List<HomeDrawerTextButton>.generate(
               textButtonsAlertDialogWidgets.length,
               (index) => HomeDrawerTextButton(
                     index: index,
                     text: AppStrings.homeDrawerTextButtons[index],
                     alertDialogContent: textButtonsAlertDialogWidgets[index],
                   )),
+          ),
           Spacer(),
           Divider(),
           Padding(

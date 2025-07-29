@@ -40,7 +40,7 @@ class FeturedRecordsContainer extends StatelessWidget {
             child: Text(
               AppStrings.featuerdRecords,
               style: TextStyles.semiBold16_120(context)
-                  .copyWith(color: AppColors.primaryColor),
+                  .copyWith(color: AppColors.primaryColor(context)),
             ),
           ),
           _deleteAllButton,

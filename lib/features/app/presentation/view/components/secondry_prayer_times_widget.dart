@@ -10,36 +10,41 @@ class SecondaryPrayerTimesWidget extends StatelessWidget {
   final Timings timings;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      spacing: 15.0,
-      children: [
-        SizedBox(
-          height: 35,
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(timings.gregoriandate,
-                maxLines: 1,
-                textAlign: TextAlign.center,
-                style: TextStyles.semiBold20(
-                  context,
-                ).copyWith(color: AppColors.secondryColor)),
-          ),
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 24.0),
+        child: Column(
+          spacing: 15.0,
+          children: [
+            SizedBox(
+              height: 35,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(timings.gregoriandate,
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    style: TextStyles.semiBold20(
+                      context,
+                    ).copyWith(color: AppColors.secondryColor)),
+              ),
+            ),
+            Expanded(
+              child: Row(
+                children: [
+                  _getColumnOfPrayers(context,
+                      textList: AppStrings.namesOfPrayers1),
+                  _getColumnOfPrayers(context,
+                      textList: AppStrings.emojisOfPrayers),
+                  Spacer(),
+                  _getColumnOfPrayers(context, textList: [
+                    timings.fajr,timings.sunrise,timings.dhuhr,timings.asr,timings.maghrib,timings.isha
+                  ])
+                ],
+              ),
+            )
+          ],
         ),
-        Expanded(
-          child: Row(
-            children: [
-              _getColumnOfPrayers(context,
-                  textList: AppStrings.namesOfPrayers1),
-              _getColumnOfPrayers(context,
-                  textList: AppStrings.emojisOfPrayers),
-              Spacer(),
-              _getColumnOfPrayers(context, textList: [
-                timings.fajr,timings.sunrise,timings.dhuhr,timings.asr,timings.maghrib,timings.isha
-              ])
-            ],
-          ),
-        )
-      ],
+      ),
     );
   }
 
@@ -52,7 +57,7 @@ class SecondaryPrayerTimesWidget extends StatelessWidget {
           (index) => Text(
             textList[index],
             textAlign: TextAlign.center,
-            style: TextStyles.bold20(context).copyWith(color: Colors.brown),
+            style: TextStyles.bold20(context).copyWith(color: Colors.grey),
           ),
         ));
   }

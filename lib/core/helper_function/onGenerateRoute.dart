@@ -42,16 +42,16 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case RoutesConstants.splashScreenRouteName:
       return MaterialPageRoute<SplashScreen>(
         builder: (BuildContext context) => SplashScreen(),
-      );  
+      );
     case RoutesConstants.qAndAPageRouteName:
       return MaterialPageRoute<QAndAPage>(
-        builder: (BuildContext context) =>  const QAndAPage(),
+        builder: (BuildContext context) => const QAndAPage(),
       );
     case RoutesConstants.prayersTimePage:
       return MaterialPageRoute<PrayerTimesPage>(
-        builder: (BuildContext context) => PrayerTimesPage.inatance,
+        builder: (BuildContext context) => const PrayerTimesPage(),
       );
-     
+
     default:
       return MaterialPageRoute<Scaffold>(
         builder: (BuildContext context) => const Scaffold(),

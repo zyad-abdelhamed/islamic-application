@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
-import 'package:test_app/features/app/data/models/get_prayer_times_of_month_prameters.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/prayer_times_page_controller.dart';
-import 'package:test_app/features/app/presentation/controller/cubit/get_prayer_times_of_month_cubit.dart';
 
 class GetPrayerTimesOfMonthButton extends StatelessWidget {
   const GetPrayerTimesOfMonthButton(
@@ -19,9 +18,7 @@ class GetPrayerTimesOfMonthButton extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         GestureDetector(
-          onTap: () => GetPrayerTimesOfMonthCubit.controller(context)
-              .getPrayerTimesOfMonth(GetPrayerTimesOfMonthPrameters(
-                  date: prayerTimesPageController.dateNotifier.value)),
+          onTap: () => prayerTimesPageController.sendButtonOnTap(context),
           child: Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
@@ -32,7 +29,7 @@ class GetPrayerTimesOfMonthButton extends StatelessWidget {
               children: [
                 Icon(
                   Icons.send,
-                  color: AppColors.primaryColor,
+                  color: AppColors.primaryColor(context),
                   size: 40,
                 ),
               ],
@@ -52,7 +49,7 @@ class GetPrayerTimesOfMonthButton extends StatelessWidget {
                   spacing: 5,
                   children: [
                     Icon(Icons.calendar_month, color: Colors.grey),
-                    Text("اختر التاريخ", style: TextStyle(color: Colors.grey)),
+                    Text(AppStrings.chooseDate, style: TextStyle(color: Colors.grey)),
                     IconButton(
                         onPressed: () =>
                             prayerTimesPageController.selectDate(context),
@@ -64,7 +61,7 @@ class GetPrayerTimesOfMonthButton extends StatelessWidget {
                     Spacer(),
                     Icon(
                       Icons.info,
-                      color: AppColors.primaryColor,
+                      color: AppColors.primaryColor(context),
                       size: 35,
                     ),
                   ],
@@ -125,7 +122,7 @@ class GetPrayerTimesOfMonthButton extends StatelessWidget {
       {required String text, required double width}) {
     return Container(
         decoration: BoxDecoration(
-          color: AppColors.primaryColor,
+          color: AppColors.primaryColor(context),
           borderRadius: BorderRadius.circular(10.0),
         ),
         height: 30,

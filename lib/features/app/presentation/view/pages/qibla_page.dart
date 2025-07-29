@@ -34,7 +34,7 @@ class QiblaPage extends StatelessWidget {
                   ErorrWidget(message: state.message),Spacer(),
                   OutlinedButton(onPressed: () async{
                     await sl<BaseLocationService>().requestPermission;
-                  },child: Text('request location permission',style: TextStyle(color: AppColors.primaryColor),),)
+                  },child: Text('request location permission',style: TextStyle(color: AppColors.primaryColor(context)),),)
                 ],
               );
             } else if (state is QiblaLoaded) {

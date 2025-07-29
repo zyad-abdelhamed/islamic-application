@@ -36,7 +36,7 @@ AppBar adhkarPageAppBar(BuildContext context,
         margin: const EdgeInsets.symmetric(horizontal: 15.0),
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 3.0),
         decoration: BoxDecoration(
-            color: AppColors.primaryColor,
+            color: AppColors.primaryColor(context),
             borderRadius: BorderRadius.circular(8.0)),
         child: ValueListenableBuilder<int>(
             valueListenable: adhkarPageController.lengthNotfier,
@@ -86,6 +86,6 @@ GestureDetector _controleTextFontSizeButton(BuildContext context,
     onTap: onTap,
     child: Text(AppStrings.fontSizeButtonText,
         style: TextStyles.bold20(context)
-            .copyWith(color: Colors.grey, fontSize: fontSize)),
+            .copyWith(color: Colors.grey, fontSize: fontSize, fontFamily: "normal")),
   );
 }

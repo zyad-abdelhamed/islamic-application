@@ -41,7 +41,7 @@ class CustomAlertDialog extends StatelessWidget {
               Center(
                 child: Text(title,
                     style: TextStyles.semiBold32auto(context)
-                        .copyWith(color: AppColors.primaryColor)),
+                        .copyWith(color: AppColors.primaryColor(context))),
               ),
               Divider(),
               Expanded(

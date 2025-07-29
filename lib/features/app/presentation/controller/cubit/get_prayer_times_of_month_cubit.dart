@@ -23,20 +23,22 @@ class GetPrayerTimesOfMonthCubit extends Cubit<GetPrayerTimesOfMonthState> {
       context.read<GetPrayerTimesOfMonthCubit>();
 
   void getPrayerTimesOfMonth(
-      GetPrayerTimesOfMonthPrameters getPrayerTimesOfMonthPrameters) async {
+      GetPrayerTimesOfMonthPrameters getPrayerTimesOfMonthPrameters) async {   
     emit(GetPrayerTimesOfMonthState(
         getPrayerTimesOfMonthState: RequestStateEnum.loading));
     final Either<Failure, List<Timings>> result =
         await getPrayerTimesOfMonthUseCase(
             parameters: getPrayerTimesOfMonthPrameters);
     result.fold(
-      (l) {print("////////+++++++//////////");
+      (l) {
         emit(GetPrayerTimesOfMonthState(
-            getPrayerTimesOfMonthErrorMeassage: l.message,getPrayerTimesOfMonthState: RequestStateEnum.failed));
+            getPrayerTimesOfMonthErrorMeassage: l.message,
+            getPrayerTimesOfMonthState: RequestStateEnum.failed));
       },
-      (prayerTimesOfMonth) {print("////////////////////");
-        emit(
-            GetPrayerTimesOfMonthState(prayerTimesOfMonth: prayerTimesOfMonth,getPrayerTimesOfMonthState: RequestStateEnum.success));
+      (prayerTimesOfMonth) {
+        emit(GetPrayerTimesOfMonthState(
+            prayerTimesOfMonth: prayerTimesOfMonth,
+            getPrayerTimesOfMonthState: RequestStateEnum.success));
       },
     );
   }

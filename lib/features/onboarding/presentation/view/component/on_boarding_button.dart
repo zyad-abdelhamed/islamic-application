@@ -12,7 +12,7 @@ GestureDetector onBoardingButton(
       margin: const EdgeInsets.only(left: 10.0),
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 3.0),
       decoration: BoxDecoration(
-          color: AppColors.primaryColor,
+          color: AppColors.primaryColor(context),
           borderRadius: BorderRadius.circular(8.0)),
       child: Text(
         name,

@@ -16,7 +16,7 @@ class PrimaryPrayerTimesContainer extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
       margin: const EdgeInsets.symmetric(vertical: 10.0), //spacing
-      decoration: _boxDecoration(color: AppColors.primaryColor),
+      decoration: _boxDecoration(color: AppColors.primaryColor(context)),
       child: Column(
         children: <Widget>[
           Padding(

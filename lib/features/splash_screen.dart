@@ -29,7 +29,7 @@ class SplashScreen extends StatelessWidget {
     start(context);
 
     return Scaffold(
-      backgroundColor: AppColors.primaryColor,
+      backgroundColor: AppColors.primaryColor(context),
       body: Center(
         child: ValueListenableBuilder<double>(
           valueListenable: opacityNotifier,

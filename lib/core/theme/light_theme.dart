@@ -6,13 +6,9 @@ const double appBarBorderRadius = 50.0;
 ThemeData lightTheme = ThemeData(
   useMaterial3: true,
   brightness: Brightness.light,
-  primaryColor: AppColors.primaryColor,
-  colorScheme: ColorScheme.light(primary: AppColors.primaryColor),
+  primaryColor: AppColors.lightModePrimaryColor,
+  colorScheme: ColorScheme.light(primary: AppColors.lightModePrimaryColor),
   fontFamily: 'SemiBoldCairo',
-  textTheme: const TextTheme().apply(
-    bodyColor: Colors.black,
-    displayColor: Colors.black,
-  ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     backgroundColor: Colors.transparent,
   ),
@@ -21,16 +17,16 @@ ThemeData lightTheme = ThemeData(
     backgroundColor: Colors.transparent,
     titleTextStyle: TextStyle(
       fontFamily: 'Cairo',
-      color: AppColors.primaryColor,
+      color: AppColors.lightModePrimaryColor,
       fontWeight: FontWeight.bold,
       fontSize: 23,
     ),
     shape: Border(
-      bottom: BorderSide(color: AppColors.primaryColor),
+      bottom: BorderSide(color: AppColors.lightModePrimaryColor),
     ),
   ),
   drawerTheme: const DrawerThemeData(
-    backgroundColor: AppColors.primaryColor,
+    backgroundColor: AppColors.lightModePrimaryColor,
     shape: LinearBorder(),
   ),
   outlinedButtonTheme: OutlinedButtonThemeData(

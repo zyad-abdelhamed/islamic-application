@@ -139,6 +139,8 @@ abstract class AppStrings {
     RamadanTabelPage(),
     QiblaPage(),
   ];
+  //prayer times page
+  static const String chooseDate = "اختر التاريخ";
   //   ===Alquran Alkarim Page===
   static const theIndex = 'الفهرس';
   static const Map<String, int> surahPages = {

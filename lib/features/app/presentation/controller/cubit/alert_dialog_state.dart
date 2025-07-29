@@ -16,9 +16,9 @@ class AlertDialogState {
     return AppStrings.adhkarList[3];
   }
 
-  Color getContainerColor(int index) {
+  Color getContainerColor(BuildContext context, int index) {
     if (selectedIndex > index) {
-      return AppColors.primaryColor;
+      return AppColors.primaryColor(context);
     }
     return Colors.transparent;
   }

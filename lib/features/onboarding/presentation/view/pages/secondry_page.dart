@@ -36,7 +36,7 @@ class SecondryPage extends StatelessWidget {
                     Text(
                       AppStrings.features[index],
                       style: TextStyles.semiBold32Decoreted(context,
-                          color: AppColors.primaryColor),
+                          color: AppColors.primaryColor(context)),
                     ),
                     Text(
                       AppStrings.texts[index],
@@ -54,7 +54,7 @@ class SecondryPage extends StatelessWidget {
                 count: AppStrings.features.length,
                 effect: ScrollingDotsEffect(
                   dotColor: AppColors.inActivePrimaryColor,
-                  activeDotColor: AppColors.primaryColor,
+                  activeDotColor: AppColors.primaryColor(context),
                   dotHeight: 10,
                   dotWidth: 10,
                   spacing: 8,
