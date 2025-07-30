@@ -5,4 +5,6 @@ abstract class DataBaseConstants {
 
   static const String rTableBoxHiveKey = 'rTableBox';
   static const String alquranAlkarimPdfPath = 'assets/pdfs/القران الكريم.pdf';
+    static const String duaajsonFileRoute = 'assets/jsons/duaas.json';
+
 }

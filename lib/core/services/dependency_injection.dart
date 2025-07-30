@@ -34,6 +34,10 @@ import 'package:test_app/features/app/presentation/controller/cubit/rtabel_cubit
 import 'package:test_app/features/app/presentation/controller/cubit/adhkar_cubit.dart';
 import 'package:test_app/core/services/api_services.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/timer_cubit.dart';
+import 'package:test_app/features/duaa/data/dataSource/duaa_local_data_source.dart';
+import 'package:test_app/features/duaa/data/repos/duaa_repo.dart';
+import 'package:test_app/features/duaa/domain/repos/duaa_base_repo.dart';
+import 'package:test_app/features/duaa/presentation/controllers/cubit/duaa_cubit.dart';
 import 'package:test_app/features/onboarding/presentation/controller/on_boarding_cubit.dart';
 import 'package:test_app/features/splash_screen.dart';
 
@@ -44,6 +48,7 @@ class DependencyInjection {
     sl.registerLazySingleton(
         () => GetPrayersTimesController(getPrayersTimesUseCase: sl()));
     // cubits
+    sl.registerFactory(() => DuaaCubit(sl()));
     sl.registerLazySingleton(() => OnBoardingCubit());
     sl.registerFactory(() => TimerCubit());
     sl.registerFactory(() => PrayerTimesCubit(sl()));
@@ -69,6 +74,7 @@ class DependencyInjection {
     sl.registerLazySingleton<GetRecordsUseCase>(
         () => GetRecordsUseCase(baseRecordsRepo: sl()));
     //repositories
+    sl.registerLazySingleton<DuaaBaseRepo>(() => DuaaRepo(sl()));
     sl.registerLazySingleton<BaseRTableRepo>(
         () => RTableRepo(rTableLocalDataSource: sl()));
     sl.registerLazySingleton<BaseHomeRepo>(() => HomeRepo(sl(), sl()));
@@ -80,6 +86,8 @@ class DependencyInjection {
         prayersLocalDataSource: sl(),
         internetConnection: sl<InternetConnection>()));
     // data sources
+    sl.registerLazySingleton<DuaaLocalDataSource>(
+        () => DuaaLocalDataSourceImpl());
     sl.registerLazySingleton<BaseHomeRemoteDataSource>(
         () => HomeRemoteDataSource(apiService: sl()));
     sl.registerLazySingleton<RTableLocalDataSource>(
