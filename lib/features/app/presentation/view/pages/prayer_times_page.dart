@@ -89,23 +89,21 @@ class _PrayerTimesPageState extends State<PrayerTimesPage> {
                           color: Colors.black,
                         ),
                       ),
-                    
-                    ],
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                  context.read<LocationCubit>().updateLocation(context);
-                },
-                child:  Text(
-                         'تحديث الموقع.',
+                     TextSpan(
+                        text: 'تحديث الموقع.',
                         style: const TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
                           decoration: TextDecoration.underline,
                         ),
-                       
-                      ),),
+                        recognizer:TapGestureRecognizer()
+      ..onTap = () {
+        context.read<LocationCubit>() .updateLocation(context);
+      }, // هنا السحر
+                      ),
+                    ],
+                  ),
+                ),
                 ChangeLocationWidget(),
                 const SizedBox(height: 50),
                 GetPrayerTimesOfMonthButton(
