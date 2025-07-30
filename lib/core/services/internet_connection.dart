@@ -1,8 +1,12 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 abstract class InternetConnection {
   Future<bool> checkInternetConnection();
+  Future<void> openInternetSettings() async {
+  AppSettings.openAppSettings(type: AppSettingsType.wifi); 
+}
 }
 
 class InternetConnectionImpl extends InternetConnection {
@@ -11,6 +15,9 @@ class InternetConnectionImpl extends InternetConnection {
     var connectivityResult = await Connectivity().checkConnectivity();
     return connectivityResult != ConnectivityResult.none;
   }
+  
+ 
+  
 }
 
 class InternetConnectionImpl2 extends InternetConnection {

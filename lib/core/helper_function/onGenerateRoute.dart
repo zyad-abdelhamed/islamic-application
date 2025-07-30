@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/cubit/location_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/get_prayer_times_of_month_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/hadith_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/prayer_times_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/timer_cubit.dart';
@@ -49,7 +51,17 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       );
     case RoutesConstants.prayersTimePage:
       return MaterialPageRoute<PrayerTimesPage>(
-        builder: (BuildContext context) => const PrayerTimesPage(),
+        builder: (BuildContext context) => MultiBlocProvider(
+          providers: [
+        BlocProvider(
+          create: (context) => sl<GetPrayerTimesOfMonthCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<LocationCubit>(),
+        ),
+      ],
+          
+        child: const PrayerTimesPage()),
       );
 
     default:

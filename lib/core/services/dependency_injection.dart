@@ -11,12 +11,14 @@ import 'package:test_app/features/app/data/datasources/prayers_remote_data_sourc
 import 'package:test_app/features/app/data/datasources/r_table_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/records_local_data_source.dart';
 import 'package:test_app/features/app/data/repos/home_repo.dart';
+import 'package:test_app/features/app/data/repos/location_repo.dart';
 import 'package:test_app/features/app/data/repos/prayer_repo.dart';
 import 'package:test_app/features/app/data/repos/r_table_repo.dart';
 import 'package:test_app/features/app/data/repos/records_repo.dart';
 import 'package:test_app/features/app/domain/repositories/base_prayer_repo.dart';
 import 'package:test_app/features/app/domain/repositories/base_records_repo.dart';
 import 'package:test_app/features/app/domain/repositories/home_repo.dart';
+import 'package:test_app/features/app/domain/repositories/location_repo.dart';
 import 'package:test_app/features/app/domain/repositories/r_table_repo.dart';
 import 'package:test_app/features/app/domain/usecases/add_record_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/delete_all_records_use_case.dart';
@@ -28,6 +30,7 @@ import 'package:test_app/features/app/domain/usecases/get_prayers_times_use_case
 import 'package:test_app/features/app/domain/usecases/get_today_hadith_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/reset_booleans_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/update_booleans_use_case.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/cubit/location_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_adhkar_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_prayer_times_of_month_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/hadith_cubit.dart';
@@ -52,6 +55,7 @@ class DependencyInjection {
         () => GetPrayersTimesController(getPrayersTimesUseCase: sl()));
     // cubits
     sl.registerFactory(() => DuaaCubit(sl()));
+    sl.registerFactory(()=> LocationCubit(sl()));
     sl.registerLazySingleton(() => OnBoardingCubit());
     sl.registerFactory(() => GetPrayerTimesOfMonthCubit(sl()));
     sl.registerFactory(() => TimerCubit());
@@ -81,6 +85,7 @@ class DependencyInjection {
     sl.registerLazySingleton<GetRecordsUseCase>(
         () => GetRecordsUseCase(baseRecordsRepo: sl()));
     //repositories
+    sl.registerLazySingleton<BaseLocationRepo>(() => LocationRepo(sl(),sl(),sl(),sl()));
     sl.registerLazySingleton<DuaaBaseRepo>(() => DuaaRepo(sl()));
     sl.registerLazySingleton<BaseRTableRepo>(
         () => RTableRepo(rTableLocalDataSource: sl()));
