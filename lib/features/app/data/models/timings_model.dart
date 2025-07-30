@@ -11,11 +11,12 @@ class TimingsModel extends Timings {
     required super.hijriDay,
     required super.hijriMonthNameArabic,
     required super.hijriYear,
+    required super.gregoriandate
   });
 
   factory TimingsModel.fromJson(Map<String, dynamic> json) {
-    final hijriJson = json['date']['hijri'];
-
+    final hijriDateJson = json['date']['hijri'];
+    final gregorianDateJson = json['date']['gregorian'];
     return TimingsModel(
       fajr: json['timings']['Fajr'],
       sunrise: json['timings']['Sunrise'],
@@ -23,9 +24,10 @@ class TimingsModel extends Timings {
       asr: json['timings']['Asr'],
       maghrib: json['timings']['Maghrib'],
       isha: json['timings']['Isha'],
-      hijriDay: hijriJson['day'],
-      hijriMonthNameArabic: hijriJson['month']['ar'],
-      hijriYear: hijriJson['year'],
+      hijriDay: hijriDateJson['day'],
+      hijriMonthNameArabic: hijriDateJson['month']['ar'],
+      hijriYear: hijriDateJson['year'],
+      gregoriandate: gregorianDateJson['date']
     );
   }
 }

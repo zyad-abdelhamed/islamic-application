@@ -24,15 +24,15 @@ class ExplainFeatureButton extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
     Row(
-      children: const [
-        Icon(Icons.info_outline, color: AppColors.primaryColor),
+      children:  [
+        Icon(Icons.info_outline, color: AppColors.primaryColor(context)),
         SizedBox(width: 10),
         Text(
           'شرح الميزة',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: AppColors.primaryColor,
+            color: AppColors.primaryColor(context),
           ),
         ),
       ],
@@ -46,7 +46,7 @@ class ExplainFeatureButton extends StatelessWidget {
     Align(
       alignment: Alignment.centerRight,
       child: TextButton(
-        child: const Text('تم', style: TextStyle(color: AppColors.primaryColor)),
+        child:  Text('تم', style: TextStyle(color: AppColors.primaryColor(context))),
         onPressed: () => Navigator.pop(context),
       ),
     ),

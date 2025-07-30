@@ -4,8 +4,7 @@ import 'package:test_app/features/app/domain/entities/timings.dart';
 class TypeAdapterForTimings extends TypeAdapter<Timings> {
   @override
   Timings read(BinaryReader reader) {
-    return Timings(
-      fajr: reader.readString(),
+    return Timings(fajr: reader.readString(),
       sunrise: reader.readString(),
       dhuhr: reader.readString(),
       asr: reader.readString(),
@@ -14,7 +13,7 @@ class TypeAdapterForTimings extends TypeAdapter<Timings> {
       hijriDay: reader.readString(),
       hijriMonthNameArabic: reader.readString(),
       hijriYear: reader.readString(),
-    );
+      gregoriandate: reader.readString());
   }
 
   @override
@@ -31,5 +30,6 @@ class TypeAdapterForTimings extends TypeAdapter<Timings> {
     writer.writeString(obj.hijriDay);
     writer.writeString(obj.hijriMonthNameArabic);
     writer.writeString(obj.hijriYear);
+    writer.writeString(obj.gregoriandate);
   }
 }

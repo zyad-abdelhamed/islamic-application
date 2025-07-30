@@ -13,6 +13,7 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     const double radius = 80;
     return Scaffold(
+      backgroundColor: AppColors.primaryColor(context),
       body: Stack(
         children: [
           Column(
@@ -24,20 +25,27 @@ class MainPage extends StatelessWidget {
                 decoration: BoxDecoration(
                     borderRadius:
                         BorderRadius.vertical(top: Radius.circular(45)),
-                    color: AppColors.primaryColor),
+                    color: AppColors.white),
                 child: Column(
-                  spacing: 50,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Islamic App',
-                      style: TextStyles.semiBold32Decoreted(context,
-                          color: AppColors.white),
+                      'Application',
+                      style: TextStyles.regular16_120(context,
+                          color: Colors.black),
                     ),
+                    Text(
+                      '        Islamic',
+                      style: TextStyles.bold20(
+                        context,
+                      ).copyWith(color: AppColors.primaryColor(context), fontSize: 45),
+                    ),
+                    const SizedBox(height: 50.0),
                     Text(
                         'نبدأ باسم الله... دليلك اليومي للسكينة، والذكر، والقرب من الله. ',
                         style: TextStyles.semiBold16(
-                            context: context, color: AppColors.white)),
+                            context: context, color: AppColors.secondryColor)),
+                    const SizedBox(height: 50.0),
                     onBoardingButton(
                       context: context,
                       name: 'ابدأ',
@@ -55,19 +63,19 @@ class MainPage extends StatelessWidget {
             ],
           ),
           Positioned(
-            bottom: context.height * .6 - radius ,
+            bottom: context.height * .6 - radius,
             left: 0,
             right: 0,
             child: CircleAvatar(
               backgroundColor: AppColors.thirdColor,
-              radius:radius,
-              child: SvgPicture.asset('assets/images/Vector.svg'),
+              radius: radius,
+              child: SvgPicture.asset(
+                'assets/images/Vector.svg',
+              ),
             ),
           )
         ],
       ),
     );
   }
-
-
 }

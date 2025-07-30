@@ -46,7 +46,8 @@ class GetAdaptiveBackButtonWidget extends StatelessWidget {
     );
   }
 
-  void _goBack(context)  {
-Navigator.pushNamedAndRemoveUntil(context, RoutesConstants.homePageRouteName , (route) => false);}
-
+  void _goBack(context) {
+    Navigator.pushNamedAndRemoveUntil(
+        context, RoutesConstants.homePageRouteName, (route) => false);
+  }
 }

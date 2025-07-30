@@ -21,13 +21,12 @@ class RtabelCubit extends Cubit<RtabelState> {
   final ResetBooleansUseCase resetBooleansUseCase;
   final UpdateBooleansUseCase updateBooleansUseCase;
 
-  static RtabelCubit getRamadanTableController(BuildContext context) {
-    return context.read<RtabelCubit>();
-  }
+  static RtabelCubit controller(BuildContext context) =>
+      context.read<RtabelCubit>();
 
   Future<void> loadCheckBoxValues() async {
     emit(state.copyWith(requestState: RequestStateEnum.loading));
-    
+
     Either<Failure, List<bool>> result = await getBooleansUseCase();
     result.fold(
       (failure) => emit(state.copyWith(
@@ -41,18 +40,22 @@ class RtabelCubit extends Cubit<RtabelState> {
     );
   }
 
-  Future<void> changeCheckBoxValue({required int index, required bool newValue}) async {
+  Future<void> changeCheckBoxValue(
+      {required int index, required bool newValue}) async {
     final updatedValues = List<bool>.from(state.checkBoxsValues);
     updatedValues[index] = newValue;
 
-    await updateBooleansUseCase(parameters: 
-      BooleansParameters(key: index, value: newValue),
+    await updateBooleansUseCase(
+      parameters: BooleansParameters(key: index, value: newValue),
     );
 
     emit(state.copyWith(checkBoxsValues: updatedValues));
   }
 
   Future<void> resetAllCheckBoxes() async {
-    await resetBooleansUseCase(parameters:  BooleansParameters(key: 0, value: false)); //parameters ملهاش لازمة
-await loadCheckBoxValues();  }
+    await resetBooleansUseCase(
+        parameters:
+            BooleansParameters(key: 0, value: false)); //parameters ملهاش لازمة
+    await loadCheckBoxValues();
+  }
 }

@@ -1,8 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:test_app/core/services/internet_connection.dart';
+import 'package:test_app/features/app/data/datasources/location_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/prayers_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/prayers_remote_data_source.dart';
+import 'package:test_app/features/app/data/models/get_prayer_times_of_month_prameters.dart';
+import 'package:test_app/features/app/domain/entities/location_entity.dart';
 import 'package:test_app/features/app/domain/entities/timings.dart';
 import 'package:test_app/features/app/domain/repositories/base_prayer_repo.dart';
 import 'package:test_app/core/errors/failures.dart';
@@ -11,10 +14,13 @@ class PrayerRepo extends BasePrayerRepo {
   final PrayersRemoteDataSource prayersRemoteDataSource;
   final PrayersLocalDataSource prayersLocalDataSource;
   final InternetConnection internetConnection;
-  PrayerRepo(
-      {required this.prayersRemoteDataSource,
-      required this.internetConnection,
-      required this.prayersLocalDataSource});
+  final BaseLocationLocalDataSource baseLocationLocalDataSource;
+  PrayerRepo({
+    required this.prayersRemoteDataSource,
+    required this.internetConnection,
+    required this.prayersLocalDataSource,
+    required this.baseLocationLocalDataSource,
+  });
   @override
   Future<Either<Failure, Timings>> getPrayerTimes() async {
     try {
@@ -25,7 +31,7 @@ class PrayerRepo extends BasePrayerRepo {
         try {
           timings = await prayersRemoteDataSource.getPrayersTimes();
           print('remote');
-          await prayersLocalDataSource.putPrayersTimes(timings);
+         // await prayersLocalDataSource.putPrayersTimes(timings);
         } on DioException catch (_) {
           timings = await prayersLocalDataSource.getLocalPrayersTimes();
           print('local1');
@@ -47,5 +53,20 @@ class PrayerRepo extends BasePrayerRepo {
     } catch (e) {
       return Left(Failure('Unexpected error: $e'));
     }
+  }
+
+  @override
+  Future<Either<Failure, List<Timings>>> getPrayerTimesOfMonth(
+      GetPrayerTimesOfMonthPrameters getPrayerTimesOfMonthPrameters) async{
+    try {
+   return right(await prayersRemoteDataSource.getPrayerTimesOfMonth(getPrayerTimesOfMonthPrameters));
+} on Exception catch (e) {
+  return left(Failure(e.toString()));
+}
+  }
+
+  @override
+  Future<LocationEntity?> getLoction() async {
+    return await baseLocationLocalDataSource.getLocationFromLocalDataSource();
   }
 }

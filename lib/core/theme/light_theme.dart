@@ -4,13 +4,11 @@ import 'package:test_app/core/theme/app_colors.dart';
 const double appBarBorderRadius = 50.0;
 
 ThemeData lightTheme = ThemeData(
+  useMaterial3: true,
   brightness: Brightness.light,
- fontFamily: 'SemiBoldCairo', 
-  textTheme: const TextTheme().apply(
-  //  fontFamily: 'Cairo',
-    bodyColor: Colors.black,
-    displayColor: Colors.black,
-  ),
+  primaryColor: AppColors.lightModePrimaryColor,
+  colorScheme: ColorScheme.light(primary: AppColors.lightModePrimaryColor),
+  fontFamily: 'SemiBoldCairo',
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     backgroundColor: Colors.transparent,
   ),
@@ -19,16 +17,16 @@ ThemeData lightTheme = ThemeData(
     backgroundColor: Colors.transparent,
     titleTextStyle: TextStyle(
       fontFamily: 'Cairo',
-      color: AppColors.primaryColor,
+      color: AppColors.lightModePrimaryColor,
       fontWeight: FontWeight.bold,
       fontSize: 23,
     ),
     shape: Border(
-      bottom: BorderSide(color: AppColors.primaryColor),
+      bottom: BorderSide(color: AppColors.lightModePrimaryColor),
     ),
   ),
   drawerTheme: const DrawerThemeData(
-    backgroundColor: AppColors.primaryColor,
+    backgroundColor: AppColors.lightModePrimaryColor,
     shape: LinearBorder(),
   ),
   outlinedButtonTheme: OutlinedButtonThemeData(

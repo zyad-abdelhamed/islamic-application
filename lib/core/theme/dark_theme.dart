@@ -2,28 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 
 ThemeData darkTheme = ThemeData(
+  primaryColor: AppColors.darkModePrimaryColor,
+  colorScheme: ColorScheme.dark(primary: AppColors.darkModePrimaryColor),
   brightness: Brightness.dark,
-  fontFamily: 'Cairo',
-  textTheme: const TextTheme(
-    bodyLarge: TextStyle(fontSize: 18),
-    bodyMedium: TextStyle(fontSize: 16),
-    titleLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-  ),
+  fontFamily: 'SemiBoldCairo',
   appBarTheme: const AppBarTheme(
     centerTitle: true,
     backgroundColor: Colors.transparent,
     titleTextStyle: TextStyle(
       fontFamily: 'Cairo',
-      color: AppColors.primaryColor,
+      color: AppColors.darkModePrimaryColor,
       fontWeight: FontWeight.bold,
       fontSize: 23,
     ),
     shape: Border(
-      bottom: BorderSide(color: AppColors.primaryColor),
+      bottom: BorderSide(color: AppColors.darkModePrimaryColor),
     ),
   ),
   drawerTheme: const DrawerThemeData(
-    backgroundColor: AppColors.primaryColor,
+    backgroundColor: AppColors.darkModePrimaryColor,
     shape: LinearBorder(),
   ),
   outlinedButtonTheme: OutlinedButtonThemeData(

@@ -6,7 +6,7 @@ class TextStyles {
 
   static TextStyle semiBold16({
     required BuildContext context,
-    required Color color,
+    required Color? color,
   }) {
     return TextStyle(
       color: color,

@@ -4,13 +4,12 @@ import 'package:test_app/core/constants/cache_constants.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
 
 class OnBoardingCubit extends HydratedCubit<bool> {
-  OnBoardingCubit() : super( false);
+  OnBoardingCubit() : super(false);
   final PageController pageController = PageController();
-  int isLastPage = 0;
-  
+
   void animateToNextPage({required BuildContext context}) {
-    isLastPage = pageController.page!.round();
-    if (isLastPage == 4) {
+    final int page = pageController.page!.round();
+    if (page == 4) {
       goToHomePage(context: context);
     }
     pageController.nextPage(
@@ -19,7 +18,7 @@ class OnBoardingCubit extends HydratedCubit<bool> {
 
   void goToHomePage({required BuildContext context}) {
     Navigator.pushNamedAndRemoveUntil(
-        context, RoutesConstants.homePageRouteName, (route) => false);
+        context, RoutesConstants.splashScreenRouteName, (route) => false);
     emit(true);
   }
 
@@ -31,11 +30,5 @@ class OnBoardingCubit extends HydratedCubit<bool> {
   @override
   Map<String, dynamic> toJson(bool state) {
     return {CacheConstants.isDisplayed: state};
-  }
-
-  @override
-  Future<void> close() {
-    print("onBoarding cubit close");
-    return super.close();
   }
 }

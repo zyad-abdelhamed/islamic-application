@@ -7,7 +7,6 @@ import 'package:test_app/features/app/presentation/view/components/draw_circle_l
 import 'package:test_app/features/app/presentation/view/components/rosary_ring_widget.dart';
 import 'package:test_app/features/app/presentation/view/components/home_drawer_text_button.dart';
 import 'package:test_app/core/constants/app_strings.dart';
-import 'package:test_app/core/extentions/controllers_extention.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/features/duaa/presentation/controllers/cubit/duaa_cubit.dart';
@@ -39,13 +38,15 @@ class HomeDrawerWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          ...List<HomeDrawerTextButton>.generate(
-              textButtonsAlertDialogWidgets.length,
-              (index) => HomeDrawerTextButton(
-                    index: index,
-                    text: AppStrings.homeDrawerTextButtons[index],
-                    alertDialogContent: textButtonsAlertDialogWidgets[index],
-                  )),
+          Wrap(
+              children: List<HomeDrawerTextButton>.generate(
+                  textButtonsAlertDialogWidgets.length,
+                  (index) => HomeDrawerTextButton(
+                        index: index,
+                        text: AppStrings.homeDrawerTextButtons[index],
+                        alertDialogContent:
+                            textButtonsAlertDialogWidgets[index],
+                      ))),
           Divider(),
           BlocProvider(
             create: (context) => DuaaCubit(sl())..getDuaa(),
@@ -85,7 +86,7 @@ class HomeDrawerWidget extends StatelessWidget {
                         inactiveTrackColor: AppColors.inActiveBlackColor,
                         value: context.watch<ThemeCubit>().state,
                         onChanged: (bool value) =>
-                            context.themeController.toggleTheme())
+                            ThemeCubit.controller(context).toggleTheme())
                   ])),
         ],
       ),

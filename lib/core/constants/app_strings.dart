@@ -17,7 +17,6 @@ abstract class AppStrings {
       'اتجاه${getNewlineOrWightSpace()}القبله'
     ];
   }
-  
   static const String back = "العوده";
   //   ===on boarding===
   static const String skip = 'تخطى';
@@ -41,7 +40,7 @@ abstract class AppStrings {
   //   ===home page===
   static const String darkMode = 'الوضع الداكن';
   static const String mainPage = 'الصفحة الرئيسية';
-  static const String nextPrayer = 'الصلاة القادمة :';
+  static const String nextPrayer = 'الصلاة القادمة';
   static const String remainingTime = 'الوقت المتبقي : ';
   static const String todayHadith = 'حديث اليوم';
   static const List<String> homeDrawerTextButtons = <String>[
@@ -140,6 +139,8 @@ abstract class AppStrings {
     RamadanTabelPage(),
     QiblaPage(),
   ];
+  //prayer times page
+  static const String chooseDate = "اختر التاريخ";
   //   ===Alquran Alkarim Page===
   static const theIndex = 'الفهرس';
   static const Map<String, int> surahPages = {
@@ -258,6 +259,9 @@ abstract class AppStrings {
     'الفلق': 569,
     'الناس': 569,
   };
+  //   ===adhkar page===
+  static const String fontSizeButtonText = "ض";
+  static const String adhkarPageSwitchText = "الحذف بعد الانتهاء";
   //   ===ramadan table===
   static const List<String> namesOfPrayers = <String>[
     'فجر',

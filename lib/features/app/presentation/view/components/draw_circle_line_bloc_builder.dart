@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/alert_dialog_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/circle_painter.dart';
-import 'package:test_app/core/extentions/controllers_extention.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 
@@ -28,7 +27,7 @@ class DrawCircleLineBlocBuilder extends StatelessWidget {
               progress: maxProgress,
               lineSize: 10.0,
               context: context,
-              lineColor: AppColors.inActiveThirdColor,
+              lineColor: AppColors.inActivePrimaryColor,
               maxProgress: maxProgress),
         ),
         BlocBuilder<AlertDialogCubit, AlertDialogState>(
@@ -41,7 +40,7 @@ class DrawCircleLineBlocBuilder extends StatelessWidget {
                   lineSize: 10.0,
                   progress: state.progress,
                   context: context,
-                  lineColor: AppColors.thirdColor,
+                  lineColor: AppColors.primaryColor(context),
                   maxProgress: maxProgress),
             );
           },
@@ -70,10 +69,10 @@ class DrawCircleLineBlocBuilder extends StatelessWidget {
                   switch(functionality){
 
                     case DrawCircleLineBlocBuilderFunctionality.ringRosary:
-                                        context.alertDialogController.drawRosaryRing(context);
+                                        AlertDialogCubit.controller(context).drawRosaryRing(context);
 
                     case DrawCircleLineBlocBuilderFunctionality.rosariesAfterPrayer:
-                      context.alertDialogController.drawCircle(context);
+                      AlertDialogCubit.controller(context).drawCircle(context);
                   }
                 },
                 child: BlocBuilder<AlertDialogCubit, AlertDialogState>(
@@ -91,7 +90,7 @@ class DrawCircleLineBlocBuilder extends StatelessWidget {
                       },
                         maxLines: 1,
                         style: TextStyles.semiBold32(context,
-                            color: AppColors.primaryColor),
+                            color: AppColors.primaryColor(context)),
                       ),
                     );
                   },
