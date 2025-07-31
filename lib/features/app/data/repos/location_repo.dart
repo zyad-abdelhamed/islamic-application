@@ -28,12 +28,31 @@ class LocationRepo extends BaseLocationRepo {
 
   @override
   Future<Either<Failure, Unit>> saveLocation(
-      {required LocationModel location}) async {
-    try {
-      await baseLocationLocalDataSource.saveLocationLocaly(location);
-      return Right(unit);
-    } catch (e) {
-      return Left(Failure(e.toString()));
+      { LocationModel? location}) async {
+    bool isOnline = await internetConnection.checkInternetConnection();
+    bool isLocationEnabled = await baseLocationService.isServiceEnabled;
+    if (isOnline && isLocationEnabled) {
+      try {
+        final Position position = await baseLocationService.position;
+        final String city =
+            await locationNameService.getCityNameFromCoordinates(
+          position.latitude,
+          position.longitude,
+        );
+        await baseLocationLocalDataSource.saveLocationLocaly(
+          LocationModel(
+            latitude: position.latitude,
+            longitude: position.longitude,
+            name: city,
+          ),
+        );
+
+        return Right(unit);
+      } catch (e) {
+        return Left(Failure(e.toString()));
+      }
+    } else {
+      return Left(Failure('يرجى التأكد من الاتصال بالإنترنت وتفعيل الموقع.'));
     }
   }
 

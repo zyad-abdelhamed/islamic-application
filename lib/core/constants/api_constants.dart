@@ -5,22 +5,8 @@ import 'package:test_app/core/services/position_service.dart';
 import 'package:test_app/features/app/data/models/get_prayer_times_of_month_prameters.dart';
 
 class Apiconstants {
-  static Future<String> get getTimingsUrl async {
-    try {
-      final Position position = await sl<BaseLocationService>().position;
-
-      // تأكد أن الإحداثيات ليست 0.0 (بعض الأجهزة تعيد 0.0 عند الفشل)
-      if (position.latitude != 0.0 && position.longitude != 0.0) {
-        return "https://api.aladhan.com/v1/timings?latitude=${position.latitude}&method=8&longitude=${position.longitude}";
-      }
-    } catch (_) {
-      // تجاهل الخطأ واستخدم القيم الافتراضية
-    }
-
-    // في حالة الفشل أو كانت الإحداثيات غير صالحة => استخدم إحداثيات القاهرة
-    const cairoLatitude = 30.0444;
-    const cairoLongitude = 31.2357;
-    return "https://api.aladhan.com/v1/timings?latitude=$cairoLatitude&method=8&longitude=$cairoLongitude";
+  static String getTimingsUrl({required double latitude, required double longitude})  {
+    return "https://api.aladhan.com/v1/timings?latitude=$latitude&longitude=$longitude";
   }
 
   static Future<String> getTimingsOfMonthUrl(
@@ -30,7 +16,7 @@ class Apiconstants {
 
       // تأكد أن الإحداثيات ليست 0.0 (بعض الأجهزة تعيد 0.0 عند الفشل)
       if (position.latitude != 0.0 && position.longitude != 0.0) {
-        return "https://api.aladhan.com/v1/calendar?latitude=${position.latitude}&method=8&longitude=${position.longitude}&month=${getPrayerTimesOfMonthPrameters.date.month}&year=${getPrayerTimesOfMonthPrameters.date.year}";
+        return "https://api.aladhan.com/v1/calendar?latitude=${position.latitude}&longitude=${position.longitude}&month=${getPrayerTimesOfMonthPrameters.date.month}&year=${getPrayerTimesOfMonthPrameters.date.year}";
       }
     } catch (_) {
       // تجاهل الخطأ واستخدم القيم الافتراضية
@@ -39,7 +25,7 @@ class Apiconstants {
     // في حالة الفشل أو كانت الإحداثيات غير صالحة => استخدم إحداثيات القاهرة
     const cairoLatitude = 30.0444;
     const cairoLongitude = 31.2357;
-    return "https://api.aladhan.com/v1/timings?latitude=$cairoLatitude&method=8&longitude=$cairoLongitude";
+    return "https://api.aladhan.com/v1/timings?latitude=$cairoLatitude&longitude=$cairoLongitude";
   }
 
   static String get ahadithUrl =>
