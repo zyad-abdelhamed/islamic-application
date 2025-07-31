@@ -9,7 +9,6 @@ import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/dark_theme.dart';
 import 'package:test_app/core/theme/light_theme.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
-import 'package:test_app/features/location_permission_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,10 +35,9 @@ class MyApp extends StatelessWidget {
               textDirection: TextDirection.rtl,
               child: child!,
             ),
-            home: LocationPermissionPage() ,
             theme: isDarkMode ? darkTheme : lightTheme,
             debugShowCheckedModeBanner: false,
-           // initialRoute: getInitRoute,
+            initialRoute: getInitRoute,
             onGenerateRoute: onGenerateRoute,
           );
         },

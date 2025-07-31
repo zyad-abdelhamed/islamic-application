@@ -3,10 +3,7 @@ import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/features/app/data/models/get_prayer_times_of_month_prameters.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/cubit/location_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_prayer_times_of_month_cubit.dart';
-import 'package:test_app/core/services/dependency_injection.dart';
-import 'package:test_app/core/services/internet_connection.dart';
-import 'package:test_app/core/services/position_service.dart';
-import 'package:test_app/features/app/presentation/view/components/show_location_dialog.dart';
+import 'package:test_app/features/app/presentation/view/components/save_or_update_location_widget.dart';
 
 class PrayerTimesPageController {
   late PageController pageController;
@@ -16,25 +13,13 @@ class PrayerTimesPageController {
   final ValueNotifier<bool> loadUpdateLocationDialogNotifier =
       ValueNotifier<bool>(false);
 
-  late final ValueNotifier<bool> internetConnectionNotifier;
-  late final ValueNotifier<bool> isLocationEnabledNotifier;
-
   initState(BuildContext context) async {
     pageController = PageController(initialPage: DateTime.now().day - 1);
     dateNotifier = ValueNotifier<DateTime>(DateTime.now());
-
     previousButtonVisibleNotifier =
         ValueNotifier<bool>(_getPreviousButtonNotifierValue);
     nextButtonVisibleNotifier =
         ValueNotifier<bool>(_getNextButtonNotifierValue);
-    internetConnectionNotifier = ValueNotifier<bool>(
-        await sl<InternetConnection>().checkInternetConnection());
-    isLocationEnabledNotifier =
-        ValueNotifier<bool>(await sl<BaseLocationService>().isServiceEnabled);
-
-    isLocationEnabledNotifier.addListener(() async => isLocationEnabledNotifier
-        .value = await sl<BaseLocationService>().isServiceEnabled);
-        print(await sl<BaseLocationService>().isServiceEnabled);
   }
 
   dispose() {
@@ -106,18 +91,20 @@ class PrayerTimesPageController {
         duration: AppDurations.lowDuration, curve: Curves.linear);
   }
 
-  updateLocation(BuildContext context) async {
+  updateLocation(BuildContext context) {
     loadUpdateLocationDialogNotifier.value = true;
-    bool isLocationEnabled = await sl<BaseLocationService>().isServiceEnabled;
-    bool isOnline = await sl<InternetConnection>().checkInternetConnection();
-    showLocationUpdateDialog(
-        context: context,
-        isOnline: isOnline,
-        isLocationEnabled: isLocationEnabledNotifier.value,
-        onOpenInternet: () => sl<InternetConnection>().openInternetSettings(),
-        onOpenLocation: () => sl<BaseLocationService>().openLocationSettings(),
-        onUpdateLocation: () =>
-            LocationCubit.controller(context).updateLocationRequest(context));
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('تحديث الموقع'),
+          content: SaveOrUpdateLocationWidget(
+              buttonFunction: () => LocationCubit.controller(context)
+                  .updateLocationRequest(context),
+              buttonName: 'تحديث الموقع'),
+        );
+      },
+    );
     loadUpdateLocationDialogNotifier.value = false;
   }
 }

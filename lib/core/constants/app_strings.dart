@@ -21,6 +21,21 @@ abstract class AppStrings {
   //   ===on boarding===
   static const String skip = 'تخطى';
   static const String next = 'التالى';
+  //   ===location permission page===
+  static const String usesOfActivationLocation = '''
+    لكي تتمكن من استخدام:
+
+    • مواقيت الصلاة حسب موقعك\n• تحديد اتجاه القبلة بدقة"
+  ''';
+  static const String activationLocationNow = "تفعيل الموقع الآن";
+  static const String activationLocationRequired = "تفعيل الموقع مطلوب";
+  static const String saveLocation = "حفظ الموقع";
+  static const String gotIt = 'فهمت';
+  static const String deniedLocationPermissionAlertDialogText = 'تم رفض إذن خدمة الموقع.\n\n'
+        'لن تتمكن من استخدام الميزات التالية:\n'
+        '• مواقيت الصلاة حسب موقعك\n'
+        '• تحديد اتجاه القبلة بدقة\n\n'
+        'سيتم عرض هذه الرسالة في الصفحة الرئيسية، ويمكنك تغيير الإعدادات لاحقًا من هذه الرسالة.';
   static const List<String> features = <String>[
     'اوقات الصلاة',
     'الاذكار',
