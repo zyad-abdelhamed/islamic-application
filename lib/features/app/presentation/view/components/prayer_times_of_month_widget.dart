@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/helper_function/get_widget_depending_on_reuest_state.dart';
+import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/features/app/domain/entities/timings.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/prayer_times_page_controller.dart';
@@ -16,14 +17,18 @@ class PrayerTimesOfMonthWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GetPrayerTimesOfMonthCubit, GetPrayerTimesOfMonthState>(
-      builder: (context, state) {
-        return getWidgetDependingOnReuestState(
-            requestStateEnum: state.getPrayerTimesOfMonthState!,
-            widgetIncaseSuccess:
-                _widgetInCaseSucces(context, state.prayerTimesOfMonth),
-            erorrMessage: state.getPrayerTimesOfMonthErrorMeassage);
-      },
+    return BlocProvider(
+      create: (context) => sl<GetPrayerTimesOfMonthCubit>(),
+      child:
+          BlocBuilder<GetPrayerTimesOfMonthCubit, GetPrayerTimesOfMonthState>(
+        builder: (context, state) {
+          return getWidgetDependingOnReuestState(
+              requestStateEnum: state.getPrayerTimesOfMonthState!,
+              widgetIncaseSuccess:
+                  _widgetInCaseSucces(context, state.prayerTimesOfMonth),
+              erorrMessage: state.getPrayerTimesOfMonthErrorMeassage);
+        },
+      ),
     );
   }
 
@@ -40,7 +45,8 @@ class PrayerTimesOfMonthWidget extends StatelessWidget {
         Expanded(
           child: PageView.builder(
             controller: prayerTimesPageController.pageController,
-            onPageChanged: (value) =>  prayerTimesPageController.onPageChanged(context, value),
+            onPageChanged: (value) =>
+                prayerTimesPageController.onPageChanged(context, value),
             itemCount: listOfTimings.length,
             itemBuilder: (context, index) =>
                 SecondaryPrayerTimesWidget(timings: listOfTimings[index]),

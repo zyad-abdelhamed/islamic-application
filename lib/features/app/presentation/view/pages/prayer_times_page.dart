@@ -1,7 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
+import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
@@ -29,7 +31,6 @@ class _PrayerTimesPageState extends State<PrayerTimesPage> {
   void initState() {
     prayerTimesPageController = PrayerTimesPageController();
     prayerTimesPageController.initState(context);
-    
     super.initState();
   }
 
@@ -55,67 +56,30 @@ class _PrayerTimesPageState extends State<PrayerTimesPage> {
             title: Text("مواقيت الصلاه"),
             leading: GetAdaptiveBackButtonWidget(),
           ),
-          body: SingleChildScrollView(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Text.rich(
-                  TextSpan(
-                    text: 'تنويه: ',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.redAccent,
-                      fontWeight: FontWeight.bold,
+          body: ValueListenableBuilder<bool>(
+            valueListenable: prayerTimesPageController.loadUpdateLocationDialogNotifier,
+            builder: (_,__,___) =>  ModalProgressHUD(
+              inAsyncCall: prayerTimesPageController.loadUpdateLocationDialogNotifier.value,
+                progressIndicator: GetAdaptiveLoadingWidget(),
+                opacity: .5,
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    ChangeLocationWidget(prayerTimesPageController: prayerTimesPageController),
+                    const SizedBox(height: 50),
+                    GetPrayerTimesOfMonthButton(
+                      prayerTimesPageController: prayerTimesPageController,
                     ),
-                    children: [
-                      TextSpan(
-                        text: 'سيتم جلب ',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                      TextSpan(
-                        text: 'مواقيت الصلاة ',
-                        style: TextStyle(
-                          color: Colors.blueAccent,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      TextSpan(
-                        text:
-                            'بناءً على الموقع المخزن مسبقًا.  يمكنك دائما تغيير الموقع، عن طريق الضغط على ',
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                     TextSpan(
-                        text: 'تحديث الموقع.',
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.underline,
-                        ),
-                        recognizer:TapGestureRecognizer()
-      ..onTap = () {
-        context.read<LocationCubit>() .updateLocation(context);
-      }, // هنا السحر
-                      ),
-                    ],
-                  ),
+                    SizedBoxs.sizedBoxH30,
+                    SizedBox(
+                      height: (context.height * .50) - 50,
+                      child: PrayerTimesOfMonthWidget(
+                          prayerTimesPageController: prayerTimesPageController),
+                    ),
+                  ],
                 ),
-                ChangeLocationWidget(),
-                const SizedBox(height: 50),
-                GetPrayerTimesOfMonthButton(
-                  prayerTimesPageController: prayerTimesPageController,
-                ),
-                SizedBoxs.sizedBoxH30,
-                SizedBox(
-                  height: (context.height * .50) - 50,
-                  child: PrayerTimesOfMonthWidget(
-                      prayerTimesPageController: prayerTimesPageController),
-                ),
-              ],
+              ),
             ),
           ),
         ),
