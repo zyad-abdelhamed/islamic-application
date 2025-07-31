@@ -5,7 +5,7 @@ import 'package:test_app/core/models/api_service_input_model.dart';
 import 'package:test_app/core/services/api_services.dart';
 
 abstract class PrayersRemoteDataSource {
-  Future<TimingsModel> getPrayersTimes();
+  Future<TimingsModel> getPrayersTimes({required double latitude, required double longitude});
   Future<List<TimingsModel>> getPrayerTimesOfMonth(
       GetPrayerTimesOfMonthPrameters getPrayerTimesOfMonthPrameters);
 }
@@ -14,10 +14,10 @@ class PrayersRemoteDataSourceImpl implements PrayersRemoteDataSource {
   final ApiService apiService;
   PrayersRemoteDataSourceImpl(this.apiService);
   @override
-  Future<TimingsModel> getPrayersTimes() async {
+  Future<TimingsModel> getPrayersTimes({required double latitude, required double longitude}) async {
     var responseBody = await apiService.get(
         apiServiceInputModel:
-            ApiServiceInputModel(url: await Apiconstants.getTimingsUrl));
+            ApiServiceInputModel(url:  Apiconstants.getTimingsUrl(latitude: latitude, longitude: longitude)));
 
     return TimingsModel.fromJson(responseBody['data']);
   }

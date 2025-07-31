@@ -6,7 +6,9 @@ abstract class InternetConnection {
   Future<bool> checkInternetConnection();
   Future<void> openInternetSettings() async {
   AppSettings.openAppSettings(type: AppSettingsType.wifi); 
+  
 }
+Stream<bool> get onInternetStatusChanged;
 }
 
 class InternetConnectionImpl extends InternetConnection {
@@ -15,6 +17,10 @@ class InternetConnectionImpl extends InternetConnection {
     var connectivityResult = await Connectivity().checkConnectivity();
     return connectivityResult != ConnectivityResult.none;
   }
+  
+  @override
+  // TODO: implement onInternetStatusChanged
+  Stream<bool> get onInternetStatusChanged => throw UnimplementedError();
   
  
   
@@ -28,4 +34,10 @@ class InternetConnectionImpl2 extends InternetConnection {
   Future<bool> checkInternetConnection() async {
     return await checker.hasConnection;
   }
+  
+  @override
+  Stream<bool> get onInternetStatusChanged =>
+      checker.onStatusChange.map((status) {
+        return status == InternetConnectionStatus.connected;
+      });
 }
