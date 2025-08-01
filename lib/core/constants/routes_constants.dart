@@ -6,4 +6,5 @@ abstract class RoutesConstants {
   static const String qiblaPageRouteName = 'qiblaPage';
   static const String qAndAPageRouteName = 'qAndAPage';
   static const String prayersTimePage = 'PrayersTimePageSettingsPage';
+  static const String locationPermissionPage = 'locationPermissionPage';
 }

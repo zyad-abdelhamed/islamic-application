@@ -18,7 +18,7 @@ class ErorrWidget extends StatelessWidget {
         "حدث خطأ: $message",
         textAlign: TextAlign.center,
         style: TextStyles.semiBold18(
-            context, AppColors.secondryColor),
+            context, AppColors.errorColor),
       ),
     ));
   }

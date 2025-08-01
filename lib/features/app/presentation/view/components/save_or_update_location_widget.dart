@@ -1,23 +1,29 @@
 import 'dart:async';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
 import 'package:test_app/core/services/internet_connection.dart';
 import 'package:flutter/material.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/services/position_service.dart';
 import 'package:test_app/core/theme/app_colors.dart';
+import 'package:test_app/core/utils/enums.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/cubit/location_cubit.dart';
 
 class SaveOrUpdateLocationWidget extends StatefulWidget {
   const SaveOrUpdateLocationWidget({
     super.key,
-    required this.buttonFunction,
+    required this.functionaltiy,
     required this.buttonName,
   });
-  final VoidCallback buttonFunction;
+  final Functionaltiy functionaltiy;
   final String buttonName;
 
   @override
   State<SaveOrUpdateLocationWidget> createState() =>
       _SaveOrUpdateLocationWidgetState();
 }
+
+enum Functionaltiy { save, update }
 
 class _SaveOrUpdateLocationWidgetState
     extends State<SaveOrUpdateLocationWidget> {
@@ -58,8 +64,9 @@ class _SaveOrUpdateLocationWidgetState
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text(
-          'يرجى التأكد من تفعيل الإنترنت والموقع لتحديث موقعك الحالي.',
+         Text(
+          'يرجى التأكد من تفعيل الإنترنت والموقع لكي تتمكن من ${widget.buttonName}.',
+          style: TextStyle(fontFamily: "dataFontFamily"),
         ),
         const SizedBox(
           height: 15,
@@ -68,31 +75,33 @@ class _SaveOrUpdateLocationWidgetState
           mainAxisAlignment: MainAxisAlignment.center,
           spacing: 30,
           children: [
-           ValueListenableBuilder<bool>(
-              valueListenable: isConnectedNotifier,
-              builder: (_, __, ___) => Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              spacing: 8,
-              children: [
-                Icon(
-                  isConnectedNotifier.value ? Icons.wifi : Icons.wifi_off,
-                  color: isConnectedNotifier.value
-                      ? Colors.blueAccent
-                      : AppColors.thirdColor,
-                ),
-                Text(
-                  isConnectedNotifier.value
-                      ? "متصل بالإنترنت"
-                      : "لا يوجد اتصال بالإنترنت",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: isConnectedNotifier.value
-                        ? Colors.blueAccent
-                        : AppColors.thirdColor,
-                  ),
-                ),
-              ],
-            )),
+            ValueListenableBuilder<bool>(
+                valueListenable: isConnectedNotifier,
+                builder: (_, __, ___) => Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      spacing: 8,
+                      children: [
+                        Icon(
+                          isConnectedNotifier.value
+                              ? Icons.wifi
+                              : Icons.wifi_off,
+                          color: isConnectedNotifier.value
+                              ? AppColors.successColor
+                              : AppColors.errorColor,
+                        ),
+                        Text(
+                          isConnectedNotifier.value
+                              ? "متصل بالإنترنت"
+                              : "لا يوجد اتصال بالإنترنت",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: isConnectedNotifier.value
+                                ? AppColors.successColor
+                                : AppColors.errorColor,
+                          ),
+                        ),
+                      ],
+                    )),
             ValueListenableBuilder<bool>(
               valueListenable: isLocationEnabledNotifier,
               builder: (_, __, ___) => Column(
@@ -104,8 +113,8 @@ class _SaveOrUpdateLocationWidgetState
                         ? Icons.location_on
                         : Icons.location_off,
                     color: isLocationEnabledNotifier.value
-                        ? Colors.blueAccent
-                        : AppColors.thirdColor,
+                        ? AppColors.successColor
+                        : AppColors.errorColor,
                   ),
                   Text(
                     isLocationEnabledNotifier.value
@@ -114,8 +123,8 @@ class _SaveOrUpdateLocationWidgetState
                     style: TextStyle(
                       fontSize: 16,
                       color: isLocationEnabledNotifier.value
-                          ? Colors.blueAccent
-                          : AppColors.thirdColor,
+                          ? AppColors.successColor
+                          : AppColors.errorColor,
                     ),
                   ),
                 ],
@@ -134,13 +143,39 @@ class _SaveOrUpdateLocationWidgetState
                     borderRadius: BorderRadius.circular(10)),
                 onPressed: (isConnectedNotifier.value &&
                         isLocationEnabledNotifier.value)
-                    ? widget.buttonFunction
+                    ? () {
+                        final cubit = context.read<LocationCubit>();
+                        switch (widget.functionaltiy) {
+                          case Functionaltiy.save:
+                            cubit.saveLocationRequest(context);
+                            break;
+                          case Functionaltiy.update:
+                            cubit.updateLocationRequest(context);
+                            break;
+                        }
+                      }
                     : null,
                 disabledColor: Colors.grey,
                 color: Theme.of(context).primaryColor,
-                child: Text(
-                  widget.buttonName,
-                  style: TextStyle(color: AppColors.white),
+                child: BlocBuilder<LocationCubit, LocationState>(
+                  builder: (context, state) {
+                    return Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: state.requestState == RequestStateEnum.loading
+                            ? Row(
+                                spacing: 5,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text("يتم ${widget.buttonName} ..."),
+                                  GetAdaptiveLoadingWidget(),
+                                ],
+                              )
+                            : Text(
+                                widget.buttonName,
+                                style: TextStyle(color: AppColors.white),
+                              ));
+                  },
                 ))),
       ],
     );

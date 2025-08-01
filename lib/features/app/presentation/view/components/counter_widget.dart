@@ -36,7 +36,7 @@ class CounterWidget extends StatelessWidget {
                   height: 100,
                   decoration: BoxDecoration(
                     border: Border.all(
-                        width: 3, color: AppColors.primaryColor(context)),
+                        width: 3, color: Theme.of(context).primaryColor),
                     borderRadius: const BorderRadius.all(Radius.circular(18)),
                   ),
                   child: ValueListenableBuilder<NumberAnimationModel>(

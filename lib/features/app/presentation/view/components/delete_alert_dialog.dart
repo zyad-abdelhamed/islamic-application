@@ -17,13 +17,13 @@ void showDeleteAlertDialog(BuildContext context,
               child: Text(
                 AppStrings.yes,
                 style: TextStyles.regular16_120(context,
-                    color: AppColors.thirdColor),
+                    color: AppColors.errorColor),
               )),
           OutlinedButton(
               onPressed: () => Navigator.pop(context),
               child: Text(AppStrings.no,
                   style: TextStyles.regular16_120(context,
-                      color: AppColors.primaryColor(context))))
+                      color: Theme.of(context).primaryColor)))
         ],
       );
     },

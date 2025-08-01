@@ -17,6 +17,7 @@ abstract class AppStrings {
       'اتجاه${getNewlineOrWightSpace()}القبله'
     ];
   }
+
   static const String back = "العوده";
   static const String cachedErrorMessage = '';
   //   ===on boarding===
@@ -32,11 +33,12 @@ abstract class AppStrings {
   static const String activationLocationRequired = "تفعيل الموقع مطلوب";
   static const String saveLocation = "حفظ الموقع";
   static const String gotIt = 'فهمت';
-  static const String deniedLocationPermissionAlertDialogText = 'تم رفض إذن خدمة الموقع.\n\n'
-        'لن تتمكن من استخدام الميزات التالية:\n'
-        '• مواقيت الصلاة حسب موقعك\n'
-        '• تحديد اتجاه القبلة بدقة\n\n'
-        'سيتم عرض هذه الرسالة في الصفحة الرئيسية، ويمكنك تغيير الإعدادات لاحقًا من هذه الرسالة.';
+  static const String deniedLocationPermissionAlertDialogText =
+      'تم رفض إذن خدمة الموقع.\n\n'
+      'لن تتمكن من استخدام الميزات التالية:\n'
+      '• مواقيت الصلاة حسب موقعك\n'
+      '• تحديد اتجاه القبلة بدقة\n\n'
+      'سيتم عرض هذه الرسالة في الصفحة الرئيسية، ويمكنك تغيير الإعدادات لاحقًا من هذه الرسالة.';
   static const List<String> features = <String>[
     'اوقات الصلاة',
     'الاذكار',
@@ -60,11 +62,10 @@ abstract class AppStrings {
   static const String remainingTime = 'الوقت المتبقي : ';
   static const String todayHadith = 'حديث اليوم';
   static const List<String> homeDrawerTextButtons = <String>[
-    'التسبيح بعدالصلاة',
+    'ختم القرآن',
     'حلقه التسبيح',
-    'ختم القرآن'
+    'التسبيح\n بعدالصلاة'
   ];
-
   static const List<String> adhkarList = <String>[
     'سبحان الله',
     'الحمد لله',
@@ -147,10 +148,10 @@ abstract class AppStrings {
     "أدعية قرآنية",
     "أدعية الأنبياء",
   ];
-  static  List pages = [
-   BlocProvider(
+  static List pages = [
+    BlocProvider(
         create: (context) => QuranCubit()..loadPdfFromAssets(),
-        child:  AlquranAlkarimPage()),
+        child: AlquranAlkarimPage()),
     ElecRosaryPage(),
     RamadanTabelPage(),
     QiblaPage(),

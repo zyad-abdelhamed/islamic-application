@@ -22,66 +22,69 @@ class PrayerRepo extends BasePrayerRepo {
     required this.baseLocationRepo,
   });
 
-//   @override
-//   Future<Either<Failure, Timings>> getPrayerTimes() async {
-//     try {
-//       Timings? timings;
-//       bool isConnected = await internetConnection.checkInternetConnection();
+  @override
+  Future<Either<Failure, Timings>> getPrayerTimes() async {
+    try {
+      final isConnected = await internetConnection.checkInternetConnection();
 
-//       if (isConnected) {
-//         try {
-//           final result = await baseLocationRepo.getCurrentLocation();
-//           result.fold((l) {return Left(Failure(l.message));},(r) async {
-//             try {
-//   timings = await prayersRemoteDataSource.getPrayersTimes(
-//       latitude: r.latitude, longitude: r.longitude);
-//       await prayersLocalDataSource.putPrayersTimes(timings!);
-//             return Right(timings);
-// } catch (e) {
-// if (e is DioException) {
-//           return left(ServerFailure.fromDiorError(e));
-    
-//     }
-//           return Left(Failure('$e'));
+      if (isConnected) {
+        final locationResult = await baseLocationRepo.getCurrentLocation();
 
-//     }
+        return await locationResult.fold<Future<Either<Failure, Timings>>>(
+          (failure) async => await _getLocalTimingsWithFallbackOrReturnOriginal(
+              Failure(failure.message)),
+          (location) async {
+            try {
+              final timings = await prayersRemoteDataSource.getPrayersTimes(
+                latitude: location.latitude,
+                longitude: location.longitude,
+              );
 
-//           });
-//           print('remote');
-//         } catch (e){
-//           try {
-//   timings = await prayersLocalDataSource.getLocalPrayersTimes();
-//   print('local1');
-//   if (timings == null) {
-//        return const Left(Failure(
-//         AppStrings.cachedErrorMessage));
-   
-//           }
-//         return Right(timings!);
-// } catch (e) {
-//       return Left(Failure('$e'));
-// }
+              await prayersLocalDataSource.putPrayersTimes(timings);
+              return Right(timings);
+            } on DioException catch (dioError) {
+              return await _getLocalTimingsWithFallbackOrReturnOriginal(
+                ServerFailure.fromDiorError(dioError),
+              );
+            } catch (e) {
+              return await _getLocalTimingsWithFallbackOrReturnOriginal(
+                  Failure('$e'));
+            }
+          },
+        );
+      } else {
+        return await _getLocalTimingsFallback(); // no internet, return cached only
+      }
+    } catch (e) {
+      return Left(Failure('$e'));
+    }
+  }
 
-//         }
-//       } else {
-//         try {
-//   timings = await prayersLocalDataSource.getLocalPrayersTimes();
-//   print('local2');
-//   if (timings == null) {
-//     return const Left(Failure(
-//           AppStrings.cachedErrorMessage));
-//   }
-//         return Right(timings);
-// }  catch (e) {
-//       return Left(Failure('$e'));
-// }
+  Future<Either<Failure, Timings>> _getLocalTimingsWithFallbackOrReturnOriginal(
+      Failure originalFailure) async {
+    try {
+      final timings = await prayersLocalDataSource.getLocalPrayersTimes();
+      if (timings != null) {
+        return Right(timings);
+      } else {
+        return Left(originalFailure); // نرجع الخطأ الأصلي
+      }
+    } catch (e) {
+      return Left(Failure('$e'));
+    }
+  }
 
-//       }
-
-//     } catch (e) {
-//       return Left(Failure('$e'));
-//     }
-//   }
+  Future<Either<Failure, Timings>> _getLocalTimingsFallback() async {
+    try {
+      final timings = await prayersLocalDataSource.getLocalPrayersTimes();
+      if (timings == null) {
+        return const Left(Failure(AppStrings.cachedErrorMessage));
+      }
+      return Right(timings);
+    } catch (e) {
+      return Left(Failure('$e'));
+    }
+  }
 
   @override
   Future<Either<Failure, List<Timings>>> getPrayerTimesOfMonth(
@@ -92,11 +95,5 @@ class PrayerRepo extends BasePrayerRepo {
     } on Exception catch (e) {
       return left(Failure(e.toString()));
     }
-  }
-  
-  @override
-  Future<Either<Failure, Timings>> getPrayerTimes() {
-    // TODO: implement getPrayerTimes
-    throw UnimplementedError();
   }
 }

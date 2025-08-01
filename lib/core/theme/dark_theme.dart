@@ -21,7 +21,12 @@ ThemeData darkTheme = ThemeData(
   ),
   drawerTheme: const DrawerThemeData(
     backgroundColor: AppColors.darkModePrimaryColor,
-    shape: LinearBorder(),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(30),
+        bottomLeft: Radius.circular(30),
+      ),
+    ),
   ),
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: ButtonStyle(

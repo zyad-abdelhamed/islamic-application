@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/helper_function/get_widget_depending_on_reuest_state.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
-import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/features/app/domain/entities/timings.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/prayer_times_page_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_prayer_times_of_month_cubit.dart';
@@ -78,7 +77,7 @@ class PrayerTimesOfMonthWidget extends StatelessWidget {
             child: IconButton(
                 onPressed: onPressed,
                 icon: Icon(iconData,
-                    size: 35, color: AppColors.primaryColor(context))),
+                    size: 35, color: Theme.of(context).primaryColor)),
           );
         });
   }

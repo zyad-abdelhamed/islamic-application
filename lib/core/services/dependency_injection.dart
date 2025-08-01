@@ -32,6 +32,7 @@ import 'package:test_app/features/app/domain/usecases/reset_booleans_use_case.da
 import 'package:test_app/features/app/domain/usecases/update_booleans_use_case.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/cubit/location_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_adhkar_controller.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/get_prayer_times_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_prayer_times_of_month_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/hadith_cubit.dart';
 import 'package:test_app/features/app/domain/usecases/get_records_use_case.dart';
@@ -45,14 +46,13 @@ import 'package:test_app/features/duaa/data/repos/duaa_repo.dart';
 import 'package:test_app/features/duaa/domain/repos/duaa_base_repo.dart';
 import 'package:test_app/features/duaa/presentation/controllers/cubit/duaa_cubit.dart';
 import 'package:test_app/features/onboarding/presentation/controller/on_boarding_cubit.dart';
-import 'package:test_app/features/splash_screen.dart';
 
 GetIt sl = GetIt.instance;
 
 class DependencyInjection {
   static Future<void> init() async {
     sl.registerLazySingleton(
-        () => GetPrayersTimesController(getPrayersTimesUseCase: sl()));
+        () => GetPrayersTimesController(getPrayersTimesUseCase: sl(),baseLocationRepo: sl()));
     // cubits
     sl.registerFactory(() => DuaaCubit(sl()));
     sl.registerFactory(()=> LocationCubit(sl()));

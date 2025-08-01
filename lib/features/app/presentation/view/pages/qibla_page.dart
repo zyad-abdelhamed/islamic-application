@@ -6,7 +6,6 @@ import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/services/position_service.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
-import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/qibla_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/erorr_widget.dart';
 
@@ -34,7 +33,7 @@ class QiblaPage extends StatelessWidget {
                   ErorrWidget(message: state.message),Spacer(),
                   OutlinedButton(onPressed: () async{
                     await sl<BaseLocationService>().requestPermission;
-                  },child: Text('request location permission',style: TextStyle(color: AppColors.primaryColor(context)),),)
+                  },child: Text('request location permission',style: TextStyle(color: Theme.of(context).primaryColor),),)
                 ],
               );
             } else if (state is QiblaLoaded) {

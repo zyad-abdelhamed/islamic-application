@@ -9,7 +9,7 @@ class QAndAPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:AppColors.primaryColor(context),
+      backgroundColor:Theme.of(context).primaryColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(8.0),
@@ -28,7 +28,7 @@ class QAndAPage extends StatelessWidget {
                         child: Text(
                           "send",
                           style: TextStyles.bold20(context)
-                              .copyWith(color: AppColors.primaryColor(context)),
+                              .copyWith(color: Theme.of(context).primaryColor),
                         )))
               ),
             ],

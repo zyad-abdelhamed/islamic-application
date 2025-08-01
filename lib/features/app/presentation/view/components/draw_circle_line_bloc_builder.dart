@@ -40,7 +40,7 @@ class DrawCircleLineBlocBuilder extends StatelessWidget {
                   lineSize: 10.0,
                   progress: state.progress,
                   context: context,
-                  lineColor: AppColors.primaryColor(context),
+                  lineColor: Theme.of(context).primaryColor,
                   maxProgress: maxProgress),
             );
           },
@@ -90,7 +90,7 @@ class DrawCircleLineBlocBuilder extends StatelessWidget {
                       },
                         maxLines: 1,
                         style: TextStyles.semiBold32(context,
-                            color: AppColors.primaryColor(context)),
+                            color: Theme.of(context).primaryColor),
                       ),
                     );
                   },

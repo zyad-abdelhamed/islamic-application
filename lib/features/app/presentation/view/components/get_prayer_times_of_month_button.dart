@@ -29,7 +29,7 @@ class GetPrayerTimesOfMonthButton extends StatelessWidget {
               children: [
                 Icon(
                   Icons.send,
-                  color: AppColors.primaryColor(context),
+                  color: Theme.of(context).primaryColor,
                   size: 40,
                 ),
               ],
@@ -61,7 +61,7 @@ class GetPrayerTimesOfMonthButton extends StatelessWidget {
                     Spacer(),
                     Icon(
                       Icons.info,
-                      color: AppColors.primaryColor(context),
+                      color: Theme.of(context).primaryColor,
                       size: 35,
                     ),
                   ],
@@ -122,7 +122,7 @@ class GetPrayerTimesOfMonthButton extends StatelessWidget {
       {required String text, required double width}) {
     return Container(
         decoration: BoxDecoration(
-          color: AppColors.primaryColor(context),
+          color: Theme.of(context).primaryColor,
           borderRadius: BorderRadius.circular(10.0),
         ),
         height: 30,

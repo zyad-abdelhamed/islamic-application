@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_durations.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
 import 'package:test_app/features/app/data/models/number_animation_model.dart';
 import 'package:test_app/core/theme/app_colors.dart';
@@ -30,13 +29,7 @@ class FeatuerdRecordsWidget extends StatelessWidget {
         width: context.width,
         padding: const EdgeInsets.only(top: 50),
         margin: const EdgeInsets.only(bottom: 100),
-        decoration: BoxDecoration(
-            color: ThemeCubit.controller(context).state
-                ? Colors.black
-                : Colors.white,
-            borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10))),
+                    color: AppColors.grey1,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -71,24 +64,33 @@ class FeatuerdRecordsWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(23)),
         child: Icon(
           Icons.save,
-          color: AppColors.primaryColor(context),
+          color: Theme.of(context).primaryColor,
           size: 40,
         ),
       ),
     );
   }
 
-  _showedControllerButton(BuildContext context) {
-    return GestureDetector(
-      onTap: () => isfeatuerdRecordsWidgetShowedNotifier.value =
-          !isfeatuerdRecordsWidgetShowedNotifier.value,
-      child: SizedBox(
-        width: double.infinity,
-        height: 45,
-        child: Icon(_getIconData),
+  Widget _showedControllerButton(BuildContext context) {
+  return GestureDetector(
+    onTap: () {
+      isfeatuerdRecordsWidgetShowedNotifier.value =
+          !isfeatuerdRecordsWidgetShowedNotifier.value;
+    },
+    child:  SizedBox(
+      width: double.infinity,
+      height: showedFeatuerdRecordsWidgetButtonHight,
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: Divider(
+          thickness: 5,
+          color: Color(0xFFE0E0E0),
+          indent: context.width * .40,
+          endIndent: context.width * .40,
+        ),
       ),
-    );
-  }
+    ),
+  );
+}
 
-  IconData get _getIconData => isfeatuerdRecordsWidgetShowedNotifier.value ? CupertinoIcons.chevron_compact_down :  CupertinoIcons.chevron_right;
 }

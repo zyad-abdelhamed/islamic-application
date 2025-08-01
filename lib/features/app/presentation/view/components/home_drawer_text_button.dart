@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/constants/app_strings.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
-import 'package:test_app/features/app/presentation/controller/cubit/alert_dialog_cubit.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
+import 'package:test_app/core/theme/theme_provider.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/alert_dialog_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/custom_alert_dialog.dart';
 
 class HomeDrawerTextButton extends StatelessWidget {
@@ -14,50 +13,67 @@ class HomeDrawerTextButton extends StatelessWidget {
     required this.text,
     required this.alertDialogContent,
     required this.index,
+    required this.icon,
   });
 
   final int index;
   final String text;
   final Widget alertDialogContent;
+  final Widget icon;
 
   @override
   Widget build(BuildContext context) {
-    const double spacing = 10.0;
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: GestureDetector(
-        onTap: () => showCupertinoDialog(
-            context: context,
-            builder: (context) => BlocProvider(
-                  create: (context) => AlertDialogCubit(),
-                  child: CustomAlertDialog(
-                      title: AppStrings.homeDrawerTextButtons[index],
-                      alertDialogContent: (context) => alertDialogContent),
-                )),
-        child: Card(
-          elevation: 4,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12)
+    final bool isDark = ThemeCubit.controller(context).state;
+
+    return GestureDetector(
+      onTap: () => showDialog(
+        context: context,
+        builder: (context) => BlocProvider(
+          create: (_) => AlertDialogCubit(),
+          child: CustomAlertDialog(
+            title: AppStrings.homeDrawerTextButtons[index],
+            alertDialogContent: (_) => alertDialogContent,
+            iconWidget: (_) => icon,
           ),
-          color: ThemeCubit.controller(context).state ? AppColors.blueGrey800 : Color(0XFFE0F7FA),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              spacing: spacing,
-              children: [
-                Text(
-                  AppStrings.done,
-                  style: TextStyles.semiBold16_120(context)
-                      .copyWith(color: AppColors.grey400),
+        ),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(3),
+        decoration: BoxDecoration(
+          color: isDark
+              ? AppColors.blueGrey800
+              : Color(0XFFE0F7FA),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: AppColors.secondryColor.withValues(alpha: 0.3),
+            width: 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.purple.withValues(alpha: 0.05),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
+            )
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            icon,
+            const SizedBox(height: 8),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                text,
+                textAlign: TextAlign.center,
+                style: TextStyles.semiBold16_120(context).copyWith(
+                  color: isDark
+                      ? AppColors.darkModePrimaryColor
+                      : AppColors.lightModePrimaryColor,
                 ),
-                Text(
-                  text,
-                  style: TextStyles.semiBold16_120(context)
-                      .copyWith(color: ThemeCubit.controller(context).state ? AppColors.darkModePrimaryColor : AppColors.lightModePrimaryColor),
-                ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

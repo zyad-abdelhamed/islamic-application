@@ -1,16 +1,11 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
-import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
 import 'package:test_app/core/utils/sized_boxs.dart';
-import 'package:test_app/features/app/presentation/controller/controllers/cubit/location_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/prayer_times_page_controller.dart';
-import 'package:test_app/features/app/presentation/controller/cubit/get_prayer_times_of_month_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/change_location_widget.dart';
 import 'package:test_app/features/app/presentation/view/components/get_prayer_times_of_month_button.dart';
 import 'package:test_app/features/app/presentation/view/components/prayer_times_of_month_widget.dart';

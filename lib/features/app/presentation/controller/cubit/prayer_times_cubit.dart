@@ -6,8 +6,8 @@ import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/features/app/domain/entities/next_prayer_entity.dart';
 import 'package:test_app/features/app/domain/entities/timings.dart';
 import 'package:test_app/features/app/domain/usecases/get_prayers_times_use_case.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/get_prayer_times_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/timer_cubit.dart';
-import 'package:test_app/features/splash_screen.dart';
 
 
 class PrayerTimesCubit extends Cubit<NextPrayer> {
@@ -34,7 +34,7 @@ class PrayerTimesCubit extends Cubit<NextPrayer> {
 
   intializeTimeListener(BuildContext context) {
     context.read<TimerCubit>().onTimerFinished = () {
-      final timings = sl<GetPrayersTimesController>().timings!;
+      final timings = sl<GetPrayersTimesController>().timings;
       final nextPrayerTime = nextPrayer(
         fajr: timings.fajr,
         dhuhr: timings.dhuhr,

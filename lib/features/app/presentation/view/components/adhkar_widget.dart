@@ -153,7 +153,7 @@ class _AdhkarWidgetState extends State<AdhkarWidget> {
           child: Icon(
             icon,
             size: getResponsiveFontSize(context: context, fontSize: 40),
-            color: AppColors.primaryColor(context),
+            color: Theme.of(context).primaryColor,
           ),
         ),
       );

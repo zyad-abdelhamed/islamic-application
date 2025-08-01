@@ -46,7 +46,7 @@ class HomeButton extends StatelessWidget {
 
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15.0),
-          color: AppColors.primaryColor(context),
+          color: Theme.of(context).primaryColor,
         ),
         height: 100,
         width: 200,

@@ -5,6 +5,7 @@ import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/cubit/location_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/get_prayer_times_controller.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/prayer_times_page_controller.dart';
 
 class ChangeLocationWidget extends StatelessWidget {
@@ -34,7 +35,7 @@ class ChangeLocationWidget extends StatelessWidget {
                 TextSpan(
                   text: 'سيتم جلب ',
                   style: TextStyle(
-                    color: Colors.black,
+                    color: dataColor,
                     fontWeight: FontWeight.normal,
                   ),
                 ),
@@ -49,15 +50,16 @@ class ChangeLocationWidget extends StatelessWidget {
                   text:
                       'بناءً على الموقع المخزن مسبقًا.  يمكنك دائما تغيير الموقع، عن طريق الضغط على ',
                   style: TextStyle(
-                    color: Colors.black,
+                    color: dataColor,
                   ),
                 ),
                 TextSpan(
                   text: 'تحديث الموقع.',
-                  style: const TextStyle(
-                    color: Colors.black,
+                  style: TextStyle(
+                    color: dataColor,
                     fontWeight: FontWeight.bold,
                     decoration: TextDecoration.underline,
+                    decorationColor: dataColor,
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap =
@@ -71,6 +73,7 @@ class ChangeLocationWidget extends StatelessWidget {
             backgroundColor: Colors.black.withValues(alpha: .3),
             radius: 80,
             child: Column(
+              spacing: 5,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
@@ -79,10 +82,10 @@ class ChangeLocationWidget extends StatelessWidget {
                   size: 35,
                 ),
                 Text(
-                  "Egypt, Cairo, NewCairo",
+                  sl<GetPrayersTimesController>().locationEntity.name,
                   textAlign: TextAlign.center,
                   style: TextStyles.semiBold16_120(context)
-                      .copyWith(color: dataColor),
+                      .copyWith(color: dataColor, fontFamily: 'DataFontFamily'),
                 )
               ],
             ),

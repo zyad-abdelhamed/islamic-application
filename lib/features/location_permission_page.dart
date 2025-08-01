@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/services/position_service.dart';
+import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/cubit/location_cubit.dart';
+import 'package:test_app/features/app/presentation/view/components/custom_alert_dialog.dart';
 import 'package:test_app/features/app/presentation/view/components/save_or_update_location_widget.dart';
 
 class LocationPermissionPage extends StatefulWidget {
@@ -52,7 +56,8 @@ class _LocationPermissionPageState extends State<LocationPermissionPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.location_on, size: 100, color: Theme.of(context).primaryColor),
+              Icon(Icons.location_on,
+                  size: 100, color: Theme.of(context).primaryColor),
               SizedBox(height: 20),
               Text(
                 AppStrings.activationLocationRequired,
@@ -81,8 +86,7 @@ class _LocationPermissionPageState extends State<LocationPermissionPage> {
                             child: Text(AppStrings.activationLocationNow),
                           ),
                           TextButton(
-                            onPressed:() => 
-                              showLocationWarningDialog(context),
+                            onPressed: () => showLocationWarningDialog(context),
                             child: Text("لاحقاً"),
                           ),
                         ],
@@ -90,9 +94,12 @@ class _LocationPermissionPageState extends State<LocationPermissionPage> {
                     ),
                     Visibility(
                       visible: !shouldShowLocationButton,
-                      child: SaveOrUpdateLocationWidget(
-                        buttonFunction: () {},
-                        buttonName: AppStrings.saveLocation,
+                      child: BlocProvider(
+                        create: (context) => sl<LocationCubit>(),
+                        child: SaveOrUpdateLocationWidget(
+                          functionaltiy: Functionaltiy.save,
+                          buttonName: AppStrings.saveLocation,
+                        ),
                       ),
                     )
                   ],
@@ -108,27 +115,31 @@ class _LocationPermissionPageState extends State<LocationPermissionPage> {
 
 void showLocationWarningDialog(BuildContext context) {
   showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: Text('تنبيه هام'),
-      content: Text(
-        AppStrings.deniedLocationPermissionAlertDialogText,
-        textAlign: TextAlign.right,
-        style: TextStyle(height: 1.5),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              RoutesConstants.splashScreenRouteName,
-              (_) => false,
-            );
-          },
-          child: Text(AppStrings.gotIt),
-        ),
-      ],
-      actionsAlignment: MainAxisAlignment.center,
-    ),
-  );
+      context: context,
+      builder: (context) => CustomAlertDialog(
+            title: 'تنبيه هام',
+            alertDialogContent: (context) => Column(spacing: 20,
+              children: [
+                Text(
+                  AppStrings.deniedLocationPermissionAlertDialogText,
+                  textAlign: TextAlign.right,
+                  style: TextStyle(height: 1.5, fontFamily: 'dataFontFamily'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      RoutesConstants.splashScreenRouteName,
+                      (_) => false,
+                    );
+                  },
+                  child: Text(AppStrings.gotIt),
+                )
+              ],
+            ),
+            iconWidget: (BuildContext context) => const Icon(
+              Icons.warning,
+              color: AppColors.secondryColor,
+            ),
+          ));
 }

@@ -1,8 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/constants/app_durations.dart';
+import 'package:test_app/core/services/dependency_injection.dart';
+import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/features/app/data/models/get_prayer_times_of_month_prameters.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/cubit/location_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_prayer_times_of_month_cubit.dart';
+import 'package:test_app/features/app/presentation/view/components/custom_alert_dialog.dart';
 import 'package:test_app/features/app/presentation/view/components/save_or_update_location_widget.dart';
 
 class PrayerTimesPageController {
@@ -96,12 +101,19 @@ class PrayerTimesPageController {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: const Text('تحديث الموقع'),
-          content: SaveOrUpdateLocationWidget(
-              buttonFunction: () => LocationCubit.controller(context)
-                  .updateLocationRequest(context),
-              buttonName: 'تحديث الموقع'),
+        return CustomAlertDialog(
+          title: 'تحديث الموقع',
+          alertDialogContent: (context) => BlocProvider(
+            create: (context) => sl<LocationCubit>(),
+            child: SaveOrUpdateLocationWidget(
+              functionaltiy: Functionaltiy.update,
+              buttonName: 'تحديث الموقع',
+            ),
+          ),
+          iconWidget: (BuildContext context) => const Icon(
+            Icons.location_on,
+            color: AppColors.secondryColor,
+          ),
         );
       },
     );

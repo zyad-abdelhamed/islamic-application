@@ -7,9 +7,10 @@ import 'package:test_app/features/app/presentation/controller/cubit/timer_cubit.
 import 'package:test_app/features/app/presentation/view/pages/home_page.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/features/app/presentation/view/pages/q_and_a_page.dart';
+import 'package:test_app/features/location_permission_page.dart';
 import 'package:test_app/features/onboarding/presentation/view/pages/main_page.dart';
 import 'package:test_app/features/onboarding/presentation/view/pages/secondry_page.dart';
-import 'package:test_app/features/splash_screen.dart';
+import 'package:test_app/features/splach_screen/view/pages/splash_screen.dart';
 import 'package:test_app/features/app/presentation/view/pages/prayer_times_page.dart';
 
 Route<dynamic> onGenerateRoute(RouteSettings settings) {
@@ -51,7 +52,10 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       return MaterialPageRoute<PrayerTimesPage>(
         builder: (BuildContext context) => const PrayerTimesPage(),
       );
-
+    case RoutesConstants.locationPermissionPage:
+      return MaterialPageRoute<LocationPermissionPage>(
+        builder: (BuildContext context) => LocationPermissionPage(),
+      );
     default:
       return MaterialPageRoute<Scaffold>(
         builder: (BuildContext context) => const Scaffold(),

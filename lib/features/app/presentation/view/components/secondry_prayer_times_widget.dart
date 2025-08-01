@@ -57,7 +57,7 @@ class SecondaryPrayerTimesWidget extends StatelessWidget {
           (index) => Text(
             textList[index],
             textAlign: TextAlign.center,
-            style: TextStyles.bold20(context).copyWith(color: Colors.grey),
+            style: TextStyles.bold20(context).copyWith(fontFamily: 'DataFontFamily'),
           ),
         ));
   }

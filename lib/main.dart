@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:test_app/core/helper_function/get_init_route.dart';
@@ -13,12 +14,12 @@ import 'package:test_app/core/theme/theme_provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   DependencyInjection.init();
-  await setupHive(); 
+  await setupHive();
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory:
         HydratedStorageDirectory((await getTemporaryDirectory()).path),
   );
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -31,10 +32,16 @@ class MyApp extends StatelessWidget {
       child: BlocBuilder<ThemeCubit, bool>(
         builder: (context, isDarkMode) {
           return MaterialApp(
-            builder: (context, child) => Directionality(
-              textDirection: TextDirection.rtl,
-              child: child!,
-            ),
+            locale: const Locale('ar'),
+            supportedLocales: const [
+              Locale('ar'),
+            ],
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+
             theme: isDarkMode ? darkTheme : lightTheme,
             debugShowCheckedModeBanner: false,
             initialRoute: getInitRoute,
