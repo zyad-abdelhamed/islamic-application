@@ -97,7 +97,7 @@ class DependencyInjection {
         prayersRemoteDataSource: sl(),
         prayersLocalDataSource: sl(),
         internetConnection: sl<InternetConnection>(),
-        baseLocationLocalDataSource: sl<BaseLocationLocalDataSource>()));
+        baseLocationRepo: sl<BaseLocationRepo>()));
     // data sources
     sl.registerLazySingleton<DuaaLocalDataSource>(
         () => DuaaLocalDataSourceImpl());

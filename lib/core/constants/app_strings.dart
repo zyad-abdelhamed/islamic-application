@@ -18,6 +18,7 @@ abstract class AppStrings {
     ];
   }
   static const String back = "العوده";
+  static const String cachedErrorMessage = '';
   //   ===on boarding===
   static const String skip = 'تخطى';
   static const String next = 'التالى';

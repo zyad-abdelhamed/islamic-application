@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/errors/failures.dart';
 import 'package:test_app/core/services/city_name_service.dart';
 import 'package:test_app/core/services/internet_connection.dart';
@@ -17,18 +18,23 @@ class LocationRepo extends BaseLocationRepo {
   LocationRepo(this.baseLocationLocalDataSource, this.locationNameService,
       this.internetConnection, this.baseLocationService);
   @override
-  Future<Either<Failure, LocationEntity?>> getCurrentLocation() async {
+  Future<Either<Failure, LocationEntity>> getCurrentLocation() async {
     try {
-      return Right(
-          await baseLocationLocalDataSource.getLocationFromLocalDataSource());
+      LocationEntity? locationEntity =
+          await baseLocationLocalDataSource.getLocationFromLocalDataSource();
+      if (locationEntity != null) {
+        return Right(locationEntity);
+      } else {
+        return const Left(
+            Failure(AppStrings.deniedLocationPermissionAlertDialogText));
+      }
     } catch (e) {
       return Left(Failure(e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, Unit>> saveLocation(
-      { LocationModel? location}) async {
+  Future<Either<Failure, Unit>> saveLocation({LocationModel? location}) async {
     bool isOnline = await internetConnection.checkInternetConnection();
     bool isLocationEnabled = await baseLocationService.isServiceEnabled;
     if (isOnline && isLocationEnabled) {

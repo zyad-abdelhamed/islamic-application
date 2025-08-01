@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/core/adaptive/adaptive_widgets/adaptive_switch.dart';
 import 'package:test_app/core/helper_function/get_widget_depending_on_reuest_state.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
@@ -70,24 +71,10 @@ class HomeDrawerWidget extends StatelessWidget {
           Divider(),
           Padding(
               padding: const EdgeInsets.only(right: 10.0, bottom: 30),
-              child: Row(
-                  spacing: 10.0,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      AppStrings.darkMode,
-                      style: TextStyles.bold20(context).copyWith(fontSize: 18),
-                    ),
-                    Switch.adaptive(
-                        activeColor: AppColors.thirdColor,
-                        activeTrackColor:
-                            AppColors.thirdColor.withValues(alpha: .8),
-                        inactiveThumbColor: AppColors.black,
-                        inactiveTrackColor: AppColors.inActiveBlackColor,
-                        value: context.watch<ThemeCubit>().state,
-                        onChanged: (bool value) =>
-                            ThemeCubit.controller(context).toggleTheme())
-                  ])),
+              child: AdaptiveSwitch(
+                  name: AppStrings.darkMode,
+                  onChanged: ThemeCubit.controller(context).toggleTheme,
+                  value: ThemeCubit.controller(context).state)),
         ],
       ),
     );

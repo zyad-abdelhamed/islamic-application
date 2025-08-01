@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/core/adaptive/adaptive_widgets/adaptive_switch.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/adhkar_page_controller.dart';
@@ -50,32 +51,13 @@ AppBar adhkarPageAppBar(BuildContext context,
     bottom: PreferredSize(
       preferredSize: const Size.fromHeight(60),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              AppStrings.adhkarPageSwitchText,
-              style: TextStyles.bold20(context),
-            ),
-            const SizedBox(width: 12),
-            ValueListenableBuilder(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: ValueListenableBuilder(
               valueListenable: adhkarPageController.switchNotfier,
-              builder: (context, value, _) => Switch.adaptive(
-                activeColor: AppColors.thirdColor,
-                activeTrackColor: AppColors.thirdColor.withValues(alpha: 0.8),
-                inactiveThumbColor: AppColors.black,
-                inactiveTrackColor: AppColors.inActiveBlackColor,
-                value: adhkarPageController.switchNotfier.value,
-                onChanged: (bool value) {
-                  adhkarPageController.toggleIsDeletedSwitch();
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
+              builder: (_, __, ___) => AdaptiveSwitch(
+                  name: AppStrings.adhkarPageSwitchText,
+                  onChanged: adhkarPageController.toggleIsDeletedSwitch,
+                  value: adhkarPageController.switchNotfier.value))),
     ),
   );
 }
@@ -85,7 +67,7 @@ GestureDetector _controleTextFontSizeButton(BuildContext context,
   return GestureDetector(
     onTap: onTap,
     child: Text(AppStrings.fontSizeButtonText,
-        style: TextStyles.bold20(context)
-            .copyWith(color: Colors.grey, fontSize: fontSize, fontFamily: "normal")),
+        style: TextStyles.bold20(context).copyWith(
+            color: Colors.grey, fontSize: fontSize, fontFamily: "normal")),
   );
 }

@@ -33,7 +33,7 @@ class _AdhkarPageState extends State<AdhkarPage> {
 
   @override
   void dispose() {
-    adhkarPageController.adhkarScrollController.dispose();
+    adhkarPageController.dispose();
     super.dispose();
   }
 
@@ -74,14 +74,14 @@ class _AdhkarPageState extends State<AdhkarPage> {
                         lineSize: 5.0,
                         progress: adhkarPageController.maxProgress,
                         context: context,
-                        lineColor: AppColors.inActiveThirdColor,
+                        lineColor: AppColors.inActivePrimaryColor,
                         maxProgress: adhkarPageController.maxProgress)),
                 _getCustomCircleSlider(context,
                     customPainter: CirclePainter(
                         lineSize: 5.0,
                         progress: adhkarPageController.progressNotfier.value,
                         context: context,
-                        lineColor: AppColors.thirdColor,
+                        lineColor: Theme.of(context).primaryColor,
                         maxProgress: adhkarPageController.maxProgress))
               ]),
             )

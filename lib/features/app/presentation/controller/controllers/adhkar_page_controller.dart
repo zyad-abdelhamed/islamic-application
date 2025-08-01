@@ -17,6 +17,7 @@ class AdhkarPageController {
   final ValueNotifier<bool> switchNotfier = ValueNotifier(true);
   final ValueNotifier<double> fontSizeNotfier = ValueNotifier(20.0);
   double maxProgress = 0.0;
+  
   initState(BuildContext context) {
     adhkarScrollController = ScrollController();
     animatedLIstKey = GlobalKey<AnimatedListState>();
@@ -25,6 +26,15 @@ class AdhkarPageController {
       maxProgress = adhkarScrollController.position.maxScrollExtent;
       progressNotfier.value = adhkarScrollController.position.pixels;
     });
+  }
+
+  dispose() {
+    lengthNotfier.dispose();
+    progressNotfier.dispose();
+    switchNotfier.dispose();
+    fontSizeNotfier.dispose();
+    adhkarScrollController.dispose();
+    animatedLIstKey.currentState!.dispose();
   }
 
   void increaseFontSize() {
