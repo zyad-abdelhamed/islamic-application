@@ -11,7 +11,7 @@ ThemeData darkTheme = ThemeData(
     backgroundColor: Colors.transparent,
     titleTextStyle: TextStyle(
       fontFamily: 'Cairo',
-      color: AppColors.darkModePrimaryColor,
+      color: AppColors.darkModeTextColor,
       fontWeight: FontWeight.bold,
       fontSize: 23,
     ),

@@ -3,6 +3,7 @@ import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
+import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_prayer_times_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/next_prayer_widget.dart';
 
@@ -15,12 +16,12 @@ class PrimaryPrayerTimesContainer extends StatelessWidget {
     final timings = controller.timings;
 
     final List<String> prayerTimes = [
-      timings.fajr,
-      timings.sunrise,
-      timings.dhuhr,
-      timings.asr,
-      timings.maghrib,
-      timings.isha,
+      timings.fajrArabic,
+      timings.sunriseArabic,
+      timings.dhuhrArabic,
+      timings.asrArabic,
+      timings.maghribArabic,
+      timings.ishaArabic,
     ];
 
     return Container(
@@ -40,7 +41,7 @@ class PrimaryPrayerTimesContainer extends StatelessWidget {
             padding:
                 const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
             decoration: _boxDecoration(
-              color: AppColors.inActivePrimaryColor.withValues(alpha: .3),
+              color:ThemeCubit.controller(context).state ? AppColors.darkModeInActiveColor : AppColors.lightModeInActiveColor,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -66,7 +67,7 @@ class PrimaryPrayerTimesContainer extends StatelessWidget {
         (index) => Text(
           textList[index],
           textAlign: TextAlign.center,
-          style: TextStyles.bold20(context).copyWith(color: AppColors.white),
+          style: TextStyles.bold20(context).copyWith(color: AppColors.white, fontFamily: 'DataFontFamily'),
         ),
       ),
     );

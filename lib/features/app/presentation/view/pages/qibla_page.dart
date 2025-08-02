@@ -29,11 +29,19 @@ class QiblaPage extends StatelessWidget {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 spacing: spacing,
-                children: [Spacer(),
-                  ErorrWidget(message: state.message),Spacer(),
-                  OutlinedButton(onPressed: () async{
-                    await sl<BaseLocationService>().requestPermission;
-                  },child: Text('request location permission',style: TextStyle(color: Theme.of(context).primaryColor),),)
+                children: [
+                  Spacer(),
+                  ErrorWidgetIslamic(message: state.message),
+                  Spacer(),
+                  OutlinedButton(
+                    onPressed: () async {
+                      await sl<BaseLocationService>().requestPermission;
+                    },
+                    child: Text(
+                      'request location permission',
+                      style: TextStyle(color: Theme.of(context).primaryColor),
+                    ),
+                  )
                 ],
               );
             } else if (state is QiblaLoaded) {
@@ -44,9 +52,11 @@ class QiblaPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Transform.rotate(
-                      angle: angle ,
-                      child:Image.asset('assets/images/ooooo.png',fit: BoxFit.fill,)
-                    ),
+                        angle: angle,
+                        child: Image.asset(
+                          'assets/images/ooooo.png',
+                          fit: BoxFit.fill,
+                        )),
                     const SizedBox(height: 20),
                     Text(
                         'زاوية القبلة: ${state.qiblaDirection.toStringAsFixed(2)}°'),

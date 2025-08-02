@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/alert_dialog_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/circle_painter.dart';
 import 'package:test_app/core/theme/app_colors.dart';
@@ -9,13 +10,13 @@ class DrawCircleLineBlocBuilder extends StatelessWidget {
   const DrawCircleLineBlocBuilder({
     super.key,
     required this.customPaintSize,
-    required this.maxProgress, required this.functionality,
+    required this.maxProgress,
+    required this.functionality,
   });
 
   final double customPaintSize;
   final double maxProgress;
   final DrawCircleLineBlocBuilderFunctionality functionality;
-
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,9 @@ class DrawCircleLineBlocBuilder extends StatelessWidget {
               progress: maxProgress,
               lineSize: 10.0,
               context: context,
-              lineColor: AppColors.inActivePrimaryColor,
+              lineColor: ThemeCubit.controller(context).state
+                  ? AppColors.darkModeInActiveColor
+                  : AppColors.lightModeInActiveColor,
               maxProgress: maxProgress),
         ),
         BlocBuilder<AlertDialogCubit, AlertDialogState>(
@@ -51,43 +54,50 @@ class DrawCircleLineBlocBuilder extends StatelessWidget {
           bottom: 10.0,
           left: 10.0,
           child: Container(
-            height: double.infinity,width: double.infinity,
+            height: double.infinity,
+            width: double.infinity,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(300),
-              color: AppColors.inActivePrimaryColor,
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  spreadRadius: 3,
-                  color: AppColors.white.withValues(alpha: .3)
-                )
-              ]
-            ),
+                borderRadius: BorderRadius.circular(300),
+                color: ThemeCubit.controller(context).state
+                    ? AppColors.darkModeInActiveColor
+                    : AppColors.lightModeInActiveColor,
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                      spreadRadius: 3,
+                      color: AppColors.white.withValues(alpha: .3))
+                ]),
             child: TextButton(
                 style: ButtonStyle(
                     overlayColor: WidgetStatePropertyAll(Colors.transparent)),
                 onPressed: () {
-                  switch(functionality){
-
+                  switch (functionality) {
                     case DrawCircleLineBlocBuilderFunctionality.ringRosary:
-                                        AlertDialogCubit.controller(context).drawRosaryRing(context);
+                      AlertDialogCubit.controller(context)
+                          .drawRosaryRing(context);
 
-                    case DrawCircleLineBlocBuilderFunctionality.rosariesAfterPrayer:
+                    case DrawCircleLineBlocBuilderFunctionality
+                          .rosariesAfterPrayer:
                       AlertDialogCubit.controller(context).drawCircle(context);
                   }
                 },
                 child: BlocBuilder<AlertDialogCubit, AlertDialogState>(
-                  buildWhen: (previous, current) =>
-                      switch(functionality){
-                        DrawCircleLineBlocBuilderFunctionality.ringRosary => previous.getRingText != current.getRingText,
-                        DrawCircleLineBlocBuilderFunctionality.rosariesAfterPrayer => previous.getText != current.getText,
-                      },
+                  buildWhen: (previous, current) => switch (functionality) {
+                    DrawCircleLineBlocBuilderFunctionality.ringRosary =>
+                      previous.getRingText != current.getRingText,
+                    DrawCircleLineBlocBuilderFunctionality
+                          .rosariesAfterPrayer =>
+                      previous.getText != current.getText,
+                  },
                   builder: (context, state) {
                     return FittedBox(
                       child: Text(
-                        switch(functionality){
-                        DrawCircleLineBlocBuilderFunctionality.ringRosary => state.getRingText,
-                        DrawCircleLineBlocBuilderFunctionality.rosariesAfterPrayer => state.getText,
-                      },
+                        switch (functionality) {
+                          DrawCircleLineBlocBuilderFunctionality.ringRosary =>
+                            state.getRingText,
+                          DrawCircleLineBlocBuilderFunctionality
+                                .rosariesAfterPrayer =>
+                            state.getText,
+                        },
                         maxLines: 1,
                         style: TextStyles.semiBold32(context,
                             color: Theme.of(context).primaryColor),
@@ -102,6 +112,4 @@ class DrawCircleLineBlocBuilder extends StatelessWidget {
   }
 }
 
-enum DrawCircleLineBlocBuilderFunctionality {
-  ringRosary,rosariesAfterPrayer
-}
+enum DrawCircleLineBlocBuilderFunctionality { ringRosary, rosariesAfterPrayer }

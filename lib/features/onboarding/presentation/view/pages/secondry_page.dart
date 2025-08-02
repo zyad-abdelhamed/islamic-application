@@ -4,6 +4,7 @@ import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
+import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/onboarding/presentation/controller/on_boarding_cubit.dart';
 import 'package:test_app/features/onboarding/presentation/view/component/on_boarding_button.dart';
 
@@ -53,7 +54,7 @@ class SecondryPage extends StatelessWidget {
                 controller: sl<OnBoardingCubit>().pageController,
                 count: AppStrings.features.length,
                 effect: ScrollingDotsEffect(
-                  dotColor: AppColors.inActivePrimaryColor,
+                  dotColor: ThemeCubit.controller(context).state ? AppColors.darkModeInActiveColor : AppColors.lightModeInActiveColor,
                   activeDotColor: Theme.of(context).primaryColor,
                   dotHeight: 10,
                   dotWidth: 10,

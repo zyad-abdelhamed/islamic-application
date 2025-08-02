@@ -22,7 +22,7 @@ class PrayerTimesWidget extends StatelessWidget {
         final Timings timings = controller.timings;
 
         return hasError
-            ? ErorrWidget(message: controller.errorMessage!)
+            ? ErrorWidgetIslamic(message: controller.errorMessage!)
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [

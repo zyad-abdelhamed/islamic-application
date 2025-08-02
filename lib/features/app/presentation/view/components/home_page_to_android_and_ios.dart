@@ -17,15 +17,13 @@ class HomePageToAndroidAndIos extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text(AppStrings.mainPage),
-          
         ),
         drawer: Drawer(child: HomeDrawerWidget()),
-        
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             spacing: 30.0,
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
                   width: isPortraitOrientation

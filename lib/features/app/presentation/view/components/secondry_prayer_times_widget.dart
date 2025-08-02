@@ -10,6 +10,15 @@ class SecondaryPrayerTimesWidget extends StatelessWidget {
   final Timings timings;
   @override
   Widget build(BuildContext context) {
+    final List<String> prayerTimes = [
+      timings.fajrArabic,
+      timings.sunriseArabic,
+      timings.dhuhrArabic,
+      timings.asrArabic,
+      timings.maghribArabic,
+      timings.ishaArabic,
+    ];
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 24.0),
@@ -36,9 +45,7 @@ class SecondaryPrayerTimesWidget extends StatelessWidget {
                   _getColumnOfPrayers(context,
                       textList: AppStrings.emojisOfPrayers),
                   Spacer(),
-                  _getColumnOfPrayers(context, textList: [
-                    timings.fajr,timings.sunrise,timings.dhuhr,timings.asr,timings.maghrib,timings.isha
-                  ])
+                  _getColumnOfPrayers(context, textList: prayerTimes)
                 ],
               ),
             )

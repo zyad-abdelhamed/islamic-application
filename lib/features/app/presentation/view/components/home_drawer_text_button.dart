@@ -41,7 +41,7 @@ class HomeDrawerTextButton extends StatelessWidget {
         padding: const EdgeInsets.all(3),
         decoration: BoxDecoration(
           color: isDark
-              ? AppColors.blueGrey800
+              ? Color(0xFF263238)
               : Color(0XFFE0F7FA),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
@@ -68,8 +68,8 @@ class HomeDrawerTextButton extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyles.semiBold16_120(context).copyWith(
                   color: isDark
-                      ? AppColors.darkModePrimaryColor
-                      : AppColors.lightModePrimaryColor,
+                      ? AppColors.darkModeTextColor
+                      : AppColors.lightModeTextColor,
                 ),
               ),
             ),

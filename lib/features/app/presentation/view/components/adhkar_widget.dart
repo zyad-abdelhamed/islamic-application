@@ -148,7 +148,7 @@ class _AdhkarWidgetState extends State<AdhkarWidget> {
       GestureDetector(
         onTap: function,
         child: CircleAvatar(
-          backgroundColor: AppColors.inActivePrimaryColor,
+          backgroundColor: ThemeCubit.controller(context).state ? AppColors.darkModeInActiveColor : AppColors.lightModeInActiveColor,
           radius: getResponsiveFontSize(context: context, fontSize: 37),
           child: Icon(
             icon,

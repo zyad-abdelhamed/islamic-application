@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/core/services/arabic_converter_service.dart';
+import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 
@@ -27,7 +29,7 @@ class RamadanCalendarWidget extends StatelessWidget {
                   height: 50,
                   width: double.infinity,
                   alignment: Alignment.center,
-                  child: Text('${index + 1} رمضان',
+                  child: Text(_getRamadanDay(index),
                       style: TextStyles.regular16_120(context,
                           color: AppColors.purple)),
                 )
@@ -54,6 +56,17 @@ class RamadanCalendarWidget extends StatelessWidget {
       ],
     );
   }
+
+  String _getRamadanDay(int index) {
+  // الخطوة 1: زيادة 1 على index
+  final int day = index + 1;
+
+  // الخطوة 2: تحويله إلى رقم عربي باستخدام الخدمة
+  final String arabicNumber = sl<BaseArabicConverterService>().convertToArabicNumber(day);
+
+  // الخطوة 3: إرجاع النص
+  return '$arabicNumber رمضان';
+}
 }
 
 Radius _getBottomRadius(int index) {

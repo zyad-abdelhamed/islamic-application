@@ -41,7 +41,6 @@ class MyApp extends StatelessWidget {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-
             theme: isDarkMode ? darkTheme : lightTheme,
             debugShowCheckedModeBanner: false,
             initialRoute: getInitRoute,

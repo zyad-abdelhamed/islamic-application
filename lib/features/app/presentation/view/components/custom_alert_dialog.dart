@@ -67,7 +67,7 @@ class CustomAlertDialog extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 12),
-                  Divider(color: AppColors.inActivePrimaryColor),
+                  Divider(color: ThemeCubit.controller(context).state ? AppColors.darkModeInActiveColor : AppColors.lightModeInActiveColor),
                   const SizedBox(height: 12),
                   Flexible(
                     child: SingleChildScrollView(

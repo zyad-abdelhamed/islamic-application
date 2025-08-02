@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:test_app/core/services/arabic_converter_service.dart';
 import 'package:test_app/core/services/city_name_service.dart';
 import 'package:test_app/core/services/internet_connection.dart';
 import 'package:test_app/core/services/position_service.dart';
@@ -118,6 +119,7 @@ class DependencyInjection {
         () => PrayersRemoteDataSourceImpl(sl()));
 
     // services
+    sl.registerLazySingleton<BaseArabicConverterService>(() => ArabicConverterByIntl());
     sl.registerLazySingleton<LocationNameService>(
         () => LocationNameServiceImpl());
     sl.registerSingleton<BaseLocationService>(

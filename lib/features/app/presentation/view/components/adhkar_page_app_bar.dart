@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/adaptive_switch.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
 import 'package:test_app/core/constants/app_strings.dart';
+import 'package:test_app/core/theme/app_colors.dart';
+import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/adhkar_page_controller.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 
@@ -42,8 +44,11 @@ AppBar adhkarPageAppBar(BuildContext context,
             valueListenable: adhkarPageController.lengthNotfier,
             builder: (_, __, ___) => Text(
                   adhkarPageController.lengthNotfier.value.toString(),
-                  style: TextStyles.semiBold16_120(context)
-                      .copyWith(color: Colors.black, fontFamily: 'normal'),
+                  style: TextStyles.semiBold16_120(context).copyWith(
+                      color: ThemeCubit.controller(context).state
+                          ? AppColors.darkModeTextColor
+                          : AppColors.lightModeTextColor,
+                      fontFamily: 'normal'),
                 )),
       ),
     ],

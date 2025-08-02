@@ -11,7 +11,7 @@ Widget getWidgetDependingOnReuestState(
     case RequestStateEnum.success:
       return widgetIncaseSuccess;
     case RequestStateEnum.failed:
-      return ErorrWidget(message: erorrMessage!);
+      return ErrorWidgetIslamic(message: erorrMessage!);
     case RequestStateEnum.loading:
       return GetAdaptiveLoadingWidget();
   }
