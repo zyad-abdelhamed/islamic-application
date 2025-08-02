@@ -89,11 +89,16 @@ class PrayerRepo extends BasePrayerRepo {
   @override
   Future<Either<Failure, List<Timings>>> getPrayerTimesOfMonth(
       GetPrayerTimesOfMonthPrameters getPrayerTimesOfMonthPrameters) async {
-    try {
-      return right(await prayersRemoteDataSource
-          .getPrayerTimesOfMonth(getPrayerTimesOfMonthPrameters));
-    } on Exception catch (e) {
-      return left(Failure(e.toString()));
-    }
+    final locationResult = await baseLocationRepo.getCurrentLocation();
+
+    return await locationResult.fold<Future<Either<Failure, List<Timings>>>>(
+      (failure) async => Left(Failure(failure.message)),
+      (r) async {
+        final List<Timings> timingsOfMonth = await prayersRemoteDataSource
+            .getPrayerTimesOfMonth(getPrayerTimesOfMonthPrameters,
+                latitude: r.latitude, longitude: r.longitude);
+        return Right(timingsOfMonth);
+      },
+    );
   }
 }

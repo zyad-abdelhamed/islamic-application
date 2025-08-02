@@ -13,7 +13,7 @@ import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/services/position_service.dart';
 import 'package:test_app/core/services/internet_connection.dart';
 
-bool _isInternetConnection = false;
+bool _isShowed = false;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -27,10 +27,11 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    if (_isInternetConnection == false) {
+    if (_isShowed == false) {
       checkLocationPermission(context);
       checkInternetConnection(context);
-      _isInternetConnection = true;
+      context.read<HadithCubit>().showTodayHadith(context);
+      _isShowed = true;
     }
 
     // تهيئة PrayerTimesCubit
@@ -40,7 +41,6 @@ class _HomePageState extends State<HomePage> {
               timings: sl<GetPrayersTimesController>().timings,
               context: context,
             );
-        context.read<HadithCubit>().showTodayHadith(context);
       });
     }
   }

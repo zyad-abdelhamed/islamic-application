@@ -39,9 +39,7 @@ class PrayerTimesWidget extends StatelessWidget {
                           );
                         },
                         child: const Icon(
-                          Icons.settings_sharp,
-                          color: Colors.grey,
-                        ),
+                          Icons.settings_sharp                        ),
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
@@ -49,7 +47,7 @@ class PrayerTimesWidget extends StatelessWidget {
                           Text(
                             controller.locationEntity.name,
                             style: TextStyles.bold20(context).copyWith(
-                              fontFamily: 'DataFontFamily',
+                              color: Colors.grey
                             ),
                           ),
                           Text(

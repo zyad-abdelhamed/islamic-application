@@ -27,14 +27,19 @@ class CheckBoxsWidget extends StatelessWidget {
                             decoration: BoxDecoration(
                               border: Border.all(color: AppColors.grey1),
                             ),
-                            child: Checkbox(
-                              value: state.checkBoxsValues[index],
-                              activeColor: Theme.of(context).primaryColor,
-                              onChanged: (value) {
-                                RtabelCubit.controller(context)
-                                    .changeCheckBoxValue(
-                                        index: index, newValue: value!);
-                              },
+                            child: Transform.scale(// to increase size of check mark
+                              scale: 2,
+                              child: Checkbox(
+                                value: state.checkBoxsValues[index],
+                                activeColor: Colors.transparent,
+                                checkColor: AppColors.successColor,
+                                side: const BorderSide(width: 0.0),
+                                onChanged: (value) {
+                                  RtabelCubit.controller(context)
+                                      .changeCheckBoxValue(
+                                          index: index, newValue: value!);
+                                },
+                              ),
                             ),
                           );
                         },

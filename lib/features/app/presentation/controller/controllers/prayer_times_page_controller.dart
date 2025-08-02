@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/constants/app_durations.dart';
+import 'package:test_app/core/services/arabic_converter_service.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/features/app/data/models/get_prayer_times_of_month_prameters.dart';
@@ -34,11 +35,19 @@ class PrayerTimesPageController {
     loadUpdateLocationDialogNotifier.dispose();
   }
 
-  List<String> get dateData => <String>[
-        dateNotifier.value.day.toString(),
-        dateNotifier.value.month.toString(),
-        dateNotifier.value.year.toString()
-      ];
+  List<String> get dateData {
+    return <String>[
+      sl<BaseArabicConverterService>()
+          .convertToArabicDigits(dateNotifier.value.day)
+          .toString(),
+      sl<BaseArabicConverterService>()
+          .convertToArabicDigits(dateNotifier.value.month)
+          .toString(),
+      sl<BaseArabicConverterService>()
+          .convertToArabicDigits(dateNotifier.value.year)
+          .toString()
+    ];
+  }
 
   Future<void> selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
@@ -101,18 +110,21 @@ class PrayerTimesPageController {
     showDialog(
       context: context,
       builder: (context) {
-        return CustomAlertDialog(
-          title: 'تحديث الموقع',
-          alertDialogContent: (context) => BlocProvider(
-            create: (context) => sl<LocationCubit>(),
-            child: SaveOrUpdateLocationWidget(
-              functionaltiy: Functionaltiy.update,
-              buttonName: 'تحديث الموقع',
+        return BlocProvider(
+          create: (context) => sl<LocationCubit>(),
+          child: CustomAlertDialog(
+            title: 'تحديث الموقع',
+            alertDialogContent: (context) => BlocProvider(
+              create: (context) => sl<LocationCubit>(),
+              child: SaveOrUpdateLocationWidget(
+                functionaltiy: Functionaltiy.update,
+                buttonName: 'تحديث الموقع',
+              ),
             ),
-          ),
-          iconWidget: (BuildContext context) => const Icon(
-            Icons.location_on,
-            color: AppColors.secondryColor,
+            iconWidget: (BuildContext context) => const Icon(
+              Icons.location_on,
+              color: AppColors.secondryColor,
+            ),
           ),
         );
       },

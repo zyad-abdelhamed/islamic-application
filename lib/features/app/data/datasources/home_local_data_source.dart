@@ -1,6 +1,5 @@
-import 'dart:convert';
-
-import 'package:flutter/services.dart';
+import 'package:test_app/core/constants/constants_values.dart';
+import 'package:test_app/core/helper_function/get_from_json.dart';
 import 'package:test_app/core/helper_function/get_random.dart';
 import 'package:test_app/features/app/data/models/adhkar_model.dart';
 import 'package:test_app/features/app/data/models/adhkar_parameters.dart';
@@ -18,25 +17,20 @@ class HomeLocalDataSourceImpl extends HomeLocalDataSource {
   @override
   Future<List<AdhkarEntity>> getAdhkar(
       AdhkarParameters adhkarParameters) async {
-    Map<String, dynamic> jsonAdhkar = await _getAdhkarFromJson();
+    Map<String, dynamic> jsonAdhkar =
+        await getAdhkarFromJson(DataBaseConstants.adhkarjsonFileRoute);
     return List<AdhkarEntity>.from(
         (jsonAdhkar[adhkarParameters.nameOfAdhkar] as List)
             .map((e) => AdhkarModel.fromJson(json: e)));
   }
 
-  Future<Map<String, dynamic>> _getAdhkarFromJson() async {
-    final String jsonString =
-        await rootBundle.loadString(DataBaseConstants.adhkarjsonFileRoute);
-    return json.decode(jsonString);
-  }
-
   @override
   Future<Hadith> getAhadiths() async {
-    final String jsonString =
-        await rootBundle.loadString(DataBaseConstants.hadithjsonFileRoute);
-  final  jsondecoded = json.decode(jsonString);
+    final Map<String, dynamic> jsondecoded =
+        await getAdhkarFromJson(DataBaseConstants.hadithjsonFileRoute);
 
-    return HadithModel.fromJson(jsondecoded[getRandomNumber(7)]);
-
+    return HadithModel(
+        content: jsondecoded["hadiths"]
+            [getRandomNumber(ConstantsValues.numberOfHadiths)]);
   }
 }

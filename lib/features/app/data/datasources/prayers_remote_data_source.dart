@@ -5,30 +5,41 @@ import 'package:test_app/core/models/api_service_input_model.dart';
 import 'package:test_app/core/services/api_services.dart';
 
 abstract class PrayersRemoteDataSource {
-  Future<TimingsModel> getPrayersTimes({required double latitude, required double longitude});
+  Future<TimingsModel> getPrayersTimes(
+      {required double latitude, required double longitude});
   Future<List<TimingsModel>> getPrayerTimesOfMonth(
-      GetPrayerTimesOfMonthPrameters getPrayerTimesOfMonthPrameters);
+      GetPrayerTimesOfMonthPrameters getPrayerTimesOfMonthPrameters,
+      {required double latitude,
+      required double longitude});
 }
 
 class PrayersRemoteDataSourceImpl implements PrayersRemoteDataSource {
   final ApiService apiService;
   PrayersRemoteDataSourceImpl(this.apiService);
   @override
-  Future<TimingsModel> getPrayersTimes({required double latitude, required double longitude}) async {
+  Future<TimingsModel> getPrayersTimes(
+      {required double latitude, required double longitude}) async {
     var responseBody = await apiService.get(
-        apiServiceInputModel:
-            ApiServiceInputModel(url:  Apiconstants.getTimingsUrl(latitude: latitude, longitude: longitude)));
+        apiServiceInputModel: ApiServiceInputModel(
+            url: Apiconstants.getTimingsUrl(
+                latitude: latitude, longitude: longitude)));
 
     return TimingsModel.fromJson(responseBody['data']);
   }
 
   @override
   Future<List<TimingsModel>> getPrayerTimesOfMonth(
-      GetPrayerTimesOfMonthPrameters getPrayerTimesOfMonthPrameters) async{
+      GetPrayerTimesOfMonthPrameters getPrayerTimesOfMonthPrameters,
+      {required double latitude,
+      required double longitude}) async {
     var responseBody = await apiService.get(
-        apiServiceInputModel:
-            ApiServiceInputModel(url: await Apiconstants.getTimingsOfMonthUrl(getPrayerTimesOfMonthPrameters)));
+        apiServiceInputModel: ApiServiceInputModel(
+            url: await Apiconstants.getTimingsOfMonthUrl(
+                getPrayerTimesOfMonthPrameters,
+                latitude: latitude,
+                longitude: longitude)));
 
-    return List.from((responseBody["data"] as List).map((e) => TimingsModel.fromJson(e)));
+    return List.from(
+        (responseBody["data"] as List).map((e) => TimingsModel.fromJson(e)));
   }
 }

@@ -119,7 +119,7 @@ class DependencyInjection {
         () => PrayersRemoteDataSourceImpl(sl()));
 
     // services
-    sl.registerLazySingleton<BaseArabicConverterService>(() => ArabicConverterByIntl());
+    sl.registerLazySingleton<BaseArabicConverterService>(() => ArabicConverterServiceImpl());
     sl.registerLazySingleton<LocationNameService>(
         () => LocationNameServiceImpl());
     sl.registerSingleton<BaseLocationService>(

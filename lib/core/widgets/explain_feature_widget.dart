@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/core/theme/app_colors.dart';
 
 class ExplainFeatureButton extends StatelessWidget {
   const ExplainFeatureButton({

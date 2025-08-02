@@ -3,7 +3,7 @@ import 'package:test_app/core/theme/app_colors.dart';
 
 ThemeData darkTheme = ThemeData(
   primaryColor: AppColors.darkModePrimaryColor,
-  colorScheme: ColorScheme.dark(primary: AppColors.darkModePrimaryColor),
+  colorScheme: ColorScheme.dark(primary: AppColors.darkModeTextColor),
   brightness: Brightness.dark,
   fontFamily: 'SemiBoldCairo',
   appBarTheme: const AppBarTheme(

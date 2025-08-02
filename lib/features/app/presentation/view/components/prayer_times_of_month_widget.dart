@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/helper_function/get_widget_depending_on_reuest_state.dart';
-import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/features/app/domain/entities/timings.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/prayer_times_page_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_prayer_times_of_month_cubit.dart';
@@ -16,18 +15,14 @@ class PrayerTimesOfMonthWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<GetPrayerTimesOfMonthCubit>(),
-      child:
-          BlocBuilder<GetPrayerTimesOfMonthCubit, GetPrayerTimesOfMonthState>(
-        builder: (context, state) {
-          return getWidgetDependingOnReuestState(
-              requestStateEnum: state.getPrayerTimesOfMonthState!,
-              widgetIncaseSuccess:
-                  _widgetInCaseSucces(context, state.prayerTimesOfMonth),
-              erorrMessage: state.getPrayerTimesOfMonthErrorMeassage);
-        },
-      ),
+    return BlocBuilder<GetPrayerTimesOfMonthCubit, GetPrayerTimesOfMonthState>(
+      builder: (context, state) {
+        return getWidgetDependingOnReuestState(
+            requestStateEnum: state.getPrayerTimesOfMonthState!,
+            widgetIncaseSuccess:
+                _widgetInCaseSucces(context, state.prayerTimesOfMonth),
+            erorrMessage: state.getPrayerTimesOfMonthErrorMeassage);
+      },
     );
   }
 
@@ -75,9 +70,7 @@ class PrayerTimesOfMonthWidget extends StatelessWidget {
             maintainAnimation: true,
             maintainState: true,
             child: IconButton(
-                onPressed: onPressed,
-                icon: Icon(iconData,
-                    size: 35, color: Theme.of(context).primaryColor)),
+                onPressed: onPressed, icon: Icon(iconData, size: 35)),
           );
         });
   }

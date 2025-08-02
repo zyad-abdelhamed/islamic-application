@@ -1,31 +1,17 @@
-import 'package:geolocator/geolocator.dart';
 import 'package:test_app/core/helper_function/get_random.dart';
-import 'package:test_app/core/services/dependency_injection.dart';
-import 'package:test_app/core/services/position_service.dart';
 import 'package:test_app/features/app/data/models/get_prayer_times_of_month_prameters.dart';
 
 class Apiconstants {
-  static String getTimingsUrl({required double latitude, required double longitude})  {
+  static String getTimingsUrl(
+      {required double latitude, required double longitude}) {
     return "https://api.aladhan.com/v1/timings?latitude=$latitude&longitude=$longitude";
   }
 
   static Future<String> getTimingsOfMonthUrl(
-      GetPrayerTimesOfMonthPrameters getPrayerTimesOfMonthPrameters) async {
-    try {
-      final Position position = await sl<BaseLocationService>().position;
-
-      // تأكد أن الإحداثيات ليست 0.0 (بعض الأجهزة تعيد 0.0 عند الفشل)
-      if (position.latitude != 0.0 && position.longitude != 0.0) {
-        return "https://api.aladhan.com/v1/calendar?latitude=${position.latitude}&longitude=${position.longitude}&month=${getPrayerTimesOfMonthPrameters.date.month}&year=${getPrayerTimesOfMonthPrameters.date.year}";
-      }
-    } catch (_) {
-      // تجاهل الخطأ واستخدم القيم الافتراضية
-    }
-
-    // في حالة الفشل أو كانت الإحداثيات غير صالحة => استخدم إحداثيات القاهرة
-    const cairoLatitude = 30.0444;
-    const cairoLongitude = 31.2357;
-    return "https://api.aladhan.com/v1/timings?latitude=$cairoLatitude&longitude=$cairoLongitude";
+      GetPrayerTimesOfMonthPrameters getPrayerTimesOfMonthPrameters,
+      {required double latitude,
+      required double longitude}) async {
+    return "https://api.aladhan.com/v1/calendar?latitude=$latitude&longitude=$longitude&month=${getPrayerTimesOfMonthPrameters.date.month}&year=${getPrayerTimesOfMonthPrameters.date.year}";
   }
 
   static String get ahadithUrl =>
