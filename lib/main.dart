@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
       create: (_) => ThemeCubit(),
       child: BlocBuilder<ThemeCubit, bool>(
         builder: (context, isDarkMode) {
+
           return MaterialApp(
             locale: const Locale('ar'),
             supportedLocales: const [

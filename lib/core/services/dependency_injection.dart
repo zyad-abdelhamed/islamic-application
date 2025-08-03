@@ -9,14 +9,18 @@ import 'package:test_app/features/app/data/datasources/home_remote_data_source.d
 import 'package:test_app/features/app/data/datasources/location_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/prayers_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/prayers_remote_data_source.dart';
+import 'package:test_app/features/app/data/datasources/quran_local_data_source.dart';
+import 'package:test_app/features/app/data/datasources/quran_remote_data_source.dart';
 import 'package:test_app/features/app/data/datasources/r_table_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/records_local_data_source.dart';
 import 'package:test_app/features/app/data/repos/home_repo.dart';
 import 'package:test_app/features/app/data/repos/location_repo.dart';
 import 'package:test_app/features/app/data/repos/prayer_repo.dart';
+import 'package:test_app/features/app/data/repos/quran_repo.dart';
 import 'package:test_app/features/app/data/repos/r_table_repo.dart';
 import 'package:test_app/features/app/data/repos/records_repo.dart';
 import 'package:test_app/features/app/domain/repositories/base_prayer_repo.dart';
+import 'package:test_app/features/app/domain/repositories/base_quran_repo.dart';
 import 'package:test_app/features/app/domain/repositories/base_records_repo.dart';
 import 'package:test_app/features/app/domain/repositories/home_repo.dart';
 import 'package:test_app/features/app/domain/repositories/location_repo.dart';
@@ -28,6 +32,7 @@ import 'package:test_app/features/app/domain/usecases/get_adhkar_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/get_booleans_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/get_prayer_times_of_month_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/get_prayers_times_use_case.dart';
+import 'package:test_app/features/app/domain/usecases/get_surah_with_tafsir_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/get_today_hadith_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/reset_booleans_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/update_booleans_use_case.dart';
@@ -67,6 +72,7 @@ class DependencyInjection {
     //controllers
     sl.registerLazySingleton(() => GetAdhkarController(getAdhkarUseCase: sl()));
     //usecases
+    sl.registerLazySingleton(() => GetSurahWithTafsirUseCase(baseQuranRepo: sl()));
     sl.registerLazySingleton(
         () => GetPrayerTimesOfMonthUseCase(basePrayerRepo: sl()));
     sl.registerLazySingleton(() => GetTodayHadithUseCase(baseHomeRepo: sl()));
@@ -86,6 +92,7 @@ class DependencyInjection {
     sl.registerLazySingleton<GetRecordsUseCase>(
         () => GetRecordsUseCase(baseRecordsRepo: sl()));
     //repositories
+    sl.registerLazySingleton<BaseQuranRepo>(() => QuranRepo(sl(), sl()));
     sl.registerLazySingleton<BaseLocationRepo>(() => LocationRepo(sl(),sl(),sl(),sl()));
     sl.registerLazySingleton<DuaaBaseRepo>(() => DuaaRepo(sl()));
     sl.registerLazySingleton<BaseRTableRepo>(
@@ -100,6 +107,12 @@ class DependencyInjection {
         internetConnection: sl<InternetConnection>(),
         baseLocationRepo: sl<BaseLocationRepo>()));
     // data sources
+    sl.registerLazySingleton<BaseQuranRemoteDataSource>(
+      () => QuranRemoteDataSource(apiService: sl()),
+    );
+    sl.registerLazySingleton<QuranLocalDataSource>(
+      () => QuranLocalDataSourceImpl(),
+    );
     sl.registerLazySingleton<DuaaLocalDataSource>(
         () => DuaaLocalDataSourceImpl());
     sl.registerLazySingleton<BaseLocationLocalDataSource>(

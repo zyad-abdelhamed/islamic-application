@@ -1,5 +1,6 @@
 import 'package:test_app/core/helper_function/get_random.dart';
 import 'package:test_app/features/app/data/models/get_prayer_times_of_month_prameters.dart';
+import 'package:test_app/features/app/data/models/tafsir_request_params.dart';
 
 class Apiconstants {
   static String getTimingsUrl(
@@ -16,4 +17,10 @@ class Apiconstants {
 
   static String get ahadithUrl =>
       'https://hadis-api-id.vercel.app/hadith/abu-dawud?page=${getRandomNumber(4419)}&limit=1';
+
+  static String baseQuranApi = 'https://api.quranhub.com';
+
+  static String getTafsirUrl(TafsirRequestParams params) {
+    return '$baseQuranApi/v1/surah/${params.surahNumber}/${params.edition}?offset=${params.offset}&limit=${params.limit}';
+  }
 }
