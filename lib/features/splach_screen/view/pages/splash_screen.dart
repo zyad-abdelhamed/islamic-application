@@ -3,7 +3,7 @@ import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_wid
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
-import 'package:test_app/core/widgets/app_animated_logo_widget.dart';
+import 'package:test_app/features/splach_screen/view/components/app_animated_logo_widget.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_prayer_times_controller.dart';
 
 class SplashScreen extends StatelessWidget {

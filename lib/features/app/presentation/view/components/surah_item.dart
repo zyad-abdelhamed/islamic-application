@@ -1,5 +1,5 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 
 class SurahItem extends StatelessWidget {
@@ -20,24 +20,16 @@ class SurahItem extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 8),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: cardColor,
         borderRadius: BorderRadius.circular(18),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withValues(alpha: 0.2),
-            offset: const Offset(0, 4),
-            blurRadius: 6,
-          ),
-        ],
         border: Border.all(
-          color: AppColors.secondryColor.withValues(alpha: 0.8),
-          width: 1.2,
+          color: Theme.of(context).primaryColor,
+          width: 2,
         ),
       ),
       child: Row(
         children: [
-          const Icon(Icons.menu_book_outlined,
-              color: AppColors.secondryColor, size: 32),
+          Icon(CupertinoIcons.chevron_right,
+              color: Theme.of(context).primaryColor, size: 40),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -45,9 +37,8 @@ class SurahItem extends StatelessWidget {
               children: [
                 Text(
                   'سورة ${surah['name']}',
-                  style: TextStyles.semiBold18(context, textColor).copyWith(
-                    fontFamily: 'DataFontFamily',
-                  ),
+                  style: TextStyles.semiBold18(context, textColor)
+                      .copyWith(fontFamily: 'DataFontFamily'),
                 ),
                 const SizedBox(height: 4),
                 Row(
@@ -56,12 +47,12 @@ class SurahItem extends StatelessWidget {
                     Text(
                       'عدد الآيات: ${surah['ayahs']}',
                       style:
-                          TextStyles.regular16_120(context, color: textColor),
+                          TextStyles.regular16_120(context, color: Colors.grey),
                     ),
                     Text(
                       surah['type'],
                       style:
-                          TextStyles.regular16_120(context, color: textColor),
+                          TextStyles.regular16_120(context, color: Colors.grey),
                     ),
                   ],
                 ),

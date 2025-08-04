@@ -33,7 +33,7 @@ class RamadanTabelPage extends StatelessWidget {
                 )
               ],
               title: Text(
-                AppStrings.appBarTitles(withTwoLines: false)[2],
+                AppStrings.appBarTitles(withTwoLines: false)[3],
               ),
             ),
             body: OrentationLayout(

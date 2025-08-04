@@ -18,6 +18,7 @@ ThemeData darkTheme = ThemeData(
     shape: Border(
       bottom: BorderSide(color: AppColors.darkModeTextColor),
     ),
+    iconTheme: IconThemeData(color: Colors.grey),
   ),
   drawerTheme: const DrawerThemeData(
     backgroundColor: AppColors.darkModePrimaryColor,

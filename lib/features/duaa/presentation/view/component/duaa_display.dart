@@ -27,72 +27,69 @@ class _DuaaDisplayState extends State<DuaaDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
-      child: Column(
-        children: [
-          // عنوان الدعاء + زر السهم
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                widget.duaaTitle,
-                style: TextStyles.semiBold18(
-                  context,
-                  AppColors.white,
-                ),
+    return Column(
+      children: [
+        // عنوان الدعاء + زر السهم
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              widget.duaaTitle,
+              style: TextStyles.semiBold16(
+               context:  context,
+               color:  AppColors.secondryColor,
               ),
-              ValueListenableBuilder<bool>(
-                valueListenable: visibilityNotifier,
-                builder: (context, visible, _) {
-                  return AnimatedRotation(
-                    duration: const Duration(milliseconds: 300),
-                    turns: visible ? 0.5 : 0.0, // تدوير السهم لأعلى/أسفل
-                    child: IconButton(
-                      onPressed: () => visibilityNotifier.value = !visible,
-                      icon: const Icon(Icons.expand_more, size: 30),
-                    ),
-                  );
-                },
+            ),
+            ValueListenableBuilder<bool>(
+              valueListenable: visibilityNotifier,
+              builder: (context, visible, _) {
+                return AnimatedRotation(
+                  duration: const Duration(milliseconds: 300),
+                  turns: visible ? 0.5 : 0.0, // تدوير السهم لأعلى/أسفل
+                  child: IconButton(
+                    onPressed: () => visibilityNotifier.value = !visible,
+                    icon: const Icon(Icons.expand_more, size: 30, color: Colors.grey),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+    
+        // محتوى الدعاء المتحرك
+        ValueListenableBuilder<bool>(
+          valueListenable: visibilityNotifier,
+          builder: (context, visible, _) {
+            return AnimatedSize(
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.fastOutSlowIn,
+              child: AnimatedOpacity(
+                duration: const Duration(milliseconds: 400),
+                opacity: visible ? 1.0 : 0.0,
+                child: visible
+                    ? Container(
+                        margin: const EdgeInsets.only(top: 8),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: AppColors.secondryColor,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          widget.duaaBody,
+                          style: TextStyles.semiBold16_120(context).copyWith(
+                              color: AppColors.white,
+                              fontFamily: 'DataFontFamily'),
+                        ),
+                      )
+                    : const SizedBox.shrink(),
               ),
-            ],
-          ),
-
-          // محتوى الدعاء المتحرك
-          ValueListenableBuilder<bool>(
-            valueListenable: visibilityNotifier,
-            builder: (context, visible, _) {
-              return AnimatedSize(
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.fastOutSlowIn,
-                child: AnimatedOpacity(
-                  duration: const Duration(milliseconds: 400),
-                  opacity: visible ? 1.0 : 0.0,
-                  child: visible
-                      ? Container(
-                          margin: const EdgeInsets.only(top: 8),
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: AppColors.secondryColor,
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text(
-                            widget.duaaBody,
-                            style: TextStyles.semiBold16_120(context).copyWith(
-                                color: AppColors.white,
-                                fontFamily: 'DataFontFamily'),
-                          ),
-                        )
-                      : const SizedBox.shrink(),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
+            );
+          },
+        ),
+      ],
     );
   }
 }

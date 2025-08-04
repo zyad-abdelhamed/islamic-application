@@ -20,5 +20,5 @@ class AppColors {
   static const Color grey2 = Color.fromARGB(31, 134, 133, 133);
   static Color? grey400 = Colors.grey[400];
   static const Color darkModeTextColor = Color(0xFFB0BEC5);
-  static const Color lightModeTextColor = Color(0xFF212121);
+  static const Color lightModeTextColor = Color(0xFFF5F5F5);
 }

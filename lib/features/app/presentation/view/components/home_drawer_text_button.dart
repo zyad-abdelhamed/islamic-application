@@ -13,64 +13,52 @@ class HomeDrawerTextButton extends StatelessWidget {
     required this.text,
     required this.alertDialogContent,
     required this.index,
-    required this.icon,
   });
 
   final int index;
   final String text;
   final Widget alertDialogContent;
-  final Widget icon;
 
   @override
   Widget build(BuildContext context) {
-    final bool isDark = ThemeCubit.controller(context).state;
+    final isDark = ThemeCubit.controller(context).state;
 
     return GestureDetector(
-      onTap: () => showDialog(
-        context: context,
-        builder: (context) => BlocProvider(
-          create: (_) => AlertDialogCubit(),
-          child: CustomAlertDialog(
-            title: AppStrings.homeDrawerTextButtons[index],
-            alertDialogContent: (_) => alertDialogContent,
-            iconWidget: (_) => icon,
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (context) => BlocProvider<AlertDialogCubit>(
+            create: (_) => AlertDialogCubit(),
+            child: CustomAlertDialog(
+              title: AppStrings.homeDrawerTextButtons[index],
+              alertDialogContent: (_) => alertDialogContent,
+              iconWidget: (_) => const Icon(
+                Icons.book,
+              ),
+            ),
           ),
-        ),
-      ),
-      child: Container(
-        padding: const EdgeInsets.all(3),
-        decoration: BoxDecoration(
-          color: isDark
-              ? Color(0xFF263238)
-              : Color(0XFFE0F7FA),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: AppColors.secondryColor.withValues(alpha: 0.3),
-            width: 1,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.purple.withValues(alpha: 0.05),
-              blurRadius: 6,
-              offset: const Offset(0, 2),
-            )
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            icon,
-            const SizedBox(height: 8),
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                text,
-                textAlign: TextAlign.center,
-                style: TextStyles.semiBold16_120(context).copyWith(
-                  color: isDark
-                      ? AppColors.darkModeTextColor
-                      : AppColors.lightModeTextColor,
-                ),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Row(
+          children: <Widget>[
+            Container(
+              height: 10,
+              width: 10,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: isDark ? AppColors.darkModeTextColor : AppColors.lightModeTextColor,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Text(
+              text,
+              style: TextStyles.semiBold20(context).copyWith(
+                color: isDark
+                    ? AppColors.darkModeTextColor
+                    : AppColors.lightModeTextColor,
+                height: 1.2,
               ),
             ),
           ],
@@ -79,3 +67,4 @@ class HomeDrawerTextButton extends StatelessWidget {
     );
   }
 }
+

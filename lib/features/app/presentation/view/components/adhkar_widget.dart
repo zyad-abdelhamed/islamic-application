@@ -69,7 +69,7 @@ class _AdhkarWidgetState extends State<AdhkarWidget> {
                           widget.adhkarEntity.description!,
                           style: TextStyles.regular16_120(context,
                                   color: AppColors.secondryColor)
-                              .copyWith(
+                              .copyWith(fontFamily: 'Amiri',
                                   fontSize: (widget.adhkarPageController
                                           .fontSizeNotfier.value) -
                                       4),

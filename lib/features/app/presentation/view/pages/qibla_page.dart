@@ -19,7 +19,7 @@ class QiblaPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
             leading: GetAdaptiveBackButtonWidget(),
-            title: Text(AppStrings.appBarTitles(withTwoLines: false)[3])),
+            title: Text(AppStrings.appBarTitles(withTwoLines: false)[4])),
         body: BlocBuilder<QiblaCubit, QiblaState>(
           builder: (context, state) {
             if (state is QiblaLoading) {

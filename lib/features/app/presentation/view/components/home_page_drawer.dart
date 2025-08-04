@@ -14,9 +14,7 @@ import 'package:test_app/features/duaa/presentation/controllers/cubit/duaa_cubit
 import 'package:test_app/features/duaa/presentation/view/component/duaa_display.dart';
 
 class HomeDrawerWidget extends StatelessWidget {
-  const HomeDrawerWidget({
-    super.key,
-  });
+  const HomeDrawerWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,71 +24,71 @@ class HomeDrawerWidget extends StatelessWidget {
         AppStrings.khetmAlquran,
         textAlign: TextAlign.center,
         style: TextStyles.bold20(context).copyWith(
-            fontFamily: 'DataFontFamily',
-            color: ThemeCubit.controller(context).state
-                ? Colors.grey
-                : AppColors.black),
+          fontFamily: 'DataFontFamily',
+          color: ThemeCubit.controller(context).state
+              ? Colors.grey
+              : AppColors.black,
+        ),
       ),
       RosaryRingWidget(),
       DrawCircleLineBlocBuilder(
-          customPaintSize: 200,
-          maxProgress: 100.0,
-          functionality:
-              DrawCircleLineBlocBuilderFunctionality.rosariesAfterPrayer),
+        customPaintSize: 200,
+        maxProgress: 100.0,
+        functionality:
+            DrawCircleLineBlocBuilderFunctionality.rosariesAfterPrayer,
+      ),
     ];
 
     return SafeArea(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(16),
-            itemCount: 3,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              crossAxisSpacing: 5,
-              childAspectRatio: 1,
-            ),
-            itemBuilder: (context, index) {
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            // Text Button List
+            ...List.generate(textButtonsAlertDialogWidgets.length, (index) {
               return HomeDrawerTextButton(
                 index: index,
                 text: AppStrings.homeDrawerTextButtons[index],
                 alertDialogContent: textButtonsAlertDialogWidgets[index],
-                icon: const Icon(Icons.book),
               );
-            },
-          ),
-          const Divider(),
-          BlocProvider(
-            create: (context) => DuaaCubit(sl())..getDuaa(),
-            child: BlocBuilder<DuaaCubit, DuaaState>(
-              builder: (context, state) {
-                return Expanded(
-                    child: ListView.builder(
-                  itemCount: state.duaas.length,
-                  itemBuilder: (context, index) {
-                    return getWidgetDependingOnReuestState(
-                        requestStateEnum: state.duaaRequestState,
-                        widgetIncaseSuccess: DuaaDisplay(
-                            duaaTitle: state.duaas[index].title,
-                            duaaBody: state.duaas[index].content),
-                        erorrMessage: state.duaaErrorMessage);
-                  },
-                ));
-              },
+            }),
+
+            const Divider(color: Colors.grey),
+
+            // Duaa Section
+            BlocProvider(
+              create: (context) => DuaaCubit(sl())..getDuaa(),
+              child: BlocBuilder<DuaaCubit, DuaaState>(
+                builder: (context, state) {
+                  return Expanded(
+                      child: ListView.builder(
+                    itemCount: state.duaas.length,
+                    itemBuilder: (context, index) {
+                      return getWidgetDependingOnReuestState(
+                          requestStateEnum: state.duaaRequestState,
+                          widgetIncaseSuccess: DuaaDisplay(
+                              duaaTitle: state.duaas[index].title,
+                              duaaBody: state.duaas[index].content),
+                          erorrMessage: state.duaaErrorMessage);
+                    },
+                  ));
+                },
+              ),
             ),
-          ),
-          const Divider(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: AdaptiveSwitch(
+
+            const Divider(color: Colors.grey),
+
+            // Theme Toggle
+            Align(
+              alignment: Alignment.centerRight,
+              child: AdaptiveSwitch(
                 name: AppStrings.darkMode,
                 onChanged: ThemeCubit.controller(context).toggleTheme,
-                value: context.watch<ThemeCubit>().state),
-          ),
-        ],
+                value: context.watch<ThemeCubit>().state,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

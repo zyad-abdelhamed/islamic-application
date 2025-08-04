@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/features/app/domain/entities/tafsir_ayah_entity.dart';
 
 class TafsirAyahWidget extends StatelessWidget {
   final TafsirAyahEntity ayah;
-  final Color cardColor;
   final Color ayahNumberColor;
   final Color textColor;
   final bool isDark;
@@ -12,7 +12,6 @@ class TafsirAyahWidget extends StatelessWidget {
   const TafsirAyahWidget({
     super.key,
     required this.ayah,
-    required this.cardColor,
     required this.ayahNumberColor,
     required this.textColor,
     required this.isDark,
@@ -21,20 +20,14 @@ class TafsirAyahWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: cardColor,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          if (!isDark)
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
+       margin: EdgeInsets.only(
+              top: 30.0
             ),
-        ],
-      ),
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: AppColors.grey1,
+            ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -61,7 +54,7 @@ class TafsirAyahWidget extends StatelessWidget {
           Text(
             ayah.text,
             textAlign: TextAlign.justify,
-            style: TextStyles.semiBold16_120(context)
+            style: TextStyles.bold20(context)
                 .copyWith(fontFamily: 'DataFontFamily', color: textColor),
           ),
         ],

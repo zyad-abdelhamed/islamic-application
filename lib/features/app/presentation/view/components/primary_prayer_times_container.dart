@@ -67,7 +67,7 @@ class PrimaryPrayerTimesContainer extends StatelessWidget {
         (index) => Text(
           textList[index],
           textAlign: TextAlign.center,
-          style: TextStyles.bold20(context).copyWith(color: AppColors.white, fontFamily: 'DataFontFamily'),
+          style: TextStyles.bold20(context).copyWith(color: AppColors.white, fontFamily: 'Amiri'),
         ),
       ),
     );

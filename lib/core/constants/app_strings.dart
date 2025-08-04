@@ -66,7 +66,7 @@ abstract class AppStrings {
   static const List<String> homeDrawerTextButtons = <String>[
     'ختم القرآن',
     'حلقه التسبيح',
-    'التسبيح\n بعدالصلاة'
+    'التسبيح بعدالصلاة'
   ];
   static const List<String> adhkarList = <String>[
     'سبحان الله',
@@ -284,7 +284,6 @@ abstract class AppStrings {
   static const List<Map<String, String>> tafsirEditions = [
   {'identifier': 'ar.tabari', 'name': 'تفسير الطبري'},
   {'identifier': 'ar.mukhtasar', 'name': 'المختصر في التفسير'},
-  {'identifier': 'ar.osaimi', 'name': 'تفسير الفاتحة للشيخ صالح العصيمي'},
   {'identifier': 'ar.muyassarghareeb', 'name': 'الميسر في الغريب'},
   {'identifier': 'ar.tanwiralmiqbas', 'name': 'تنوير المقباس من تفسير بن عباس'},
   {'identifier': 'ar.ibnkathir', 'name': 'تفسير ابن كثير'},

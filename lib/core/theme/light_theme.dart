@@ -24,6 +24,7 @@ ThemeData lightTheme = ThemeData(
     shape: Border(
       bottom: BorderSide(color: AppColors.lightModePrimaryColor),
     ),
+    iconTheme: IconThemeData(color: Colors.grey),
   ),
   drawerTheme: const DrawerThemeData(
     backgroundColor: AppColors.lightModePrimaryColor,
