@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/quran_cubit.dart';
 import 'package:test_app/features/app/presentation/view/pages/alquran_alkarim_page.dart';
 import 'package:test_app/features/app/presentation/view/pages/elec_rosary_page.dart';
@@ -133,7 +134,7 @@ abstract class AppStrings {
   ];
   static  List pages = [
    BlocProvider(
-        create: (context) => QuranCubit()..loadPdfFromAssets(),
+        create: (context) => QuranCubit(sl())..loadPdfFromAssets(),
         child:  AlquranAlkarimPage()),
     ElecRosaryPage(),
     RamadanTabelPage(),

@@ -36,10 +36,10 @@ class MyApp extends StatelessWidget {
               textDirection: TextDirection.rtl,
               child: child!,
             ),
-            home: LocationPermissionPage() ,
+           // home: LocationPermissionPage() ,
             theme: isDarkMode ? darkTheme : lightTheme,
             debugShowCheckedModeBanner: false,
-           // initialRoute: getInitRoute,
+            initialRoute: getInitRoute,
             onGenerateRoute: onGenerateRoute,
           );
         },

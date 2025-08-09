@@ -8,15 +8,27 @@ part 'duaa_state.dart';
 
 class DuaaCubit extends Cubit<DuaaState> {
   DuaaCubit(this.duaaBaseRepo) : super(DuaaState());
+
   final DuaaBaseRepo duaaBaseRepo;
-  getDuaa() async {
-    final result = await duaaBaseRepo.getDuaaWithPegnation();
+
+  List<DuaaEntity> addDuaa = [];
+
+  getDuaa({required int page}) async {
+    emit(DuaaState(duaaRequestState: RequestStateEnum.loading));
+
+    final result = await duaaBaseRepo.getDuaaWithPegnation(page: page);
+
     result.fold((l) {
       emit(DuaaState(
-          duaaErrorMessage: l.message,
-          duaaRequestState: RequestStateEnum.failed));
+        duaaErrorMessage: l.message,
+        duaaRequestState: RequestStateEnum.failed,
+      ));
     }, (r) {
-      emit(DuaaState(duaas: r, duaaRequestState: RequestStateEnum.success));
+      addDuaa.addAll(r);
+      emit(DuaaState(
+        duaas: addDuaa,
+        duaaRequestState: RequestStateEnum.success,
+      ));
     });
   }
 }
