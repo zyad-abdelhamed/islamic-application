@@ -18,7 +18,7 @@ class OnBoardingCubit extends HydratedCubit<bool> {
 
   void goToHomePage({required BuildContext context}) {
     Navigator.pushNamedAndRemoveUntil(
-        context, RoutesConstants.splashScreenRouteName, (route) => false);
+        context, RoutesConstants.locationPermissionPage, (route) => false);
     emit(true);
   }
 

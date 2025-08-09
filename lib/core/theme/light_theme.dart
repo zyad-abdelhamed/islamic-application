@@ -24,10 +24,16 @@ ThemeData lightTheme = ThemeData(
     shape: Border(
       bottom: BorderSide(color: AppColors.lightModePrimaryColor),
     ),
+    iconTheme: IconThemeData(color: Colors.grey),
   ),
   drawerTheme: const DrawerThemeData(
     backgroundColor: AppColors.lightModePrimaryColor,
-    shape: LinearBorder(),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(30),
+        bottomLeft: Radius.circular(30),
+      ),
+    ),
   ),
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: ButtonStyle(

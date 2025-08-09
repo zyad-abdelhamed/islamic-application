@@ -4,6 +4,7 @@ import 'package:test_app/core/helper_function/get_responsive_font_size.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
+import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/data/models/adhkar_parameters.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_adhkar_controller.dart';
 
@@ -49,13 +50,13 @@ class _AdhkarButtonState extends State<AdhkarButton> {
         child: Container(
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
-              color: AppColors.inActivePrimaryColor, borderRadius: BorderRadius.circular(50)),
+              color: ThemeCubit.controller(context).state ? AppColors.darkModeInActiveColor : AppColors.lightModeInActiveColor, borderRadius: BorderRadius.circular(50)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
                 widget.icon,
-                color: AppColors.primaryColor(context),
+                color: Theme.of(context).primaryColor,
                 size: getResponsiveFontSize(context: context, fontSize: 60),
               ),
               FittedBox(
@@ -63,7 +64,7 @@ class _AdhkarButtonState extends State<AdhkarButton> {
                 child: Text(
                   widget.text,
                   textAlign: TextAlign.center,
-                  style: TextStyles.semiBold18(context, AppColors.primaryColor(context)),
+                  style: TextStyles.semiBold18(context, Theme.of(context).primaryColor),
                 ),
               )
             ],

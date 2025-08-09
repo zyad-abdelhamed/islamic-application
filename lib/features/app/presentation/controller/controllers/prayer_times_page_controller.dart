@@ -1,21 +1,30 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/constants/app_durations.dart';
+import 'package:test_app/core/services/arabic_converter_service.dart';
+import 'package:test_app/core/services/dependency_injection.dart';
+import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/features/app/data/models/get_prayer_times_of_month_prameters.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/cubit/location_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_prayer_times_of_month_cubit.dart';
+import 'package:test_app/features/app/presentation/view/components/custom_alert_dialog.dart';
+import 'package:test_app/features/app/presentation/view/components/save_or_update_location_widget.dart';
 
 class PrayerTimesPageController {
   late PageController pageController;
   late final ValueNotifier<bool> nextButtonVisibleNotifier;
   late final ValueNotifier<bool> previousButtonVisibleNotifier;
   late final ValueNotifier<DateTime> dateNotifier;
+  final ValueNotifier<bool> loadUpdateLocationDialogNotifier =
+      ValueNotifier<bool>(false);
 
-  initState(BuildContext context) {
+  initState(BuildContext context) async {
     pageController = PageController(initialPage: DateTime.now().day - 1);
-        dateNotifier = ValueNotifier<DateTime>(DateTime.now());
-
+    dateNotifier = ValueNotifier<DateTime>(DateTime.now());
     previousButtonVisibleNotifier =
         ValueNotifier<bool>(_getPreviousButtonNotifierValue);
-        nextButtonVisibleNotifier =
+    nextButtonVisibleNotifier =
         ValueNotifier<bool>(_getNextButtonNotifierValue);
   }
 
@@ -23,13 +32,22 @@ class PrayerTimesPageController {
     pageController.dispose();
     nextButtonVisibleNotifier.dispose();
     previousButtonVisibleNotifier.dispose();
+    loadUpdateLocationDialogNotifier.dispose();
   }
 
-  List<String> get dateData => <String>[
-        dateNotifier.value.day.toString(),
-        dateNotifier.value.month.toString(),
-        dateNotifier.value.year.toString()
-      ];
+  List<String> get dateData {
+    return <String>[
+      sl<BaseArabicConverterService>()
+          .convertToArabicDigits(dateNotifier.value.day)
+          .toString(),
+      sl<BaseArabicConverterService>()
+          .convertToArabicDigits(dateNotifier.value.month)
+          .toString(),
+      sl<BaseArabicConverterService>()
+          .convertToArabicDigits(dateNotifier.value.year)
+          .toString()
+    ];
+  }
 
   Future<void> selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
@@ -46,17 +64,14 @@ class PrayerTimesPageController {
     pageController = PageController(
         //reinitialize pageController object to set init page value
         initialPage: dateNotifier.value.day - 1);
-    previousButtonVisibleNotifier.value =
-        _getPreviousButtonNotifierValue;
+    previousButtonVisibleNotifier.value = _getPreviousButtonNotifierValue;
     nextButtonVisibleNotifier.value = _getNextButtonNotifierValue;
     GetPrayerTimesOfMonthCubit.controller(context).getPrayerTimesOfMonth(
         GetPrayerTimesOfMonthPrameters(date: dateNotifier.value));
   }
 
-  bool get _getNextButtonNotifierValue =>
-      dateNotifier.value.day- 1 != 30;
-  bool get _getPreviousButtonNotifierValue =>
-      dateNotifier.value.day - 1 != 0;
+  bool get _getNextButtonNotifierValue => dateNotifier.value.day - 1 != 30;
+  bool get _getPreviousButtonNotifierValue => dateNotifier.value.day - 1 != 0;
 
   void onPageChanged(BuildContext context, int value) {
     if (value == 0) {
@@ -88,5 +103,32 @@ class PrayerTimesPageController {
   animateTopreviousPage() {
     pageController.previousPage(
         duration: AppDurations.lowDuration, curve: Curves.linear);
+  }
+
+  updateLocation(BuildContext context) {
+    loadUpdateLocationDialogNotifier.value = true;
+    showDialog(
+      context: context,
+      builder: (context) {
+        return BlocProvider(
+          create: (context) => sl<LocationCubit>(),
+          child: CustomAlertDialog(
+            title: 'تحديث الموقع',
+            alertDialogContent: (context) => BlocProvider(
+              create: (context) => sl<LocationCubit>(),
+              child: SaveOrUpdateLocationWidget(
+                functionaltiy: Functionaltiy.update,
+                buttonName: 'تحديث الموقع',
+              ),
+            ),
+            iconWidget: (BuildContext context) => const Icon(
+              Icons.location_on,
+              color: AppColors.secondryColor,
+            ),
+          ),
+        );
+      },
+    );
+    loadUpdateLocationDialogNotifier.value = false;
   }
 }

@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
-import 'package:test_app/features/app/presentation/controller/controllers/cubit/location_cubit.dart';
-import 'package:test_app/features/app/presentation/controller/cubit/get_prayer_times_of_month_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/hadith_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/prayer_times_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/timer_cubit.dart';
 import 'package:test_app/features/app/presentation/view/pages/home_page.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/features/app/presentation/view/pages/q_and_a_page.dart';
+import 'package:test_app/features/location_permission_page.dart';
 import 'package:test_app/features/onboarding/presentation/view/pages/main_page.dart';
 import 'package:test_app/features/onboarding/presentation/view/pages/secondry_page.dart';
-import 'package:test_app/features/splash_screen.dart';
+import 'package:test_app/features/splach_screen/view/pages/splash_screen.dart';
 import 'package:test_app/features/app/presentation/view/pages/prayer_times_page.dart';
 
 Route<dynamic> onGenerateRoute(RouteSettings settings) {
@@ -51,19 +50,12 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       );
     case RoutesConstants.prayersTimePage:
       return MaterialPageRoute<PrayerTimesPage>(
-        builder: (BuildContext context) => MultiBlocProvider(
-          providers: [
-        BlocProvider(
-          create: (context) => sl<GetPrayerTimesOfMonthCubit>(),
-        ),
-        BlocProvider(
-          create: (context) => sl<LocationCubit>(),
-        ),
-      ],
-          
-        child: const PrayerTimesPage()),
+        builder: (BuildContext context) => const PrayerTimesPage(),
       );
-
+    case RoutesConstants.locationPermissionPage:
+      return MaterialPageRoute<LocationPermissionPage>(
+        builder: (BuildContext context) => LocationPermissionPage(),
+      );
     default:
       return MaterialPageRoute<Scaffold>(
         builder: (BuildContext context) => const Scaffold(),

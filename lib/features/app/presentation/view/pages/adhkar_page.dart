@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/theme/app_colors.dart';
+import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/adhkar_page_controller.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_adhkar_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/adhkar_widget.dart';
@@ -33,7 +34,7 @@ class _AdhkarPageState extends State<AdhkarPage> {
 
   @override
   void dispose() {
-    adhkarPageController.adhkarScrollController.dispose();
+    adhkarPageController.dispose();
     super.dispose();
   }
 
@@ -74,14 +75,14 @@ class _AdhkarPageState extends State<AdhkarPage> {
                         lineSize: 5.0,
                         progress: adhkarPageController.maxProgress,
                         context: context,
-                        lineColor: AppColors.inActiveThirdColor,
+                        lineColor: ThemeCubit.controller(context).state ? AppColors.darkModeInActiveColor : AppColors.lightModeInActiveColor,
                         maxProgress: adhkarPageController.maxProgress)),
                 _getCustomCircleSlider(context,
                     customPainter: CirclePainter(
                         lineSize: 5.0,
                         progress: adhkarPageController.progressNotfier.value,
                         context: context,
-                        lineColor: AppColors.thirdColor,
+                        lineColor: Theme.of(context).primaryColor,
                         maxProgress: adhkarPageController.maxProgress))
               ]),
             )

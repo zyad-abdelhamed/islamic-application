@@ -13,7 +13,7 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     const double radius = 80;
     return Scaffold(
-      backgroundColor: AppColors.primaryColor(context),
+      backgroundColor: Theme.of(context).primaryColor,
       body: Stack(
         children: [
           Column(
@@ -38,7 +38,7 @@ class MainPage extends StatelessWidget {
                       '        Islamic',
                       style: TextStyles.bold20(
                         context,
-                      ).copyWith(color: AppColors.primaryColor(context), fontSize: 45),
+                      ).copyWith(color: Theme.of(context).primaryColor, fontSize: 45),
                     ),
                     const SizedBox(height: 50.0),
                     Text(
@@ -67,7 +67,7 @@ class MainPage extends StatelessWidget {
             left: 0,
             right: 0,
             child: CircleAvatar(
-              backgroundColor: AppColors.thirdColor,
+              backgroundColor: AppColors.errorColor,
               radius: radius,
               child: SvgPicture.asset(
                 'assets/images/Vector.svg',

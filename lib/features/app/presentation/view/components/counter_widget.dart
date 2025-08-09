@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
+import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
 import 'package:test_app/features/app/data/models/number_animation_model.dart';
 import 'package:test_app/features/app/presentation/view/components/featured_records_widget.dart';
@@ -36,7 +37,7 @@ class CounterWidget extends StatelessWidget {
                   height: 100,
                   decoration: BoxDecoration(
                     border: Border.all(
-                        width: 3, color: AppColors.primaryColor(context)),
+                        width: 3, color: Theme.of(context).primaryColor),
                     borderRadius: const BorderRadius.all(Radius.circular(18)),
                   ),
                   child: ValueListenableBuilder<NumberAnimationModel>(
@@ -74,7 +75,7 @@ class CounterWidget extends StatelessWidget {
                       width: _increaseButtonSize(context),
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: AppColors.inActivePrimaryColor)))
+                          color: ThemeCubit.controller(context).state ? AppColors.darkModeInActiveColor : AppColors.lightModeInActiveColor)))
             ]),
       ),
     );

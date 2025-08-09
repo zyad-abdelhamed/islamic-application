@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/core/theme/app_colors.dart';
 
 class ExplainFeatureButton extends StatelessWidget {
   const ExplainFeatureButton({
@@ -25,14 +24,14 @@ class ExplainFeatureButton extends StatelessWidget {
               children: [
     Row(
       children:  [
-        Icon(Icons.info_outline, color: AppColors.primaryColor(context)),
+        Icon(Icons.info_outline, color: Theme.of(context).primaryColor),
         SizedBox(width: 10),
         Text(
           'شرح الميزة',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: AppColors.primaryColor(context),
+            color: Theme.of(context).primaryColor,
           ),
         ),
       ],
@@ -46,7 +45,7 @@ class ExplainFeatureButton extends StatelessWidget {
     Align(
       alignment: Alignment.centerRight,
       child: TextButton(
-        child:  Text('تم', style: TextStyle(color: AppColors.primaryColor(context))),
+        child:  Text('تم', style: TextStyle(color: Theme.of(context).primaryColor)),
         onPressed: () => Navigator.pop(context),
       ),
     ),

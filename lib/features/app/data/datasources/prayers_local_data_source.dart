@@ -7,18 +7,18 @@ abstract class PrayersLocalDataSource {
 }
 
 class PrayersLocalDataSourceImpl extends PrayersLocalDataSource {
-  static const String _boxName = 'prayers_box';
+  static const String boxName = 'prayers_box';
   static const String _key = 'prayers_times';
+
+  Box<Timings> box = Hive.box<Timings>(boxName);
 
   @override
   Future<Timings?> getLocalPrayersTimes() async {
-    final box = await Hive.openBox<Timings>(_boxName);
     return box.get(_key);
   }
 
   @override
   Future<void> putPrayersTimes(Timings timings) async {
-    final box = await Hive.openBox<Timings>(_boxName);
     await box.put(_key, timings);
   }
 }

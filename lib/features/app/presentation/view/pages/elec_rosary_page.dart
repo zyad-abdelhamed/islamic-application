@@ -40,7 +40,7 @@ class _ElecRosaryPageState extends State<ElecRosaryPage> {
         child: Scaffold(
           appBar: AppBar(
             leading: GetAdaptiveBackButtonWidget(),
-            title: Text(AppStrings.appBarTitles(withTwoLines: false)[1]),
+            title: Text(AppStrings.appBarTitles(withTwoLines: false)[2]),
           ),
           body: ValueListenableBuilder<bool>(
             valueListenable: isfeatuerdRecordsWidgetShowedNotifier,

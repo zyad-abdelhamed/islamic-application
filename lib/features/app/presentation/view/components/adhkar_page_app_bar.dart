@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/core/adaptive/adaptive_widgets/adaptive_switch.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
 import 'package:test_app/core/constants/app_strings.dart';
-import 'package:test_app/features/app/presentation/controller/controllers/adhkar_page_controller.dart';
 import 'package:test_app/core/theme/app_colors.dart';
+import 'package:test_app/core/theme/theme_provider.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/adhkar_page_controller.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 
 AppBar adhkarPageAppBar(BuildContext context,
@@ -36,44 +38,34 @@ AppBar adhkarPageAppBar(BuildContext context,
         margin: const EdgeInsets.symmetric(horizontal: 15.0),
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 3.0),
         decoration: BoxDecoration(
-            color: AppColors.primaryColor(context),
+            color: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.circular(8.0)),
         child: ValueListenableBuilder<int>(
             valueListenable: adhkarPageController.lengthNotfier,
             builder: (_, __, ___) => Text(
                   adhkarPageController.lengthNotfier.value.toString(),
-                  style: TextStyles.semiBold16_120(context)
-                      .copyWith(color: Colors.black),
+                  style: TextStyles.semiBold16_120(context).copyWith(
+                      color: ThemeCubit.controller(context).state
+                          ? AppColors.darkModeTextColor
+                          : AppColors.lightModeTextColor,
+                      fontFamily: 'normal'),
                 )),
       ),
     ],
     bottom: PreferredSize(
-      preferredSize: const Size.fromHeight(60),
+      preferredSize: const Size.fromHeight(72),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              AppStrings.adhkarPageSwitchText,
-              style: TextStyles.bold20(context),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        child: ValueListenableBuilder(
+          valueListenable: adhkarPageController.switchNotfier,
+          builder: (_, __, ___) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6.0),
+            child: AdaptiveSwitch(
+              name: AppStrings.adhkarPageSwitchText,
+              onChanged: adhkarPageController.toggleIsDeletedSwitch,
+              value: adhkarPageController.switchNotfier.value,
             ),
-            const SizedBox(width: 12),
-            ValueListenableBuilder(
-              valueListenable: adhkarPageController.switchNotfier,
-              builder: (context, value, _) => Switch.adaptive(
-                activeColor: AppColors.thirdColor,
-                activeTrackColor: AppColors.thirdColor.withValues(alpha: 0.8),
-                inactiveThumbColor: AppColors.black,
-                inactiveTrackColor: AppColors.inActiveBlackColor,
-                value: adhkarPageController.switchNotfier.value,
-                onChanged: (bool value) {
-                  adhkarPageController.toggleIsDeletedSwitch();
-                },
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     ),
@@ -85,7 +77,7 @@ GestureDetector _controleTextFontSizeButton(BuildContext context,
   return GestureDetector(
     onTap: onTap,
     child: Text(AppStrings.fontSizeButtonText,
-        style: TextStyles.bold20(context)
-            .copyWith(color: Colors.grey, fontSize: fontSize, fontFamily: "normal")),
+        style: TextStyles.bold20(context).copyWith(
+            color: Colors.grey, fontSize: fontSize, fontFamily: "normal")),
   );
 }

@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:test_app/core/services/arabic_converter_service.dart';
+import 'package:test_app/core/services/dependency_injection.dart';
 
 class Timings extends Equatable {
   final String fajr;
@@ -23,6 +25,20 @@ class Timings extends Equatable {
       required this.hijriMonthNameArabic,
       required this.hijriYear,
       required this.gregoriandate});
+
+  /// تحويل الوقت إلى العربية باستخدام
+  String get fajrArabic =>
+      sl<BaseArabicConverterService>().convertTimeToArabic(fajr);
+  String get sunriseArabic =>
+      sl<BaseArabicConverterService>().convertTimeToArabic(sunrise);
+  String get dhuhrArabic =>
+      sl<BaseArabicConverterService>().convertTimeToArabic(dhuhr);
+  String get asrArabic =>
+      sl<BaseArabicConverterService>().convertTimeToArabic(asr);
+  String get maghribArabic =>
+      sl<BaseArabicConverterService>().convertTimeToArabic(maghrib);
+  String get ishaArabic =>
+      sl<BaseArabicConverterService>().convertTimeToArabic(isha);
 
   @override
   List<Object?> get props => [

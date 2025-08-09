@@ -22,7 +22,8 @@ class FeturedRecordsContainer extends StatelessWidget {
               : Colors.white,
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(13), topRight: Radius.circular(13)),
-          boxShadow: <BoxShadow>[
+          boxShadow: ThemeCubit.controller(context).state
+              ? []: <BoxShadow>[
             BoxShadow(
                 offset: const Offset(3, 3),
                 spreadRadius: 3,
@@ -40,7 +41,7 @@ class FeturedRecordsContainer extends StatelessWidget {
             child: Text(
               AppStrings.featuerdRecords,
               style: TextStyles.semiBold16_120(context)
-                  .copyWith(color: AppColors.primaryColor(context)),
+                  .copyWith(color: Theme.of(context).primaryColor),
             ),
           ),
           _deleteAllButton,
@@ -72,7 +73,7 @@ class FeturedRecordsContainer extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 child: Text(AppStrings.deleteAll,
                     style: TextStyles.regular14_150(context)
-                        .copyWith(color: AppColors.thirdColor)),
+                        .copyWith(color: AppColors.errorColor)),
               )),
         );
       },

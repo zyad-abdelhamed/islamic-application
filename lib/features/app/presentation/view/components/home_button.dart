@@ -46,7 +46,7 @@ class HomeButton extends StatelessWidget {
 
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15.0),
-          color: AppColors.primaryColor(context),
+          color: Theme.of(context).primaryColor,
         ),
         height: 100,
         width: 200,
@@ -57,8 +57,11 @@ class HomeButton extends StatelessWidget {
           children: [
             Text(
               text,
-              style: TextStyles.bold20(context)
-                  .copyWith(color: ThemeCubit.controller(context).state ? AppColors.blueGrey800 : AppColors.white, fontSize: 23),
+              style: TextStyles.bold20(context).copyWith(
+                  color: ThemeCubit.controller(context).state
+                      ? AppColors.darkModeTextColor
+                      : AppColors.lightModeTextColor,
+                  fontSize: 23),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 3.0),

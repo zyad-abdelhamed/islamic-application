@@ -1,9 +1,16 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:test_app/core/constants/app_strings.dart';
+import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
-import 'package:test_app/core/services/internet_connection.dart';
 import 'package:test_app/core/services/position_service.dart';
+import 'package:test_app/core/theme/app_colors.dart';
+import 'package:test_app/core/theme/text_styles.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/cubit/location_cubit.dart';
+import 'package:test_app/features/app/presentation/view/components/custom_alert_dialog.dart';
+import 'package:test_app/features/app/presentation/view/components/save_or_update_location_widget.dart';
 
 class LocationPermissionPage extends StatefulWidget {
   const LocationPermissionPage({super.key});
@@ -13,56 +20,30 @@ class LocationPermissionPage extends StatefulWidget {
 }
 
 class _LocationPermissionPageState extends State<LocationPermissionPage> {
-  bool isConnected = true;
-  bool isLocationEnabled = true;
-  LocationPermission permissionStatus = LocationPermission.denied;
-
-  late StreamSubscription<bool> internetSubscription;
-  late StreamSubscription<bool> locationEnabledSubscription;
+  ValueNotifier<LocationPermission> permissionStatusNotifier =
+      ValueNotifier<LocationPermission>(LocationPermission.denied);
   late StreamSubscription<LocationPermission> permissionSubscription;
 
   @override
   void initState() {
     super.initState();
-
-    final locationService = sl<BaseLocationService>();
-
-    // متابعة اتصال الإنترنت
-    internetSubscription = sl<InternetConnection>()
-        .onInternetStatusChanged
-        .listen((connected) {
-      setState(() {
-        isConnected = connected;
-      });
-    });
-
-    // متابعة حالة الموقع (مفعّل أم لا)
-    locationEnabledSubscription = locationService.isLocationServiceEnabledStream.listen((enabled) {
-      setState(() {
-        isLocationEnabled = enabled;
-      });
-    });
-
     // متابعة حالة تصريح الوصول للموقع
-    permissionSubscription = locationService.locationPermissionStream.listen((perm) {
-      setState(() {
-        permissionStatus = perm;
-      });
+    permissionSubscription =
+        sl<BaseLocationService>().locationPermissionStream.listen((perm) {
+      permissionStatusNotifier.value = perm;
     });
   }
 
   @override
   void dispose() {
-    internetSubscription.cancel();
-    locationEnabledSubscription.cancel();
     permissionSubscription.cancel();
+    permissionStatusNotifier.dispose();
     super.dispose();
   }
 
   bool get shouldShowLocationButton {
-    return !isLocationEnabled ||
-        (permissionStatus != LocationPermission.always &&
-         permissionStatus != LocationPermission.whileInUse);
+    return permissionStatusNotifier.value != LocationPermission.always &&
+        permissionStatusNotifier.value != LocationPermission.whileInUse;
   }
 
   @override
@@ -75,84 +56,52 @@ class _LocationPermissionPageState extends State<LocationPermissionPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.location_on, size: 100, color: Colors.teal),
+              Icon(Icons.location_on,
+                  size: 100, color: Theme.of(context).primaryColor),
               SizedBox(height: 20),
               Text(
-                "تفعيل الموقع مطلوب",
+                AppStrings.activationLocationRequired,
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 12),
+              const SizedBox(height: 12),
               Text(
-                "لكي تتمكن من استخدام:",
-                style: TextStyle(fontSize: 16),
+                AppStrings.usesOfActivationLocation,
+                style: TextStyles.semiBold16_120(context),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 8),
-              Text(
-                "• مواقيت الصلاة حسب موقعك\n• تحديد اتجاه القبلة بدقة",
-                style: TextStyle(fontSize: 16),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 30),
-
-              Visibility(
-                visible: shouldShowLocationButton,
-                child: ElevatedButton(
-                  onPressed: () => sl<BaseLocationService>().requestPermission,
-                  child: Text("تفعيل الموقع الآن"),
-                ),
-              ),
-
-              SizedBox(height: 12),
-              TextButton(
-                onPressed: () {
-                  showLocationWarningDialog(context);
-                },
-                child: Text("لاحقاً"),
-              ),
-              SizedBox(height: 20),
-              Visibility(
-                visible:  !shouldShowLocationButton,
-                child: Column(
+              const SizedBox(height: 30),
+              ValueListenableBuilder<LocationPermission>(
+                valueListenable: permissionStatusNotifier,
+                builder: (_, __, ___) => Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          isConnected ? Icons.wifi : Icons.wifi_off,
-                          color: isConnected ? Colors.green : Colors.red,
-                        ),
-                        SizedBox(width: 8),
-                        Text(
-                          isConnected ? "متصل بالإنترنت" : "لا يوجد اتصال بالإنترنت",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: isConnected ? Colors.green : Colors.red,
+                    Visibility(
+                      visible: shouldShowLocationButton,
+                      child: Column(
+                        spacing: 12,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () =>
+                                sl<BaseLocationService>().requestPermission,
+                            child: Text(AppStrings.activationLocationNow),
                           ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          isLocationEnabled ? Icons.location_on : Icons.location_off,
-                          color: isConnected ? Colors.green : Colors.red,
-                        ),
-                        SizedBox(width: 8),
-                        Text(
-                          isConnected ? "الموقع مفعّل" : "الموقع غير مفعّل",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: isConnected ? Colors.green : Colors.red,
+                          TextButton(
+                            onPressed: () => showLocationWarningDialog(context),
+                            child: Text("لاحقاً"),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     Visibility(
-                      visible: isConnected && isLocationEnabled,
-                      child: ElevatedButton(onPressed: (){}, child: Text("حفظ الموقع"))),
+                      visible: !shouldShowLocationButton,
+                      child: BlocProvider(
+                        create: (context) => sl<LocationCubit>(),
+                        child: SaveOrUpdateLocationWidget(
+                          functionaltiy: Functionaltiy.save,
+                          buttonName: AppStrings.saveLocation,
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -163,28 +112,34 @@ class _LocationPermissionPageState extends State<LocationPermissionPage> {
     );
   }
 }
+
 void showLocationWarningDialog(BuildContext context) {
   showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: Text('تنبيه هام'),
-      content: Text(
-        'خدمة الموقع غير مفعّلة أو تم رفض الإذن.\n\n'
-        'لن تتمكن من استخدام الميزات التالية:\n'
-        '• مواقيت الصلاة حسب موقعك\n'
-        '• تحديد اتجاه القبلة بدقة\n\n'
-        'سيتم عرض هذه الرسالة في الصفحة الرئيسية، ويمكنك تغيير الإعدادات لاحقًا من هذه الرسالة.',
-        textAlign: TextAlign.right,
-        style: TextStyle(height: 1.5),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.pop(context); // إغلاق الـ dialog
-          },
-          child: Text('فهمت'),
-        ),
-      ],
-    ),
-  );
+      context: context,
+      builder: (context) => CustomAlertDialog(
+            title: 'تنبيه هام',
+            alertDialogContent: (context) => Column(spacing: 20,
+              children: [
+                Text(
+                  AppStrings.deniedLocationPermissionAlertDialogText,
+                  textAlign: TextAlign.right,
+                  style: TextStyle(height: 1.5, fontFamily: 'dataFontFamily'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      RoutesConstants.splashScreenRouteName,
+                      (_) => false,
+                    );
+                  },
+                  child: Text(AppStrings.gotIt),
+                )
+              ],
+            ),
+            iconWidget: (BuildContext context) => const Icon(
+              Icons.warning,
+              color: AppColors.secondryColor,
+            ),
+          ));
 }

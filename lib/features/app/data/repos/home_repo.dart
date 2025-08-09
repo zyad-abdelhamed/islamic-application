@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
 import 'package:test_app/features/app/data/datasources/home_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/home_remote_data_source.dart';
 import 'package:test_app/features/app/data/models/adhkar_parameters.dart';
@@ -18,8 +17,7 @@ class HomeRepo extends BaseHomeRepo {
     try {
       return Right(await homeLocalDataSource.getAdhkar(adhkarParameters));
     } catch (e) {
-      return const Left(
-          Failure("خطأ أثناء جلب البيانات: تحقق من المدخلات أو مصدر البيانات"));
+      return const Left(Failure("خطأ أثناء جلب البيانات"));
     }
   }
 
@@ -29,8 +27,7 @@ class HomeRepo extends BaseHomeRepo {
       Hadith ahadith = await homeLocalDataSource.getAhadiths();
       return right(ahadith);
     } catch (e) {
-      return const Left(
-          Failure("خطأ أثناء جلب البيانات: تحقق من المدخلات أو مصدر البيانات"));
+      return Left(Failure(e.toString()));
     }
   }
 }

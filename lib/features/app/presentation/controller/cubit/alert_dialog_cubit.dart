@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/constants/app_strings.dart';
-import 'package:test_app/core/theme/app_colors.dart';
 
 part 'alert_dialog_state.dart';
 

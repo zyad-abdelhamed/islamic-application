@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:test_app/core/adaptive/adaptive_widget_depending_on_os.dart';
+import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/widgets/app_sneak_bar.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/get_prayer_times_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/hadith_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/prayer_times_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/home_page_to_android_and_ios.dart';
@@ -10,9 +12,8 @@ import 'package:test_app/features/app/presentation/view/components/home_page_to_
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/services/position_service.dart';
 import 'package:test_app/core/services/internet_connection.dart';
-import 'package:test_app/features/splash_screen.dart';
 
-bool _isInternetConnection = false;
+bool _isShowed = false;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,21 +27,22 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    if (_isInternetConnection == false) {
+    if (_isShowed == false) {
       checkLocationPermission(context);
       checkInternetConnection(context);
-      _isInternetConnection = true;
+      context.read<HadithCubit>().showTodayHadith(context);
+      _isShowed = true;
     }
 
     // تهيئة PrayerTimesCubit
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      
-      context.read<PrayerTimesCubit>().init(
-            timings: sl<GetPrayersTimesController>().timings!,
-            context: context,
-          );
-           context.read<HadithCubit>().showTodayHadith(context);
-    });
+    if (sl<GetPrayersTimesController>().hasErrorNotifier.value == false) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.read<PrayerTimesCubit>().init(
+              timings: sl<GetPrayersTimesController>().timings,
+              context: context,
+            );
+      });
+    }
   }
 
   @override
@@ -62,11 +64,10 @@ class _HomePageState extends State<HomePage> {
         if (mounted) {
           appSneakBar(
             context: context,
-            message: 'تم رفض صلاحية الموقع، سيتم عرض مواقيت الصلاة للقاهرة.',
+            message: 'تم رفض صلاحية الموقع.',
             label: 'صلاحية الموقع',
-            onPressed: () async {
-              await sl<BaseLocationService>().requestPermission;
-            },
+            onPressed: () => Navigator.pushNamedAndRemoveUntil(context,
+                RoutesConstants.locationPermissionPage, (route) => false),
             isError: true,
           );
         }

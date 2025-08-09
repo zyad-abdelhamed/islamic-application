@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_durations.dart';
-import 'package:test_app/core/constants/routes_constants.dart'
-    show RoutesConstants;
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/features/app/data/models/number_animation_model.dart';
 import 'package:test_app/features/app/domain/entities/adhkar_entity.dart';
@@ -17,6 +15,7 @@ class AdhkarPageController {
   final ValueNotifier<bool> switchNotfier = ValueNotifier(true);
   final ValueNotifier<double> fontSizeNotfier = ValueNotifier(20.0);
   double maxProgress = 0.0;
+
   initState(BuildContext context) {
     adhkarScrollController = ScrollController();
     animatedLIstKey = GlobalKey<AnimatedListState>();
@@ -25,6 +24,14 @@ class AdhkarPageController {
       maxProgress = adhkarScrollController.position.maxScrollExtent;
       progressNotfier.value = adhkarScrollController.position.pixels;
     });
+  }
+
+  dispose() {
+    lengthNotfier.dispose();
+    progressNotfier.dispose();
+    switchNotfier.dispose();
+    fontSizeNotfier.dispose();
+    adhkarScrollController.dispose();
   }
 
   void increaseFontSize() {
@@ -52,7 +59,7 @@ class AdhkarPageController {
   void decreaseCount({required CountPrameters countPrameters}) {
     final int count = countPrameters.adhkarEntity.countNotifier.value.number;
 
-    if (count > 1 || (count == 1 && !switchNotfier.value)) {
+    if (count > 1) {
       _slideAnimation(
           slideValue: .3,
           newValue: countPrameters.countNotifier.value.number - 1,
@@ -65,6 +72,12 @@ class AdhkarPageController {
       Future.delayed(AppDurations.mediumDuration, () {
         _removeAnimation(countPrameters.index, countPrameters.adhkarEntity);
       });
+    } else if (count == 1 && !switchNotfier.value) {
+      _slideAnimation(
+          slideValue: .3,
+          newValue: countPrameters.countNotifier.value.number - 1,
+          countNotifier: countPrameters.countNotifier);
+      _reduceLengthNotifierValue();
     }
 
     return;
@@ -77,6 +90,9 @@ class AdhkarPageController {
           slideValue: -.3,
           newValue: countPrameters.adhkarEntity.count,
           countNotifier: countPrameters.countNotifier);
+      if (countPrameters.countNotifier.value.number == 0) {
+        _increaseLengthNotifierValue();
+      }
     }
 
     return;
@@ -108,6 +124,10 @@ class AdhkarPageController {
     lengthNotfier.value--;
   }
 
+  void _increaseLengthNotifierValue() {
+    lengthNotfier.value++;
+  }
+
   void _slideAnimation(
       {required double slideValue,
       required int newValue,
@@ -121,16 +141,6 @@ class AdhkarPageController {
     Future.delayed(AppDurations.lowDuration, () {
       countNotifier.value = NumberAnimationModel(number: newValue);
     }); //reverse animation and stop
-  }
-
-  void _goToHomePageWhenTrminateAllItems(BuildContext context) {
-    if (sl<GetAdhkarController>().adhkar.length == 1) {
-      Future.delayed(Duration(milliseconds: 2100), () {
-        WidgetsBinding.instance.addPostFrameCallback((timeStamp) =>
-            Navigator.pushNamedAndRemoveUntil(
-                context, RoutesConstants.homePageRouteName, (route) => false));
-      });
-    }
   }
 }
 

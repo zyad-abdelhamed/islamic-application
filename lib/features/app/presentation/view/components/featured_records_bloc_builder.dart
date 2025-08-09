@@ -56,7 +56,7 @@ class FeaturedRecordsBlocBuilder extends StatelessWidget {
                             child: Text(
                               state.featuredRecords[index].toString(),
                               textAlign: TextAlign.center,
-                              style: TextStyles.bold20(context),
+                              style: TextStyles.bold20(context).copyWith(fontFamily: 'dataFontFamily'),
                             ),
                           ),
                         ],

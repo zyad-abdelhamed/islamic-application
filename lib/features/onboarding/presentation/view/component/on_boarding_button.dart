@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 
 GestureDetector onBoardingButton(
@@ -12,7 +11,7 @@ GestureDetector onBoardingButton(
       margin: const EdgeInsets.only(left: 10.0),
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 3.0),
       decoration: BoxDecoration(
-          color: AppColors.primaryColor(context),
+          color: Theme.of(context).primaryColor,
           borderRadius: BorderRadius.circular(8.0)),
       child: Text(
         name,

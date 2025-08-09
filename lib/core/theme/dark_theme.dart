@@ -3,7 +3,7 @@ import 'package:test_app/core/theme/app_colors.dart';
 
 ThemeData darkTheme = ThemeData(
   primaryColor: AppColors.darkModePrimaryColor,
-  colorScheme: ColorScheme.dark(primary: AppColors.darkModePrimaryColor),
+  colorScheme: ColorScheme.dark(primary: AppColors.darkModeTextColor),
   brightness: Brightness.dark,
   fontFamily: 'SemiBoldCairo',
   appBarTheme: const AppBarTheme(
@@ -11,17 +11,23 @@ ThemeData darkTheme = ThemeData(
     backgroundColor: Colors.transparent,
     titleTextStyle: TextStyle(
       fontFamily: 'Cairo',
-      color: AppColors.darkModePrimaryColor,
+      color: AppColors.darkModeTextColor,
       fontWeight: FontWeight.bold,
       fontSize: 23,
     ),
     shape: Border(
-      bottom: BorderSide(color: AppColors.darkModePrimaryColor),
+      bottom: BorderSide(color: AppColors.darkModeTextColor),
     ),
+    iconTheme: IconThemeData(color: Colors.grey),
   ),
   drawerTheme: const DrawerThemeData(
     backgroundColor: AppColors.darkModePrimaryColor,
-    shape: LinearBorder(),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(30),
+        bottomLeft: Radius.circular(30),
+      ),
+    ),
   ),
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: ButtonStyle(
