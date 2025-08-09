@@ -13,22 +13,32 @@ class DuaaCubit extends Cubit<DuaaState> {
 
   List<DuaaEntity> addDuaa = [];
 
-  getDuaa({required int page}) async {
-    emit(DuaaState(duaaRequestState: RequestStateEnum.loading));
+  Future<bool> getDuaa({required int page}) async {
+    emit(DuaaState(
+      duaas: addDuaa,
+      duaaRequestState: RequestStateEnum.loading,
+    ));
 
     final result = await duaaBaseRepo.getDuaaWithPegnation(page: page);
+    bool hasData = false;
 
     result.fold((l) {
       emit(DuaaState(
+        duaas: addDuaa,
         duaaErrorMessage: l.message,
         duaaRequestState: RequestStateEnum.failed,
       ));
     }, (r) {
-      addDuaa.addAll(r);
+      if (r.isNotEmpty) {
+        addDuaa.addAll(r);
+        hasData = true;
+      }
       emit(DuaaState(
         duaas: addDuaa,
         duaaRequestState: RequestStateEnum.success,
       ));
     });
+
+    return hasData;
   }
 }

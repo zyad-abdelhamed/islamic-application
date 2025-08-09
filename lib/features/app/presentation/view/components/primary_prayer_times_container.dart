@@ -30,27 +30,39 @@ class PrimaryPrayerTimesContainer extends StatelessWidget {
       decoration: _boxDecoration(color: Theme.of(context).primaryColor),
       child: Column(
         children: <Widget>[
+          // صف أوقات الصلاة
           Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
             child: _getRowOfPrayers(context, textList: prayerTimes),
           ),
+
+          // الحاوية الداخلية
           Container(
             height: 200,
             width: double.infinity,
             padding:
                 const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
             decoration: _boxDecoration(
-              color:ThemeCubit.controller(context).state ? AppColors.darkModeInActiveColor : AppColors.lightModeInActiveColor,
+              color: ThemeCubit.controller(context).state
+                  ? AppColors.darkModeInActiveColor
+                  : AppColors.lightModeInActiveColor,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                _getRowOfPrayers(context, textList: AppStrings.namesOfPrayers1),
-                _getRowOfPrayers(context, textList: AppStrings.emojisOfPrayers),
+                // أيقونة + اسم الصلاة
+                _getRowOfIconsWithText(
+                  context,
+                  icons: iconsOfTimings,
+                  names: AppStrings.namesOfPrayers1,
+                ),
+
                 const Spacer(),
-                NextPrayerWidget(),
+
+                // الصلاة القادمة
+                const NextPrayerWidget(),
               ],
             ),
           ),
@@ -61,13 +73,48 @@ class PrimaryPrayerTimesContainer extends StatelessWidget {
 
   Row _getRowOfPrayers(BuildContext context, {required List<String> textList}) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: List.generate(
         textList.length,
         (index) => Text(
           textList[index],
           textAlign: TextAlign.center,
-          style: TextStyles.bold20(context).copyWith(color: AppColors.white, fontFamily: 'Amiri'),
+          style: TextStyles.bold20(context).copyWith(
+            color: AppColors.white,
+            fontFamily: 'Amiri',
+          ),
+        ),
+      ),
+    );
+  }
+
+  Row _getRowOfIconsWithText(BuildContext context, {
+    required List<String> icons,
+    required List<String> names,
+  }) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: List.generate(
+        icons.length,
+        (index) => Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(
+              icons[index],
+              height: 25,
+              width: 25,
+              color: AppColors.white,
+            ),
+            const SizedBox(height: 5),
+            Text(
+              names[index],
+              style: TextStyles.bold20(context).copyWith(
+                color: AppColors.white,
+                fontFamily: 'Amiri',
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       ),
     );
@@ -80,3 +127,12 @@ class PrimaryPrayerTimesContainer extends StatelessWidget {
     );
   }
 }
+
+List<String> iconsOfTimings = [
+  'assets/images/fajr.png',
+  'assets/images/sunrise.png',
+  'assets/images/dhur.png',
+  'assets/images/asr.png',
+  'assets/images/magrib.png',
+  'assets/images/isha.png',
+];

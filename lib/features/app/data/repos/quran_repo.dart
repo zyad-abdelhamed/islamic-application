@@ -11,10 +11,12 @@ import 'package:test_app/core/errors/failures.dart';
 class QuranRepo implements BaseQuranRepo {
   final QuranLocalDataSource _quranLocalDataSource;
   final BaseQuranRemoteDataSource _baseQuranRemoteDataSource;
+  final QuranLocalDataSource quranLocalDataSource;
 
   QuranRepo(
     this._baseQuranRemoteDataSource,
     this._quranLocalDataSource,
+    this.quranLocalDataSource,
   );
 
   @override
@@ -67,11 +69,15 @@ class QuranRepo implements BaseQuranRepo {
       return right(unit);
     } catch (e) {
       return left(Failure('خطأ ف مسح العلامة'));
+    }
+  }
+
+  @override
   Future<Either<Failure, List<TafsirAyahEntity>>> getSurahWithTafsir(
       TafsirRequestParams params) async {
     try {
-      final List<TafsirAyahEntity> result = await _baseQuranRemoteDataSource
-          .getSurahWithTafsir(params);
+      final List<TafsirAyahEntity> result =
+          await _baseQuranRemoteDataSource.getSurahWithTafsir(params);
       return Right(result);
     } catch (e) {
       return Left(ServerFailure(e.toString()));

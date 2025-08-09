@@ -92,7 +92,7 @@ class DependencyInjection {
     sl.registerLazySingleton<GetRecordsUseCase>(
         () => GetRecordsUseCase(baseRecordsRepo: sl()));
     //repositories
-    sl.registerLazySingleton<BaseQuranRepo>(() => QuranRepo(sl(), sl()));
+    sl.registerLazySingleton<BaseQuranRepo>(() => QuranRepo(sl(), sl(), sl()));
     sl.registerLazySingleton<BaseLocationRepo>(() => LocationRepo(sl(),sl(),sl(),sl()));
     sl.registerLazySingleton<DuaaBaseRepo>(() => DuaaRepo(sl()));
     sl.registerLazySingleton<BaseRTableRepo>(

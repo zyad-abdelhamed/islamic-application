@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-<<<<<<< HEAD
-=======
 import 'package:test_app/core/adaptive/adaptive_widgets/adaptive_switch.dart';
-import 'package:test_app/core/helper_function/get_widget_depending_on_reuest_state.dart';
->>>>>>> 648e92846d51433cb8615d0dda0a1db7191550e0
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
@@ -59,23 +55,10 @@ class HomeDrawerWidget extends StatelessWidget {
             const Divider(color: Colors.grey),
 
             // Duaa Section
-            BlocProvider(
-              create: (context) => DuaaCubit(sl())..getDuaa(),
-              child: BlocBuilder<DuaaCubit, DuaaState>(
-                builder: (context, state) {
-                  return Expanded(
-                      child: ListView.builder(
-                    itemCount: state.duaas.length,
-                    itemBuilder: (context, index) {
-                      return getWidgetDependingOnReuestState(
-                          requestStateEnum: state.duaaRequestState,
-                          widgetIncaseSuccess: DuaaDisplay(
-                              duaaTitle: state.duaas[index].title,
-                              duaaBody: state.duaas[index].content),
-                          erorrMessage: state.duaaErrorMessage);
-                    },
-                  ));
-                },
+            Expanded(
+              child: BlocProvider(
+                create: (context) => DuaaCubit(sl()),
+                child: const DuaaListPagination(),
               ),
             ),
 

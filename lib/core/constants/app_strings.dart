@@ -154,7 +154,7 @@ abstract class AppStrings {
   ];
   static List pages = [
     BlocProvider(
-        create: (context) => QuranCubit()..loadPdfFromAssets(),
+        create: (context) => QuranCubit(sl())..loadPdfFromAssets(),
         child: AlquranAlkarimPage()),
         SurahListPage(),
     ElecRosaryPage(),
