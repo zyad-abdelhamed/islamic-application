@@ -1,6 +1,6 @@
 part of 'duaa_cubit.dart';
 
-class DuaaState extends Equatable {
+class DuaaState {
   const DuaaState(
       {this.duaaErrorMessage = '',
       this.duaaRequestState = RequestStateEnum.loading,
@@ -8,6 +8,4 @@ class DuaaState extends Equatable {
   final String duaaErrorMessage;
   final RequestStateEnum duaaRequestState;
   final List<DuaaEntity> duaas;
-  @override
-  List<Object> get props => [duaaErrorMessage, duaaRequestState, duaas];
 }

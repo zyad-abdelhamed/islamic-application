@@ -8,9 +8,9 @@ class DuaaRepo extends DuaaBaseRepo {
   final DuaaLocalDataSource localDataSource;
   DuaaRepo(this.localDataSource);
   @override
-  Future<Either<Failure, List<DuaaEntity>>> getDuaaWithPegnation({required int page}) async {
+  Future<Either<Failure, List<DuaaEntity>>> getDuaaWithPegnation() async {
     try {
-      return Right(await localDataSource.getDuaaWithPegnation(page: page));
+      return Right(await localDataSource.getDuaaWithPegnation());
     } catch (e) {
       return Left(Failure('خطاء في جلب الدعاء'));
     }
