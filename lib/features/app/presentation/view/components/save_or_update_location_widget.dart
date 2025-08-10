@@ -7,7 +7,7 @@ import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/services/position_service.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/utils/enums.dart';
-import 'package:test_app/features/app/presentation/controller/controllers/cubit/location_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/location_cubit.dart';
 
 class SaveOrUpdateLocationWidget extends StatefulWidget {
   const SaveOrUpdateLocationWidget({

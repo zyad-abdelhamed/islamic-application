@@ -47,8 +47,8 @@ class PrimaryPrayerTimesContainer extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                _getRowOfPrayers(context, textList: AppStrings.namesOfPrayers1),
-                _getRowOfPrayers(context, textList: AppStrings.emojisOfPrayers),
+                _getRowOfPrayers(context, textList: AppStrings.translate("namesOfPrayers1")),
+                _getRowOfPrayers(context, textList: AppStrings.translate("emojisOfPrayers")),
                 const Spacer(),
                 NextPrayerWidget(),
               ],
@@ -59,7 +59,7 @@ class PrimaryPrayerTimesContainer extends StatelessWidget {
     );
   }
 
-  Row _getRowOfPrayers(BuildContext context, {required List<String> textList}) {
+  Row _getRowOfPrayers(BuildContext context, {required List textList}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: List.generate(

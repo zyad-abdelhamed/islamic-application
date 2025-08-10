@@ -16,12 +16,11 @@ class _SurahListPageState extends State<SurahListPage> {
 
   @override
   void initState() {
-    selectedEditionNotifier =
-        ValueNotifier<Map<String, String>>(AppStrings.tafsirEditions.first);
+    selectedEditionNotifier = ValueNotifier<Map<String, String>>(
+      {"identifier": "ar.tabari", "name": "تفسير الطبري"},
+    );
     super.initState();
   }
-
- 
 
   @override
   void dispose() {
@@ -38,8 +37,11 @@ class _SurahListPageState extends State<SurahListPage> {
         ),
         body: Column(
           children: [
-            buildEditionDropdown(selectedEditionNotifier),
-            Expanded(child: buildSurahList(selectedEditionNotifier)),
+            TafsirEditionDropdown(
+                selectedEditionNotifier: selectedEditionNotifier),
+            Expanded(
+                child: SurahListWithFuture(
+                    selectedEditionNotifier: selectedEditionNotifier)),
           ],
         ));
   }

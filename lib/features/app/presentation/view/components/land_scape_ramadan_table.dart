@@ -61,7 +61,7 @@ class LandScapeWidgetToRTablePage extends StatelessWidget {
                                               16,
                                       title: 'الفروض',
                                       listOfStrings: AppStrings
-                                          .namesOfPrayers,
+                                          .translate("namesOfPrayers") as List<String>,
                                       count: 5,
                                     ),
                                   ),
@@ -73,7 +73,7 @@ class LandScapeWidgetToRTablePage extends StatelessWidget {
                                                 16,
                                         title: 'النوافل',
                                         listOfStrings: AppStrings
-                                            .namesOfVoluntaryPrayers,
+                                            .translate("namesOfVoluntaryPrayers") as List<String>,
                                         count: 4,
                                       )),
                                 ],
@@ -88,7 +88,7 @@ class LandScapeWidgetToRTablePage extends StatelessWidget {
                             width: constraints.maxWidth / 16,
                             title: 'ألاذكار',
                             listOfStrings:
-                                AppStrings.supplications,
+                                AppStrings.translate("supplications") as List<String>,
                             count: 5),
                       ),
                       Flexible(
@@ -96,7 +96,7 @@ class LandScapeWidgetToRTablePage extends StatelessWidget {
                         child: RamadanTableColumn(
                             width: constraints.maxWidth / 16,
                             title: 'قران',
-                            listOfStrings: AppStrings.list,
+                            listOfStrings: AppStrings.translate("list") as List<String>,
                             count: 2),
                       ),
                     ],

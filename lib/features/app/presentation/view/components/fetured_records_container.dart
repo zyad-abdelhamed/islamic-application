@@ -39,7 +39,7 @@ class FeturedRecordsContainer extends StatelessWidget {
           ),
           Center(
             child: Text(
-              AppStrings.featuerdRecords,
+              AppStrings.translate("featuerdRecords"),
               style: TextStyles.semiBold16_120(context)
                   .copyWith(color: Theme.of(context).primaryColor),
             ),
@@ -71,7 +71,7 @@ class FeturedRecordsContainer extends StatelessWidget {
                   ),
               child: Align(
                 alignment: Alignment.centerRight,
-                child: Text(AppStrings.deleteAll,
+                child: Text(AppStrings.translate("deleteAll"),
                     style: TextStyles.regular14_150(context)
                         .copyWith(color: AppColors.errorColor)),
               )),

@@ -16,7 +16,7 @@ class RemainingTimeWidget extends StatelessWidget {
     return Row(
       children: [
         Text(
-          AppStrings.remainingTime,
+          AppStrings.translate("remainingTime"),
           style: TextStyles.bold20(context),
         ),
         SizedBox(

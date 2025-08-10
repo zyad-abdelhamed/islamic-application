@@ -61,7 +61,7 @@ AppBar adhkarPageAppBar(BuildContext context,
           builder: (_, __, ___) => Padding(
             padding: const EdgeInsets.symmetric(vertical: 6.0),
             child: AdaptiveSwitch(
-              name: AppStrings.adhkarPageSwitchText,
+              name: AppStrings.translate("adhkarPageSwitchText"),
               onChanged: adhkarPageController.toggleIsDeletedSwitch,
               value: adhkarPageController.switchNotfier.value,
             ),
@@ -76,7 +76,7 @@ GestureDetector _controleTextFontSizeButton(BuildContext context,
     {required double fontSize, required void Function() onTap}) {
   return GestureDetector(
     onTap: onTap,
-    child: Text(AppStrings.fontSizeButtonText,
+    child: Text(AppStrings.translate("fontSizeButtonText"),
         style: TextStyles.bold20(context).copyWith(
             color: Colors.grey, fontSize: fontSize, fontFamily: "normal")),
   );

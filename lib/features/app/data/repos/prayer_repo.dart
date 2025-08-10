@@ -5,6 +5,7 @@ import 'package:test_app/core/services/internet_connection.dart';
 import 'package:test_app/features/app/data/datasources/prayers_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/prayers_remote_data_source.dart';
 import 'package:test_app/features/app/data/models/get_prayer_times_of_month_prameters.dart';
+import 'package:test_app/features/app/domain/entities/prayer_sound_settings_entity.dart';
 import 'package:test_app/features/app/domain/entities/timings.dart';
 import 'package:test_app/features/app/domain/repositories/base_prayer_repo.dart';
 import 'package:test_app/core/errors/failures.dart';
@@ -78,7 +79,7 @@ class PrayerRepo extends BasePrayerRepo {
     try {
       final timings = await prayersLocalDataSource.getLocalPrayersTimes();
       if (timings == null) {
-        return const Left(Failure(AppStrings.cachedErrorMessage));
+        return Left(Failure(AppStrings.translate("cachedErrorMessage")));
       }
       return Right(timings);
     } catch (e) {
@@ -94,11 +95,42 @@ class PrayerRepo extends BasePrayerRepo {
     return await locationResult.fold<Future<Either<Failure, List<Timings>>>>(
       (failure) async => Left(Failure(failure.message)),
       (r) async {
-        final List<Timings> timingsOfMonth = await prayersRemoteDataSource
-            .getPrayerTimesOfMonth(getPrayerTimesOfMonthPrameters,
-                latitude: r.latitude, longitude: r.longitude);
-        return Right(timingsOfMonth);
+        try {
+          final List<Timings> timingsOfMonth = await prayersRemoteDataSource
+              .getPrayerTimesOfMonth(getPrayerTimesOfMonthPrameters,
+                  latitude: r.latitude, longitude: r.longitude);
+          return Right(timingsOfMonth);
+        } catch (e) {
+          if (e is DioException) {
+            return Left(ServerFailure.fromDiorError(e));
+          }
+          return Left(Failure('$e'));
+        }
       },
     );
+  }
+
+  @override
+  Future<Either<Failure, PrayerSoundSettingsEntity>>
+      getPrayersSoundSettings() async {
+    try {
+      final PrayerSoundSettingsEntity settings =
+          await prayersLocalDataSource.getPrayerSoundSettings();
+      return right(settings);
+    } catch (_) {
+      return left(AppStrings.translate("cachedErrorMessage"));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> savePrayersSoundSettings(
+      PrayerSoundSettingsEntity prayerSoundSettingsEntity) async {
+    try {
+      await prayersLocalDataSource
+          .savePrayerSoundSettings(prayerSoundSettingsEntity);
+      return right(unit);
+    } catch (_) {
+      return left(AppStrings.translate("cachedErrorMessage"));
+    }
   }
 }

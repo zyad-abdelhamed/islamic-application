@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
+import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
+import 'package:test_app/core/widgets/empty_list_text_widget.dart';
 import 'package:test_app/features/app/data/models/tafsir_request_params.dart';
-import 'package:test_app/features/app/presentation/controller/cubit/cubit/get_surah_with_tafsir_cubit.dart';
-import 'package:test_app/features/app/presentation/controller/cubit/cubit/get_surah_with_tafsir_state.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/get_surah_with_tafsir_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/get_surah_with_tafsir_state.dart';
 import 'package:test_app/features/app/presentation/view/components/tafsir_ayah_widget.dart';
 
 class TafsirPage extends StatefulWidget {
@@ -44,8 +46,7 @@ class _TafsirPageState extends State<TafsirPage> {
   Widget build(BuildContext context) {
     final isDark = ThemeCubit.controller(context).state;
     final Color? textColor = isDark ? AppColors.grey400 : Colors.black;
-    final Color ayahNumberColor =
-        Theme.of(context).primaryColor;
+    final Color ayahNumberColor = Theme.of(context).primaryColor;
 
     return Scaffold(
       appBar: AppBar(
@@ -67,6 +68,12 @@ class _TafsirPageState extends State<TafsirPage> {
           } else if (state is TafsirLoaded) {
             final items = state.tafsir;
 
+            if (items.isEmpty) {
+              return EmptyListTextWidget(
+                text: AppStrings.translate("noTafsirAvailable"),
+              );
+            }
+
             return ListView.builder(
               controller: _scrollController,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -74,7 +81,6 @@ class _TafsirPageState extends State<TafsirPage> {
               itemBuilder: (context, index) {
                 if (index < items.length) {
                   final ayah = items[index];
-
                   return TafsirAyahWidget(
                     ayah: ayah,
                     ayahNumberColor: ayahNumberColor,
@@ -82,8 +88,8 @@ class _TafsirPageState extends State<TafsirPage> {
                     isDark: isDark,
                   );
                 } else {
-                  return Padding(
-                    padding: const EdgeInsets.all(16.0),
+                  return const Padding(
+                    padding: EdgeInsets.all(16.0),
                     child: GetAdaptiveLoadingWidget(),
                   );
                 }

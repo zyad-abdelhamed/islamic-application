@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
-import 'package:test_app/features/app/presentation/controller/controllers/cubit/location_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/location_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_prayer_times_controller.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/prayer_times_page_controller.dart';
 
@@ -70,7 +70,7 @@ class ChangeLocationWidget extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           CircleAvatar(
-            backgroundColor: Colors.black.withValues(alpha: .3),
+            backgroundColor: Colors.grey.withValues(alpha: .3),
             radius: 80,
             child: Column(
               spacing: 5,

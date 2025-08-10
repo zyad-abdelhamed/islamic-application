@@ -5,8 +5,8 @@ import 'package:test_app/core/helper_function/get_widget_depending_on_reuest_sta
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
-import 'package:test_app/features/app/presentation/view/components/draw_circle_line_bloc_builder.dart';
-import 'package:test_app/features/app/presentation/view/components/rosary_ring_widget.dart';
+import 'package:test_app/core/widgets/app_divider.dart';
+import 'package:test_app/features/app/presentation/view/components/rosary_ring%20widget.dart';
 import 'package:test_app/features/app/presentation/view/components/home_drawer_text_button.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/theme/text_styles.dart';
@@ -18,10 +18,10 @@ class HomeDrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<StatelessWidget> textButtonsAlertDialogWidgets =
-        <StatelessWidget>[
+    final List textButtonsAlertDialogWidgets =
+        [
       Text(
-        AppStrings.khetmAlquran,
+        AppStrings.translate("khetmAlquran"),
         textAlign: TextAlign.center,
         style: TextStyles.bold20(context).copyWith(
           fontFamily: 'DataFontFamily',
@@ -30,13 +30,8 @@ class HomeDrawerWidget extends StatelessWidget {
               : AppColors.black,
         ),
       ),
-      RosaryRingWidget(),
-      DrawCircleLineBlocBuilder(
-        customPaintSize: 200,
-        maxProgress: 100.0,
-        functionality:
-            DrawCircleLineBlocBuilderFunctionality.rosariesAfterPrayer,
-      ),
+      DrawRosaryRingWidget(),
+      DrawRosaryRingWidget(),
     ];
 
     return SafeArea(
@@ -48,12 +43,12 @@ class HomeDrawerWidget extends StatelessWidget {
             ...List.generate(textButtonsAlertDialogWidgets.length, (index) {
               return HomeDrawerTextButton(
                 index: index,
-                text: AppStrings.homeDrawerTextButtons[index],
+                text: AppStrings.translate("homeDrawerTextButtons")[index],
                 alertDialogContent: textButtonsAlertDialogWidgets[index],
               );
             }),
 
-            const Divider(color: Colors.grey),
+            appDivider(),
 
             // Duaa Section
             BlocProvider(
@@ -76,13 +71,13 @@ class HomeDrawerWidget extends StatelessWidget {
               ),
             ),
 
-            const Divider(color: Colors.grey),
+            appDivider(),
 
             // Theme Toggle
             Align(
               alignment: Alignment.centerRight,
               child: AdaptiveSwitch(
-                name: AppStrings.darkMode,
+                name: AppStrings.translate("darkMode"),
                 onChanged: ThemeCubit.controller(context).toggleTheme,
                 value: context.watch<ThemeCubit>().state,
               ),

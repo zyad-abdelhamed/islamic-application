@@ -4,6 +4,7 @@ import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
+import 'package:test_app/core/widgets/explain_feature_widget.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/prayer_times_page_controller.dart';
 
 class GetPrayerTimesOfMonthButton extends StatelessWidget {
@@ -23,15 +24,18 @@ class GetPrayerTimesOfMonthButton extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-                color: ThemeCubit.controller(context).state ? AppColors.darkModeInActiveColor : AppColors.lightModeInActiveColor,
+                color: ThemeCubit.controller(context).state
+                    ? AppColors.darkModeInActiveColor
+                    : AppColors.lightModeInActiveColor,
                 borderRadius: BorderRadius.circular(20)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.send,
+                Image.asset(
+                  "assets/images/send.png",
+                  width: 40,
+                  height: 40,
                   color: Theme.of(context).primaryColor,
-                  size: 40,
                 ),
               ],
             ),
@@ -41,7 +45,9 @@ class GetPrayerTimesOfMonthButton extends StatelessWidget {
             width: context.width * 3 / 4,
             padding: const EdgeInsets.all(10.0),
             decoration: BoxDecoration(
-                color: ThemeCubit.controller(context).state ? AppColors.darkModeInActiveColor : AppColors.lightModeInActiveColor,
+                color: ThemeCubit.controller(context).state
+                    ? AppColors.darkModeInActiveColor
+                    : AppColors.lightModeInActiveColor,
                 borderRadius: BorderRadius.circular(20)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,7 +56,8 @@ class GetPrayerTimesOfMonthButton extends StatelessWidget {
                   spacing: 5,
                   children: [
                     Icon(Icons.calendar_month, color: Colors.grey),
-                    Text(AppStrings.chooseDate, style: TextStyle(color: Colors.grey)),
+                    Text(AppStrings.translate("chooseDate"),
+                        style: TextStyle(color: Colors.grey)),
                     IconButton(
                         onPressed: () =>
                             prayerTimesPageController.selectDate(context),
@@ -60,11 +67,8 @@ class GetPrayerTimesOfMonthButton extends StatelessWidget {
                           size: 35,
                         )),
                     Spacer(),
-                    Icon(
-                      Icons.info,
-                      color: Theme.of(context).primaryColor,
-                      size: 35,
-                    ),
+                    ExplainFeatureButton(
+                        text: AppStrings.translate("prayerTimesOfMonthInfoText")),
                   ],
                 ),
                 Row(

@@ -8,53 +8,82 @@ import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/onboarding/presentation/controller/on_boarding_cubit.dart';
 import 'package:test_app/features/onboarding/presentation/view/component/on_boarding_button.dart';
 
-class SecondryPage extends StatelessWidget {
+class SecondryPage extends StatefulWidget {
   const SecondryPage({super.key});
+
+  @override
+  State<SecondryPage> createState() => _SecondryPageState();
+}
+
+class _SecondryPageState extends State<SecondryPage> {
+  late final PageController pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final cubit = sl<OnBoardingCubit>();
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
             Expanded(
-                child: PageView.builder(
-              controller: sl<OnBoardingCubit>().pageController,
-              itemCount: AppStrings.features.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Column(
-                  spacing: 90,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircleAvatar(
-                      backgroundColor: AppColors.white,
-                      radius: 90,
-                      child: Image.asset(
-                        images[index],
-                        fit: BoxFit.fill,
+              child: PageView.builder(
+                controller: pageController,
+                itemCount: AppStrings.translate("features").length,
+                itemBuilder: (context, index) {
+                  return Column(
+                    spacing: 90,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: AppColors.white,
+                        radius: 90,
+                        child: Image.asset(
+                          images[index],
+                          fit: BoxFit.fill,
+                        ),
                       ),
-                    ),
-                    Text(
-                      AppStrings.features[index],
-                      style: TextStyles.semiBold32Decoreted(context,
-                          color: Theme.of(context).primaryColor),
-                    ),
-                    Text(
-                      AppStrings.texts[index],
-                      style: TextStyles.semiBold16(
-                          context: context, color: AppColors.secondryColor),
-                    )
-                  ],
-                );
-              },
-            )),
+                      Text(
+                        AppStrings.translate("features")[index],
+                        style: TextStyles.semiBold32Decoreted(
+                          context,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                      Text(
+                        AppStrings.translate("textsOfOnBorading")[index],
+                        style: TextStyles.semiBold16(
+                          context: context,
+                          color: AppColors.secondryColor,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: SmoothPageIndicator(
-                controller: sl<OnBoardingCubit>().pageController,
-                count: AppStrings.features.length,
+                controller: pageController,
+                count: AppStrings.translate("features").length,
                 effect: ScrollingDotsEffect(
-                  dotColor: ThemeCubit.controller(context).state ? AppColors.darkModeInActiveColor : AppColors.lightModeInActiveColor,
+                  dotColor: ThemeCubit.controller(context).state
+                      ? AppColors.darkModeInActiveColor
+                      : AppColors.lightModeInActiveColor,
                   activeDotColor: Theme.of(context).primaryColor,
                   dotHeight: 10,
                   dotWidth: 10,
@@ -67,24 +96,27 @@ class SecondryPage extends StatelessWidget {
               children: [
                 onBoardingButton(
                   context: context,
-                  name: AppStrings.next,
-                  onPressed: () =>
-                      sl<OnBoardingCubit>().animateToNextPage(context: context),
+                  name: AppStrings.translate("next"),
+                  onPressed: () => cubit.toNextPage(
+                    context: context,
+                    controller: pageController,
+                  ),
                 ),
                 TextButton(
-                    onPressed: () {
-                      sl<OnBoardingCubit>().goToHomePage(context: context);
-                    },
-                    child: Text(
-                      AppStrings.skip,
-                      style: TextStyles.semiBold16(
-                          context: context, color: Colors.grey),
-                    )),
+                  onPressed: () {
+                    cubit.goToHomePage(context: context);
+                  },
+                  child: Text(
+                    AppStrings.translate("skip"),
+                    style: TextStyles.semiBold16(
+                      context: context,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
               ],
             ),
-            SizedBox(
-              height: 30,
-            )
+            const SizedBox(height: 30),
           ],
         ),
       ),

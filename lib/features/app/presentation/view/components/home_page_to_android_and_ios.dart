@@ -5,6 +5,13 @@ import 'package:test_app/features/app/presentation/view/components/home_button.d
 import 'package:test_app/features/app/presentation/view/components/home_page_drawer.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/features/app/presentation/view/components/prayer_times_widget.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/quran_cubit.dart';
+import 'package:test_app/features/app/presentation/view/pages/alquran_alkarim_page.dart';
+import 'package:test_app/features/app/presentation/view/pages/elec_rosary_page.dart';
+import 'package:test_app/features/app/presentation/view/pages/qibla_page.dart';
+import 'package:test_app/features/app/presentation/view/pages/rtabel_page.dart';
+import 'package:test_app/features/app/presentation/view/pages/surahs_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePageToAndroidAndIos extends StatelessWidget {
   const HomePageToAndroidAndIos({
@@ -16,7 +23,7 @@ class HomePageToAndroidAndIos extends StatelessWidget {
         MediaQuery.of(context).orientation == Orientation.portrait;
     return Scaffold(
         appBar: AppBar(
-          title: Text(AppStrings.mainPage),
+          title: Text(AppStrings.translate("mainPage")),
         ),
         drawer: Drawer(child: HomeDrawerWidget()),
         body: SingleChildScrollView(
@@ -36,13 +43,14 @@ class HomePageToAndroidAndIos extends StatelessWidget {
                     physics: BouncingScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     children: List.generate(
-                        AppStrings.pages.length,
+                        _pages.length,
                         (index) => HomeButton(
                             text: AppStrings.appBarTitles(
                                 withTwoLines: true)[index],
                             index: index,
-                            page: AppStrings.pages[index],
-                            image: AppStrings.imagesOfHomePageButtons[index]))),
+                            page: _pages[index],
+                            image: AppStrings.translate(
+                                "imagesOfHomePageButtons")[index]))),
               ),
               AdhkarGridView(crossAxisCount: isPortraitOrientation ? 2 : 4)
             ],
@@ -50,3 +58,13 @@ class HomePageToAndroidAndIos extends StatelessWidget {
         ));
   }
 }
+
+List _pages = [
+  BlocProvider(
+      create: (context) => QuranCubit()..loadPdfFromAssets(),
+      child: AlquranAlkarimPage()),
+  SurahListPage(),
+  ElecRosaryPage(),
+  RamadanTabelPage(),
+  QiblaPage(),
+];

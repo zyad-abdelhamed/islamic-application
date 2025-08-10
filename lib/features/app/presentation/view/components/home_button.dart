@@ -40,7 +40,7 @@ class HomeButton extends StatelessWidget {
       },
       child: Container(
         margin: EdgeInsets.only(
-            left: index != AppStrings.pages.length - 1
+            left: index != AppStrings.translate("pages").length - 1
                 ? 16.0
                 : 0.0), //(leftMargine)spacing between buttons
 

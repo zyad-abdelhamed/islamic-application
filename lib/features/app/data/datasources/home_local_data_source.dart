@@ -18,7 +18,7 @@ class HomeLocalDataSourceImpl extends HomeLocalDataSource {
   Future<List<AdhkarEntity>> getAdhkar(
       AdhkarParameters adhkarParameters) async {
     Map<String, dynamic> jsonAdhkar =
-        await getAdhkarFromJson(DataBaseConstants.adhkarjsonFileRoute);
+        await getJson(DataBaseConstants.adhkarjsonFileRoute);
     return List<AdhkarEntity>.from(
         (jsonAdhkar[adhkarParameters.nameOfAdhkar] as List)
             .map((e) => AdhkarModel.fromJson(json: e)));
@@ -27,7 +27,7 @@ class HomeLocalDataSourceImpl extends HomeLocalDataSource {
   @override
   Future<Hadith> getAhadiths() async {
     final Map<String, dynamic> jsondecoded =
-        await getAdhkarFromJson(DataBaseConstants.hadithjsonFileRoute);
+        await getJson(DataBaseConstants.hadithjsonFileRoute);
 
     return HadithModel(
         content: jsondecoded["hadiths"]

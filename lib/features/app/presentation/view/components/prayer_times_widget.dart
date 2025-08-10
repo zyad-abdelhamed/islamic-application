@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
@@ -44,10 +45,13 @@ class PrayerTimesWidget extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text(
-                            controller.locationEntity.name,
-                            style: TextStyles.bold20(context).copyWith(
-                              color: Colors.grey
+                          Visibility(
+                            visible: controller.locationEntity.name != AppStrings.translate("unknownCity"),
+                            child: Text(
+                              controller.locationEntity.name,
+                              style: TextStyles.bold20(context).copyWith(
+                                color: Colors.grey
+                              ),
                             ),
                           ),
                           Text(

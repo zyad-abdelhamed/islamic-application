@@ -36,7 +36,7 @@ import 'package:test_app/features/app/domain/usecases/get_surah_with_tafsir_use_
 import 'package:test_app/features/app/domain/usecases/get_today_hadith_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/reset_booleans_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/update_booleans_use_case.dart';
-import 'package:test_app/features/app/presentation/controller/controllers/cubit/location_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/location_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_adhkar_controller.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_prayer_times_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_prayer_times_of_month_cubit.dart';
@@ -44,6 +44,7 @@ import 'package:test_app/features/app/presentation/controller/cubit/hadith_cubit
 import 'package:test_app/features/app/domain/usecases/get_records_use_case.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/featured_records_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/prayer_times_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/prayers_sound_settings_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/rtabel_cubit.dart';
 import 'package:test_app/core/services/api_services.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/timer_cubit.dart';
@@ -60,6 +61,7 @@ class DependencyInjection {
     sl.registerLazySingleton(
         () => GetPrayersTimesController(getPrayersTimesUseCase: sl(),baseLocationRepo: sl()));
     // cubits
+    sl.registerFactory(() => PrayerSoundSettingsCubit(basePrayerRepo: sl()));
     sl.registerFactory(() => DuaaCubit(sl()));
     sl.registerFactory(()=> LocationCubit(sl()));
     sl.registerLazySingleton(() => OnBoardingCubit());
