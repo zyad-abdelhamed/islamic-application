@@ -14,6 +14,8 @@ class DuaaLocalDataSourceImpl implements DuaaLocalDataSource {
     final jsonFile =
         await rootBundle.loadString(DataBaseConstants.duaajsonFileRoute);
     final decodedJson = jsonDecode(jsonFile);
-    return List<DuaaModel>.from(decodedJson.map((e) => DuaaModel.fromJson(e)));
+
+    return List<DuaaModel>.from(decodedJson.map((e) => DuaaModel.fromJson(e)))
+        .toList();
   }
 }
