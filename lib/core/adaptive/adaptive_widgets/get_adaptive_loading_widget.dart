@@ -27,7 +27,7 @@ Container _getWindowsLoadingWidget(BuildContext context) {
     padding: const EdgeInsets.all(8.0),
     color: AppColors.white,
     child: Text(
-      AppStrings.loadingText,
+      AppStrings.translate("loadingText"),
       style: TextStyles.bold20(context).copyWith( color: AppColors.black),
     ),
   );

@@ -42,14 +42,14 @@ class HomePageToDesktop extends StatelessWidget {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: List.generate(
-                            AppStrings.pages.length,
+                            AppStrings.translate("pages").length,
                             (index) => HomeButton(
                                 text: AppStrings.appBarTitles(
                                     withTwoLines: true)[index],
                                 index: index,
-                                page: AppStrings.pages[index],
+                                page: AppStrings.translate("pages")[index],
                                 image:
-                                    AppStrings.imagesOfHomePageButtons[index])))
+                                    AppStrings.translate("imagesOfHomePageButtons")[index])))
                   ],
                 ),
               )),

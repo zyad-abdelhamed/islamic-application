@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:test_app/core/constants/app_strings.dart';
-import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/services/position_service.dart';
-import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
-import 'package:test_app/features/app/presentation/controller/controllers/cubit/location_cubit.dart';
-import 'package:test_app/features/app/presentation/view/components/custom_alert_dialog.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/location_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/save_or_update_location_widget.dart';
+import 'package:test_app/features/app/presentation/view/components/show_location_warning%20_dialog.dart';
+import 'package:test_app/features/onboarding/presentation/controller/on_boarding_cubit.dart';
 
 class LocationPermissionPage extends StatefulWidget {
   const LocationPermissionPage({super.key});
@@ -33,9 +32,16 @@ class _LocationPermissionPageState extends State<LocationPermissionPage> {
       permissionStatusNotifier.value = perm;
     });
   }
+late OnBoardingCubit _onBoardingCubit;
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _onBoardingCubit = context.read<OnBoardingCubit>();
+  }
+  @override
   void dispose() {
+     _onBoardingCubit.emitToTrue();
     permissionSubscription.cancel();
     permissionStatusNotifier.dispose();
     super.dispose();
@@ -60,13 +66,13 @@ class _LocationPermissionPageState extends State<LocationPermissionPage> {
                   size: 100, color: Theme.of(context).primaryColor),
               SizedBox(height: 20),
               Text(
-                AppStrings.activationLocationRequired,
+                AppStrings.translate("activationLocationRequired"),
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 12),
               Text(
-                AppStrings.usesOfActivationLocation,
+                AppStrings.translate("usesOfActivationLocation"),
                 style: TextStyles.semiBold16_120(context),
                 textAlign: TextAlign.center,
               ),
@@ -81,9 +87,9 @@ class _LocationPermissionPageState extends State<LocationPermissionPage> {
                         spacing: 12,
                         children: [
                           ElevatedButton(
-                            onPressed: () =>
-                                sl<BaseLocationService>().requestPermission,
-                            child: Text(AppStrings.activationLocationNow),
+                            onPressed: () async =>
+                                await sl<BaseLocationService>().requestPermission(),
+                            child: Text(AppStrings.translate("activationLocationNow")),
                           ),
                           TextButton(
                             onPressed: () => showLocationWarningDialog(context),
@@ -98,7 +104,7 @@ class _LocationPermissionPageState extends State<LocationPermissionPage> {
                         create: (context) => sl<LocationCubit>(),
                         child: SaveOrUpdateLocationWidget(
                           functionaltiy: Functionaltiy.save,
-                          buttonName: AppStrings.saveLocation,
+                          buttonName: AppStrings.translate("saveLocation"),
                         ),
                       ),
                     )
@@ -111,35 +117,4 @@ class _LocationPermissionPageState extends State<LocationPermissionPage> {
       ),
     );
   }
-}
-
-void showLocationWarningDialog(BuildContext context) {
-  showDialog(
-      context: context,
-      builder: (context) => CustomAlertDialog(
-            title: 'تنبيه هام',
-            alertDialogContent: (context) => Column(spacing: 20,
-              children: [
-                Text(
-                  AppStrings.deniedLocationPermissionAlertDialogText,
-                  textAlign: TextAlign.right,
-                  style: TextStyle(height: 1.5, fontFamily: 'dataFontFamily'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      RoutesConstants.splashScreenRouteName,
-                      (_) => false,
-                    );
-                  },
-                  child: Text(AppStrings.gotIt),
-                )
-              ],
-            ),
-            iconWidget: (BuildContext context) => const Icon(
-              Icons.warning,
-              color: AppColors.secondryColor,
-            ),
-          ));
 }

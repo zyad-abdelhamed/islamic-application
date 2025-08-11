@@ -5,22 +5,34 @@ import 'package:test_app/core/constants/routes_constants.dart';
 
 class OnBoardingCubit extends HydratedCubit<bool> {
   OnBoardingCubit() : super(false);
-  final PageController pageController = PageController();
 
-  void animateToNextPage({required BuildContext context}) {
-    final int page = pageController.page!.round();
-    if (page == 4) {
-      goToHomePage(context: context);
-    }
-    pageController.nextPage(
-        duration: const Duration(milliseconds: 1), curve: Easing.legacy);
+  void toNextPage({
+  required BuildContext context,
+  required PageController controller,
+}) {
+  if (!controller.hasClients) return;
+
+  final int page = controller.page?.round() ?? 0;
+
+  if (page == 4) {
+    // التنقل فورًا
+   goToHomePage(context: context);
+    return;
   }
+
+  controller.jumpToPage(page + 1);
+}
+
 
   void goToHomePage({required BuildContext context}) {
     Navigator.pushNamedAndRemoveUntil(
-        context, RoutesConstants.locationPermissionPage, (route) => false);
-    emit(true);
+      context,
+      RoutesConstants.locationPermissionPage,
+      (route) => false,
+    );
   }
+
+  emitToTrue() => emit(true);
 
   @override
   bool fromJson(Map<String, dynamic> json) {

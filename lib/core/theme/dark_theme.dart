@@ -29,6 +29,9 @@ ThemeData darkTheme = ThemeData(
       ),
     ),
   ),
+   inputDecorationTheme: const InputDecorationTheme(
+    border: InputBorder.none,
+  ),
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: ButtonStyle(
       shape: WidgetStatePropertyAll(

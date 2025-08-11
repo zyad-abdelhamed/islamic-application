@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/prayer_times_page_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_prayer_times_of_month_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/prayers_sound_settings_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/change_location_widget.dart';
 import 'package:test_app/features/app/presentation/view/components/get_prayer_times_of_month_button.dart';
 import 'package:test_app/features/app/presentation/view/components/prayer_times_of_month_widget.dart';
+import 'package:test_app/features/app/presentation/view/components/prayer_times_page_app_bar.dart';
+import 'package:test_app/features/app/presentation/view/components/prayers_sound_settings_bloc_consumer.dart';
 
 class PrayerTimesPage extends StatefulWidget {
   const PrayerTimesPage({super.key});
@@ -21,11 +23,13 @@ class PrayerTimesPage extends StatefulWidget {
 
 class _PrayerTimesPageState extends State<PrayerTimesPage> {
   late final PrayerTimesPageController prayerTimesPageController;
-
+  late final PrayerSoundSettingsCubit prayerSoundSettingsCubit;
   @override
   void initState() {
     prayerTimesPageController = PrayerTimesPageController();
+    prayerSoundSettingsCubit = context.read<PrayerSoundSettingsCubit>();
     prayerTimesPageController.initState(context);
+    prayerSoundSettingsCubit.loadSettings();
     super.initState();
   }
 
@@ -47,16 +51,13 @@ class _PrayerTimesPageState extends State<PrayerTimesPage> {
         return false;
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: Text("مواقيت الصلاه"),
-          leading: GetAdaptiveBackButtonWidget(),
-        ),
+        appBar: prayerTimesPageAppBar(context, prayerTimesPageController, prayerSoundSettingsCubit),
         body: ValueListenableBuilder<bool>(
           valueListenable:
-              prayerTimesPageController.loadUpdateLocationDialogNotifier,
+              prayerTimesPageController.loadingNotifier,
           builder: (_, __, ___) => ModalProgressHUD(
             inAsyncCall: prayerTimesPageController
-                .loadUpdateLocationDialogNotifier.value,
+                .loadingNotifier.value,
             progressIndicator: GetAdaptiveLoadingWidget(),
             opacity: .5,
             child: SingleChildScrollView(
@@ -66,6 +67,10 @@ class _PrayerTimesPageState extends State<PrayerTimesPage> {
                   ChangeLocationWidget(
                       prayerTimesPageController: prayerTimesPageController),
                   const SizedBox(height: 50),
+                  PrayersSoundsSettingsBlocConsumer(
+                    controller: prayerTimesPageController,
+                  ),
+                  const SizedBox(height: 30),
                   BlocProvider(
                     create: (context) => sl<GetPrayerTimesOfMonthCubit>(),
                     child: Column(

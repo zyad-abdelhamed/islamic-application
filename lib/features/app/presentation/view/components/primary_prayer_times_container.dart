@@ -71,7 +71,7 @@ class PrimaryPrayerTimesContainer extends StatelessWidget {
     );
   }
 
-  Row _getRowOfPrayers(BuildContext context, {required List<String> textList}) {
+  Row _getRowOfPrayers(BuildContext context, {required List textList}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: List.generate(

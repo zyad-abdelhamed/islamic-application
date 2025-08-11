@@ -18,7 +18,7 @@ class NextPrayerWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          AppStrings.nextPrayer,
+          AppStrings.translate("nextPrayer"),
           style: TextStyles.semiBold16(
             context: context,
             color: AppColors.grey400,

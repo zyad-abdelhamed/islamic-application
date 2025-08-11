@@ -41,9 +41,9 @@ class SecondaryPrayerTimesWidget extends StatelessWidget {
               child: Row(
                 children: [
                   _getColumnOfPrayers(context,
-                      textList: AppStrings.namesOfPrayers1),
+                      textList: AppStrings.translate("namesOfPrayers1")),
                   _getColumnOfPrayers(context,
-                      textList: AppStrings.emojisOfPrayers),
+                      textList: AppStrings.translate("emojisOfPrayers")),
                   Spacer(),
                   _getColumnOfPrayers(context, textList: prayerTimes)
                 ],
@@ -56,7 +56,7 @@ class SecondaryPrayerTimesWidget extends StatelessWidget {
   }
 
   Column _getColumnOfPrayers(BuildContext context,
-      {required List<String> textList}) {
+      {required List textList}) {
     return Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: List<Text>.generate(

@@ -1,12 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/services/arabic_converter_service.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
+import 'package:test_app/core/services/internet_connection.dart';
+import 'package:test_app/core/services/position_service.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/features/app/data/models/get_prayer_times_of_month_prameters.dart';
-import 'package:test_app/features/app/presentation/controller/controllers/cubit/location_cubit.dart';
+import 'package:test_app/features/app/domain/entities/prayer_sound_settings_entity.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/location_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_prayer_times_of_month_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/custom_alert_dialog.dart';
 import 'package:test_app/features/app/presentation/view/components/save_or_update_location_widget.dart';
@@ -16,36 +18,75 @@ class PrayerTimesPageController {
   late final ValueNotifier<bool> nextButtonVisibleNotifier;
   late final ValueNotifier<bool> previousButtonVisibleNotifier;
   late final ValueNotifier<DateTime> dateNotifier;
-  final ValueNotifier<bool> loadUpdateLocationDialogNotifier =
-      ValueNotifier<bool>(false);
+  late final ValueNotifier<bool> loadingNotifier;
+  late final ValueNotifier<bool> isSwitchsShowedNotifier;
+  late final ValueNotifier<PrayerSoundSettingsEntity?> prayerSoundSettingsEntityNotifier;
+
+  late ValueNotifier<PrayerSoundSettingsEntity?> originalPrayerSoundSettings;
 
   initState(BuildContext context) async {
+    loadingNotifier = ValueNotifier<bool>(false);
+    isSwitchsShowedNotifier = ValueNotifier<bool>(false);
+
     pageController = PageController(initialPage: DateTime.now().day - 1);
     dateNotifier = ValueNotifier<DateTime>(DateTime.now());
-    previousButtonVisibleNotifier =
-        ValueNotifier<bool>(_getPreviousButtonNotifierValue);
-    nextButtonVisibleNotifier =
-        ValueNotifier<bool>(_getNextButtonNotifierValue);
+    previousButtonVisibleNotifier = ValueNotifier<bool>(_getPreviousButtonNotifierValue);
+    nextButtonVisibleNotifier = ValueNotifier<bool>(_getNextButtonNotifierValue);
+    prayerSoundSettingsEntityNotifier = ValueNotifier<PrayerSoundSettingsEntity?>(null);
+    originalPrayerSoundSettings = ValueNotifier<PrayerSoundSettingsEntity?>(null);
   }
+
+  // ----- دوال خاصة بإعدادات صوت الصلاة -----
+
+  void initPrayerSettings(PrayerSoundSettingsEntity initialSettings) {
+    originalPrayerSoundSettings.value = initialSettings;
+    prayerSoundSettingsEntityNotifier.value = initialSettings;
+  }
+
+  void toggleIsSwitchsShowed() {
+    isSwitchsShowedNotifier.value = !isSwitchsShowedNotifier.value;
+  }
+
+  bool get hasPrayerSoundChanges {
+    final current = prayerSoundSettingsEntityNotifier.value;
+    return current != null ? current != originalPrayerSoundSettings.value : false;
+  }
+
+  void updatePrayerSoundSetting(String prayerKey, bool value) {
+    final current = prayerSoundSettingsEntityNotifier.value;
+    if (current == null) return;
+    prayerSoundSettingsEntityNotifier.value = current.copyWithPrayer(prayerKey, value);
+  }
+
+  void cancelPrayerSoundChanges() {
+    prayerSoundSettingsEntityNotifier.value = originalPrayerSoundSettings.value;
+  }
+
+  PrayerSoundSettingsEntity? get currentSettings => prayerSoundSettingsEntityNotifier.value;
+
+  void markAsSaved() {
+    if (prayerSoundSettingsEntityNotifier.value != null) {
+      originalPrayerSoundSettings.value = prayerSoundSettingsEntityNotifier.value!;
+    }
+  }
+
+  // ----- نهاية دوال إعدادات صوت الصلاة -----
 
   dispose() {
     pageController.dispose();
     nextButtonVisibleNotifier.dispose();
     previousButtonVisibleNotifier.dispose();
-    loadUpdateLocationDialogNotifier.dispose();
+    loadingNotifier.dispose();
+    isSwitchsShowedNotifier.dispose();
+    prayerSoundSettingsEntityNotifier.dispose();
+    originalPrayerSoundSettings.dispose();
   }
 
   List<String> get dateData {
     return <String>[
-      sl<BaseArabicConverterService>()
-          .convertToArabicDigits(dateNotifier.value.day)
-          .toString(),
-      sl<BaseArabicConverterService>()
-          .convertToArabicDigits(dateNotifier.value.month)
-          .toString(),
-      sl<BaseArabicConverterService>()
-          .convertToArabicDigits(dateNotifier.value.year)
-          .toString()
+      sl<BaseArabicConverterService>().convertToArabicDigits(dateNotifier.value.day).toString(),
+      sl<BaseArabicConverterService>().convertToArabicDigits(dateNotifier.value.month).toString(),
+      sl<BaseArabicConverterService>().convertToArabicDigits(dateNotifier.value.year).toString()
     ];
   }
 
@@ -61,16 +102,19 @@ class PrayerTimesPageController {
   }
 
   void sendButtonOnTap(BuildContext context) {
-    pageController = PageController(
-        //reinitialize pageController object to set init page value
-        initialPage: dateNotifier.value.day - 1);
+    pageController = PageController(initialPage: dateNotifier.value.day - 1);
     previousButtonVisibleNotifier.value = _getPreviousButtonNotifierValue;
     nextButtonVisibleNotifier.value = _getNextButtonNotifierValue;
     GetPrayerTimesOfMonthCubit.controller(context).getPrayerTimesOfMonth(
         GetPrayerTimesOfMonthPrameters(date: dateNotifier.value));
   }
 
-  bool get _getNextButtonNotifierValue => dateNotifier.value.day - 1 != 30;
+  bool get _getNextButtonNotifierValue {
+    final DateTime currentDate = dateNotifier.value;
+    final int lastDayOfMonth = DateTime(currentDate.year, currentDate.month + 1, 0).day;
+    return currentDate.day < lastDayOfMonth;
+  }
+
   bool get _getPreviousButtonNotifierValue => dateNotifier.value.day - 1 != 0;
 
   void onPageChanged(BuildContext context, int value) {
@@ -79,34 +123,27 @@ class PrayerTimesPageController {
     } else if (value == _itemCount(context)) {
       nextButtonVisibleNotifier.value = false;
     } else {
-      if (!previousButtonVisibleNotifier.value) {
-        previousButtonVisibleNotifier.value = true;
-      }
-      if (!nextButtonVisibleNotifier.value) {
-        nextButtonVisibleNotifier.value = true;
-      }
+      if (!previousButtonVisibleNotifier.value) previousButtonVisibleNotifier.value = true;
+      if (!nextButtonVisibleNotifier.value) nextButtonVisibleNotifier.value = true;
     }
   }
 
   int _itemCount(BuildContext context) =>
-      GetPrayerTimesOfMonthCubit.controller(context)
-          .state
-          .prayerTimesOfMonth
-          .length -
-      1;
+      GetPrayerTimesOfMonthCubit.controller(context).state.prayerTimesOfMonth.length - 1;
 
   animateToNextPage() {
-    pageController.nextPage(
-        duration: AppDurations.lowDuration, curve: Curves.linear);
+    pageController.nextPage(duration: AppDurations.lowDuration, curve: Curves.linear);
   }
 
   animateTopreviousPage() {
-    pageController.previousPage(
-        duration: AppDurations.lowDuration, curve: Curves.linear);
+    pageController.previousPage(duration: AppDurations.lowDuration, curve: Curves.linear);
   }
 
-  updateLocation(BuildContext context) {
-    loadUpdateLocationDialogNotifier.value = true;
+  updateLocation(BuildContext context) async {
+    loadingNotifier.value = true;
+    final bool isConnected = await sl<InternetConnection>().checkInternetConnection();
+    final bool isEnabled = await sl<BaseLocationService>().isServiceEnabled;
+
     showDialog(
       context: context,
       builder: (context) {
@@ -129,6 +166,6 @@ class PrayerTimesPageController {
         );
       },
     );
-    loadUpdateLocationDialogNotifier.value = false;
+    loadingNotifier.value = false;
   }
 }

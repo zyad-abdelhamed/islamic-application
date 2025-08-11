@@ -1,0 +1,56 @@
+{
+    "tafsirEditions": [
+        {
+            "identifier": "ar.tabari",
+            "name": "تفسير الطبري"
+        },
+        {
+            "identifier": "ar.mukhtasar",
+            "name": "المختصر في التفسير"
+        },
+        {
+            "identifier": "ar.muyassarghareeb",
+            "name": "الميسر في الغريب"
+        },
+        {
+            "identifier": "ar.tanwiralmiqbas",
+            "name": "تنوير المقباس من تفسير بن عباس"
+        },
+        {
+            "identifier": "ar.ibnkathir",
+            "name": "تفسير ابن كثير"
+        },
+        {
+            "identifier": "ar.wasit",
+            "name": "التفسير الوسيط"
+        },
+        {
+            "identifier": "ar.saddi",
+            "name": "تفسير السعدي"
+        },
+        {
+            "identifier": "ar.baghawi",
+            "name": "تفسير البغوي"
+        },
+        {
+            "identifier": "ar.muyassar",
+            "name": "التفسير الميسر المجمع"
+        },
+        {
+            "identifier": "ar.qurtubi",
+            "name": "تفسير القرطبي"
+        },
+        {
+            "identifier": "ar.jalalayn",
+            "name": "تفسير الجلالين"
+        },
+        {
+            "identifier": "ar.qatayba",
+            "name": "غريب القرآن لابن قتيبة"
+        },
+        {
+            "identifier": "ar.ibnashur",
+            "name": "تفسير ابن عاشور"
+        }
+    ]
+}

@@ -12,7 +12,6 @@ class AdhkarGridView extends StatefulWidget {
 }
 
 class _AdhkarGridViewState extends State<AdhkarGridView> {
-
   @override
   Widget build(BuildContext context) {
     return GridView(
@@ -25,9 +24,20 @@ class _AdhkarGridViewState extends State<AdhkarGridView> {
         children: List<AdhkarButton>.generate(
             8,
             (index) => AdhkarButton(
-                text: AppStrings.adhkarButtonsNames[index],
-                icon: AppStrings.supplicationIcons[index],
-                index: index,
-    )));
+                  text: AppStrings.translate("adhkarButtonsNames")[index],
+                  icon: _supplicationIcons[index],
+                  index: index,
+                )));
   }
 }
+
+const List<IconData> _supplicationIcons = <IconData>[
+  Icons.wb_sunny, // أذكار الصباح
+  Icons.nightlight_round, // أذكار المساء
+  Icons.check_circle_outline, // أذكار بعد السلام من الصلاة المفروضة
+  Icons.spa, // تسابيح
+  Icons.bedtime, // أذكار النوم
+  Icons.alarm, // أذكار الاستيقاظ
+  Icons.book, // أدعية قرآنية
+  Icons.group, // أدعية الأنبياء
+];

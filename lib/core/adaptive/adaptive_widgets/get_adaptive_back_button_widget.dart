@@ -39,8 +39,8 @@ class GetAdaptiveBackButtonWidget extends StatelessWidget {
     return TextButton.icon(
       onPressed: () => _goBack(context),
       icon: const Icon(Icons.arrow_back, color: AppColors.black),
-      label: const Text(
-        AppStrings.back,
+      label: Text(
+        AppStrings.translate("back"),
         style: TextStyle(color: AppColors.black),
       ),
     );

@@ -10,18 +10,18 @@ void showDeleteAlertDialog(BuildContext context,
     builder: (context) {
       return AlertDialog.adaptive(
         actionsAlignment: MainAxisAlignment.start,
-        title: Text(AppStrings.areYouSure),
+        title: Text(AppStrings.translate("areYouSure")),
         actions: [
           OutlinedButton(
               onPressed: deleteFunction,
               child: Text(
-                AppStrings.yes,
+                AppStrings.translate("yes"),
                 style: TextStyles.regular16_120(context,
                     color: AppColors.errorColor),
               )),
           OutlinedButton(
               onPressed: () => Navigator.pop(context),
-              child: Text(AppStrings.no,
+              child: Text(AppStrings.translate("no"),
                   style: TextStyles.regular16_120(context,
                       color: Theme.of(context).primaryColor)))
         ],

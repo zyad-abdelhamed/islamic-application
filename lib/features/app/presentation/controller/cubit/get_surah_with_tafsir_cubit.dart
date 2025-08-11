@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:test_app/features/app/data/models/tafsir_request_params.dart';
 import 'package:test_app/features/app/domain/entities/tafsir_ayah_entity.dart';
 import 'package:test_app/features/app/domain/usecases/get_surah_with_tafsir_use_case.dart';
-import 'package:test_app/features/app/presentation/controller/cubit/cubit/get_surah_with_tafsir_state.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/get_surah_with_tafsir_state.dart';
 
 class TafsirCubit extends Cubit<TafsirState> {
   final GetSurahWithTafsirUseCase getSurahWithTafsirUseCase;

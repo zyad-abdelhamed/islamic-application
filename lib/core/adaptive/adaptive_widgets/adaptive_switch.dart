@@ -17,7 +17,8 @@ class AdaptiveSwitch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           name,

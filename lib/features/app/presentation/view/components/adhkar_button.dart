@@ -41,7 +41,7 @@ class _AdhkarButtonState extends State<AdhkarButton> {
           buttonScale = .9;
         });
         sl<GetAdhkarController>().getAdhkar(AdhkarParameters(
-            nameOfAdhkar: AppStrings.adhkarButtonsNames[widget.index],
+            nameOfAdhkar: AppStrings.translate("adhkarButtonsNames")[widget.index],
             context: context));
       },
       child: AnimatedScale(

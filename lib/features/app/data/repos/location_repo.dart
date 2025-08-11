@@ -25,8 +25,8 @@ class LocationRepo extends BaseLocationRepo {
       if (locationEntity != null) {
         return Right(locationEntity);
       } else {
-        return const Left(
-            Failure(AppStrings.deniedLocationPermissionAlertDialogText));
+        return Left(
+            Failure(AppStrings.translate("deniedLocationPermissionAlertDialogText")));
       }
     } catch (e) {
       return Left(Failure(e.toString()));
@@ -40,19 +40,22 @@ class LocationRepo extends BaseLocationRepo {
     if (isOnline && isLocationEnabled) {
       try {
         final Position position = await baseLocationService.position;
-        final String city =
+        final Either<Failure, String> resultOfCityName =
             await locationNameService.getCityNameFromCoordinates(
           position.latitude,
           position.longitude,
         );
-        await baseLocationLocalDataSource.saveLocationLocaly(
-          LocationModel(
-            latitude: position.latitude,
-            longitude: position.longitude,
-            name: city,
-          ),
-        );
-
+        await resultOfCityName.fold((l) async {
+          return left(Failure(l.message));
+        }, (cityName) async {
+          await baseLocationLocalDataSource.saveLocationLocaly(
+            LocationModel(
+              latitude: position.latitude,
+              longitude: position.longitude,
+              name: cityName,
+            ),
+          );
+        });
         return Right(unit);
       } catch (e) {
         return Left(Failure(e.toString()));
@@ -70,18 +73,22 @@ class LocationRepo extends BaseLocationRepo {
 
       if (isOnline && isLocationEnabled) {
         final Position position = await baseLocationService.position;
-        final String city =
+        final Either<Failure, String> resultOfCityName =
             await locationNameService.getCityNameFromCoordinates(
           position.latitude,
           position.longitude,
         );
-        await saveLocation(
-          location: LocationModel(
-            latitude: position.latitude,
-            longitude: position.longitude,
-            name: city,
-          ),
-        );
+        await resultOfCityName.fold((l) async {
+          return left(Failure(l.message));
+        }, (cityName) async {
+          await saveLocation(
+            location: LocationModel(
+              latitude: position.latitude,
+              longitude: position.longitude,
+              name: cityName,
+            ),
+          );
+        });
 
         return Right(unit);
       } else {

@@ -19,7 +19,7 @@ class HomePageToAndroidAndIos extends StatelessWidget {
         MediaQuery.of(context).orientation == Orientation.portrait;
     return Scaffold(
         appBar: AppBar(
-          title: Text(AppStrings.mainPage),
+          title: Text(AppStrings.translate("mainPage")),
         ),
         drawer: Drawer(
             child: BlocProvider(
@@ -43,13 +43,14 @@ class HomePageToAndroidAndIos extends StatelessWidget {
                     physics: BouncingScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     children: List.generate(
-                        AppStrings.pages.length,
+                        _pages.length,
                         (index) => HomeButton(
                             text: AppStrings.appBarTitles(
                                 withTwoLines: true)[index],
                             index: index,
-                            page: AppStrings.pages[index],
-                            image: AppStrings.imagesOfHomePageButtons[index]))),
+                            page: _pages[index],
+                            image: AppStrings.translate(
+                                "imagesOfHomePageButtons")[index]))),
               ),
               AdhkarGridView(crossAxisCount: isPortraitOrientation ? 2 : 4)
             ],
@@ -57,3 +58,13 @@ class HomePageToAndroidAndIos extends StatelessWidget {
         ));
   }
 }
+
+List _pages = [
+  BlocProvider(
+      create: (context) => QuranCubit()..loadPdfFromAssets(),
+      child: AlquranAlkarimPage()),
+  SurahListPage(),
+  ElecRosaryPage(),
+  RamadanTabelPage(),
+  QiblaPage(),
+];

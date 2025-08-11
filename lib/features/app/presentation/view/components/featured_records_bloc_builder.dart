@@ -65,7 +65,7 @@ class FeaturedRecordsBlocBuilder extends StatelessWidget {
                   )
                 : Center(
                     child: Text(
-                    AppStrings.emptyList,
+                    AppStrings.translate("emptyList"),
                     style: TextStyles.regular14_150(
                       context,
                     ),
