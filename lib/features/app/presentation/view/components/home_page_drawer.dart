@@ -6,8 +6,6 @@ import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/core/widgets/app_divider.dart';
 import 'package:test_app/features/app/presentation/view/components/rosary_ring%20widget.dart';
 import 'package:test_app/core/utils/enums.dart';
-import 'package:test_app/features/app/presentation/view/components/draw_circle_line_bloc_builder.dart';
-import 'package:test_app/features/app/presentation/view/components/rosary_ring_widget.dart';
 import 'package:test_app/features/app/presentation/view/components/home_drawer_text_button.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/theme/text_styles.dart';
@@ -19,8 +17,7 @@ class HomeDrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List textButtonsAlertDialogWidgets =
-        [
+    final List textButtonsAlertDialogWidgets = [
       Text(
         AppStrings.translate("khetmAlquran"),
         textAlign: TextAlign.center,
@@ -55,11 +52,16 @@ class HomeDrawerWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
                 decoration: InputDecoration(
                   hintText: 'ابحث عن الدعاء',
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
                 onChanged: (value) {
@@ -96,6 +98,7 @@ class HomeDrawerWidget extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: AdaptiveSwitch(
+                mainAxisAlignment: MainAxisAlignment.start,
                 name: AppStrings.translate("darkMode"),
                 onChanged: ThemeCubit.controller(context).toggleTheme,
                 value: context.watch<ThemeCubit>().state,

@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/quran_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/adhkar_grid_view.dart';
 import 'package:test_app/features/app/presentation/view/components/home_button.dart';
 import 'package:test_app/features/app/presentation/view/components/home_page_drawer.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/features/app/presentation/view/components/prayer_times_widget.dart';
+import 'package:test_app/features/app/presentation/view/pages/alquran_alkarim_page.dart';
+import 'package:test_app/features/app/presentation/view/pages/elec_rosary_page.dart';
+import 'package:test_app/features/app/presentation/view/pages/qibla_page.dart';
+import 'package:test_app/features/app/presentation/view/pages/rtabel_page.dart';
+import 'package:test_app/features/app/presentation/view/pages/surahs_page.dart';
 import 'package:test_app/features/duaa/presentation/controllers/cubit/duaa_cubit.dart';
 
 class HomePageToAndroidAndIos extends StatelessWidget {
@@ -60,8 +66,8 @@ class HomePageToAndroidAndIos extends StatelessWidget {
 }
 
 List _pages = [
-  BlocProvider(
-      create: (context) => QuranCubit()..loadPdfFromAssets(),
+  BlocProvider<QuranCubit>(
+      create: (context) => sl<QuranCubit>(),
       child: AlquranAlkarimPage()),
   SurahListPage(),
   ElecRosaryPage(),

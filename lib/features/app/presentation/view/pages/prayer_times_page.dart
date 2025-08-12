@@ -50,17 +50,16 @@ class _PrayerTimesPageState extends State<PrayerTimesPage> {
         );
         return false;
       },
-      child: Scaffold(
-        appBar: prayerTimesPageAppBar(context, prayerTimesPageController, prayerSoundSettingsCubit),
-        body: ValueListenableBuilder<bool>(
-          valueListenable:
-              prayerTimesPageController.loadingNotifier,
-          builder: (_, __, ___) => ModalProgressHUD(
-            inAsyncCall: prayerTimesPageController
-                .loadingNotifier.value,
-            progressIndicator: GetAdaptiveLoadingWidget(),
-            opacity: .5,
-            child: SingleChildScrollView(
+      child: ValueListenableBuilder<bool>(
+        valueListenable: prayerTimesPageController.loadingNotifier,
+        builder: (_, __, ___) => ModalProgressHUD(
+          inAsyncCall: prayerTimesPageController.loadingNotifier.value,
+          progressIndicator: GetAdaptiveLoadingWidget(),
+          opacity: .5,
+          child: Scaffold(
+            appBar: prayerTimesPageAppBar(
+                context, prayerTimesPageController, prayerSoundSettingsCubit),
+            body: SingleChildScrollView(
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [

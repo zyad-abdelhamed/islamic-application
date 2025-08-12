@@ -5,12 +5,12 @@ class QuranState extends Equatable {
       {this.bookMarks = const [],
       this.messageOfbookmarkFailure = '',
       this.bookMarkState = RequestStateEnum.loading,
-      this.cIndex = 0,
+      this.indexs = const [0],
       this.filePath,
       this.defaultPage = 0});
 
   final String? filePath;
-  final int cIndex;
+  final List<int> indexs;
   final int defaultPage;
   final List<BookMarkEntity> bookMarks;
   final String messageOfbookmarkFailure;
@@ -18,7 +18,7 @@ class QuranState extends Equatable {
 
   QuranState copyWith(
       {String? filePath,
-      int? cIndex,
+      List<int>? indexs,
       int? defaultPage,
       List<BookMarkEntity>? bookMarks,
       String? messageOfbookmarkFailure,
@@ -28,7 +28,7 @@ class QuranState extends Equatable {
         bookMarks: bookMarks ?? this.bookMarks,
         messageOfbookmarkFailure:
             messageOfbookmarkFailure ?? this.messageOfbookmarkFailure,
-        cIndex: cIndex ?? this.cIndex,
+        indexs: indexs ?? this.indexs,
         filePath: filePath ?? this.filePath,
         defaultPage: defaultPage ?? this.defaultPage);
   }
@@ -36,7 +36,7 @@ class QuranState extends Equatable {
   @override
   List<Object?> get props => [
         filePath,
-        cIndex,
+        indexs,
         defaultPage,
         bookMarkState,
         bookMarks,

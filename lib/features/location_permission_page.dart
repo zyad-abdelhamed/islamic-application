@@ -39,6 +39,7 @@ late OnBoardingCubit _onBoardingCubit;
     super.didChangeDependencies();
     _onBoardingCubit = context.read<OnBoardingCubit>();
   }
+  
   @override
   void dispose() {
      _onBoardingCubit.emitToTrue();

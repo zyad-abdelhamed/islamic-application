@@ -11,7 +11,7 @@ abstract class BaseQuranRepo {
   Future<Either<Failure, Unit>> saveBookMark(
       {required BookMarkEntity bookmarkentity});
   Future<Either<Failure, Unit>> clearBookMarks();
-  Future<Either<Failure, Unit>> deleteBookMark({required int index});
+  Future<Either<Failure, Unit>> deleteBookmarksList({required List<int> indexs});
   Future<Either<Failure, List<BookMarkEntity>>> getBookMarks();
   Future<Either<Failure, List<TafsirAyahEntity>>> getSurahWithTafsir(
       TafsirRequestParams params);

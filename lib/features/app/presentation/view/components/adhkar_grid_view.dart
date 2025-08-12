@@ -14,6 +14,8 @@ class AdhkarGridView extends StatefulWidget {
 class _AdhkarGridViewState extends State<AdhkarGridView> {
   @override
   Widget build(BuildContext context) {
+    List names = AppStrings.translate("adhkarButtonsNames");
+
     return GridView(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
@@ -24,9 +26,8 @@ class _AdhkarGridViewState extends State<AdhkarGridView> {
         children: List<AdhkarButton>.generate(
             8,
             (index) => AdhkarButton(
-                  text: AppStrings.translate("adhkarButtonsNames")[index],
                   icon: _supplicationIcons[index],
-                  index: index,
+                  text: names[index],
                 )));
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/helper_function/get_responsive_font_size.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
@@ -12,11 +11,9 @@ class AdhkarButton extends StatefulWidget {
   const AdhkarButton({
     super.key,
     required this.icon,
-    required this.index,
     required this.text,
   });
 
-  final int index;
   final String text;
   final IconData icon;
 
@@ -41,7 +38,7 @@ class _AdhkarButtonState extends State<AdhkarButton> {
           buttonScale = .9;
         });
         sl<GetAdhkarController>().getAdhkar(AdhkarParameters(
-            nameOfAdhkar: AppStrings.translate("adhkarButtonsNames")[widget.index],
+            nameOfAdhkar: widget.text,
             context: context));
       },
       child: AnimatedScale(

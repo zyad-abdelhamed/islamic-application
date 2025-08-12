@@ -31,6 +31,12 @@ class _ElecRosaryPageState extends State<ElecRosaryPage> {
 
     super.initState();
   }
+  @override
+  void dispose() {
+    counterNotifier.dispose();
+    isfeatuerdRecordsWidgetShowedNotifier.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

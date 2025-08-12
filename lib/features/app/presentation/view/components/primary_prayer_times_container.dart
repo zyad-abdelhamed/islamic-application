@@ -55,8 +55,8 @@ class PrimaryPrayerTimesContainer extends StatelessWidget {
                 // أيقونة + اسم الصلاة
                 _getRowOfIconsWithText(
                   context,
-                  icons: iconsOfTimings,
-                  names: AppStrings.namesOfPrayers1,
+                  icons: AppStrings.translate("iconsOfTimings"),
+                  names: AppStrings.translate("namesOfPrayers1"),
                 ),
 
                 const Spacer(),
@@ -89,8 +89,8 @@ class PrimaryPrayerTimesContainer extends StatelessWidget {
   }
 
   Row _getRowOfIconsWithText(BuildContext context, {
-    required List<String> icons,
-    required List<String> names,
+    required List icons,
+    required List names,
   }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -127,12 +127,3 @@ class PrimaryPrayerTimesContainer extends StatelessWidget {
     );
   }
 }
-
-List<String> iconsOfTimings = [
-  'assets/images/fajr.png',
-  'assets/images/sunrise.png',
-  'assets/images/dhur.png',
-  'assets/images/asr.png',
-  'assets/images/magrib.png',
-  'assets/images/isha.png',
-];

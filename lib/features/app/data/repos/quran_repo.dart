@@ -62,15 +62,6 @@ class QuranRepo implements BaseQuranRepo {
     }
   }
 
-  @override
-  Future<Either<Failure, Unit>> deleteBookMark({required int index}) async {
-    try {
-      await quranLocalDataSource.deleteBookMark(index: index);
-      return right(unit);
-    } catch (e) {
-      return left(Failure('خطأ ف مسح العلامة'));
-    }
-  }
 
   @override
   Future<Either<Failure, List<TafsirAyahEntity>>> getSurahWithTafsir(
@@ -81,6 +72,16 @@ class QuranRepo implements BaseQuranRepo {
       return Right(result);
     } catch (e) {
       return Left(ServerFailure(e.toString()));
+    }
+  }
+  
+  @override
+  Future<Either<Failure, Unit>> deleteBookmarksList({required List<int> indexs}) async{
+     try {
+      await quranLocalDataSource.deleteBookmarksList(indexes: indexs);
+      return right(unit);
+    } catch (e) {
+      return left(Failure('خطأ ف مسح العلامة'));
     }
   }
 }

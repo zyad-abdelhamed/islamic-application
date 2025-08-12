@@ -13,7 +13,7 @@ class HadithCubit extends HydratedCubit<String> {
   final GetTodayHadithUseCase getTodayHadithUseCase;
 
   Future<void> showTodayHadith(BuildContext context) async {
-    if (!await canRunToday()) {
+    if (await canRunToday()) {
       final result = await getTodayHadithUseCase();
       result.fold(
         (failure) {

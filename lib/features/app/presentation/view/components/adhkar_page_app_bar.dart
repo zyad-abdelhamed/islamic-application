@@ -61,6 +61,7 @@ AppBar adhkarPageAppBar(BuildContext context,
           builder: (_, __, ___) => Padding(
             padding: const EdgeInsets.symmetric(vertical: 6.0),
             child: AdaptiveSwitch(
+              mainAxisAlignment: MainAxisAlignment.center,
               name: AppStrings.translate("adhkarPageSwitchText"),
               onChanged: adhkarPageController.toggleIsDeletedSwitch,
               value: adhkarPageController.switchNotfier.value,

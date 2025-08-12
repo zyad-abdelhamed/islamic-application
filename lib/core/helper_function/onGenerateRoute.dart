@@ -53,14 +53,14 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case RoutesConstants.prayersTimePage:
       return MaterialPageRoute<PrayerTimesPage>(
         builder: (BuildContext context) => BlocProvider(
-          create: (context) => sl<PrayerSoundSettingsCubit>(),
+          create: (_) => sl<PrayerSoundSettingsCubit>(),
           child: const PrayerTimesPage(),
         ),
       );
     case RoutesConstants.locationPermissionPage:
       return MaterialPageRoute<LocationPermissionPage>(
         builder: (BuildContext context) => BlocProvider(
-          create: (context) => OnBoardingCubit(),
+          create: (_) => OnBoardingCubit(),
           child: LocationPermissionPage(),
         ),
       );

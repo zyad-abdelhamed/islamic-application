@@ -5,17 +5,39 @@ import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/quran_page_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/quran_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/quran_page_app_bar_actions.dart';
 import 'package:test_app/features/app/presentation/view/components/surahs_widget.dart';
 
-class AlquranAlkarimPage extends StatelessWidget {
+class AlquranAlkarimPage extends StatefulWidget {
   const AlquranAlkarimPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final quranCubit = context.read<QuranCubit>();
+  State<AlquranAlkarimPage> createState() => _AlquranAlkarimPageState();
+}
 
+class _AlquranAlkarimPageState extends State<AlquranAlkarimPage> {
+  late final QuranPageController _quranPageController;
+
+  @override
+  void initState() {
+    _quranPageController =
+    QuranPageController();
+    _quranPageController.initState();
+    QuranCubit.getQuranController(context)
+        .loadPdfFromAssets(_quranPageController);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _quranPageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: GetAdaptiveBackButtonWidget(),
@@ -25,10 +47,10 @@ class AlquranAlkarimPage extends StatelessWidget {
           ),
         ),
         centerTitle: false,
-        actions: quranPageAppBarActions(context),
+        actions: quranPageAppBarActions(context, _quranPageController),
       ),
-      drawer: const Drawer(
-        child: SurahsWidget(),
+      drawer: Drawer(
+        child: SurahsWidget(quranPageController: _quranPageController),
       ),
       body: BlocBuilder<QuranCubit, QuranState>(
         buildWhen: (previous, current) =>
@@ -44,15 +66,14 @@ class AlquranAlkarimPage extends StatelessWidget {
                   autoSpacing: true,
                   fitEachPage: true,
                   defaultPage: state.defaultPage,
-                  onViewCreated: (controller) =>
-                      quranCubit.setPdfController(controller),
-                  onRender: (pages) {
-                    if (pages != null) {
-                      quranCubit.updateTotalPages(pages);
-                    }
+                  onViewCreated: (controller) {
+                      _quranPageController.setPdfController(controller);
+                      _quranPageController.indexsNotifier.value = state.indexs;
                   },
-                  onPageChanged: (page, total) =>
-                      quranCubit.updateDefaultPage(page),
+                  onPageChanged: (page, total) {
+                      QuranCubit.getQuranController(context).updateDefaultPage(page);
+                      _quranPageController.updateIndexNotifier(context, page ?? 0);
+                  },
                 );
         },
       ),

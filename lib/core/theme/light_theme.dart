@@ -35,8 +35,29 @@ ThemeData lightTheme = ThemeData(
       ),
     ),
   ),
-  inputDecorationTheme: const InputDecorationTheme(
-    border: InputBorder.none,
+  inputDecorationTheme: InputDecorationTheme(
+    filled: true,
+    fillColor: Colors.grey[100],
+    contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+    hintStyle: TextStyle(color: Colors.grey[600], fontSize: 15),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(16),
+      borderSide: BorderSide.none,
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(16),
+      borderSide: BorderSide(
+        color: AppColors.successColor,
+        width: 1.5,
+      ),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(16),
+      borderSide: BorderSide(
+        color: AppColors.errorColor,
+        width: 1.5,
+      ),
+    ),
   ),
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: ButtonStyle(

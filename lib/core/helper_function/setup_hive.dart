@@ -1,11 +1,14 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:test_app/features/app/data/datasources/location_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/prayers_local_data_source.dart';
+import 'package:test_app/features/app/data/datasources/quran_local_data_source.dart';
+import 'package:test_app/features/app/domain/entities/book_mark_entity.dart';
 import 'package:test_app/features/app/domain/entities/location_entity.dart';
 import 'package:test_app/features/app/domain/entities/location_type_adapter.dart';
 import 'package:test_app/features/app/domain/entities/prayer_sound_settings_entity.dart';
 import 'package:test_app/features/app/domain/entities/prayer_sounds_type_adapter.dart';
 import 'package:test_app/features/app/domain/entities/timings.dart';
+import 'package:test_app/features/app/domain/entities/type_adapter_for_book_mark.dart';
 import 'package:test_app/features/app/domain/entities/type_adapter_for_timings.dart';
 import 'package:test_app/core/constants/data_base_constants.dart';
 
@@ -14,9 +17,11 @@ Future<void> setupHive() async {
   Hive.registerAdapter(TypeAdapterForTimings());
   Hive.registerAdapter(LocationTypeAdapter());
   Hive.registerAdapter(PrayerSoundSettingsAdapter());
+  Hive.registerAdapter(TypeAdapterForBookMark());
   await Hive.openBox<int>(DataBaseConstants.featuerdRecordsHiveKey);
   await Hive.openBox<bool>(DataBaseConstants.rTableBoxHiveKey);
   await Hive.openBox<LocationEntity>(LocationLocalDataSourceImpl.boxName);
   await Hive.openBox<Timings>(PrayersLocalDataSourceImpl.prayersBoxName);
   await Hive.openBox<PrayerSoundSettingsEntity>(PrayersLocalDataSourceImpl.soundSettingsBoxName);
+  await Hive.openBox<BookMarkEntity>(QuranLocalDataSourceImpl.bookMarksBoxName);
 }

@@ -6,13 +6,14 @@ abstract class QuranLocalDataSource {
   Future<List<SurahModel>> getInfoQuran({required String part});
   Future<void> saveBookMark({required BookMarkEntity bookmarkentity});
   Future<List<BookMarkEntity>> getBookMarks();
-  Future<void> deleteBookMark({required int index});
+  Future<void> deleteBookmarksList({required List<int> indexes});
   Future<void> clearBookMarks();
 }
 
 class QuranLocalDataSourceImpl implements QuranLocalDataSource {
-  static const String _boxName = 'book_mark_box';
-  static const String _key = 'book_mark_key';
+  static const String bookMarksBoxName = 'book_mark_box';
+  
+  final  Box<BookMarkEntity> _box = Hive.box<BookMarkEntity>(bookMarksBoxName);
 
   @override
   Future<List<SurahModel>> getInfoQuran({required String part}) {
@@ -22,26 +23,23 @@ class QuranLocalDataSourceImpl implements QuranLocalDataSource {
 
   @override
   Future<List<BookMarkEntity>> getBookMarks() async {
-    final box = await Hive.openBox<BookMarkEntity>(_boxName);
-    return box.values.toList();
+    return _box.values.toList();
   }
 
   @override
   Future<void> saveBookMark({required BookMarkEntity bookmarkentity}) async {
-    final box = await Hive.openBox<BookMarkEntity>(_boxName);
-    await box.put(_key, bookmarkentity);
+    await _box.add(bookmarkentity);
   }
 
   @override
-  Future<void> deleteBookMark({required int index}) async {
-    final box = await Hive.openBox<BookMarkEntity>(_boxName);
-    final key = box.keyAt(index);
-    await box.delete(key);
-  }
+  Future<void> deleteBookmarksList({required List<int> indexes}) async {
+  final keys = indexes.map((index) => _box.keyAt(index)).toList();
+  await _box.deleteAll(keys);
+}
+
 
   @override
   Future<void> clearBookMarks() async {
-    final box = await Hive.openBox<BookMarkEntity>(_boxName);
-    await box.clear();
+    await _box.clear();
   }
 }
