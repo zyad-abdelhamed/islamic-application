@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/adaptive_switch.dart';
+import 'package:test_app/core/services/adhan_notification_service.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/core/widgets/app_divider.dart';
@@ -49,6 +50,7 @@ class HomeDrawerWidget extends StatelessWidget {
             appDivider(),
 
             // Duaa Section
+           
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(

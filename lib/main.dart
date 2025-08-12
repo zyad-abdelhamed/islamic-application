@@ -7,6 +7,7 @@ import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/helper_function/get_init_route.dart';
 import 'package:test_app/core/helper_function/onGenerateRoute.dart';
 import 'package:test_app/core/helper_function/setup_hive.dart';
+import 'package:test_app/core/services/adhan_notification_service.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/dark_theme.dart';
 import 'package:test_app/core/theme/light_theme.dart';
@@ -15,6 +16,8 @@ import 'package:test_app/core/theme/theme_provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   DependencyInjection.init();
+  await AdhanNotificationService.init();
+
   await setupHive();
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory:
@@ -33,7 +36,6 @@ class MyApp extends StatelessWidget {
       create: (_) => ThemeCubit(),
       child: BlocBuilder<ThemeCubit, bool>(
         builder: (context, isDarkMode) {
-
           return MaterialApp(
             locale: const Locale('ar'),
             supportedLocales: const [
