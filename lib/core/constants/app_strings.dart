@@ -11,6 +11,7 @@ abstract class AppStrings {
       'السبحه${getNewlineOrWightSpace()}الالكترونيه',
       'جدول${getNewlineOrWightSpace()}رمضان',
       'اتجاه${getNewlineOrWightSpace()}القبله'
+      'اخرى'
     ];
   }
 

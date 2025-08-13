@@ -10,6 +10,7 @@ import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/features/app/presentation/view/components/prayer_times_widget.dart';
 import 'package:test_app/features/app/presentation/view/pages/alquran_alkarim_page.dart';
 import 'package:test_app/features/app/presentation/view/pages/elec_rosary_page.dart';
+import 'package:test_app/features/app/presentation/view/pages/other_page.dart';
 import 'package:test_app/features/app/presentation/view/pages/qibla_page.dart';
 import 'package:test_app/features/app/presentation/view/pages/rtabel_page.dart';
 import 'package:test_app/features/app/presentation/view/pages/surahs_page.dart';
@@ -73,4 +74,5 @@ List _pages = [
   ElecRosaryPage(),
   RamadanTabelPage(),
   QiblaPage(),
+  OtherPage()
 ];
