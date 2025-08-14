@@ -54,3 +54,4 @@ class OtherPage extends StatelessWidget {
     );
   }
 }
+
