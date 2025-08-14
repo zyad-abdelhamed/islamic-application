@@ -11,7 +11,7 @@ import 'package:test_app/features/app/domain/entities/prayer_sound_settings_enti
 import 'package:test_app/features/app/presentation/controller/cubit/location_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_prayer_times_of_month_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/custom_alert_dialog.dart';
-import 'package:test_app/features/app/presentation/view/components/save_or_update_location_widget.dart';
+import 'package:test_app/core/widgets/save_or_update_location_widget.dart';
 
 class PrayerTimesPageController {
   late PageController pageController;
@@ -20,7 +20,8 @@ class PrayerTimesPageController {
   late final ValueNotifier<DateTime> dateNotifier;
   late final ValueNotifier<bool> loadingNotifier;
   late final ValueNotifier<bool> isSwitchsShowedNotifier;
-  late final ValueNotifier<PrayerSoundSettingsEntity?> prayerSoundSettingsEntityNotifier;
+  late final ValueNotifier<PrayerSoundSettingsEntity?>
+      prayerSoundSettingsEntityNotifier;
 
   late ValueNotifier<PrayerSoundSettingsEntity?> originalPrayerSoundSettings;
 
@@ -30,10 +31,14 @@ class PrayerTimesPageController {
 
     pageController = PageController(initialPage: DateTime.now().day - 1);
     dateNotifier = ValueNotifier<DateTime>(DateTime.now());
-    previousButtonVisibleNotifier = ValueNotifier<bool>(_getPreviousButtonNotifierValue);
-    nextButtonVisibleNotifier = ValueNotifier<bool>(_getNextButtonNotifierValue);
-    prayerSoundSettingsEntityNotifier = ValueNotifier<PrayerSoundSettingsEntity?>(null);
-    originalPrayerSoundSettings = ValueNotifier<PrayerSoundSettingsEntity?>(null);
+    previousButtonVisibleNotifier =
+        ValueNotifier<bool>(_getPreviousButtonNotifierValue);
+    nextButtonVisibleNotifier =
+        ValueNotifier<bool>(_getNextButtonNotifierValue);
+    prayerSoundSettingsEntityNotifier =
+        ValueNotifier<PrayerSoundSettingsEntity?>(null);
+    originalPrayerSoundSettings =
+        ValueNotifier<PrayerSoundSettingsEntity?>(null);
   }
 
   // ----- دوال خاصة بإعدادات صوت الصلاة -----
@@ -49,24 +54,29 @@ class PrayerTimesPageController {
 
   bool get hasPrayerSoundChanges {
     final current = prayerSoundSettingsEntityNotifier.value;
-    return current != null ? current != originalPrayerSoundSettings.value : false;
+    return current != null
+        ? current != originalPrayerSoundSettings.value
+        : false;
   }
 
   void updatePrayerSoundSetting(String prayerKey, bool value) {
     final current = prayerSoundSettingsEntityNotifier.value;
     if (current == null) return;
-    prayerSoundSettingsEntityNotifier.value = current.copyWithPrayer(prayerKey, value);
+    prayerSoundSettingsEntityNotifier.value =
+        current.copyWithPrayer(prayerKey, value);
   }
 
   void cancelPrayerSoundChanges() {
     prayerSoundSettingsEntityNotifier.value = originalPrayerSoundSettings.value;
   }
 
-  PrayerSoundSettingsEntity? get currentSettings => prayerSoundSettingsEntityNotifier.value;
+  PrayerSoundSettingsEntity? get currentSettings =>
+      prayerSoundSettingsEntityNotifier.value;
 
   void markAsSaved() {
     if (prayerSoundSettingsEntityNotifier.value != null) {
-      originalPrayerSoundSettings.value = prayerSoundSettingsEntityNotifier.value!;
+      originalPrayerSoundSettings.value =
+          prayerSoundSettingsEntityNotifier.value!;
     }
   }
 
@@ -84,9 +94,15 @@ class PrayerTimesPageController {
 
   List<String> get dateData {
     return <String>[
-      sl<BaseArabicConverterService>().convertToArabicDigits(dateNotifier.value.day).toString(),
-      sl<BaseArabicConverterService>().convertToArabicDigits(dateNotifier.value.month).toString(),
-      sl<BaseArabicConverterService>().convertToArabicDigits(dateNotifier.value.year).toString()
+      sl<BaseArabicConverterService>()
+          .convertToArabicDigits(dateNotifier.value.day)
+          .toString(),
+      sl<BaseArabicConverterService>()
+          .convertToArabicDigits(dateNotifier.value.month)
+          .toString(),
+      sl<BaseArabicConverterService>()
+          .convertToArabicDigits(dateNotifier.value.year)
+          .toString()
     ];
   }
 
@@ -111,7 +127,8 @@ class PrayerTimesPageController {
 
   bool get _getNextButtonNotifierValue {
     final DateTime currentDate = dateNotifier.value;
-    final int lastDayOfMonth = DateTime(currentDate.year, currentDate.month + 1, 0).day;
+    final int lastDayOfMonth =
+        DateTime(currentDate.year, currentDate.month + 1, 0).day;
     return currentDate.day < lastDayOfMonth;
   }
 
@@ -123,25 +140,36 @@ class PrayerTimesPageController {
     } else if (value == _itemCount(context)) {
       nextButtonVisibleNotifier.value = false;
     } else {
-      if (!previousButtonVisibleNotifier.value) previousButtonVisibleNotifier.value = true;
-      if (!nextButtonVisibleNotifier.value) nextButtonVisibleNotifier.value = true;
+      if (!previousButtonVisibleNotifier.value) {
+        previousButtonVisibleNotifier.value = true;
+      }
+      if (!nextButtonVisibleNotifier.value) {
+        nextButtonVisibleNotifier.value = true;
+      }
     }
   }
 
   int _itemCount(BuildContext context) =>
-      GetPrayerTimesOfMonthCubit.controller(context).state.prayerTimesOfMonth.length - 1;
+      GetPrayerTimesOfMonthCubit.controller(context)
+          .state
+          .prayerTimesOfMonth
+          .length -
+      1;
 
   animateToNextPage() {
-    pageController.nextPage(duration: AppDurations.lowDuration, curve: Curves.linear);
+    pageController.nextPage(
+        duration: AppDurations.lowDuration, curve: Curves.linear);
   }
 
   animateTopreviousPage() {
-    pageController.previousPage(duration: AppDurations.lowDuration, curve: Curves.linear);
+    pageController.previousPage(
+        duration: AppDurations.lowDuration, curve: Curves.linear);
   }
 
   updateLocation(BuildContext context) async {
     loadingNotifier.value = true;
-    final bool isConnected = await sl<InternetConnection>().checkInternetConnection();
+    final bool isConnected =
+        await sl<InternetConnection>().checkInternetConnection();
     final bool isEnabled = await sl<BaseLocationService>().isServiceEnabled;
 
     showDialog(
@@ -156,6 +184,8 @@ class PrayerTimesPageController {
               child: SaveOrUpdateLocationWidget(
                 functionaltiy: Functionaltiy.update,
                 buttonName: 'تحديث الموقع',
+                isConnected: isConnected,
+                isLocationEnabled: isEnabled,
               ),
             ),
             iconWidget: (BuildContext context) => const Icon(

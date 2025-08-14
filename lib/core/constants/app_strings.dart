@@ -10,7 +10,8 @@ abstract class AppStrings {
       'تفسير${getNewlineOrWightSpace()}القرآن',
       'السبحه${getNewlineOrWightSpace()}الالكترونيه',
       'جدول${getNewlineOrWightSpace()}رمضان',
-      'اتجاه${getNewlineOrWightSpace()}القبله'
+      'اتجاه${getNewlineOrWightSpace()}القبله',
+      'آخري'
     ];
   }
 

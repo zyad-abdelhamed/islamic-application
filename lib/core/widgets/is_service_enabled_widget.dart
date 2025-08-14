@@ -9,6 +9,8 @@ Widget isServiceEnabledWidget({
   required String inactiveText,
 }) {
   return Column(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    spacing: 8,
     children: [
       Icon(
         isActive ? activeIcon : inactiveIcon,

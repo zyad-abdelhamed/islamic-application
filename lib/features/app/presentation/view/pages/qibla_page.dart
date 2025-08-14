@@ -1,13 +1,14 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
-import 'package:test_app/core/services/position_service.dart';
-import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
+import 'package:test_app/features/app/domain/repositories/base_qipla_repo.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/qibla_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/erorr_widget.dart';
+import 'package:test_app/features/app/presentation/view/components/qipla_accuracy_button.dart';
 
 class QiblaPage extends StatelessWidget {
   const QiblaPage({super.key});
@@ -15,58 +16,50 @@ class QiblaPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => QiblaCubit(sl<BaseLocationService>())..initQibla(),
+      create: (_) => QiblaCubit(sl<BaseQiblaRepository>())..startQibla(),
       child: Scaffold(
         appBar: AppBar(
-            leading: GetAdaptiveBackButtonWidget(),
-            title: Text(AppStrings.appBarTitles(withTwoLines: false)[4])),
+          title: Text(AppStrings.appBarTitles(withTwoLines: false)[4]),
+          leading: const GetAdaptiveBackButtonWidget(),
+        ),
         body: BlocBuilder<QiblaCubit, QiblaState>(
           builder: (context, state) {
             if (state is QiblaLoading) {
-              return GetAdaptiveLoadingWidget();
-            } else if (state is QiblaError) {
-              const double spacing = 5;
+              return const GetAdaptiveLoadingWidget();
+            }
+            if (state is QiblaError) {
+              return ErrorWidgetIslamic(message: state.message);
+            }
+            if (state is QiblaLoaded) {
+              final double angle = (state.qibla.qiblaDirection -
+                      state.qibla.deviceDirection) *
+                  (pi / 180);
+
               return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                spacing: spacing,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Spacer(),
-                  ErrorWidgetIslamic(message: state.message),
-                  Spacer(),
-                  OutlinedButton(
-                    onPressed: () async {
-                      await sl<BaseLocationService>().requestPermission;
-                    },
-                    child: Text(
-                      'request location permission',
-                      style: TextStyle(color: Theme.of(context).primaryColor),
+                  // زر تغيير الدقة
+                  Align(
+                    alignment: Alignment.topRight, 
+                    child: QiplaAccuracyButton(state: state)),
+                  const Spacer(),
+                  Transform.rotate(
+                    angle: angle,
+                    child: Image.asset(
+                      'assets/images/ooooo.png',
+                      fit: BoxFit.fill,
                     ),
-                  )
+                  ),
+                  const SizedBox(height: 20),
+                  Text('زاوية القبلة: ${state.qibla.qiblaDirection.toStringAsFixed(2)}°'),
+                  Text('اتجاه الجهاز: ${state.qibla.deviceDirection.toStringAsFixed(2)}°'),
+                                    const Spacer(),
+
                 ],
               );
-            } else if (state is QiblaLoaded) {
-              final double angle =
-                  (state.qiblaDirection - state.deviceDirection) * (pi / 180);
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Transform.rotate(
-                        angle: angle,
-                        child: Image.asset(
-                          'assets/images/ooooo.png',
-                          fit: BoxFit.fill,
-                        )),
-                    const SizedBox(height: 20),
-                    Text(
-                        'زاوية القبلة: ${state.qiblaDirection.toStringAsFixed(2)}°'),
-                    Text(
-                        'اتجاه الجهاز: ${state.deviceDirection.toStringAsFixed(2)}°'),
-                  ],
-                ),
-              );
             }
-            return Center(child: Text('جارٍ التحميل...'));
+            return const SizedBox();
           },
         ),
       ),

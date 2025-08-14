@@ -68,4 +68,7 @@ ThemeData lightTheme = ThemeData(
       ),
     ),
   ),
+  chipTheme: ChipThemeData(
+    backgroundColor: AppColors.lightModePrimaryColor
+  )
 );

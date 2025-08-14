@@ -62,4 +62,7 @@ ThemeData darkTheme = ThemeData(
       ),
     ),
   ),
+  chipTheme: ChipThemeData(
+    backgroundColor: AppColors.darkModePrimaryColor
+  )
 );

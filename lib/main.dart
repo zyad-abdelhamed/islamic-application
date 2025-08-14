@@ -17,7 +17,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   DependencyInjection.init();
   await AdhanNotificationService.init();
-
   await setupHive();
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory:

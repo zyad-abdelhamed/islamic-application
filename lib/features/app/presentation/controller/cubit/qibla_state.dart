@@ -7,10 +7,9 @@ class QiblaInitial extends QiblaState {}
 class QiblaLoading extends QiblaState {}
 
 class QiblaLoaded extends QiblaState {
-  final double deviceDirection;
-  final double qiblaDirection;
-
-  QiblaLoaded({required this.deviceDirection, required this.qiblaDirection});
+  final QiblaEntity qibla;
+  final LocationAccuracy accuracy;
+  QiblaLoaded(this.qibla, this.accuracy);
 }
 
 class QiblaError extends QiblaState {

@@ -7,7 +7,7 @@ import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/core/widgets/app_divider.dart';
 import 'package:test_app/features/app/presentation/view/components/rosary_ring%20widget.dart';
 import 'package:test_app/core/utils/enums.dart';
-import 'package:test_app/features/app/presentation/view/components/home_drawer_text_button.dart';
+import 'package:test_app/features/app/presentation/view/components/other_page_button.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/features/duaa/presentation/controllers/cubit/duaa_cubit.dart';
@@ -18,39 +18,13 @@ class HomeDrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List textButtonsAlertDialogWidgets = [
-      Text(
-        AppStrings.translate("khetmAlquran"),
-        textAlign: TextAlign.center,
-        style: TextStyles.bold20(context).copyWith(
-          fontFamily: 'DataFontFamily',
-          color: ThemeCubit.controller(context).state
-              ? Colors.grey
-              : AppColors.black,
-        ),
-      ),
-      DrawRosaryRingWidget(),
-      DrawRosaryRingWidget(),
-    ];
-
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            // Text Button List
-            ...List.generate(textButtonsAlertDialogWidgets.length, (index) {
-              return HomeDrawerTextButton(
-                index: index,
-                text: AppStrings.translate("homeDrawerTextButtons")[index],
-                alertDialogContent: textButtonsAlertDialogWidgets[index],
-              );
-            }),
-
-            appDivider(),
-
             // Duaa Section
-           
+
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(

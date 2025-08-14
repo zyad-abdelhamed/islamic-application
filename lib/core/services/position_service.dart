@@ -6,8 +6,9 @@ import 'package:geolocator/geolocator.dart';
 abstract class BaseLocationService {
   Future<bool> get isServiceEnabled;
   Future<LocationPermission> get checkPermission;
-  Future<void>  requestPermission();
+  Future<void> requestPermission();
   Future<Position> get position;
+  Future<Position> getPositionWithAccuracy(LocationAccuracy accuracy);
   Future<void> openLocationSettings() async {
     await AppSettings.openAppSettings(type: AppSettingsType.location);
   }
@@ -48,7 +49,7 @@ class LocatationServiceImplByGeolocator extends BaseLocationService {
   Future<Position> get position async => await Geolocator.getCurrentPosition();
 
   @override
-  Future<void>  requestPermission() async =>
+  Future<void> requestPermission() async =>
       await Geolocator.requestPermission();
 
   @override
@@ -58,4 +59,11 @@ class LocatationServiceImplByGeolocator extends BaseLocationService {
   @override
   Stream<LocationPermission> get locationPermissionStream =>
       _permissionStatusController.stream;
+
+  @override
+  Future<Position> getPositionWithAccuracy(LocationAccuracy accuracy) async {
+    Position position = await Geolocator.getCurrentPosition(
+        locationSettings: LocationSettings(accuracy: accuracy));
+    return position;
+  }
 }

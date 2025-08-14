@@ -16,10 +16,12 @@ import 'package:test_app/features/app/data/datasources/records_local_data_source
 import 'package:test_app/features/app/data/repos/home_repo.dart';
 import 'package:test_app/features/app/data/repos/location_repo.dart';
 import 'package:test_app/features/app/data/repos/prayer_repo.dart';
+import 'package:test_app/features/app/data/repos/qipla_repo.dart';
 import 'package:test_app/features/app/data/repos/quran_repo.dart';
 import 'package:test_app/features/app/data/repos/r_table_repo.dart';
 import 'package:test_app/features/app/data/repos/records_repo.dart';
 import 'package:test_app/features/app/domain/repositories/base_prayer_repo.dart';
+import 'package:test_app/features/app/domain/repositories/base_qipla_repo.dart';
 import 'package:test_app/features/app/domain/repositories/base_quran_repo.dart';
 import 'package:test_app/features/app/domain/repositories/base_records_repo.dart';
 import 'package:test_app/features/app/domain/repositories/home_repo.dart';
@@ -46,6 +48,7 @@ import 'package:test_app/features/app/domain/usecases/get_records_use_case.dart'
 import 'package:test_app/features/app/presentation/controller/cubit/featured_records_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/prayer_times_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/prayers_sound_settings_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/qibla_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/quran_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/rtabel_cubit.dart';
 import 'package:test_app/core/services/api_services.dart';
@@ -60,14 +63,17 @@ GetIt sl = GetIt.instance;
 
 class DependencyInjection {
   static Future<void> init() async {
-    sl.registerLazySingleton(
-        () => GetPrayersTimesController(getPrayersTimesUseCase: sl(),baseLocationRepo: sl()));
+    sl.registerLazySingleton(() => GetPrayersTimesController(
+        getPrayersTimesUseCase: sl(), baseLocationRepo: sl()));
     // cubits
     sl.registerFactory(() => BookmarksCubit(sl()));
+    sl.registerFactory(() => QiblaCubit(sl()));
     sl.registerFactory(() => PrayerSoundSettingsCubit(basePrayerRepo: sl()));
-    sl.registerFactory(() => QuranCubit(sl()),);
+    sl.registerFactory(
+      () => QuranCubit(sl()),
+    );
     sl.registerFactory(() => DuaaCubit(sl()));
-    sl.registerFactory(()=> LocationCubit(sl()));
+    sl.registerFactory(() => LocationCubit(sl()));
     sl.registerLazySingleton(() => OnBoardingCubit());
     sl.registerFactory(() => GetPrayerTimesOfMonthCubit(sl()));
     sl.registerFactory(() => TimerCubit());
@@ -78,7 +84,8 @@ class DependencyInjection {
     //controllers
     sl.registerLazySingleton(() => GetAdhkarController(getAdhkarUseCase: sl()));
     //usecases
-    sl.registerLazySingleton(() => GetSurahWithTafsirUseCase(baseQuranRepo: sl()));
+    sl.registerLazySingleton(
+        () => GetSurahWithTafsirUseCase(baseQuranRepo: sl()));
     sl.registerLazySingleton(
         () => GetPrayerTimesOfMonthUseCase(basePrayerRepo: sl()));
     sl.registerLazySingleton(() => GetTodayHadithUseCase(baseHomeRepo: sl()));
@@ -98,8 +105,10 @@ class DependencyInjection {
     sl.registerLazySingleton<GetRecordsUseCase>(
         () => GetRecordsUseCase(baseRecordsRepo: sl()));
     //repositories
+    sl.registerLazySingleton<BaseQiblaRepository>(() => QiblaRepository(sl()));
     sl.registerLazySingleton<BaseQuranRepo>(() => QuranRepo(sl(), sl(), sl()));
-    sl.registerLazySingleton<BaseLocationRepo>(() => LocationRepo(sl(),sl(),sl(),sl()));
+    sl.registerLazySingleton<BaseLocationRepo>(
+        () => LocationRepo(sl(), sl(), sl(), sl()));
     sl.registerLazySingleton<DuaaBaseRepo>(() => DuaaRepo(sl()));
     sl.registerLazySingleton<BaseRTableRepo>(
         () => RTableRepo(rTableLocalDataSource: sl()));
@@ -138,7 +147,8 @@ class DependencyInjection {
         () => PrayersRemoteDataSourceImpl(sl()));
 
     // services
-    sl.registerLazySingleton<BaseArabicConverterService>(() => ArabicConverterServiceImpl());
+    sl.registerLazySingleton<BaseArabicConverterService>(
+        () => ArabicConverterServiceImpl());
     sl.registerLazySingleton<LocationNameService>(
         () => LocationNameServiceImpl());
     sl.registerSingleton<BaseLocationService>(

@@ -1,63 +1,46 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_compass/flutter_compass.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:test_app/core/services/position_service.dart';
+import 'package:test_app/features/app/domain/entities/qipla_entity.dart';
+import 'package:test_app/features/app/domain/repositories/base_qipla_repo.dart';
 
 part 'qibla_state.dart';
 
 class QiblaCubit extends Cubit<QiblaState> {
-  QiblaCubit(this.basePositionService) : super(QiblaInitial());
+  final BaseQiblaRepository qiblaRepository;
+  StreamSubscription? _subscription;
 
-  StreamSubscription<CompassEvent>? _compassSubscription;
-  final BaseLocationService basePositionService;
+  QiblaCubit(this.qiblaRepository) : super(QiblaInitial());
 
-  Future<void> initQibla() async {
+  void startQibla({LocationAccuracy accuracy = LocationAccuracy.high}) {
     emit(QiblaLoading());
-
-    try {
-      final Position position = await basePositionService.position;
-      final qiblaDir =
-          _calculateQiblaDirection(position.latitude, position.longitude);
-
-      _compassSubscription = FlutterCompass.events!.listen((event) {
-        final heading = event.heading;
-        if (heading != null) {
-          emit(QiblaLoaded(
-            deviceDirection: heading,
-            qiblaDirection: qiblaDir,
-          ));
-        }
-      });
-    } catch (e) {
-      if (await basePositionService.checkPermission ==
-          LocationPermission.denied) {
-        emit(QiblaError('تم رفض صلاحية الموقع'));
-      } else if (!await basePositionService.isServiceEnabled) {
-        emit(QiblaError('GPS غير مفعل'));
-      } else {
-        emit(QiblaError(e.toString()));
-      }
-    }
+    _subscription = qiblaRepository.listenToQibla(accuracy).listen((result) {
+      result.fold(
+        (failure) => emit(QiblaError(failure.message)),
+        (entity) => emit(QiblaLoaded(entity, accuracy)),
+      );
+    });
   }
 
-  double _calculateQiblaDirection(double lat, double lon) {
-    const double kaabaLat = 21.4225;
-    const double kaabaLon = 39.8262;
+  void changeAccuracy(LocationAccuracy currentAccuracy) {
+    startQibla(accuracy: _getNextAccuracy(currentAccuracy));
+  }
 
-    double dLon = (kaabaLon - lon) * pi / 180;
-    double y = sin(dLon) * cos(kaabaLat * pi / 180);
-    double x = cos(lat * pi / 180) * sin(kaabaLat * pi / 180) -
-        sin(lat * pi / 180) * cos(kaabaLat * pi / 180) * cos(dLon);
-    double direction = atan2(y, x) * 180 / pi;
-
-    return (direction + 360) % 360;
+  LocationAccuracy _getNextAccuracy(LocationAccuracy current) {
+    final options = [
+      LocationAccuracy.low,
+      LocationAccuracy.medium,
+      LocationAccuracy.high,
+      LocationAccuracy.best,
+    ];
+    final currentIndex = options.indexOf(current);
+    final nextIndex = (currentIndex + 1) % options.length;
+    return options[nextIndex];
   }
 
   @override
   Future<void> close() {
-    _compassSubscription?.cancel();
+    _subscription?.cancel();
     return super.close();
   }
 }
