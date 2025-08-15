@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:skeletons/skeletons.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/qibla_cubit.dart';
@@ -41,21 +40,7 @@ class QiplaAccuracyButton extends StatelessWidget {
               duration: const Duration(milliseconds: 300),
               transitionBuilder: (child, animation) =>
                   FadeTransition(opacity: animation, child: child),
-              child: isLoading
-                  ? SkeletonParagraph(
-                      key: const ValueKey('loading'),
-                      style: SkeletonParagraphStyle(
-                        lines: 1,
-                        lineStyle: SkeletonLineStyle(
-                          randomLength: true,
-                          height: 20,
-                          borderRadius: BorderRadius.circular(8),
-                          minLength: MediaQuery.of(context).size.width / 4,
-                          maxLength: MediaQuery.of(context).size.width / 2,
-                        ),
-                      ),
-                    )
-                  : Text(
+              child:Text(
                       _accuracyToLabel(state.accuracy),
                       key: ValueKey(state.accuracy),
                       style: TextStyles.bold20(context)
