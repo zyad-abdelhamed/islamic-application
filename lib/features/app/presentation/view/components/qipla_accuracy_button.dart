@@ -7,7 +7,7 @@ import 'package:test_app/features/app/presentation/controller/cubit/qibla_cubit.
 
 class QiplaAccuracyButton extends StatelessWidget {
   const QiplaAccuracyButton(
-      {super.key, required this.state, this.isLoading = false});
+      {super.key, required this.state, required this.isLoading});
 
   final QiblaLoaded state;
   final bool isLoading;
@@ -43,10 +43,11 @@ class QiplaAccuracyButton extends StatelessWidget {
               child:Text(
                       _accuracyToLabel(state.accuracy),
                       key: ValueKey(state.accuracy),
-                      style: TextStyles.bold20(context)
-                          .copyWith(color: AppColors.successColor),
-                    )),
-        ),
+                        style: TextStyles.bold20(context)
+                            .copyWith(color: AppColors.successColor),
+                      ),
+              )),
+      
       ],
     );
   }

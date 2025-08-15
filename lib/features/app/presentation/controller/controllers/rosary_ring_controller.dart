@@ -3,17 +3,17 @@ import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 
 class RosaryRingController {
-  final ValueNotifier<double> progressNotifier = ValueNotifier(0);
+  final ValueNotifier<int> progressNotifier = ValueNotifier(0);
 
-  int selectedIndex = 0;
+  final ValueNotifier<int> selectedIndex = ValueNotifier(0);
 
-  void dispose() => progressNotifier.dispose();
+  void dispose() {progressNotifier.dispose();selectedIndex.dispose();}
 
   void drawRosaryRing(BuildContext context) {
     progressNotifier.value += 1;
 
     if (progressNotifier.value == 3) {
-      selectedIndex += 1;
+      selectedIndex.value += 1;
       Future.delayed(AppDurations.mediumDuration, () {
         progressNotifier.value = 0;
 
@@ -27,14 +27,14 @@ class RosaryRingController {
   }
 
   String get getRingText {
-    if (selectedIndex < AppStrings.translate("adhkarList").length) {
-      return AppStrings.translate("adhkarList")[selectedIndex];
+    if (selectedIndex.value < AppStrings.translate("adhkarList").length) {
+      return AppStrings.translate("adhkarList")[selectedIndex.value];
     }
     return AppStrings.translate("done");
   }
 
   Color getContainerColor(BuildContext context, int index) {
-    return selectedIndex > index
+    return selectedIndex.value > index
         ? Theme.of(context).primaryColor
         : Colors.transparent;
   }

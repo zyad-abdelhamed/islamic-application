@@ -6,6 +6,5 @@ abstract class BaseRTableRepo {
   Future<Either<Failure, List<bool>>> getBooleans();
   Future<Either<Failure, Unit>> updateBooleans(
       {required BooleansParameters parameters});
-  Future<Either<Failure, Unit>> resetBooleans(
-      {required BooleansParameters parameters});
+  Future<Either<Failure, Unit>> resetBooleans();
 }

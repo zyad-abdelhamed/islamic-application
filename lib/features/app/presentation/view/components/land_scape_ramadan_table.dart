@@ -61,7 +61,7 @@ class LandScapeWidgetToRTablePage extends StatelessWidget {
                                               16,
                                       title: 'الفروض',
                                       listOfStrings: AppStrings
-                                          .translate("namesOfPrayers") as List<String>,
+                                          .translate("namesOfPrayers"),
                                       count: 5,
                                     ),
                                   ),
@@ -73,7 +73,7 @@ class LandScapeWidgetToRTablePage extends StatelessWidget {
                                                 16,
                                         title: 'النوافل',
                                         listOfStrings: AppStrings
-                                            .translate("namesOfVoluntaryPrayers") as List<String>,
+                                            .translate("namesOfVoluntaryPrayers"),
                                         count: 4,
                                       )),
                                 ],
@@ -88,7 +88,7 @@ class LandScapeWidgetToRTablePage extends StatelessWidget {
                             width: constraints.maxWidth / 16,
                             title: 'ألاذكار',
                             listOfStrings:
-                                AppStrings.translate("supplications") as List<String>,
+                                AppStrings.translate("supplications"),
                             count: 5),
                       ),
                       Flexible(
@@ -96,7 +96,7 @@ class LandScapeWidgetToRTablePage extends StatelessWidget {
                         child: RamadanTableColumn(
                             width: constraints.maxWidth / 16,
                             title: 'قران',
-                            listOfStrings: AppStrings.translate("list") as List<String>,
+                            listOfStrings: AppStrings.translate("list"),
                             count: 2),
                       ),
                     ],

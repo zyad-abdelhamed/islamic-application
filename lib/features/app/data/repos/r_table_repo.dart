@@ -18,10 +18,9 @@ class RTableRepo extends BaseRTableRepo {
   }
 
   @override
-  Future<Either<Failure, Unit>> resetBooleans(
-      {required BooleansParameters parameters}) async {
+  Future<Either<Failure, Unit>> resetBooleans() async {
     try {
-      await rTableLocalDataSource.resetBooleans(parameters: parameters);
+      await rTableLocalDataSource.resetBooleans();
       return const Right(unit);
     } catch (e) {
       return Left(Failure(e.toString()));

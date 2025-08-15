@@ -7,7 +7,7 @@ import 'package:test_app/core/services/data_base_service.dart';
 abstract class RTableLocalDataSource {
   Future<List<bool>> getBooleans();
   Future<Unit> updateBooleans({required BooleansParameters parameters});
-  Future<Unit> resetBooleans({required BooleansParameters parameters});
+  Future<Unit> resetBooleans();
 }
 
 class RTableLocalDataSourceImpl extends RTableLocalDataSource {
@@ -34,7 +34,7 @@ class RTableLocalDataSourceImpl extends RTableLocalDataSource {
   }
 
   @override
-  Future<Unit> resetBooleans({required BooleansParameters parameters}) async {
+  Future<Unit> resetBooleans() async {
     await rTableHiveObject.deleteAll(DataBaseConstants.rTableBoxHiveKey);
     final Map<int, bool> entries = {
       for (int i = 0; i < 30 * 16; i++) i: false

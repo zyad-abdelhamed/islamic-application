@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
-import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_prayer_times_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/next_prayer_widget.dart';
@@ -39,10 +38,10 @@ class PrimaryPrayerTimesContainer extends StatelessWidget {
 
           // الحاوية الداخلية
           Container(
-            height: 200,
+            height: 160,
             width: double.infinity,
             padding:
-                const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
+                const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 0.0, top: 20.0),
             decoration: _boxDecoration(
               color: ThemeCubit.controller(context).state
                   ? AppColors.darkModeInActiveColor
@@ -79,13 +78,19 @@ class PrimaryPrayerTimesContainer extends StatelessWidget {
         (index) => Text(
           textList[index],
           textAlign: TextAlign.center,
-          style: TextStyles.bold20(context).copyWith(
-            color: AppColors.white,
-            fontFamily: 'Amiri',
-          ),
+          style: _dataTextStyle,
         ),
       ),
     );
+  }
+
+  TextStyle get _dataTextStyle {
+    return const TextStyle(
+          color: AppColors.white,
+          fontFamily: 'Amiri',
+          fontSize: 20.0,
+          fontWeight: FontWeight.bold
+        );
   }
 
   Row _getRowOfIconsWithText(BuildContext context, {
@@ -96,25 +101,25 @@ class PrimaryPrayerTimesContainer extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: List.generate(
         icons.length,
-        (index) => Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset(
-              icons[index],
-              height: 25,
-              width: 25,
-              color: AppColors.white,
-            ),
-            const SizedBox(height: 5),
-            Text(
-              names[index],
-              style: TextStyles.bold20(context).copyWith(
+        (index) => Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                icons[index],
+                height: 25,
+                width: 25,
                 color: AppColors.white,
-                fontFamily: 'Amiri',
               ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+              const SizedBox(height: 5),
+              Text(
+                names[index],
+                style: _dataTextStyle,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
     );

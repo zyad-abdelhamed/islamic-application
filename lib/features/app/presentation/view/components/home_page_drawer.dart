@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/adaptive_switch.dart';
-import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/core/widgets/app_divider.dart';
-import 'package:test_app/features/app/presentation/view/components/rosary_ring%20widget.dart';
 import 'package:test_app/core/utils/enums.dart';
-import 'package:test_app/features/app/presentation/view/components/other_page_button.dart';
 import 'package:test_app/core/constants/app_strings.dart';
-import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/features/duaa/presentation/controllers/cubit/duaa_cubit.dart';
 import 'package:test_app/features/duaa/presentation/view/component/duaa_display.dart';
 
