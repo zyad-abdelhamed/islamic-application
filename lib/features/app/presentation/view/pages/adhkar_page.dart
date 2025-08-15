@@ -67,25 +67,25 @@ class _AdhkarPageState extends State<AdhkarPage> {
                           widget.getAdhkarController.adhkar.elementAt(index),
                     )),
             //circle slider
-            ValueListenableBuilder<double>(
-              valueListenable: adhkarPageController.progressNotfier,
-              builder: (_, __, ___) => Stack(children: [
-                _getCustomCircleSlider(context,
-                    customPainter: CirclePainter(
-                        lineSize: 5.0,
-                        progress: adhkarPageController.maxProgress,
-                        context: context,
-                        lineColor: ThemeCubit.controller(context).state ? AppColors.darkModeInActiveColor : AppColors.lightModeInActiveColor,
-                        maxProgress: adhkarPageController.maxProgress)),
-                _getCustomCircleSlider(context,
-                    customPainter: CirclePainter(
-                        lineSize: 5.0,
-                        progress: adhkarPageController.progressNotfier.value,
-                        context: context,
-                        lineColor: Theme.of(context).primaryColor,
-                        maxProgress: adhkarPageController.maxProgress))
-              ]),
-            )
+            // ValueListenableBuilder<double>(
+            //   valueListenable: adhkarPageController.progressNotfier,
+            //   builder: (_, __, ___) => Stack(children: [
+            //     _getCustomCircleSlider(context,
+            //         customPainter: CirclePainter(
+            //             lineSize: 5.0,
+            //             progress: adhkarPageController.maxProgress,
+            //             context: context,
+            //             lineColor: ThemeCubit.controller(context).state ? AppColors.darkModeInActiveColor : AppColors.lightModeInActiveColor,
+            //             maxProgress: adhkarPageController.maxProgress)),
+            //     _getCustomCircleSlider(context,
+            //         customPainter: CirclePainter(
+            //             lineSize: 5.0,
+            //             progress: adhkarPageController.progressNotfier.value,
+            //             context: context,
+            //             lineColor: Theme.of(context).primaryColor,
+            //             maxProgress: adhkarPageController.maxProgress))
+            //   ]),
+            // )
           ])),
     );
   }

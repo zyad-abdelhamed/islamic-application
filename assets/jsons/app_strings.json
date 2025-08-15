@@ -44,8 +44,8 @@
   "adhkarList": [
     "سبحان الله",
     "الحمد لله",
-    "لا إله إلا الله",
     "الله أكبر",
+    "لا إله إلا الله",
     "سبحان الله وبحمده",
     "سبحان الله العظيم",
     "أستغفر الله وأتوب إليه",
@@ -85,8 +85,10 @@
     "assets/images/quran.png",
     "assets/images/ramadan.png",
     "assets/images/mosque.png",
-    "assets/images/compass.png"
+    "assets/images/compass.png",
+    "assets/images/other.png"
   ],
+  "list": ["ورد\nتلاوة", "ورد\nتدبر"],
   "iconsOfTimings": [
     "assets/images/fajr.png",
     "assets/images/sunrise.png",

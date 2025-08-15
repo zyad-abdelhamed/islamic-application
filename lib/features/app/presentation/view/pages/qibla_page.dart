@@ -31,9 +31,9 @@ class QiblaPage extends StatelessWidget {
               return ErrorWidgetIslamic(message: state.message);
             }
             if (state is QiblaLoaded) {
-              final double angle = (state.qibla.qiblaDirection -
-                      state.qibla.deviceDirection) *
-                  (pi / 180);
+              final double angle =
+                  (state.qibla.qiblaDirection - state.qibla.deviceDirection) *
+                      (pi / 180);
 
               return Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -41,8 +41,8 @@ class QiblaPage extends StatelessWidget {
                 children: [
                   // زر تغيير الدقة
                   Align(
-                    alignment: Alignment.topRight, 
-                    child: QiplaAccuracyButton(state: state)),
+                      alignment: Alignment.topRight,
+                      child: QiplaAccuracyButton(state: state, isLoading: state is QiblaLoading)),
                   const Spacer(),
                   Transform.rotate(
                     angle: angle,
@@ -52,10 +52,11 @@ class QiblaPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Text('زاوية القبلة: ${state.qibla.qiblaDirection.toStringAsFixed(2)}°'),
-                  Text('اتجاه الجهاز: ${state.qibla.deviceDirection.toStringAsFixed(2)}°'),
-                                    const Spacer(),
-
+                  Text(
+                      'زاوية القبلة: ${state.qibla.qiblaDirection.toStringAsFixed(2)}°'),
+                  Text(
+                      'اتجاه الجهاز: ${state.qibla.deviceDirection.toStringAsFixed(2)}°'),
+                  const Spacer(),
                 ],
               );
             }

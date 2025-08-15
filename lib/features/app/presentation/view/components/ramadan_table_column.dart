@@ -3,7 +3,7 @@ import 'package:test_app/core/theme/app_colors.dart';
 
 class RamadanTableColumn extends StatelessWidget {
   final String title;
-  final List<String> listOfStrings;
+  final List listOfStrings;
   final int count;
   final double width;
   const RamadanTableColumn({

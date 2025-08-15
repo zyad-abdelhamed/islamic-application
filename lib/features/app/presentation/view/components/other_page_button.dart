@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/presentation/view/components/custom_alert_dialog.dart';
 
 class OtherPageButton extends StatelessWidget {
@@ -9,17 +7,17 @@ class OtherPageButton extends StatelessWidget {
     super.key,
     required this.text,
     required this.alertDialogContent,
-    required this.logo
+    required this.logo,
+    required this.size,
   });
 
   final String text;
   final Widget alertDialogContent;
   final Widget logo;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
-    final isDark = ThemeCubit.controller(context).state;
-
     return GestureDetector(
       onTap: () {
         showDialog(
@@ -31,16 +29,29 @@ class OtherPageButton extends StatelessWidget {
           ),
         );
       },
-      child: Chip(
-          label: Text(
-        text,
-        style: TextStyles.semiBold20(context).copyWith(
-          color: isDark
-              ? AppColors.darkModeTextColor
-              : AppColors.lightModeTextColor,
-          height: 1.2,
-        ),
-      )),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // الكونتينر الخاص باللوجو
+          Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              borderRadius: BorderRadius.circular(12), // رديس خفيف
+            ),
+            padding: const EdgeInsets.all(8),
+            child: Center(child: logo),
+          ),
+          const SizedBox(height: 6),
+          // النص تحت الكونتينر
+          Text(
+            text,
+            style: TextStyles.semiBold16_120(context),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
     );
   }
 }
