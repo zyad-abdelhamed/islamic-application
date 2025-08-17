@@ -1,4 +1,6 @@
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
+import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/features/app/data/datasources/quran_local_data_source.dart';
 import 'package:test_app/features/app/domain/entities/book_mark_entity.dart';
 import 'package:test_app/features/app/data/datasources/quran_remote_data_source.dart';
@@ -71,7 +73,10 @@ class QuranRepo implements BaseQuranRepo {
           await _baseQuranRemoteDataSource.getSurahWithTafsir(params);
       return Right(result);
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      if(e is DioException){
+        return Left(ServerFailure.fromDiorError(e));
+      }
+      return Left(ServerFailure(AppStrings.translate("unExpectedError")));
     }
   }
   
@@ -81,7 +86,7 @@ class QuranRepo implements BaseQuranRepo {
       await quranLocalDataSource.deleteBookmarksList(indexes: indexs);
       return right(unit);
     } catch (e) {
-      return left(Failure('خطأ ف مسح العلامة'));
+      return left(Failure('خطأ في مسح العلامة'));
     }
   }
 }

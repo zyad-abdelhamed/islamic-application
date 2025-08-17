@@ -2,23 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/helper_function/get_from_json.dart';
+import 'package:test_app/features/app/data/models/tafsir_edition_model.dart';
+import 'package:test_app/features/app/domain/entities/tafsir_edition_entity.dart';
 
 class TafsirEditionDropdown extends StatelessWidget {
-  final ValueNotifier<Map<String, String>> selectedEditionNotifier;
+  final ValueNotifier<TafsirEditionEntity?> selectedEditionNotifier;
 
   const TafsirEditionDropdown({
     super.key,
     required this.selectedEditionNotifier,
   });
 
-  Future<List<Map<String, String>>> loadTafsirEditions() async {
-    final data = await getJson(RoutesConstants.tafsirJsonRouteName);
-    return List<Map<String, String>>.from(data["tafsirEditions"]);
+  Future<List<TafsirEditionEntity>> loadTafsirEditions() async {
+    final Map<String, dynamic> data =
+        await getJson(RoutesConstants.tafsirJsonRouteName);
+
+    return (data["tafsirEditions"] as List)
+        .map((map) => TafsirEditionModel.fromJson(map))
+        .toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Map<String, String>>>(
+    return FutureBuilder<List<TafsirEditionEntity>>(
       future: loadTafsirEditions(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -31,29 +37,33 @@ class TafsirEditionDropdown extends StatelessWidget {
 
         final editions = snapshot.data!;
 
-        // Default selected if not set
-        if (selectedEditionNotifier.value.isEmpty && editions.isNotEmpty) {
+        // حدد أول قيمة افتراضيًا لو مفيش اختيار
+        if (selectedEditionNotifier.value == null && editions.isNotEmpty) {
           selectedEditionNotifier.value = editions.first;
         }
 
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 8),
-          child: ValueListenableBuilder<Map<String, String>>(
+          child: ValueListenableBuilder<TafsirEditionEntity?>(
             valueListenable: selectedEditionNotifier,
             builder: (context, selectedEdition, _) {
-              return DropdownButtonFormField<Map<String, String>>(
-                value: editions.contains(selectedEdition)
-                    ? selectedEdition
-                    : null,
+              return DropdownButtonFormField<String>(
+                decoration: const InputDecoration(
+                  fillColor: Colors.transparent,
+                  border: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                ),
+                value: selectedEdition?.identifier,
                 items: editions.map((edition) {
-                  return DropdownMenuItem<Map<String, String>>(
-                    value: edition,
-                    child: Text(edition['name'] ?? ''),
+                  return DropdownMenuItem<String>(
+                    value: edition.identifier,
+                    child: Text(edition.name),
                   );
                 }).toList(),
                 onChanged: (value) {
                   if (value != null) {
-                    selectedEditionNotifier.value = value;
+                    selectedEditionNotifier.value =
+                        editions.firstWhere((e) => e.identifier == value);
                   }
                 },
               );

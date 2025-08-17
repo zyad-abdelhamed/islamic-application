@@ -9,6 +9,7 @@
   "skip": "تخطى",
   "next": "التالى",
   "theIndex": "الفهرس",
+  "unExpectedError": " حدث خطأ غير متوقع، يرجى المحاولة مرة أخرى",
   "usesOfActivationLocation": "لكي تتمكن من استخدام:\n\n• مواقيت الصلاة حسب موقعك\n• تحديد اتجاه القبلة بدقة\"",
   "activationLocationNow": "تفعيل الموقع الآن",
   "activationLocationRequired": "تفعيل الموقع مطلوب",
