@@ -16,7 +16,7 @@ import 'package:test_app/features/app/presentation/view/components/book_marks_pa
 class BookmarksPage extends StatefulWidget {
   const BookmarksPage({super.key, required this.quranPageController});
   final QuranPageController quranPageController;
-  
+
   @override
   State<BookmarksPage> createState() => _BookmarksPageState();
 }
@@ -28,7 +28,7 @@ class _BookmarksPageState extends State<BookmarksPage> {
   void initState() {
     super.initState();
     controller = BookmarksController();
-    BookmarksCubit.controller(context).loadBookmarks();
+    controller.initstate(context);
   }
 
   @override
@@ -39,58 +39,61 @@ class _BookmarksPageState extends State<BookmarksPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<bool>(
-      valueListenable: controller.loadingNotifier,
-      builder: (_, __, ___) => ModalProgressHUD(
-        inAsyncCall: controller.loadingNotifier.value,
-        progressIndicator: GetAdaptiveLoadingWidget(),
-        opacity: .5,
-        child: Scaffold(
-          appBar: BookMarksPageAppBar(controller: controller),
-          body: BlocBuilder<BookmarksCubit, BookmarksState>(
-            builder: (_, state) {
-              if (state is BookmarksLoading) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state is BookmarksLoaded) {
-                final bookmarks = state.bookmarks;
-                if (bookmarks.isEmpty) {
-                  return EmptyListTextWidget(
-                      text: AppStrings.translate("noBookmarks"));
-                }
-                return BlocProvider<QuranCubit>(
-                  create: (context) => sl<QuranCubit>(),
-                  child: GridView.builder(
-                    padding: const EdgeInsets.all(12),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 8,
-                      crossAxisSpacing: 8,
-                      childAspectRatio: 1.3,
+    return BlocProvider<BookmarksCubit>(
+                      create: (_) => sl<BookmarksCubit>(),
+      child: ValueListenableBuilder<bool>(
+        valueListenable: controller.loadingNotifier,
+        builder: (_, __, ___) => ModalProgressHUD(
+          inAsyncCall: controller.loadingNotifier.value,
+          progressIndicator: GetAdaptiveLoadingWidget(),
+          opacity: .5,
+          child: Scaffold(
+            appBar: BookMarksPageAppBar(controller: controller),
+            body: BlocBuilder<BookmarksCubit, BookmarksState>(
+              builder: (_, state) {
+                if (state is BookmarksLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state is BookmarksLoaded) {
+                  final bookmarks = state.bookmarks;
+                  if (bookmarks.isEmpty) {
+                    return EmptyListTextWidget(
+                        text: AppStrings.translate("noBookmarks"));
+                  }
+                  return BlocProvider<QuranCubit>(
+                    create: (context) => sl<QuranCubit>(),
+                    child: GridView.builder(
+                      padding: const EdgeInsets.all(12),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 8,
+                        crossAxisSpacing: 8,
+                        childAspectRatio: 1.3,
+                      ),
+                      itemCount: bookmarks.length,
+                      itemBuilder: (context, index) {
+                        return BookmarkItem(
+                          quranPageController: widget.quranPageController,
+                          bookmarksController: controller,
+                          index: index,
+                          bookmark: bookmarks[index],
+                          onSelectionChanged: (isSelected) {
+                            // parent مسؤول عن تحديث الكونترولر
+                            if (!controller.isSelectionMode.value) {
+                              controller.enterSelectionMode();
+                            }
+                            controller.toggleSelection(index, isSelected);
+                          },
+                        );
+                      },
                     ),
-                    itemCount: bookmarks.length,
-                    itemBuilder: (context, index) {
-                      return BookmarkItem(
-                        quranPageController: widget.quranPageController,
-                        bookmarksController: controller,
-                        index: index,
-                        bookmark: bookmarks[index],
-                        onSelectionChanged: (isSelected) {
-                          // parent مسؤول عن تحديث الكونترولر
-                          if (!controller.isSelectionMode.value) {
-                            controller.enterSelectionMode();
-                          }
-                          controller.toggleSelection(index, isSelected);
-                        },
-                      );
-                    },
-                  ),
-                );
-              } else if (state is BookmarksError) {
-                return Center(child: Text(state.message));
-              }
-              return const SizedBox.shrink();
-            },
+                  );
+                } else if (state is BookmarksError) {
+                  return Center(child: Text(state.message));
+                }
+                return const SizedBox.shrink();
+              },
+            ),
           ),
         ),
       ),

@@ -40,9 +40,8 @@ class _ElecRosaryPageState extends State<ElecRosaryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) =>
-            FeaturedRecordsCubit(sl(), sl(), sl(), sl())..getFeatuerdRecords(),
+    return BlocProvider<FeaturedRecordsCubit>(
+        create: (_) => sl<FeaturedRecordsCubit>(),
         child: Scaffold(
           appBar: AppBar(
             leading: GetAdaptiveBackButtonWidget(),

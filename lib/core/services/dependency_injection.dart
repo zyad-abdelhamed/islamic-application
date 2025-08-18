@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:test_app/core/services/arabic_converter_service.dart';
+import 'package:test_app/core/services/cache_service%20copy.dart';
 import 'package:test_app/core/services/city_name_service.dart';
 import 'package:test_app/core/services/internet_connection.dart';
 import 'package:test_app/core/services/position_service.dart';
@@ -35,15 +36,14 @@ import 'package:test_app/features/app/domain/usecases/get_booleans_use_case.dart
 import 'package:test_app/features/app/domain/usecases/get_prayer_times_of_month_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/get_prayers_times_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/get_surah_with_tafsir_use_case.dart';
-import 'package:test_app/features/app/domain/usecases/get_today_hadith_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/reset_booleans_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/update_booleans_use_case.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/book_mark_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/get_surah_with_tafsir_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/location_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_adhkar_controller.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_prayer_times_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_prayer_times_of_month_cubit.dart';
-import 'package:test_app/features/app/presentation/controller/cubit/hadith_cubit.dart';
 import 'package:test_app/features/app/domain/usecases/get_records_use_case.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/featured_records_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/prayer_times_cubit.dart';
@@ -53,11 +53,8 @@ import 'package:test_app/features/app/presentation/controller/cubit/quran_cubit.
 import 'package:test_app/features/app/presentation/controller/cubit/rtabel_cubit.dart';
 import 'package:test_app/core/services/api_services.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/timer_cubit.dart';
-import 'package:test_app/features/duaa/data/dataSource/duaa_local_data_source.dart';
-import 'package:test_app/features/duaa/data/repos/duaa_repo.dart';
-import 'package:test_app/features/duaa/domain/repos/duaa_base_repo.dart';
-import 'package:test_app/features/duaa/presentation/controllers/cubit/duaa_cubit.dart';
-import 'package:test_app/features/onboarding/presentation/controller/on_boarding_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/duaa_cubit.dart';
+import 'package:test_app/features/onboarding/presentation/controller/on_boarding_controller.dart';
 
 GetIt sl = GetIt.instance;
 
@@ -66,6 +63,7 @@ class DependencyInjection {
     sl.registerLazySingleton(() => GetPrayersTimesController(
         getPrayersTimesUseCase: sl(), baseLocationRepo: sl()));
     // cubits
+    sl.registerFactory( () => TafsirCubit(sl()));
     sl.registerFactory(() => BookmarksCubit(sl()));
     sl.registerFactory(() => QiblaCubit(sl()));
     sl.registerFactory(() => PrayerSoundSettingsCubit(basePrayerRepo: sl()));
@@ -74,21 +72,19 @@ class DependencyInjection {
     );
     sl.registerFactory(() => DuaaCubit(sl()));
     sl.registerFactory(() => LocationCubit(sl()));
-    sl.registerLazySingleton(() => OnBoardingCubit());
     sl.registerFactory(() => GetPrayerTimesOfMonthCubit(sl()));
     sl.registerFactory(() => TimerCubit());
     sl.registerFactory(() => PrayerTimesCubit(sl()));
-    sl.registerFactory(() => HadithCubit(sl()));
     sl.registerFactory(() => FeaturedRecordsCubit(sl(), sl(), sl(), sl()));
     sl.registerFactory(() => RtabelCubit(sl(), sl(), sl()));
     //controllers
     sl.registerLazySingleton(() => GetAdhkarController(getAdhkarUseCase: sl()));
+    sl.registerLazySingleton<OnBoardingController>(() => OnBoardingController());
     //usecases
     sl.registerLazySingleton(
         () => GetSurahWithTafsirUseCase(baseQuranRepo: sl()));
     sl.registerLazySingleton(
         () => GetPrayerTimesOfMonthUseCase(basePrayerRepo: sl()));
-    sl.registerLazySingleton(() => GetTodayHadithUseCase(baseHomeRepo: sl()));
     sl.registerLazySingleton(
         () => GetPrayersTimesUseCase(basePrayerRepo: sl()));
     sl.registerLazySingleton(() => GetBooleansUseCase(sl()));
@@ -109,7 +105,6 @@ class DependencyInjection {
     sl.registerLazySingleton<BaseQuranRepo>(() => QuranRepo(sl(), sl(), sl()));
     sl.registerLazySingleton<BaseLocationRepo>(
         () => LocationRepo(sl(), sl(), sl(), sl()));
-    sl.registerLazySingleton<DuaaBaseRepo>(() => DuaaRepo(sl()));
     sl.registerLazySingleton<BaseRTableRepo>(
         () => RTableRepo(rTableLocalDataSource: sl()));
     sl.registerLazySingleton<BaseHomeRepo>(() => HomeRepo(sl(), sl()));
@@ -128,8 +123,6 @@ class DependencyInjection {
     sl.registerLazySingleton<QuranLocalDataSource>(
       () => QuranLocalDataSourceImpl(),
     );
-    sl.registerLazySingleton<DuaaLocalDataSource>(
-        () => DuaaLocalDataSourceImpl());
     sl.registerLazySingleton<BaseLocationLocalDataSource>(
         () => LocationLocalDataSourceImpl());
     sl.registerLazySingleton<BaseHomeRemoteDataSource>(
@@ -147,6 +140,7 @@ class DependencyInjection {
         () => PrayersRemoteDataSourceImpl(sl()));
 
     // services
+    sl.registerLazySingleton<BaseCacheService>(() => CacheImplBySharedPreferences());
     sl.registerLazySingleton<BaseArabicConverterService>(
         () => ArabicConverterServiceImpl());
     sl.registerLazySingleton<LocationNameService>(

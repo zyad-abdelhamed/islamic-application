@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/core/widgets/info_snack_bar.dart';
 
 class BookmarksController {
-  final ValueNotifier<bool> isSelectionMode = ValueNotifier<bool>(false);
-  final ValueNotifier<List<int>> selectedIndexes = ValueNotifier<List<int>>([]);
-  final ValueNotifier<bool> loadingNotifier = ValueNotifier<bool>(false);
-
+  late final ValueNotifier<bool> isSelectionMode;
+  late final ValueNotifier<List<int>> selectedIndexes;
+  late final ValueNotifier<bool> loadingNotifier;
+  
+  void initstate(BuildContext context) {
+    isSelectionMode = ValueNotifier<bool>(false);
+    selectedIndexes = ValueNotifier<List<int>>([]);
+    loadingNotifier = ValueNotifier<bool>(false);
+     WidgetsBinding.instance.addPostFrameCallback((_) {
+    showInfoSnackBar(context: context, message: "اضغط مطولا للحذف");
+  });
+  }
   void enterSelectionMode() {
     isSelectionMode.value = true;
   }

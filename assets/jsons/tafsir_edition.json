@@ -1,5 +1,4 @@
-{
-    "tafsirEditions": [
+[
         {
             "identifier": "ar.tabari",
             "name": "تفسير الطبري"
@@ -52,5 +51,4 @@
             "identifier": "ar.ibnashur",
             "name": "تفسير ابن عاشور"
         }
-    ]
-}
+]

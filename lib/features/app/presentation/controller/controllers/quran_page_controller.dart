@@ -5,17 +5,15 @@ import 'package:test_app/core/helper_function/get_from_json.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/quran_cubit.dart';
 
 class QuranPageController {
-  late ValueNotifier<List<int>> indexsNotifier;
+  late ValueNotifier<Set<int>> indexsNotifier;
   late PDFViewController pdfViewController;
   late final List surahsInfoList;
   void initState() {
-    indexsNotifier = ValueNotifier<List<int>>([]);
+    indexsNotifier = ValueNotifier<Set<int>>({});
   }
 
   Future<void> loadSurahs() async {
-    final Map<String, dynamic> data =
-        await getJson(RoutesConstants.surahsJsonRouteName);
-    surahsInfoList = data["surahs"];
+    surahsInfoList = await getJson(RoutesConstants.surahsJsonRouteName);
   }
 
   void setPdfController(PDFViewController controller) {
@@ -28,9 +26,9 @@ class QuranPageController {
 /// - الكود بسيط وسهل القراءة، والأداء ممتاز لأن k صغير (عادة 1 أو 2 سور فقط).
 /// - الطريقة دي أسرع بكثير من البحث الخطي العادي O(n) خصوصًا مع قوائم كبيرة.
 
-List<int> updateIndexNotifier(BuildContext context, int pageNumber) {
+Set<int> updateIndexNotifier(BuildContext context, int pageNumber) {
   // هنخزن هنا كل إندكسات السور اللي صفحتها تساوي pageNumber
-  final List<int> indexes = [];
+  final Set<int> indexes = {};
 
   // متغيرات البحث الثنائي
   int low = 0;
@@ -64,7 +62,7 @@ List<int> updateIndexNotifier(BuildContext context, int pageNumber) {
   // تحديث الـ Notifier والـ Controller لو فيه تطابقات
   if (indexes.isNotEmpty) {
     indexsNotifier.value = indexes;
-    QuranCubit.getQuranController(context).updateIndex(indexes);
+    QuranCubit.getQuranController(context).updateIndex(indexes.toList());
   }
 
   return indexes;

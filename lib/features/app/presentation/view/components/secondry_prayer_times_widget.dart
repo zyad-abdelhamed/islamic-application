@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
+import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/domain/entities/timings.dart';
 
 class SecondaryPrayerTimesWidget extends StatelessWidget {
@@ -19,7 +20,13 @@ class SecondaryPrayerTimesWidget extends StatelessWidget {
       timings.ishaArabic,
     ];
 
-    return Card(
+    return Container(
+      decoration: BoxDecoration(
+        color: ThemeCubit.controller(context).state
+            ? AppColors.black
+            : AppColors.white,
+        borderRadius: BorderRadius.circular(20.0),
+      ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 24.0),
         child: Column(
@@ -42,8 +49,7 @@ class SecondaryPrayerTimesWidget extends StatelessWidget {
                 children: [
                   _getColumnOfPrayers(context,
                       textList: AppStrings.translate("namesOfPrayers1")),
-                  _getColumnOfPrayers(context,
-                      textList: AppStrings.translate("emojisOfPrayers")),
+                  _getColumnOfIcons(context),
                   Spacer(),
                   _getColumnOfPrayers(context, textList: prayerTimes)
                 ],
@@ -66,6 +72,20 @@ class SecondaryPrayerTimesWidget extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyles.bold20(context).copyWith(fontFamily: 'DataFontFamily'),
           ),
+        ));
+  }
+
+  Column _getColumnOfIcons(BuildContext context) {
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: List<Image>.generate(
+          6,
+          (index) => Image.asset(
+                AppStrings.translate("iconsOfTimings")[index],
+                height: 25,
+                width: 25,
+                color: AppColors.grey400,
+              ),
         ));
   }
 }

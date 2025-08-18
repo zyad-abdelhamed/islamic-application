@@ -21,6 +21,6 @@ class AppColors {
   static Color? grey400 = Colors.grey[400];
   static const Color darkModeTextColor = Color(0xFFB0BEC5);
   static const Color lightModeTextColor = Color(0xFFF5F5F5);
-
-  static var primaryColor;
+  static const Color darkModeSettingsPageBackgroundColor = Color(0xFF1E1E1E);
+  static const Color lightModeSettingsPageBackgroundColor = Color(0xFFF2F1F6);
 }

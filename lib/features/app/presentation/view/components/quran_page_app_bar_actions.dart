@@ -116,11 +116,8 @@ List<Widget> quranPageAppBarActions(
         onPressed: () => Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => BlocProvider(
-                      create: (_) => sl<BookmarksCubit>(),
-                      child: BookmarksPage(
-                          quranPageController: quranPageController),
-                    ))),
+                builder: (context) =>
+                    BookmarksPage(quranPageController: quranPageController))),
         child: Text(
           "العلامات",
           style: TextStyles.semiBold16_120(context).copyWith(color: color),

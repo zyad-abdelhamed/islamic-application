@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/theme/theme_provider.dart';

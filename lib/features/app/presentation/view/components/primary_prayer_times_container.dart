@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_strings.dart';
+import 'package:test_app/core/constants/constants_values.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_prayer_times_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/next_prayer_widget.dart';
+import 'package:test_app/features/app/presentation/view/components/prayer_times_widget_background_image.dart';
 
 class PrimaryPrayerTimesContainer extends StatelessWidget {
   const PrimaryPrayerTimesContainer({super.key});
@@ -24,45 +26,57 @@ class PrimaryPrayerTimesContainer extends StatelessWidget {
     ];
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
       margin: const EdgeInsets.symmetric(vertical: 10.0),
+      padding: const EdgeInsets.only(top: 10.0),
       decoration: _boxDecoration(color: Theme.of(context).primaryColor),
-      child: Column(
-        children: <Widget>[
-          // صف أوقات الصلاة
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: _getRowOfPrayers(context, textList: prayerTimes),
+      child: Stack(
+        children: [
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: PrayerTimesWidgetBackgroundImage(),
           ),
+          Column(
+            children: <Widget>[
+              // صف أوقات الصلاة
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                child: _getRowOfPrayers(context, textList: prayerTimes),
+              ),
 
-          // الحاوية الداخلية
-          Container(
-            height: 160,
-            width: double.infinity,
-            padding:
-                const EdgeInsets.only(top: 20.0,left: 5.0,right: 5.0),
-            decoration: _boxDecoration(
-              color: ThemeCubit.controller(context).state
-                  ? AppColors.darkModeInActiveColor
-                  : AppColors.lightModeInActiveColor,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                // أيقونة + اسم الصلاة
-                _getRowOfIconsWithText(
-                  context,
-                  icons: AppStrings.translate("iconsOfTimings"),
-                  names: AppStrings.translate("namesOfPrayers1"),
+              // الحاوية الداخلية
+              Container(
+                height: 160,
+                width: double.infinity,
+                margin:
+                    const EdgeInsets.only(left: 5.0, right: 5.0, bottom: 10.0),
+                padding:
+                    const EdgeInsets.only(top: 20.0, left: 5.0, right: 5.0),
+                decoration: _boxDecoration(
+                  color: ThemeCubit.controller(context).state
+                      ? AppColors.darkModeInActiveColor
+                      : AppColors.lightModeInActiveColor,
                 ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    // أيقونة + اسم الصلاة
+                    _getRowOfIconsWithText(
+                      context,
+                      icons: AppStrings.translate("iconsOfTimings"),
+                      names: AppStrings.translate("namesOfPrayers1"),
+                    ),
 
-                const Spacer(),
+                    const Spacer(),
 
-                // الصلاة القادمة
-                const NextPrayerWidget(),
-              ],
-            ),
+                    // الصلاة القادمة
+                    const NextPrayerWidget(),
+                  ],
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -87,14 +101,14 @@ class PrimaryPrayerTimesContainer extends StatelessWidget {
 
   TextStyle get _dataTextStyle {
     return const TextStyle(
-          color: AppColors.white,
-          fontFamily: 'Amiri',
-          fontSize: 20.0,
-          fontWeight: FontWeight.bold
-        );
+        color: AppColors.white,
+        fontFamily: 'Amiri',
+        fontSize: 20.0,
+        fontWeight: FontWeight.bold);
   }
 
-  Row _getRowOfIconsWithText(BuildContext context, {
+  Row _getRowOfIconsWithText(
+    BuildContext context, {
     required List icons,
     required List names,
   }) {
@@ -128,7 +142,7 @@ class PrimaryPrayerTimesContainer extends StatelessWidget {
 
   BoxDecoration _boxDecoration({required Color color}) {
     return BoxDecoration(
-      borderRadius: BorderRadius.circular(35.0),
+      borderRadius: BorderRadius.circular(ConstantsValues.prayerTimesWidgetBorderRadius),
       color: color,
     );
   }

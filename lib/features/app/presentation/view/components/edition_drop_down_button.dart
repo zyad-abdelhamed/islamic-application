@@ -14,12 +14,10 @@ class TafsirEditionDropdown extends StatelessWidget {
   });
 
   Future<List<TafsirEditionEntity>> loadTafsirEditions() async {
-    final Map<String, dynamic> data =
+    final List data =
         await getJson(RoutesConstants.tafsirJsonRouteName);
 
-    return (data["tafsirEditions"] as List)
-        .map((map) => TafsirEditionModel.fromJson(map))
-        .toList();
+    return data.map((map) => TafsirEditionModel.fromJson(map)).toList();
   }
 
   @override

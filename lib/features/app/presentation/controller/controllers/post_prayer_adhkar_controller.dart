@@ -4,27 +4,14 @@ import 'package:test_app/core/constants/app_strings.dart';
 
 class PostPrayerAdhkarController {
   late final ValueNotifier<int> progressNotifier;
-  late final ValueNotifier<String> text;
+  final List _tsabeehList = AppStrings.translate("adhkarList");
 
   initState() {
     progressNotifier = ValueNotifier<int>(0);
-    text = ValueNotifier<String>(AppStrings.translate("adhkarList")[0]);
-    progressNotifier.addListener(() {
-      if (progressNotifier.value == 34) {
-        text.value = AppStrings.translate("adhkarList")[1];
-      }
-      if (progressNotifier.value == 67) {
-        text.value = AppStrings.translate("adhkarList")[2];
-      }
-      if (progressNotifier.value == 100) {
-        text.value = AppStrings.translate("adhkarList")[3];
-      }
-    });
   }
 
   void dispose() {
     progressNotifier.dispose();
-    text.dispose();
   }
 
   void drawCircle(BuildContext context) {
@@ -35,8 +22,19 @@ class PostPrayerAdhkarController {
       return;
     } else if (progressNotifier.value == 100) {
       progressNotifier.value += 3;
-      Future.delayed(AppDurations.mediumDuration,() => Navigator.pop(context));
+      Future.delayed(AppDurations.mediumDuration, () => Navigator.pop(context));
     }
     progressNotifier.value += 1;
+  }
+
+  String get getText {
+    if (progressNotifier.value < 34) {
+      return _tsabeehList[0];
+    } else if (progressNotifier.value >= 34 && progressNotifier.value < 67) {
+      return _tsabeehList[1];
+    } else if (progressNotifier.value >= 67 && progressNotifier.value < 100) {
+      return _tsabeehList[2];
+    }
+    return _tsabeehList[3];
   }
 }

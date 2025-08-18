@@ -46,8 +46,8 @@ class PrayerTimesCubit extends Cubit<NextPrayer> {
   /// مراقبة انتهاء المؤقت وتحديد الصلاة القادمة
   intializeTimeListener(BuildContext context) {
     context.read<TimerCubit>().onTimerFinished = () {
-      final timings = sl<GetPrayersTimesController>().timings;
-      final nextPrayerTime = nextPrayer(
+      final Timings timings = sl<GetPrayersTimesController>().timings;
+      final NextPrayer nextPrayerTime = nextPrayer(
         fajr: timings.fajr,
         dhuhr: timings.dhuhr,
         asr: timings.asr,

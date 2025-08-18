@@ -13,6 +13,7 @@ class BookmarksCubit extends Cubit<BookmarksState> {
   BookmarksCubit(this.repo) : super(BookmarksInitial()) {
     formKey = GlobalKey<FormState>();
     textEditingController = TextEditingController();
+    loadBookmarks();
   }
 
   static BookmarksCubit controller(context) =>
@@ -41,7 +42,7 @@ class BookmarksCubit extends Cubit<BookmarksState> {
           bookmarkentity: BookMarkEntity(
               title: textEditingController.text,
               pageNumber: await quranPageController.pdfViewController.getCurrentPage() ?? 0,
-              indexs: quranPageController.indexsNotifier.value));
+              indexs: quranPageController.indexsNotifier.value.toList()));
       result.fold(
         (failure) => emit(BookmarksError(failure.message)),
         (_) => emit(AddBookmarksuccess()),

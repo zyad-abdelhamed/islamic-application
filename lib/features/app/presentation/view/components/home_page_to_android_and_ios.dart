@@ -14,7 +14,6 @@ import 'package:test_app/features/app/presentation/view/pages/other_page.dart';
 import 'package:test_app/features/app/presentation/view/pages/qibla_page.dart';
 import 'package:test_app/features/app/presentation/view/pages/rtabel_page.dart';
 import 'package:test_app/features/app/presentation/view/pages/surahs_page.dart';
-import 'package:test_app/features/duaa/presentation/controllers/cubit/duaa_cubit.dart';
 
 class HomePageToAndroidAndIos extends StatelessWidget {
   const HomePageToAndroidAndIos({
@@ -29,10 +28,7 @@ class HomePageToAndroidAndIos extends StatelessWidget {
           title: Text(AppStrings.translate("mainPage")),
         ),
         drawer: Drawer(
-            child: BlocProvider(
-          create: (context) => DuaaCubit(sl())..getDuaa(),
-          child: HomeDrawerWidget(),
-        )),
+            child: HomeDrawerWidget()),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(8.0),
           child: Column(

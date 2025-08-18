@@ -50,7 +50,7 @@ class OtherPage extends StatelessWidget {
           children: List.generate(textButtonsAlertDialogWidgets.length, (index) {
             return OtherPageButton(
               text: AppStrings.translate("homeDrawerTextButtons")[index],
-              logo: Icon(Icons.book,color: Colors.white,),
+              logo: AppStrings.translate("otherPagePhotos")[index],
               size: MediaQuery.of(context).size.width * 0.27,
               alertDialogContent: textButtonsAlertDialogWidgets[index],
             );

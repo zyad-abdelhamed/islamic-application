@@ -12,7 +12,7 @@ class CommonCircleLayout extends StatelessWidget {
     required this.dashDegree,
     required this.gapDegree,
     required this.progressNotifier,
-    required this.textNotifier,
+    required this.textBuilder,
     required this.gapAt,
     required this.onPressed,
     required this.segments,
@@ -23,7 +23,7 @@ class CommonCircleLayout extends StatelessWidget {
   final double dashDegree; // طول الـ dash بالدرجات
   final double gapDegree; // طول الـ gap بالدرجات
   final ValueNotifier<int> progressNotifier;
-  final ValueNotifier<String> textNotifier;
+  final String Function() textBuilder;
   final List<int> gapAt; // list of pattern indices to skip (0-based)>
   final VoidCallback onPressed;
   final int segments;
@@ -83,19 +83,18 @@ class CommonCircleLayout extends StatelessWidget {
                   shape: BoxShape.circle,
                   color: isDark ? Colors.grey.shade900 : Colors.grey.shade200,
                 ),
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: ListenableBuilder(
-                    listenable: textNotifier,
-                    builder: (_, __) => Text(
-                      textNotifier.value,
-                      maxLines: 1,
-                      style: TextStyles.semiBold32(
-                        context,
-                        color: isDark
-                            ? AppColors.darkModeTextColor
-                            : AppColors.lightModePrimaryColor,
-                      ),
+                alignment: Alignment.center,
+                child: ListenableBuilder(
+                  listenable: progressNotifier,
+                  builder: (_, __) => Text(
+                    textBuilder(),
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                    maxLines: 3, // تقدر تزود أو تشيل لو عايز عدد لا نهائي
+                    style: TextStyles.bold20(context).copyWith(
+                      color: isDark
+                          ? AppColors.darkModeTextColor
+                          : AppColors.lightModePrimaryColor,
                     ),
                   ),
                 ),

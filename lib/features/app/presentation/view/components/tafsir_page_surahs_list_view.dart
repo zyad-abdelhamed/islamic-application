@@ -18,8 +18,8 @@ class SurahListWithFuture extends StatelessWidget {
   const SurahListWithFuture({super.key, required this.selectedEditionNotifier});
 
   Future<List<Map<String, dynamic>>> loadSurahs() async {
-    final data = await getJson(RoutesConstants.surahsJsonRouteName);
-    return List<Map<String, dynamic>>.from(data["surahs"]);
+    final List data = await getJson(RoutesConstants.surahsJsonRouteName);
+    return List<Map<String, dynamic>>.from(data);
   }
 
   @override
@@ -57,8 +57,8 @@ class SurahListWithFuture extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => BlocProvider(
-                      create: (_) => TafsirCubit(sl()),
+                    builder: (_) => BlocProvider<TafsirCubit>(
+                      create: (_) => sl<TafsirCubit>(),
                       child: TafsirPage(
                         params: TafsirRequestParams(
                           surahNumber: index + 1,

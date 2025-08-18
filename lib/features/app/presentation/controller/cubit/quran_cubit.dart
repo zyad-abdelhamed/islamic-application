@@ -36,7 +36,7 @@ class QuranCubit extends HydratedCubit<QuranState> {
       QuranPageController quranPageController, int pageNumber, List<int> indexs) {
       quranPageController.pdfViewController.setPage(pageNumber);
       emit(state.copyWith(indexs: indexs, defaultPage: pageNumber));
-      quranPageController.indexsNotifier.value = indexs;
+      quranPageController.indexsNotifier.value = indexs.toSet();
   }
 
   void updateDefaultPage(int? page) => emit(state.copyWith(defaultPage: page));

@@ -41,7 +41,7 @@ class _PostPrayerAdhkarWidgetState extends State<PostPrayerAdhkarWidget> {
         gapDegree: 6,
         gapAt: [33, 66, 99,103],
         progressNotifier: _controller.progressNotifier,
-        textNotifier: _controller.text,
+        textBuilder:() => _controller.getText,
         onPressed: () => _controller.drawCircle(context)
       ),
     );

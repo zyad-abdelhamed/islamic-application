@@ -25,13 +25,16 @@ class SurahsWidget extends StatelessWidget {
                 QuranCubit.getQuranController(context).goToPageByNumber(
                     quranPageController,
                     pageNum,
-                    quranPageController.updateIndexNotifier(context, pageNum));
+                    quranPageController.updateIndexNotifier(context, pageNum).toList());
                 Navigator.pop(context);
               },
               child: Container(
-                color: quranPageController.indexsNotifier.value.contains(index)
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16.0),
+                  color: quranPageController.indexsNotifier.value.contains(index)
                     ? AppColors.secondryColor
                     : Colors.transparent,
+                ),
                 padding: const EdgeInsets.all(8.0),
                 margin: const EdgeInsets.all(8.0),
                 child: Row(

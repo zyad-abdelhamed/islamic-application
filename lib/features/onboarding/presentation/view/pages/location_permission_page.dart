@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/services/position_service.dart';
-import 'package:test_app/features/onboarding/presentation/controller/on_boarding_cubit.dart';
+import 'package:test_app/features/onboarding/presentation/controller/on_boarding_controller.dart';
 import 'package:test_app/features/onboarding/presentation/view/component/activate_location_permission_column.dart';
 import 'package:test_app/features/onboarding/presentation/view/component/save_location_column.dart';
 
@@ -30,17 +29,17 @@ class _LocationPermissionPageState extends State<LocationPermissionPage> {
     });
   }
 
-  late final OnBoardingCubit _onBoardingCubit;
+  late final OnBoardingController _onBoardingController;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _onBoardingCubit = context.read<OnBoardingCubit>();
+    _onBoardingController = sl<OnBoardingController>();
   }
 
   @override
   void dispose() {
-    _onBoardingCubit.emitToTrue();
+    _onBoardingController.markAsDisplayed();
     permissionSubscription.cancel();
     permissionStatusNotifier.dispose();
     super.dispose();

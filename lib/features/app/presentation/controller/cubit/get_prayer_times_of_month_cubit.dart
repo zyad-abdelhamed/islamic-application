@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -23,22 +22,28 @@ class GetPrayerTimesOfMonthCubit extends Cubit<GetPrayerTimesOfMonthState> {
       context.read<GetPrayerTimesOfMonthCubit>();
 
   void getPrayerTimesOfMonth(
-      GetPrayerTimesOfMonthPrameters getPrayerTimesOfMonthPrameters) async { 
-    emit(GetPrayerTimesOfMonthState(
-        getPrayerTimesOfMonthState: RequestStateEnum.loading));
+      GetPrayerTimesOfMonthPrameters getPrayerTimesOfMonthPrameters) async {
+    if (!isClosed) {
+      emit(GetPrayerTimesOfMonthState(
+          getPrayerTimesOfMonthState: RequestStateEnum.loading));
+    }
     final Either<Failure, List<Timings>> result =
         await getPrayerTimesOfMonthUseCase(
             parameters: getPrayerTimesOfMonthPrameters);
     result.fold(
       (l) {
-        emit(GetPrayerTimesOfMonthState(
-            getPrayerTimesOfMonthErrorMeassage: l.message,
-            getPrayerTimesOfMonthState: RequestStateEnum.failed));
+        if (!isClosed) {
+          emit(GetPrayerTimesOfMonthState(
+              getPrayerTimesOfMonthErrorMeassage: l.message,
+              getPrayerTimesOfMonthState: RequestStateEnum.failed));
+        }
       },
       (prayerTimesOfMonth) {
-        emit(GetPrayerTimesOfMonthState(
-            prayerTimesOfMonth: prayerTimesOfMonth,
-            getPrayerTimesOfMonthState: RequestStateEnum.success));
+        if (!isClosed) {
+          emit(GetPrayerTimesOfMonthState(
+              prayerTimesOfMonth: prayerTimesOfMonth,
+              getPrayerTimesOfMonthState: RequestStateEnum.success));
+        }
       },
     );
   }

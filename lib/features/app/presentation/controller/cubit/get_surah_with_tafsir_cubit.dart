@@ -18,7 +18,9 @@ class TafsirCubit extends Cubit<TafsirState> {
 
   // لاستدعاء التفسير لأول مرة
   Future<void> getSurahWithTafsir(TafsirRequestParams params) async {
-    emit(TafsirLoading());
+    if (!isClosed) {
+      emit(TafsirLoading());
+    }
 
     baseParams = params;
     currentOffset = 0;
@@ -30,48 +32,58 @@ class TafsirCubit extends Cubit<TafsirState> {
     );
 
     result.fold(
-      (failure) {print(failure.message);
-        emit(TafsirError(failure.message));},
+      (failure) {
+        if (!isClosed) {
+          emit(TafsirError(failure.message));
+        }
+      },
       (data) {
         ayahs = data;
-        emit(TafsirLoaded(List.from(ayahs)));
+        if (!isClosed) {
+          emit(TafsirLoaded(List.from(ayahs)));
+        }
       },
     );
   }
 
   // للتحميل عند التمرير
   Future<void> loadMore() async {
-  if (isLoadingMore || !hasMore) return;
+    if (isLoadingMore || !hasMore) return;
 
-  isLoadingMore = true;
+    isLoadingMore = true;
 
-  // Emit الحالة الحالية مع isLoadingMore=true
-  emit(TafsirLoaded(List.from(ayahs), isLoadingMore: true));
+    // Emit الحالة الحالية مع isLoadingMore=true
+    if (!isClosed) {
+      emit(TafsirLoaded(List.from(ayahs), isLoadingMore: true));
+    }
 
-  currentOffset += limit;
+    currentOffset += limit;
 
-  final result = await getSurahWithTafsirUseCase(
-    parameters: baseParams.copyWith(offset: currentOffset, limit: limit),
-  );
+    final result = await getSurahWithTafsirUseCase(
+      parameters: baseParams.copyWith(offset: currentOffset, limit: limit),
+    );
 
-  result.fold(
-    (failure) {
-      isLoadingMore = false;
-      emit(TafsirError(failure.message));
-    },
-    (data) {
-      if (data.isEmpty) {
-        hasMore = false;
-      } else {
-        ayahs.addAll(data);
-      }
+    result.fold(
+      (failure) {
+        isLoadingMore = false;
+        if (!isClosed) {
+          emit(TafsirError(failure.message));
+        }
+      },
+      (data) {
+        if (data.isEmpty) {
+          hasMore = false;
+        } else {
+          ayahs.addAll(data);
+        }
 
-      isLoadingMore = false;
+        isLoadingMore = false;
 
-      // Emit بعد التحميل
-      emit(TafsirLoaded(List.from(ayahs)));
-    },
-  );
-}
-
+        // Emit بعد التحميل
+        if (!isClosed) {
+          emit(TafsirLoaded(List.from(ayahs)));
+        }
+      },
+    );
+  }
 }

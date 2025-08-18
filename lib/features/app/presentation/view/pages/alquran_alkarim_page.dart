@@ -68,7 +68,7 @@ class _AlquranAlkarimPageState extends State<AlquranAlkarimPage> {
                   defaultPage: state.defaultPage,
                   onViewCreated: (controller) {
                       _quranPageController.setPdfController(controller);
-                      _quranPageController.indexsNotifier.value = state.indexs;
+                      _quranPageController.indexsNotifier.value = state.indexs.toSet();
                   },
                   onPageChanged: (page, total) {
                       QuranCubit.getQuranController(context).updateDefaultPage(page);

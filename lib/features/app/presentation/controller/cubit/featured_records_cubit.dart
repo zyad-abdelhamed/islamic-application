@@ -17,7 +17,9 @@ part 'featured_records_state.dart';
 class FeaturedRecordsCubit extends Cubit<FeaturedRecordsState> {
   FeaturedRecordsCubit(this.getRecordsUseCase, this.addRecordUseCase,
       this.deleteAllRecordsUseCase, this.deleteRecordsUseCase)
-      : super(const FeaturedRecordsState());
+      : super(const FeaturedRecordsState()) {
+    getFeatuerdRecords();
+  }
 
   //variables
   final GetRecordsUseCase getRecordsUseCase;
@@ -54,11 +56,12 @@ class FeaturedRecordsCubit extends Cubit<FeaturedRecordsState> {
       (featuredRecords) {
         getFeatuerdRecords();
 
-        if (featuredRecordsScrollController.positions.isNotEmpty){// this check for avoid app crash in case featured records list is empty
+        if (featuredRecordsScrollController.positions.isNotEmpty) {
+          // this check for avoid app crash in case featured records list is empty
           featuredRecordsScrollController.animateTo(
-            featuredRecordsScrollController.position.maxScrollExtent + 100,
-            duration: AppDurations.mediumDuration,
-            curve: Curves.easeInOut);
+              featuredRecordsScrollController.position.maxScrollExtent + 100,
+              duration: AppDurations.mediumDuration,
+              curve: Curves.easeInOut);
         }
 
         counterNotifier.value = NumberAnimationModel(number: 0);

@@ -15,6 +15,7 @@ class SplashScreen extends StatelessWidget {
         .getPrayersTimes(context); // load data before going to home page
 
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
       body: Stack(
         children: [
           SizedBox.expand(
@@ -36,6 +37,7 @@ class SplashScreen extends StatelessWidget {
                 const SizedBox(height: 20),
                 Text(
                   'مستضيئون بنور الله',
+                  textAlign: TextAlign.center,
                   style: TextStyles.bold20(context).copyWith(color: AppColors.white),
                 ),
               ],

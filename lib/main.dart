@@ -8,6 +8,7 @@ import 'package:test_app/core/helper_function/get_init_route.dart';
 import 'package:test_app/core/helper_function/onGenerateRoute.dart';
 import 'package:test_app/core/helper_function/setup_hive.dart';
 import 'package:test_app/core/services/adhan_notification_service.dart';
+import 'package:test_app/core/services/cache_service%20copy.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/dark_theme.dart';
 import 'package:test_app/core/theme/light_theme.dart';
@@ -15,16 +16,26 @@ import 'package:test_app/core/theme/theme_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  DependencyInjection.init();
+  
+  await DependencyInjection.init();
+  
+  sl<BaseCacheService>().cacheintIalization();
+  
   await AdhanNotificationService.init();
+
   await setupHive();
+
   HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory:
-        HydratedStorageDirectory((await getTemporaryDirectory()).path),
+    storageDirectory: HydratedStorageDirectory(
+      (await getTemporaryDirectory()).path,
+    ),
   );
+
   await AppStrings.load();
+
   runApp(const MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
