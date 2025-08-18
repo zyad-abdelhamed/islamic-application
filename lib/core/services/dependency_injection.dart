@@ -77,7 +77,7 @@ class DependencyInjection {
     sl.registerLazySingleton(() => OnBoardingCubit());
     sl.registerFactory(() => GetPrayerTimesOfMonthCubit(sl()));
     sl.registerFactory(() => TimerCubit());
-    sl.registerFactory(() => PrayerTimesCubit(sl()));
+    sl.registerFactory(() => PrayerTimesCubit(sl(),sl()));
     sl.registerFactory(() => HadithCubit(sl()));
     sl.registerFactory(() => FeaturedRecordsCubit(sl(), sl(), sl(), sl()));
     sl.registerFactory(() => RtabelCubit(sl(), sl(), sl()));
