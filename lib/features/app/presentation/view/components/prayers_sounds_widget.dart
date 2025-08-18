@@ -34,7 +34,7 @@ class PrayersSoundSettingsWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "صوت الأذان",
+                "إعدادات صوت الأذان",
                 style: TextStyles.bold20(context),
               ),
               ValueListenableBuilder<bool>(

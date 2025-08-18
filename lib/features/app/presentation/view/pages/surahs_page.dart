@@ -33,7 +33,7 @@ class _SurahListPageState extends State<SurahListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          leading: GetAdaptiveBackButtonWidget(),
+          leading: const GetAdaptiveBackButtonWidget(),
           title: Text(AppStrings.appBarTitles(withTwoLines: false)[1]),
         ),
         body: Column(

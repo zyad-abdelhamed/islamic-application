@@ -45,7 +45,7 @@ class _BookmarksPageState extends State<BookmarksPage> {
         valueListenable: controller.loadingNotifier,
         builder: (_, __, ___) => ModalProgressHUD(
           inAsyncCall: controller.loadingNotifier.value,
-          progressIndicator: GetAdaptiveLoadingWidget(),
+          progressIndicator: const GetAdaptiveLoadingWidget(),
           opacity: .5,
           child: Scaffold(
             appBar: BookMarksPageAppBar(controller: controller),

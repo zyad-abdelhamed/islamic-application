@@ -65,7 +65,7 @@ class RamadanCalendarWidget extends StatelessWidget {
   String _getRamadanDay(int index) {
     final int day = index + 1;
     final String arabicNumber =
-        sl<BaseArabicConverterService>().convertToArabicDigits(day);
+        sl<BaseArabicConverterService>().convertToArabicDigits(day.toString());
     return '$arabicNumber رمضان';
   }
 

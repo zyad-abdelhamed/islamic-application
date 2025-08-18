@@ -95,13 +95,13 @@ class PrayerTimesPageController {
   List<String> get dateData {
     return <String>[
       sl<BaseArabicConverterService>()
-          .convertToArabicDigits(dateNotifier.value.day)
+          .convertToArabicDigits(dateNotifier.value.day.toString())
           .toString(),
       sl<BaseArabicConverterService>()
-          .convertToArabicDigits(dateNotifier.value.month)
+          .convertToArabicDigits(dateNotifier.value.month.toString())
           .toString(),
       sl<BaseArabicConverterService>()
-          .convertToArabicDigits(dateNotifier.value.year)
+          .convertToArabicDigits(dateNotifier.value.year.toString())
           .toString()
     ];
   }

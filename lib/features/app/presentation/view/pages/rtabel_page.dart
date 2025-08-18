@@ -19,7 +19,7 @@ class RamadanTabelPage extends StatelessWidget {
         builder: (context) {
           return Scaffold(
             appBar: AppBar(
-              leading: GetAdaptiveBackButtonWidget(),
+              leading: const GetAdaptiveBackButtonWidget(),
               actions: [
                 Visibility(
                   visible: MediaQuery.of(context).orientation ==

@@ -13,12 +13,19 @@ class QiblaCubit extends Cubit<QiblaState> {
   QiblaCubit(this.qiblaRepository) : super(QiblaInitial());
 
   void startQibla({LocationAccuracy accuracy = LocationAccuracy.high}) {
-    emit(QiblaLoading());
+    if (!isClosed) {
+      emit(QiblaLoading());
+    }
     _subscription = qiblaRepository.listenToQibla(accuracy).listen((result) {
-      result.fold(
-        (failure) => emit(QiblaError(failure.message)),
-        (entity) => emit(QiblaLoaded(entity, accuracy)),
-      );
+      result.fold((failure) {
+        if (!isClosed) {
+          emit(QiblaError(failure.message));
+        }
+      }, (entity) {
+        if (!isClosed) {
+          emit(QiblaLoaded(entity, accuracy));
+        }
+      });
     });
   }
 

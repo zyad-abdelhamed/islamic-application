@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/adaptive_switch.dart';
+import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/core/widgets/app_divider.dart';
 import 'package:test_app/core/constants/app_strings.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/duaa_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/duaas_widget.dart';
 
 class HomeDrawerWidget extends StatelessWidget {
@@ -18,7 +20,10 @@ class HomeDrawerWidget extends StatelessWidget {
           children: [
             // Duaa Section
             Expanded(
-              child: DuaasWidget(),
+              child: BlocProvider<DuaaCubit>(
+                create: (_) => sl<DuaaCubit>(),
+                child: DuaasWidget(),
+              ),
             ),
 
             appDivider(),

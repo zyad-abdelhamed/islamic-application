@@ -33,7 +33,7 @@ class OtherPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppStrings.appBarTitles(withTwoLines: false)[5]),
-        leading: GetAdaptiveBackButtonWidget(),
+        leading: const GetAdaptiveBackButtonWidget(),
       ),
       body: Center(
         child: GridView(

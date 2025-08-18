@@ -18,7 +18,7 @@ class DuaaDisplay extends StatefulWidget {
 
 class _DuaaDisplayState extends State<DuaaDisplay> {
   final ValueNotifier<bool> visibilityNotifier = ValueNotifier(false);
-
+  
   @override
   void dispose() {
     visibilityNotifier.dispose();

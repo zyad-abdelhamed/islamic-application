@@ -10,9 +10,11 @@ class ExplainFeatureButton extends StatelessWidget {
   final String text;
   @override
   Widget build(BuildContext context) {
-    Color dataColor = ThemeCubit.controller(context).state ? AppColors.darkModeTextColor : AppColors.lightModeInActiveColor;
+    Color dataColor = ThemeCubit.controller(context).state
+        ? AppColors.darkModeTextColor
+        : AppColors.lightModePrimaryColor;
     return IconButton(
-      icon: Icon(Icons.help_outline, color: Theme.of(context).primaryColor  ),
+      icon: Icon(Icons.info_outline, color: Theme.of(context).primaryColor),
       onPressed: () {
         showModalBottomSheet(
           context: context,
@@ -27,8 +29,7 @@ class ExplainFeatureButton extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.info_outline,
-                        color: dataColor),
+                    Icon(Icons.info_outline, color: dataColor),
                     SizedBox(width: 10),
                     Text(
                       'شرح الميزة',
@@ -49,9 +50,7 @@ class ExplainFeatureButton extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                    child: Text('تم',
-                        style:
-                            TextStyle(color: dataColor)),
+                    child: Text('تم', style: TextStyle(color: dataColor)),
                     onPressed: () => Navigator.pop(context),
                   ),
                 ),

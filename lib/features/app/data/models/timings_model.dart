@@ -1,3 +1,5 @@
+import 'package:test_app/core/services/arabic_converter_service.dart';
+import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/features/app/domain/entities/timings.dart';
 
 class TimingsModel extends Timings {
@@ -17,6 +19,7 @@ class TimingsModel extends Timings {
   factory TimingsModel.fromJson(Map<String, dynamic> json) {
     final hijriDateJson = json['date']['hijri'];
     final gregorianDateJson = json['date']['gregorian'];
+
     return TimingsModel(
       fajr: json['timings']['Fajr'],
       sunrise: json['timings']['Sunrise'],
@@ -27,7 +30,7 @@ class TimingsModel extends Timings {
       hijriDay: hijriDateJson['day'],
       hijriMonthNameArabic: hijriDateJson['month']['ar'],
       hijriYear: hijriDateJson['year'],
-      gregoriandate: gregorianDateJson['date']
+      gregoriandate: sl<BaseArabicConverterService>().convertToArabicDigits(gregorianDateJson['date'], pattern: '-')
     );
   }
 }

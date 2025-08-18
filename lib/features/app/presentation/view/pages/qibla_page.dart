@@ -35,29 +35,32 @@ class QiblaPage extends StatelessWidget {
                   (state.qibla.qiblaDirection - state.qibla.deviceDirection) *
                       (pi / 180);
 
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // زر تغيير الدقة
-                  Align(
-                      alignment: Alignment.topRight,
-                      child: QiplaAccuracyButton(state: state, isLoading: state is QiblaLoading)),
-                  const Spacer(),
-                  Transform.rotate(
-                    angle: angle,
-                    child: Image.asset(
-                      'assets/images/ooooo.png',
-                      fit: BoxFit.fill,
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // زر تغيير الدقة
+                    Align(
+                        alignment: Alignment.topRight,
+                        child: QiplaAccuracyButton(state: state, isLoading: state is QiblaLoading)),
+                    const Spacer(),
+                    Transform.rotate(
+                      angle: angle,
+                      child: Image.asset(
+                        'assets/images/ooooo.png',
+                        fit: BoxFit.fill,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                      'زاوية القبلة: ${state.qibla.qiblaDirection.toStringAsFixed(2)}°'),
-                  Text(
-                      'اتجاه الجهاز: ${state.qibla.deviceDirection.toStringAsFixed(2)}°'),
-                  const Spacer(),
-                ],
+                    const SizedBox(height: 20),
+                    Text(
+                        'زاوية القبلة: ${state.qibla.qiblaDirection.toStringAsFixed(2)}°'),
+                    Text(
+                        'اتجاه الجهاز: ${state.qibla.deviceDirection.toStringAsFixed(2)}°'),
+                    const Spacer(),
+                  ],
+                ),
               );
             }
             return const SizedBox();

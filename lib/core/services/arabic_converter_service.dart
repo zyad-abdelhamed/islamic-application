@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 
 abstract class BaseArabicConverterService {
-  String convertToArabicDigits(int number);
+  String convertToArabicDigits(String number, {String pattern = ''});
   String convertTimeToArabic(String time);
 }
 
@@ -20,13 +20,25 @@ class ArabicConverterServiceImpl extends BaseArabicConverterService {
   };
 
   @override
-  String convertToArabicDigits(int number) {
+String convertToArabicDigits(String number, {String pattern = ''}) {
+  // لو الـ pattern فاضي، نشتغل على كل النص مرة واحدة
+  if (pattern.isEmpty) {
     return number
-        .toString()
         .split('')
         .map((char) => _westernToEastern[char] ?? char)
         .join();
   }
+
+  // غير كده، نفصل البلوكات بالـ pattern
+  return number
+      .split(pattern)
+      .map((block) => block
+          .split('')
+          .map((char) => _westernToEastern[char] ?? char)
+          .join())
+      .join(pattern);
+}
+
 
   @override
   String convertTimeToArabic(String time) {

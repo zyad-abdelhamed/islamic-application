@@ -1,4 +1,7 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:test_app/core/constants/app_durations.dart';
+import 'package:test_app/core/errors/failures.dart';
 import 'package:test_app/features/app/domain/entities/location_entity.dart';
 import 'package:test_app/features/app/domain/entities/timings.dart';
 import 'package:test_app/features/app/domain/repositories/location_repo.dart';
@@ -20,8 +23,9 @@ class GetPrayersTimesController {
   LocationEntity locationEntity =
       LocationEntity(latitude: 0.0, longitude: 0.0, name: '');
 
-  Future<void> getPrayersTimes(BuildContext context) async {
-    final result = await getPrayersTimesUseCase();
+  Future<void> getPrayersTimes(
+      BuildContext context, ValueNotifier<double> scaleNotifier) async {
+    final Either<Failure, Timings> result = await getPrayersTimesUseCase();
 
     await result.fold(
       (failure) {
@@ -42,8 +46,13 @@ class GetPrayersTimesController {
           (failure) => null,
           (location) => locationEntity = location,
         );
+        scaleNotifier.value = 1.3;
 
-        _goToHomePage(context);
+        Future.delayed(AppDurations.mediumDuration, () {
+          if (context.mounted) {
+            _goToHomePage(context);
+          }
+        });
       },
     );
   }

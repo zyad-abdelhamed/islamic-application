@@ -1,20 +1,19 @@
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:test_app/core/constants/app_strings.dart';
 
 class AppAnimatedLogoWidget extends StatelessWidget {
   const AppAnimatedLogoWidget({
-    super.key, required this.isRepeating,
+    super.key,
   });
  
- final bool isRepeating;
-
   @override
   Widget build(BuildContext context) {
     return AnimatedTextKit(
       animatedTexts: [
         FadeAnimatedText(
-          'نور',
+          AppStrings.translate("appName"),
           textStyle: TextStyle(
             fontSize: 80,
             fontWeight: FontWeight.bold,
@@ -30,8 +29,8 @@ class AppAnimatedLogoWidget extends StatelessWidget {
           duration: const Duration(seconds: 2),
         ),
       ],
-      isRepeatingAnimation: isRepeating,
-        repeatForever: isRepeating,
+      isRepeatingAnimation: false,
+        repeatForever: false,
         pause: const Duration(milliseconds: 500),
     );
   }

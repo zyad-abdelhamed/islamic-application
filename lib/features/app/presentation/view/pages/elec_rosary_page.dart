@@ -44,7 +44,7 @@ class _ElecRosaryPageState extends State<ElecRosaryPage> {
         create: (_) => sl<FeaturedRecordsCubit>(),
         child: Scaffold(
           appBar: AppBar(
-            leading: GetAdaptiveBackButtonWidget(),
+            leading: const GetAdaptiveBackButtonWidget(),
             title: Text(AppStrings.appBarTitles(withTwoLines: false)[2]),
           ),
           body: ValueListenableBuilder<bool>(

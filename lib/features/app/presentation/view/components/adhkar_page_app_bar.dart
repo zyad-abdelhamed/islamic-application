@@ -14,7 +14,7 @@ AppBar adhkarPageAppBar(BuildContext context,
   return AppBar(
     centerTitle: false,
     title: FittedBox(fit: BoxFit.scaleDown, child: Text(appBarTitle)),
-    leading: GetAdaptiveBackButtonWidget(),
+    leading: const GetAdaptiveBackButtonWidget(),
     actions: [
       ControleFontSizeButtons(fontSizeNotfier: adhkarPageController.fontSizeNotfier, initialFontSize: 20),
       Container(

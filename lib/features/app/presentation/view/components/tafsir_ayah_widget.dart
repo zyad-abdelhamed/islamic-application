@@ -47,7 +47,7 @@ class TafsirAyahWidget extends StatelessWidget {
                   color: ayahNumberColor,
                 ),
                 Text(
-                  sl<BaseArabicConverterService>().convertToArabicDigits(ayah.number),
+                  sl<BaseArabicConverterService>().convertToArabicDigits(ayah.number.toString()),
                   style: TextStyles.semiBold16_120(context),
                 ),
               ],
