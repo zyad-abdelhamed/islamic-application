@@ -31,8 +31,7 @@ class PrimaryPrayerTimesContainer extends StatelessWidget {
         children: <Widget>[
           // صف أوقات الصلاة
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+            padding: const EdgeInsets.all(5.0),
             child: _getRowOfPrayers(context, textList: prayerTimes),
           ),
 
@@ -41,7 +40,7 @@ class PrimaryPrayerTimesContainer extends StatelessWidget {
             height: 160,
             width: double.infinity,
             padding:
-                const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 0.0, top: 20.0),
+                const EdgeInsets.only(top: 20.0,left: 5.0,right: 5.0),
             decoration: _boxDecoration(
               color: ThemeCubit.controller(context).state
                   ? AppColors.darkModeInActiveColor
@@ -72,13 +71,15 @@ class PrimaryPrayerTimesContainer extends StatelessWidget {
 
   Row _getRowOfPrayers(BuildContext context, {required List textList}) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: List.generate(
         textList.length,
-        (index) => Text(
-          textList[index],
-          textAlign: TextAlign.center,
-          style: _dataTextStyle,
+        (index) => Expanded(
+          child: Text(
+            textList[index],
+            textAlign: TextAlign.center,
+            style: _dataTextStyle,
+          ),
         ),
       ),
     );

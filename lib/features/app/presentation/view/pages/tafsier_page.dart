@@ -6,8 +6,11 @@ import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/core/widgets/empty_list_text_widget.dart';
 import 'package:test_app/features/app/data/models/tafsir_request_params.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/tafsir_page_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_surah_with_tafsir_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_surah_with_tafsir_state.dart';
+import 'package:test_app/features/app/presentation/view/components/controle_font_size_buttons.dart';
+import 'package:test_app/features/app/presentation/view/components/erorr_widget.dart';
 import 'package:test_app/features/app/presentation/view/components/tafsir_ayah_widget.dart';
 
 class TafsirPage extends StatefulWidget {
@@ -23,29 +26,21 @@ class TafsirPage extends StatefulWidget {
 }
 
 class _TafsirPageState extends State<TafsirPage> {
-  late final ScrollController _scrollController;
-  late final TafsirCubit _tafsirCubit;
+  late final TafsirPageController _controller;
   @override
   void initState() {
-    _scrollController = ScrollController();
-    _tafsirCubit = context.read<TafsirCubit>();
-    _tafsirCubit.getSurahWithTafsir(widget.params);
-    _scrollController.addListener(_onScroll);
+    _controller = TafsirPageController();
+    _controller.initState(context, widget.params);
     super.initState();
-  }
-
-  void _onScroll() {
-    final max = _scrollController.position.maxScrollExtent;
-    final current = _scrollController.position.pixels;
-    if (current >= max * 0.9) {
-      _tafsirCubit.loadMore();
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     final isDark = ThemeCubit.controller(context).state;
-    final Color? textColor = isDark ? AppColors.grey400 : Colors.black;
+    final Color textColor = Colors.brown;
+    final Color backgroundColor = isDark
+        ? AppColors.darkModeInActiveColor
+        : AppColors.lightModeInActiveColor;
     final Color ayahNumberColor = Theme.of(context).primaryColor;
 
     return Scaffold(
@@ -53,18 +48,21 @@ class _TafsirPageState extends State<TafsirPage> {
         title: Text(
           'تفسير سورة ${widget.params.surahName}',
         ),
+        centerTitle: false,
+        actions: [
+          ControleFontSizeButtons(
+            fontSizeNotfier: _controller.fontSizeNotfier,
+            initialFontSize: 20,
+          ),
+          const SizedBox(width: 10),
+        ],
       ),
       body: BlocBuilder<TafsirCubit, TafsirState>(
         builder: (context, state) {
           if (state is TafsirLoading) {
             return const Center(child: GetAdaptiveLoadingWidget());
           } else if (state is TafsirError) {
-            return Center(
-              child: Text(
-                state.message,
-                style: TextStyle(color: AppColors.errorColor),
-              ),
-            );
+            return ErrorWidgetIslamic(message: state.message);
           } else if (state is TafsirLoaded) {
             final items = state.tafsir;
 
@@ -75,16 +73,18 @@ class _TafsirPageState extends State<TafsirPage> {
             }
 
             return ListView.builder(
-              controller: _scrollController,
+              controller: _controller.scrollController,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               itemCount: items.length + (state.isLoadingMore ? 1 : 0),
               itemBuilder: (context, index) {
                 if (index < items.length) {
                   final ayah = items[index];
                   return TafsirAyahWidget(
+                    controller: _controller,
                     ayah: ayah,
                     ayahNumberColor: ayahNumberColor,
-                    textColor: textColor ?? Colors.grey,
+                    textColor: textColor,
+                    backgroundColor: backgroundColor,
                     isDark: isDark,
                   );
                 } else {
@@ -105,7 +105,7 @@ class _TafsirPageState extends State<TafsirPage> {
 
   @override
   void dispose() {
-    _scrollController.dispose();
+    _controller.dispose();
     super.dispose();
   }
 }

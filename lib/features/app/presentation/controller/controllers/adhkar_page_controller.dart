@@ -11,12 +11,15 @@ class AdhkarPageController {
   late final GlobalKey<AnimatedListState> animatedLIstKey;
   final ValueNotifier<int> lengthNotfier =
       ValueNotifier(sl<GetAdhkarController>().adhkar.length);
-  final ValueNotifier<double> progressNotfier = ValueNotifier(0.0);
-  final ValueNotifier<bool> switchNotfier = ValueNotifier(true);
-  final ValueNotifier<double> fontSizeNotfier = ValueNotifier(20.0);
+  late final ValueNotifier<double> progressNotfier;
+  late final ValueNotifier<bool> switchNotfier;
+  late final ValueNotifier<double> fontSizeNotfier;
   double maxProgress = 0.0;
 
   initState(BuildContext context) {
+    progressNotfier = ValueNotifier(0.0);
+    switchNotfier = ValueNotifier(true);
+    fontSizeNotfier = ValueNotifier(20.0);
     adhkarScrollController = ScrollController();
     animatedLIstKey = GlobalKey<AnimatedListState>();
 
@@ -32,20 +35,6 @@ class AdhkarPageController {
     switchNotfier.dispose();
     fontSizeNotfier.dispose();
     adhkarScrollController.dispose();
-  }
-
-  void increaseFontSize() {
-    if (fontSizeNotfier.value <= 30.0) {
-      fontSizeNotfier.value++;
-    }
-    return;
-  }
-
-  void decreaseFontSize() {
-    if (fontSizeNotfier.value >= 10.0) {
-      fontSizeNotfier.value--;
-    }
-    return;
   }
 
   void toggleIsDeletedSwitch() {

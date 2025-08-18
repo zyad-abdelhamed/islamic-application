@@ -14,7 +14,6 @@ class NextPrayerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      spacing: 4,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(

@@ -6,13 +6,14 @@ import 'package:test_app/core/helper_function/get_from_json.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/data/models/tafsir_request_params.dart';
+import 'package:test_app/features/app/domain/entities/tafsir_edition_entity.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_surah_with_tafsir_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/surah_item.dart';
 import 'package:test_app/features/app/presentation/view/pages/tafsier_page.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 
 class SurahListWithFuture extends StatelessWidget {
-  final ValueNotifier<Map<String, dynamic>> selectedEditionNotifier;
+  final ValueNotifier<TafsirEditionEntity> selectedEditionNotifier;
 
   const SurahListWithFuture({super.key, required this.selectedEditionNotifier});
 
@@ -61,7 +62,7 @@ class SurahListWithFuture extends StatelessWidget {
                       child: TafsirPage(
                         params: TafsirRequestParams(
                           surahNumber: index + 1,
-                          edition: selectedEdition['identifier']!,
+                          edition: selectedEdition.identifier,
                           surahName: surah['name']!,
                         ),
                       ),
