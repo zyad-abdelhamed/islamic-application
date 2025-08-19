@@ -51,8 +51,9 @@ class FeaturedRecordsCubit extends Cubit<FeaturedRecordsState> {
         parameters: RecordsParameters(
             context: context, item: counterNotifier.value.number));
     result.fold(
-      (failure) => appSneakBar(
-          context: context, message: failure.message, isError: true),
+      (failure) =>
+          AppSnackBar(message: failure.message, type: AppSnackBarType.error)
+              .show(context),
       (featuredRecords) {
         getFeatuerdRecords();
 
@@ -66,10 +67,10 @@ class FeaturedRecordsCubit extends Cubit<FeaturedRecordsState> {
 
         counterNotifier.value = NumberAnimationModel(number: 0);
 
-        appSneakBar(
-            context: context,
-            message: 'تمت الاضافه الي الريكوردات المميزه',
-            isError: false);
+        AppSnackBar(
+                message: 'تمت الاضافه الي الريكوردات المميزه',
+                type: AppSnackBarType.success)
+            .show(context);
       },
     );
   }
@@ -77,16 +78,17 @@ class FeaturedRecordsCubit extends Cubit<FeaturedRecordsState> {
   void deleteAllFeatuerdRecords(BuildContext context) async {
     Either<Failure, Unit> result = await deleteAllRecordsUseCase();
     result.fold(
-      (failure) => appSneakBar(
-          context: context, message: failure.message, isError: true),
+      (failure) =>
+          AppSnackBar(message: failure.message, type: AppSnackBarType.error)
+              .show(context),
       (featuredRecords) {
         getFeatuerdRecords();
         emit(state.copyWith());
 
-        appSneakBar(
-            context: context,
-            message: 'تم حذف جميع الريكوردات المميزه',
-            isError: false);
+        AppSnackBar(
+                message: 'تم حذف جميع الريكوردات المميزه',
+                type: AppSnackBarType.success)
+            .show(context);
       },
     );
   }
@@ -96,16 +98,17 @@ class FeaturedRecordsCubit extends Cubit<FeaturedRecordsState> {
     Either<Failure, Unit> result = await deleteRecordsUseCase(
         parameters: RecordsParameters(context: context, id: id));
     result.fold(
-      (failure) => appSneakBar(
-          context: context, message: failure.message, isError: true),
+      (failure) =>
+          AppSnackBar(message: failure.message, type: AppSnackBarType.error)
+              .show(context),
       (featuredRecords) {
         getFeatuerdRecords();
         emit(state.copyWith());
 
-        appSneakBar(
-            context: context,
-            message: 'تم الحذف من الريكوردات المميزه',
-            isError: false);
+        AppSnackBar(
+                message: 'تم الحذف من الريكوردات المميزه',
+                type: AppSnackBarType.success)
+            .show(context);
       },
     );
   }

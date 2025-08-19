@@ -38,18 +38,16 @@ class BookMarksPageAppBar extends StatelessWidget
               controller.loadingNotifier.value = false;
               controller.exitSelectionMode();
               Navigator.pop(context);
-              appSneakBar(
-                context: context,
+              AppSnackBar(
                 message: "تم الحذف بنجاح",
-                isError: false,
-              );
+                type: AppSnackBarType.success,
+              ).show(context);
             } else if (state is BookmarksError) {
               controller.loadingNotifier.value = false;
-              appSneakBar(
-                context: context,
+              AppSnackBar(
                 message: state.message,
-                isError: true,
-              );
+                type: AppSnackBarType.error,
+              ).show(context);
             }
           },
           child: AppBar(

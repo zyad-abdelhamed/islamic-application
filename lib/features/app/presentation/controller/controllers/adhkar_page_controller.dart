@@ -45,6 +45,12 @@ class AdhkarPageController {
     }
   }
 
+  double get isCircleSliderShowed => adhkarScrollController.hasClients
+      ? adhkarScrollController.position.isScrollingNotifier.value
+          ? 1.0
+          : 0.0
+      : 0.0;
+
   void decreaseCount({required CountPrameters countPrameters}) {
     final int count = countPrameters.adhkarEntity.countNotifier.value.number;
 

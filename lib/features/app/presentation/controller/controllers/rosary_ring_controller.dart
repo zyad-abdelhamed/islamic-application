@@ -3,7 +3,7 @@ import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 
 class RosaryRingController {
-  late final ValueNotifier<int> progressNotifier;
+  late final ValueNotifier<double> progressNotifier;
 
   late final ValueNotifier<int> selectedIndexNotifier;
 
@@ -12,7 +12,7 @@ class RosaryRingController {
   final List tsabeehList = AppStrings.translate("adhkarList");
 
   void initState() {
-    progressNotifier = ValueNotifier(0);
+    progressNotifier = ValueNotifier<double>(0);
     selectedIndexNotifier = ValueNotifier(0);
     selectedIndexNotifier.addListener(
       () {},

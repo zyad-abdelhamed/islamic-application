@@ -12,21 +12,27 @@ part 'location_state.dart';
 class LocationCubit extends Cubit<LocationState> {
   LocationCubit(this.locationRepo) : super(LocationState());
 
-  final BaseLocationRepo locationRepo;      
+  final BaseLocationRepo locationRepo;
 
   void updateLocationRequest(BuildContext context) async {
     emit(LocationState(requestState: RequestStateEnum.loading));
     final result = await locationRepo.updateLocation();
     result.fold((l) {
-      appSneakBar(context: context, message: l.message, isError: true);
+      AppSnackBar(
+        message: l.message,
+        type: AppSnackBarType.error,
+      ).show(context);
       emit(LocationState(requestState: RequestStateEnum.failed));
     }, (r) {
-      appSneakBar(context: context, message: 'تم تحديث الموقع', isError: false);
+      AppSnackBar(
+        message: 'تم تحديث الموقع',
+        type: AppSnackBarType.success,
+      ).show(context);
       Navigator.pushNamedAndRemoveUntil(
-              context,
-              RoutesConstants.splashScreenRouteName,
-              (_) => false,
-            );
+        context,
+        RoutesConstants.splashScreenRouteName,
+        (_) => false,
+      );
     });
   }
 
@@ -34,15 +40,17 @@ class LocationCubit extends Cubit<LocationState> {
     emit(LocationState(requestState: RequestStateEnum.loading));
     final result = await locationRepo.saveLocation();
     result.fold((l) {
-      appSneakBar(context: context, message: l.message, isError: true);
+      AppSnackBar(message: l.message, type: AppSnackBarType.error)
+          .show(context);
       emit(LocationState(requestState: RequestStateEnum.failed));
     }, (r) {
-      appSneakBar(context: context, message: 'تم حفظ الموقع', isError: false);
+      AppSnackBar(message: 'تم حفظ الموقع', type: AppSnackBarType.success)
+          .show(context);
       Navigator.pushNamedAndRemoveUntil(
-              context,
-              RoutesConstants.splashScreenRouteName,
-              (_) => false,
-            );
+        context,
+        RoutesConstants.splashScreenRouteName,
+        (_) => false,
+      );
     });
   }
 }

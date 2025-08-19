@@ -152,12 +152,11 @@ class PrayerTimesCubit extends Cubit<NextPrayer> {
     result.fold(
       (failure) {
         // 🛑 في حالة الخطأ - نظهر SnackBar أوضح
-        appSneakBar(
-          isError: true,
-          context: context,
+        AppSnackBar(
+          type: AppSnackBarType.error,
           message:
               "حدث خطأ ${failure.message}، تم تفعيل جميع الصلوات افتراضيًا.",
-        );
+        ).show(context);
 
         print(
             "⚠️ Error loading settings: ${failure.toString()} - Using default (all true)");

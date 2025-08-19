@@ -50,7 +50,7 @@ class RtabelCubit extends Cubit<RtabelState> {
     );
     result.fold(
         (failure) {
-          appSneakBar(context: context, message: failure.message, isError: true);
+          AppSnackBar(message: failure.message, type: AppSnackBarType.error,).show(context);
         }, (checkBoxValues) {
       notifier.value = newValue;
     });

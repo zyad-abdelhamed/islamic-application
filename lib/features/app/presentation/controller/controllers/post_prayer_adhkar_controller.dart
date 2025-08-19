@@ -3,11 +3,11 @@ import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 
 class PostPrayerAdhkarController {
-  late final ValueNotifier<int> progressNotifier;
+  late final ValueNotifier<double> progressNotifier;
   final List _tsabeehList = AppStrings.translate("adhkarList");
 
   initState() {
-    progressNotifier = ValueNotifier<int>(0);
+    progressNotifier = ValueNotifier<double>(0);
   }
 
   void dispose() {

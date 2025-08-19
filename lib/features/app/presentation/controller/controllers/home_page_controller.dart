@@ -8,7 +8,6 @@ import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/widgets/app_sneak_bar.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
-import 'package:test_app/core/widgets/info_snack_bar.dart';
 import 'package:test_app/features/app/domain/repositories/home_repo.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_prayer_times_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/prayer_times_cubit.dart';
@@ -45,14 +44,13 @@ class HomePageController {
         permission == LocationPermission.deniedForever) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
-          appSneakBar(
-            context: context,
+          AppSnackBar(
             message: 'تم رفض صلاحية الموقع.',
             label: 'صلاحية الموقع',
             onPressed: () => Navigator.pushNamedAndRemoveUntil(context,
                 RoutesConstants.locationPermissionPage, (route) => false),
-            isError: true,
-          );
+            type: AppSnackBarType.error,
+          ).show(context);
         }
       });
     }
@@ -64,7 +62,10 @@ class HomePageController {
     if (!connected) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
-          showInfoSnackBar(context: context, message: AppStrings.translate("noInternetConnection"));
+          AppSnackBar(
+            message: AppStrings.translate("noInternetConnection"),
+            type: AppSnackBarType.info,
+          ).show(context);
         }
       });
     }

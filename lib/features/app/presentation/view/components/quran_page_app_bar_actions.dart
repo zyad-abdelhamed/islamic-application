@@ -48,15 +48,13 @@ List<Widget> quranPageAppBarActions(
                         listener: (context, state) {
                           if (state is AddBookmarksuccess) {
                             Navigator.pop(context);
-                            appSneakBar(
-                                context: context,
+                            AppSnackBar(
                                 message: "تم حفظ العلامة بنجاح",
-                                isError: false);
+                                type: AppSnackBarType.success).show(context);
                           } else if (state is BookmarksError) {
-                            appSneakBar(
-                                context: context,
+                            AppSnackBar(
                                 message: state.message,
-                                isError: true);
+                                type: AppSnackBarType.error).show(context);
                           }
                         },
                         builder: (context, state) {

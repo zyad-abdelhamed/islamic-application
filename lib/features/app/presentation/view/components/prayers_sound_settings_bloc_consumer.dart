@@ -24,11 +24,11 @@ class PrayersSoundsSettingsBlocConsumer extends StatelessWidget {
         } else if (state is PrayerSoundSettingsSaved) {
           controller.markAsSaved();
           controller.loadingNotifier.value = false;
-          appSneakBar(
-              context: context, message: AppStrings.translate("settingsSaved"), isError: false);
+          AppSnackBar(
+              message: AppStrings.translate("settingsSaved"), type: AppSnackBarType.success).show(context);
         } else if (state is PrayerSoundSettingsError) {
           controller.loadingNotifier.value = false;
-          appSneakBar(context: context, message: state.message, isError: true);
+          AppSnackBar(message: state.message, type: AppSnackBarType.error).show(context);
         }
       },
       builder: (context, state) {

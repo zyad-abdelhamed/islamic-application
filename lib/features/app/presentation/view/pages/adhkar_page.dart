@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
-import 'package:test_app/core/theme/app_colors.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/adhkar_page_controller.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_adhkar_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/adhkar_widget.dart';
 import 'package:test_app/features/app/presentation/view/components/adhkar_page_app_bar.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
-import 'package:test_app/features/app/presentation/view/components/circle_painter.dart';
+import 'package:test_app/features/app/presentation/view/components/common_circle_layout.dart';
 
 class AdhkarPage extends StatefulWidget {
   final String nameOfAdhkar;
@@ -40,6 +38,8 @@ class _AdhkarPageState extends State<AdhkarPage> {
 
   @override
   Widget build(BuildContext context) {
+    const double circleSliderPadding = 15.0;
+
     return WillPopScope(
       onWillPop: () async {
         Navigator.pushNamedAndRemoveUntil(
@@ -50,9 +50,10 @@ class _AdhkarPageState extends State<AdhkarPage> {
         return false;
       },
       child: Scaffold(
-          appBar: adhkarPageAppBar(context,
-              appBarTitle: widget.nameOfAdhkar,
-              adhkarPageController: adhkarPageController),
+          appBar: AdhkarPageAppBar(
+            appBarTitle: widget.nameOfAdhkar,
+            adhkarPageController: adhkarPageController,
+          ),
           body: Stack(children: [
             //data
             AnimatedList(
@@ -67,48 +68,23 @@ class _AdhkarPageState extends State<AdhkarPage> {
                           widget.getAdhkarController.adhkar.elementAt(index),
                     )),
             // circle slider
-            ValueListenableBuilder<double>(
-              valueListenable: adhkarPageController.progressNotfier,
-              builder: (_, __, ___) => Stack(children: [
-                _getCustomCircleSlider(context,
-                    customPainter: CirclePainter(
-                        lineSize: 5.0,
-                        progress: adhkarPageController.maxProgress,
-                        context: context,
-                        lineColor: ThemeCubit.controller(context).state ? AppColors.darkModeInActiveColor : AppColors.lightModeInActiveColor,
-                        maxProgress: adhkarPageController.maxProgress)),
-                _getCustomCircleSlider(context,
-                    customPainter: CirclePainter(
-                        lineSize: 5.0,
-                        progress: adhkarPageController.progressNotfier.value,
-                        context: context,
-                        lineColor: Theme.of(context).primaryColor,
-                        maxProgress: adhkarPageController.maxProgress))
-              ]),
-            )
+            Positioned(
+              bottom: circleSliderPadding,
+              left: circleSliderPadding,
+              child: ListenableBuilder(
+                listenable: adhkarPageController.progressNotfier,
+                builder: (_, __) => AnimatedOpacity(
+                  duration: AppDurations.mediumDuration,
+                  opacity: adhkarPageController.isCircleSliderShowed,
+                  child: CommonCircleLayout(
+                      customPaintSize: context.width * 0.10,
+                      lineSize: 8.0,
+                      maxProgress: adhkarPageController.maxProgress,
+                      progressNotifier: adhkarPageController.progressNotfier),
+                ),
+              ),
+            ),
           ])),
-    );
-  }
-
-//   ===helper functions===
-  Positioned _getCustomCircleSlider(BuildContext context,
-      {required CustomPainter customPainter}) {
-    return Positioned(
-      bottom: 20.0,
-      left: 20.0,
-      child: AnimatedOpacity(
-        duration: AppDurations.mediumDuration,
-        opacity: adhkarPageController.adhkarScrollController.hasClients
-            ? adhkarPageController
-                    .adhkarScrollController.position.isScrollingNotifier.value
-                ? 1.0
-                : 0.0
-            : 0.0,
-        child: CustomPaint(
-          size: Size(context.width * .10, context.width * .10),
-          painter: customPainter,
-        ),
-      ),
     );
   }
 }
