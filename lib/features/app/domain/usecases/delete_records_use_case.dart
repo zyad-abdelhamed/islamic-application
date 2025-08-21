@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
+import 'package:test_app/features/app/domain/entities/featured_record_entity.dart';
 import 'package:test_app/features/app/domain/repositories/base_records_repo.dart';
 import 'package:test_app/core/errors/failures.dart';
 import 'package:test_app/core/utils/base_use_case.dart';
@@ -16,11 +15,8 @@ class DeleteRecordsUseCase
   }
 }
 
-class RecordsParameters extends Equatable {
-  final int? id;
-  final int? item;
-  final BuildContext? context;
-  const RecordsParameters({this.context, this.id, this.item});
-  @override
-  List<Object?> get props => [id,item,context];
+class RecordsParameters{
+  final FeaturedRecordEntity? recordEntity;
+  final int? index;
+  const RecordsParameters({this.recordEntity, this.index});
 }

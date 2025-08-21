@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
 import 'package:test_app/core/constants/app_strings.dart';
-import 'package:test_app/features/app/data/models/number_animation_model.dart';
+import 'package:test_app/core/services/dependency_injection.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/elec_rosary_page_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/featured_records_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/counter_widget.dart';
 import 'package:test_app/features/app/presentation/view/components/featured_records_widget.dart';
-import 'package:test_app/core/services/dependency_injection.dart';
-
-const double counterWidetDefaultMargin =
-    showedFeatuerdRecordsWidgetButtonHight + 20;
 
 class ElecRosaryPage extends StatefulWidget {
   const ElecRosaryPage({super.key});
@@ -19,49 +16,45 @@ class ElecRosaryPage extends StatefulWidget {
 }
 
 class _ElecRosaryPageState extends State<ElecRosaryPage> {
-  late final ValueNotifier<NumberAnimationModel> counterNotifier;
-  late final ValueNotifier<bool> isfeatuerdRecordsWidgetShowedNotifier;
+  late final ElecRosaryPageController controller;
 
   @override
   void initState() {
-    counterNotifier =
-        ValueNotifier<NumberAnimationModel>(NumberAnimationModel(number: 0));
-    isfeatuerdRecordsWidgetShowedNotifier =
-        ValueNotifier<bool>(false);
-
     super.initState();
+    controller = ElecRosaryPageController();
+    controller.initState();
   }
+
   @override
   void dispose() {
-    counterNotifier.dispose();
-    isfeatuerdRecordsWidgetShowedNotifier.dispose();
+    controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<FeaturedRecordsCubit>(
-        create: (_) => sl<FeaturedRecordsCubit>(),
-        child: Scaffold(
-          appBar: AppBar(
-            leading: const GetAdaptiveBackButtonWidget(),
-            title: Text(AppStrings.appBarTitles(withTwoLines: false)[2]),
-          ),
-          body: ValueListenableBuilder<bool>(
-            valueListenable: isfeatuerdRecordsWidgetShowedNotifier,
-            builder: (_, __, ___) => Stack(
-              fit: StackFit.expand,
-              children: [
-                CounterWidget(
-                  counterNotifier: counterNotifier, isfeatuerdRecordsWidgetShowedNotifier: isfeatuerdRecordsWidgetShowedNotifier,
-                ),
-                FeatuerdRecordsWidget(
-                  counterNotifier: counterNotifier,
-                  isfeatuerdRecordsWidgetShowedNotifier: isfeatuerdRecordsWidgetShowedNotifier,
-                )
-              ],
+    return Scaffold(
+      appBar: AppBar(
+        leading: const GetAdaptiveBackButtonWidget(),
+        title: Text(AppStrings.appBarTitles(withTwoLines: false)[2]),
+      ),
+      body: ValueListenableBuilder<bool>(
+        valueListenable: controller.isWidgetShowedNotifier,
+        builder: (_, __, ___) => Stack(
+          fit: StackFit.expand,
+          children: [
+            CounterWidget(
+              counterNotifier: controller.counterNotifier,
+              isfeatuerdRecordsWidgetShowedNotifier:
+                  controller.isWidgetShowedNotifier,
             ),
-          ),
-        ));
+            BlocProvider<FeaturedRecordsCubit>(
+              create: (_) => sl<FeaturedRecordsCubit>(),
+              child: FeatuerdRecordsWidget(controller: controller),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

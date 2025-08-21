@@ -14,13 +14,13 @@ import 'package:test_app/features/app/presentation/controller/cubit/prayer_times
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/features/app/presentation/view/components/custom_alert_dialog.dart';
 
-class HomePageController {
-  bool _isShowed = false;
+bool _isShowed = false;
 
-  void initState(BuildContext context, bool mounted) {
+class HomePageController {
+  void initState(BuildContext context) {
     if (_isShowed == false) {
-      checkLocationPermission(context, mounted);
-      checkInternetConnection(context, mounted);
+      checkLocationPermission(context);
+      checkInternetConnection(context);
       loadTodayHadith(context);
       _isShowed = true;
     }
@@ -36,14 +36,13 @@ class HomePageController {
     }
   }
 
-  void checkLocationPermission(BuildContext context, bool mounted) async {
+  void checkLocationPermission(BuildContext context) async {
     LocationPermission permission =
         await sl<BaseLocationService>().checkPermission;
 
     if (permission == LocationPermission.denied ||
         permission == LocationPermission.deniedForever) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
           AppSnackBar(
             message: 'تم رفض صلاحية الموقع.',
             label: 'صلاحية الموقع',
@@ -51,22 +50,19 @@ class HomePageController {
                 RoutesConstants.locationPermissionPage, (route) => false),
             type: AppSnackBarType.error,
           ).show(context);
-        }
       });
     }
   }
 
-  void checkInternetConnection(BuildContext context, bool mounted) async {
+  void checkInternetConnection(BuildContext context) async {
     final connected = await sl<InternetConnection>().checkInternetConnection();
     // إذا لم يكن متصلًا
     if (!connected) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
           AppSnackBar(
             message: AppStrings.translate("noInternetConnection"),
             type: AppSnackBarType.info,
           ).show(context);
-        }
       });
     }
   }

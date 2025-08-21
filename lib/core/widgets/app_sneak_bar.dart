@@ -46,7 +46,7 @@ class AppSnackBar extends StatelessWidget {
         backgroundColor = AppColors.secondryColor;
         textColor = AppColors.white;
         icon = Icons.info_outline;
-        break;  
+        break;
     }
 
     return Container(
@@ -77,19 +77,19 @@ class AppSnackBar extends StatelessWidget {
               onPressed: onPressed ?? () {},
               child: Text(
                 label!,
-                style: TextStyles.semiBold16(
-                  context: context,
-                  color: AppColors.white,
-                ),
+                style: TextStyles.bold20(context)
+                    .copyWith(color: Theme.of(context).primaryColor),
               ),
             ),
         ],
       ),
     );
   }
+  
+    void show(BuildContext context) {
+    // الشرط ده بيتأكد إن الـ widget اللي بنادي منه لسه mounted
+    if (!context.mounted) return;
 
-  /// ميثود جاهزة لعرض الـ SnackBar
-  void show(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         duration: label == null
@@ -103,4 +103,5 @@ class AppSnackBar extends StatelessWidget {
       ),
     );
   }
+
 }

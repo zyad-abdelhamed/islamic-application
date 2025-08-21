@@ -67,7 +67,7 @@ class PrayersSoundSettingsWidget extends StatelessWidget {
                       : Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                             appDivider(),
+                             const AppDivider(),
                             AdaptiveSwitch(
                               name: names[0],
                               value: settings.fajr,

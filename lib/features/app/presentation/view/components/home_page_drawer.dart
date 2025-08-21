@@ -26,7 +26,7 @@ class HomeDrawerWidget extends StatelessWidget {
               ),
             ),
 
-            appDivider(),
+            const AppDivider(),
 
             // Theme Toggle
             Align(

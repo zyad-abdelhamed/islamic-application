@@ -8,12 +8,12 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 class AdhanNotificationService {
   static Future<void> init() async {
-    print("🔄 Initializing AdhanNotificationService...");
+     
 
     // إعداد المنطقة الزمنية
     tz.initializeTimeZones();
     tz.setLocalLocation(tz.getLocation('Africa/Cairo'));
-    print("✅ Timezone set to Africa/Cairo");
+     
 
     // إعداد Android
     const AndroidInitializationSettings initializationSettingsAndroid =
@@ -31,7 +31,7 @@ class AdhanNotificationService {
 
     // تهيئة الإشعارات
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-    print("✅ Notifications plugin initialized");
+     
 
     // طلب الإذن في Android
     final androidImplementation =
@@ -39,7 +39,7 @@ class AdhanNotificationService {
             AndroidFlutterLocalNotificationsPlugin>();
     if (androidImplementation != null) {
       bool? granted = await androidImplementation.requestNotificationsPermission();
-      print("📢 Android permission granted: $granted");
+       
     }
 
     // طلب الإذن في iOS
@@ -52,12 +52,12 @@ class AdhanNotificationService {
         badge: true,
         sound: true,
       );
-      print("📢 iOS permission granted: $granted");
+       
     }
   }
 
   static Future<void> scheduleAdhanNotification(DateTime scheduledTime) async {
-    print("📅 Scheduling notification at: $scheduledTime");
+     
 
     const androidDetails = AndroidNotificationDetails(
       'adhan_channel',
@@ -87,9 +87,9 @@ class AdhanNotificationService {
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         matchDateTimeComponents: DateTimeComponents.time,
       );
-      print("✅ Notification scheduled successfully");
+       
     } catch (e) {
-      print("❌ Error scheduling notification: $e");
+       
     }
   }
 }
@@ -112,7 +112,7 @@ class MyApp extends StatelessWidget {
           child: ElevatedButton(
             onPressed: () {
               DateTime testTime = DateTime.now().add(const Duration(seconds: 10));
-              print("⏳ Button pressed, scheduling notification for: $testTime");
+               
               AdhanNotificationService.scheduleAdhanNotification(testTime);
             },
             child: const Text('تشغيل الإشعار بعد 10 ثواني'),

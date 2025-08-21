@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/core/widgets/app_sneak_bar.dart';
 
 class BookmarksController {
   late final ValueNotifier<bool> isSelectionMode;
@@ -10,10 +9,6 @@ class BookmarksController {
     isSelectionMode = ValueNotifier<bool>(false);
     selectedIndexes = ValueNotifier<List<int>>([]);
     loadingNotifier = ValueNotifier<bool>(false);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      AppSnackBar(message: "اضغط مطولا للحذف", type: AppSnackBarType.info)
-          .show(context);
-    });
   }
 
   void enterSelectionMode() {

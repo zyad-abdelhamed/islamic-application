@@ -6,8 +6,9 @@ import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
 import 'package:test_app/features/app/data/models/number_animation_model.dart';
 import 'package:test_app/features/app/presentation/view/components/featured_records_widget.dart';
-import 'package:test_app/features/app/presentation/view/pages/elec_rosary_page.dart';
 
+const double counterWidetDefaultMargin =
+    showedFeatuerdRecordsWidgetButtonHight + 20;
 class CounterWidget extends StatelessWidget {
   const CounterWidget(
       {super.key,

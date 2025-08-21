@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/services/position_service.dart';
 import 'package:test_app/features/onboarding/presentation/controller/on_boarding_controller.dart';
@@ -59,7 +60,7 @@ class _LocationPermissionPageState extends State<LocationPermissionPage> {
           child: ValueListenableBuilder<LocationPermission>(
             valueListenable: permissionStatusNotifier,
             builder: (_, __, ___) => AnimatedSwitcher(
-              duration: const Duration(seconds: 1),
+              duration: AppDurations.mediumDuration,
               switchInCurve: Curves.easeInOut,
               switchOutCurve: Curves.easeInOut,
               transitionBuilder: (child, animation) {

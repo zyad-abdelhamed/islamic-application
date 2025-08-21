@@ -4,6 +4,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
+import 'package:test_app/core/widgets/app_sneak_bar.dart';
 import 'package:test_app/core/widgets/empty_list_text_widget.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/book_marks_controller.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/quran_page_controller.dart';
@@ -40,7 +41,7 @@ class _BookmarksPageState extends State<BookmarksPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<BookmarksCubit>(
-                      create: (_) => sl<BookmarksCubit>(),
+      create: (_) => sl<BookmarksCubit>(),
       child: ValueListenableBuilder<bool>(
         valueListenable: controller.loadingNotifier,
         builder: (_, __, ___) => ModalProgressHUD(
@@ -52,13 +53,19 @@ class _BookmarksPageState extends State<BookmarksPage> {
             body: BlocBuilder<BookmarksCubit, BookmarksState>(
               builder: (_, state) {
                 if (state is BookmarksLoading) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const GetAdaptiveLoadingWidget();
                 } else if (state is BookmarksLoaded) {
                   final bookmarks = state.bookmarks;
                   if (bookmarks.isEmpty) {
                     return EmptyListTextWidget(
                         text: AppStrings.translate("noBookmarks"));
                   }
+
+                  AppSnackBar(
+                          message: "اضغط مطولا للحذف",
+                          type: AppSnackBarType.info)
+                      .show(context);
+
                   return BlocProvider<QuranCubit>(
                     create: (context) => sl<QuranCubit>(),
                     child: GridView.builder(
@@ -78,7 +85,6 @@ class _BookmarksPageState extends State<BookmarksPage> {
                           index: index,
                           bookmark: bookmarks[index],
                           onSelectionChanged: (isSelected) {
-                            // parent مسؤول عن تحديث الكونترولر
                             if (!controller.isSelectionMode.value) {
                               controller.enterSelectionMode();
                             }
@@ -89,7 +95,7 @@ class _BookmarksPageState extends State<BookmarksPage> {
                     ),
                   );
                 } else if (state is BookmarksError) {
-                  return Center(child: Text(state.message));
+                  return EmptyListTextWidget(text: state.message);
                 }
                 return const SizedBox.shrink();
               },

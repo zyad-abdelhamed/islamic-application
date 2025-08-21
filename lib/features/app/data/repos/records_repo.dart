@@ -1,5 +1,7 @@
 import 'package:dartz/dartz.dart';
+import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/features/app/data/datasources/records_local_data_source.dart';
+import 'package:test_app/features/app/domain/entities/featured_record_entity.dart';
 import 'package:test_app/features/app/domain/repositories/base_records_repo.dart';
 import 'package:test_app/features/app/domain/usecases/delete_records_use_case.dart';
 import 'package:test_app/core/errors/failures.dart';
@@ -11,18 +13,15 @@ class RecordsRepo extends BaseRecordsRepo {
   @override
   Future<Either<Failure, Unit>> addRecord(
       {required RecordsParameters parameters}) async {
-    final int baseNumberOfRecords = 5;
-    if (parameters.item! > baseNumberOfRecords) {
-      try {
-        await recordsLocalDataSource.addRecord(parameters: parameters);
-        return const Right(unit);
-      } catch (e) {
-        return const Left(Failure('error in add'));
-      }
-    } else if (parameters.item! == 0) {
-      return const Left(Failure('لا يمكن حفظ ريكورد خالي'));
-    } else {
-      return left(Failure('لا يمكن حفظ ريكورد أقل من $baseNumberOfRecords'));
+    if (parameters.recordEntity!.value == 0) {
+      return const Left(Failure("لا يمكن اضافة ريكورد فارغ"));
+    }
+
+    try {
+      await recordsLocalDataSource.addRecord(parameters: parameters);
+      return const Right(unit);
+    } catch (_) {
+      return Left(Failure(AppStrings.translate("unExpectedError")));
     }
   }
 
@@ -31,8 +30,8 @@ class RecordsRepo extends BaseRecordsRepo {
     try {
       await recordsLocalDataSource.deleteAllRecords();
       return const Right(unit);
-    } catch (e) {
-      return const Left(Failure('error in deleteallrecords'));
+    } catch (_) {
+      return Left(Failure(AppStrings.translate("unExpectedError")));
     }
   }
 
@@ -42,18 +41,19 @@ class RecordsRepo extends BaseRecordsRepo {
     try {
       await recordsLocalDataSource.deleteRecord(parameters: parameters);
       return const Right(unit);
-    } catch (e) {
-      return const Left(Failure('error in delete'));
+    } catch (_) {
+      return Left(Failure(AppStrings.translate("unExpectedError")));
     }
   }
 
   @override
-  Future<Either<Failure, List<int>>> getRecords() async {
+  Future<Either<Failure, List<FeaturedRecordEntity>>> getRecords() async {
     try {
-      List<int> result = await recordsLocalDataSource.getRecords();
+      List<FeaturedRecordEntity> result =
+          await recordsLocalDataSource.getRecords();
       return Right(result);
-    } catch (e) {
-      return const Left(Failure('error in getrecords'));
+    } catch (_) {
+      return Left(Failure(AppStrings.translate("unExpectedError")));
     }
   }
 }

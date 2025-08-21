@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:test_app/features/app/domain/entities/featured_record_entity.dart';
 import 'package:test_app/features/app/domain/usecases/delete_records_use_case.dart';
 import 'package:test_app/core/errors/failures.dart';
 
@@ -8,5 +9,5 @@ abstract class BaseRecordsRepo {
   Future<Either<Failure, Unit>> addRecord(
       {required RecordsParameters parameters});
   Future<Either<Failure, Unit>> deleteAllRecords();
-  Future<Either<Failure, List<int>>> getRecords();
+  Future<Either<Failure, List<FeaturedRecordEntity>>> getRecords();
 }

@@ -5,6 +5,7 @@ import 'package:test_app/core/services/internet_connection.dart';
 import 'package:test_app/features/app/data/datasources/prayers_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/prayers_remote_data_source.dart';
 import 'package:test_app/features/app/data/models/get_prayer_times_of_month_prameters.dart';
+import 'package:test_app/features/app/domain/entities/location_entity.dart';
 import 'package:test_app/features/app/domain/entities/prayer_sound_settings_entity.dart';
 import 'package:test_app/features/app/domain/entities/timings.dart';
 import 'package:test_app/features/app/domain/repositories/base_prayer_repo.dart';
@@ -26,14 +27,13 @@ class PrayerRepo extends BasePrayerRepo {
   @override
   Future<Either<Failure, Timings>> getPrayerTimes() async {
     try {
-      final isConnected = await internetConnection.checkInternetConnection();
+      final bool isConnected = await internetConnection.checkInternetConnection();
 
       if (isConnected) {
-        final locationResult = await baseLocationRepo.getCurrentLocation();
+        final Either<Failure, LocationEntity> locationResult = await baseLocationRepo.getCurrentLocation();
 
         return await locationResult.fold<Future<Either<Failure, Timings>>>(
-          (failure) async => await _getLocalTimingsWithFallbackOrReturnOriginal(
-              Failure(failure.message)),
+          (failure) async => left(Failure(failure.message)),
           (location) async {
             try {
               final timings = await prayersRemoteDataSource.getPrayersTimes(
@@ -79,7 +79,7 @@ class PrayerRepo extends BasePrayerRepo {
     try {
       final timings = await prayersLocalDataSource.getLocalPrayersTimes();
       if (timings == null) {
-        return Left(Failure(AppStrings.translate("cachedErrorMessage")));
+        return Left(Failure(AppStrings.translate("deniedLocationPermissionAlertDialogText")));
       }
       return Right(timings);
     } catch (e) {

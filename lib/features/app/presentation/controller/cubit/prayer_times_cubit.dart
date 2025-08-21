@@ -82,7 +82,7 @@ class PrayerTimesCubit extends Cubit<NextPrayer> {
     // 🔁 المرور على كل صلاة وجدولتها إذا مفعلة
     for (var prayer in prayers) {
       if (prayer["enabled"] == false) {
-        print("🚫 تم تخطي إشعار ${prayer["name"]} لأنه غير مفعل في الإعدادات");
+         
         continue; // تخطي الصلاة إذا الإعداد False
       }
 
@@ -103,7 +103,7 @@ class PrayerTimesCubit extends Cubit<NextPrayer> {
 
       // 🔔 جدولة الإشعار
       AdhanNotificationService.scheduleAdhanNotification(prayerTime);
-      print("📅 تم جدولة إشعار ${prayer["name"]} في: $prayerTime");
+       
     }
   }
 
@@ -173,7 +173,7 @@ class PrayerTimesCubit extends Cubit<NextPrayer> {
         _scheduleAllPrayerNotifications(timings, defaultSettings);
       },
       (settings) {
-        print("✅ Prayer settings loaded: $settings");
+         
         _scheduleAllPrayerNotifications(timings, settings);
       },
     );

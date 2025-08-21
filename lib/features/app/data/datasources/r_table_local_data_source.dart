@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:hive/hive.dart';
 import 'package:test_app/core/constants/data_base_constants.dart';
 import 'package:test_app/core/models/booleans_model.dart';
-import 'package:test_app/core/services/data_base_service.dart';
 
 abstract class RTableLocalDataSource {
   Future<List<bool>> getBooleans();
@@ -11,21 +10,19 @@ abstract class RTableLocalDataSource {
 }
 
 class RTableLocalDataSourceImpl extends RTableLocalDataSource {
-  final BaseDataBaseService<bool> rTableHiveObject = HiveDatabaseService<bool>(
-      box: Hive.box(DataBaseConstants.rTableBoxHiveKey));
+ final  Box<bool> _box = Hive.box<bool>(DataBaseConstants.rTableBoxHiveKey);
 
   @override
   Future<List<bool>> getBooleans() async {
-    final data = await rTableHiveObject.get(DataBaseConstants.rTableBoxHiveKey);
+    final data = _box.values.toList();
 
     if (data.isEmpty || data.length != 30 * 16) {
-      await rTableHiveObject.deleteAll(DataBaseConstants.rTableBoxHiveKey);
-      
-      
+      await _box.clear();
+
       final Map<int, bool> entries = {
         for (int i = 0; i < 30 * 16; i++) i: false
       };
-      await rTableHiveObject.putAll(entries);
+      await _box.putAll(entries);
 
       return List.filled(30 * 16, false);
     }
@@ -35,17 +32,19 @@ class RTableLocalDataSourceImpl extends RTableLocalDataSource {
 
   @override
   Future<Unit> resetBooleans() async {
-    await rTableHiveObject.deleteAll(DataBaseConstants.rTableBoxHiveKey);
+    await _box.clear();
+
     final Map<int, bool> entries = {
       for (int i = 0; i < 30 * 16; i++) i: false
     };
-    await rTableHiveObject.putAll(entries);
+    await _box.putAll(entries);
+
     return unit;
   }
 
   @override
   Future<Unit> updateBooleans({required BooleansParameters parameters}) async {
-    await rTableHiveObject.put(parameters.key, parameters.value);
+    await _box.put(parameters.key, parameters.value);
     return unit;
   }
 }

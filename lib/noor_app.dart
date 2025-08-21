@@ -15,7 +15,7 @@ class NoorApp extends StatelessWidget {
     return BlocProvider(
       create: (_) => ThemeCubit(),
       child: BlocBuilder<ThemeCubit, bool>(
-        builder: (context, isDarkMode) {
+        builder: (_, isDarkMode) {
           return MaterialApp(
             locale: const Locale('ar'),
             supportedLocales: const [

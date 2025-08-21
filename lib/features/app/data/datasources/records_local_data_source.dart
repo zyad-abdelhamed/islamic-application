@@ -1,37 +1,36 @@
-import 'package:dartz/dartz.dart';
 import 'package:hive/hive.dart';
+import 'package:test_app/features/app/domain/entities/featured_record_entity.dart';
 import 'package:test_app/features/app/domain/usecases/delete_records_use_case.dart';
 import 'package:test_app/core/constants/data_base_constants.dart';
-import 'package:test_app/core/services/data_base_service.dart';
 
 abstract class RecordsLocalDataSource {
-  Future<Unit> deleteRecord({required RecordsParameters parameters});
-  Future<Unit> addRecord({required RecordsParameters parameters});
-  Future<Unit> deleteAllRecords();
-  Future<List<int>> getRecords();
+  Future<void> deleteRecord({required RecordsParameters parameters});
+  Future<void> addRecord({required RecordsParameters parameters});
+  Future<void> deleteAllRecords();
+  Future<List<FeaturedRecordEntity>> getRecords();
 }
-class RecordsLocalDataSourceImpl extends RecordsLocalDataSource{
-  final BaseDataBaseService<int> baseDataBaseService = HiveDatabaseService<int>(box: Hive.box<int>(DataBaseConstants.featuerdRecordsHiveKey));
+
+class RecordsLocalDataSourceImpl extends RecordsLocalDataSource {
+  final Box<FeaturedRecordEntity> _box =
+      Hive.box<FeaturedRecordEntity>(DataBaseConstants.featuerdRecordsHiveKey);
+
   @override
-  Future<Unit> addRecord({required RecordsParameters parameters}) async{
-   await baseDataBaseService.add(parameters.item!, DataBaseConstants.featuerdRecordsHiveKey);
-    return unit;
+  Future<void> addRecord({required RecordsParameters parameters}) async {
+    await _box.add(parameters.recordEntity!);
   }
 
   @override
-  Future<Unit> deleteAllRecords() async{
-  await baseDataBaseService.deleteAll(DataBaseConstants.featuerdRecordsHiveKey);
-    return unit;
+  Future<void> deleteAllRecords() async {
+    await _box.clear();
   }
 
   @override
-  Future<Unit> deleteRecord({required RecordsParameters parameters})async {
-  await  baseDataBaseService.delete(parameters.id, DataBaseConstants.featuerdRecordsHiveKey);
-    return unit;
+  Future<void> deleteRecord({required RecordsParameters parameters}) async {
+    await _box.deleteAt(parameters.index!);
   }
 
   @override
-  Future<List<int>> getRecords()async {
-   return await baseDataBaseService.get(DataBaseConstants.featuerdRecordsHiveKey); 
+  Future<List<FeaturedRecordEntity>> getRecords() async {
+    return _box.values.toList();
   }
 }
