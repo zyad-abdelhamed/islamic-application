@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
-import 'package:test_app/core/constants/app_strings.dart';
+import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
-import 'package:test_app/features/app/presentation/controller/controllers/elec_rosary_page_controller.dart';
+import 'package:test_app/core/theme/app_colors.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/counter_controller.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/featured_records_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/featured_records_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/counter_widget.dart';
+import 'package:test_app/features/app/presentation/view/components/elec_rosary_app_bar.dart';
 import 'package:test_app/features/app/presentation/view/components/featured_records_widget.dart';
-import 'package:test_app/features/app/presentation/view/components/vibration_button.dart';
 
 class ElecRosaryPage extends StatefulWidget {
   const ElecRosaryPage({super.key});
@@ -17,53 +18,67 @@ class ElecRosaryPage extends StatefulWidget {
 }
 
 class _ElecRosaryPageState extends State<ElecRosaryPage> {
-  late final ElecRosaryPageController controller;
-  late final ValueNotifier<bool> vibrationNotifier;
+  late final FeaturedRecordsController featuredRecordsController;
+  late final CounterController counterController;
+
   @override
   void initState() {
     super.initState();
-    controller = ElecRosaryPageController();
-    vibrationNotifier = ValueNotifier<bool>(true);
-
-    controller.initState();
+    featuredRecordsController = FeaturedRecordsController();
+    counterController =
+        CounterController(featuredRecordsController.isWidgetShowedNotifier);
   }
 
   @override
   void dispose() {
-    controller.dispose();
-    vibrationNotifier.dispose();
-
+    featuredRecordsController.dispose();
+    counterController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: const GetAdaptiveBackButtonWidget(),
-        title: Text(AppStrings.appBarTitles(withTwoLines: false)[2]),
-        actions: [ VibrationButton(
-            vibrationNotifier: vibrationNotifier,
-          ),],
-      ),
-      body: ValueListenableBuilder<bool>(
-        valueListenable: controller.isWidgetShowedNotifier,
-        builder: (_, __, ___) => Stack(
-          fit: StackFit.expand,
-          children: [
-           CounterWidget(
-                 vibrationNotifier: vibrationNotifier,
-                  counterNotifier: controller.counterNotifier,
-                  isfeatuerdRecordsWidgetShowedNotifier:
-                      controller.isWidgetShowedNotifier,
+      appBar: ElecRosaryAppBar(counterController: counterController),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          ValueListenableBuilder<bool>(
+              valueListenable: featuredRecordsController.isWidgetShowedNotifier,
+              child: GestureDetector(
+                onTap: counterController.resetCounter,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: const CircleAvatar(
+                    backgroundColor: AppColors.secondryColor,
+                    radius: 10,
+                  ),
                 ),
-             
-            BlocProvider<FeaturedRecordsCubit>(
-              create: (_) => sl<FeaturedRecordsCubit>(),
-              child: FeatuerdRecordsWidget(controller: controller),
-            ),
-          ],
-        ),
+              ),
+              builder: (context, value, child) {
+                return CounterWidget(
+                  controller: counterController,
+                  resetButton: child!,
+                );
+              }),
+          BlocProvider<FeaturedRecordsCubit>(
+            create: (_) => sl<FeaturedRecordsCubit>(),
+            child: ValueListenableBuilder<bool>(
+                valueListenable:
+                    featuredRecordsController.isWidgetShowedNotifier,
+                child: FeatuerdRecordsWidget(
+                  controller: featuredRecordsController,
+                  counterNotifier: counterController.counterNotifier,
+                ),
+                builder: (BuildContext context, bool value, Widget? child) {
+                  return AnimatedPositioned(
+                    duration: AppDurations.longDuration,
+                    top: value ? 0.0 : -featuerdRecordsWidgetHight,
+                    child: child!,
+                  );
+                }),
+          ),
+        ],
       ),
     );
   }

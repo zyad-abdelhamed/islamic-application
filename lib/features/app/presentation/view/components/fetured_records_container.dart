@@ -3,14 +3,14 @@ import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
-import 'package:test_app/features/app/presentation/controller/controllers/elec_rosary_page_controller.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/featured_records_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/delete_all_featured_records_button.dart';
 import 'package:test_app/features/app/presentation/view/components/featured_recordes_bloc_listener.dart';
 
 class FeturedRecordsContainer extends StatelessWidget {
   const FeturedRecordsContainer({super.key, required this.controller});
 
-  final ElecRosaryPageController controller;
+  final FeaturedRecordsController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +25,7 @@ class FeturedRecordsContainer extends StatelessWidget {
           Center(
             child: Text(
               AppStrings.translate("featuerdRecords"),
-              style: TextStyles.semiBold16_120(context)
-                  .copyWith(color: ThemeCubit.controller(context).state ? AppColors.darkModeTextColor : AppColors.lightModePrimaryColor),
+              style: TextStyles.semiBold16_120(context),
             ),
           ),
           DeleteAllFeaturedRecordsButton(
