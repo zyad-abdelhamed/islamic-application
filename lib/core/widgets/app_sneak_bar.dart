@@ -73,8 +73,13 @@ class AppSnackBar extends StatelessWidget {
             ),
           ),
           if (label != null)
-            TextButton(
-              onPressed: onPressed ?? () {},
+            GestureDetector(
+              onTap: () {
+                // ينفذ onPressed لو موجود
+                onPressed?.call();
+                // وبعدها يختفي السناك بار فورا
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              },
               child: Text(
                 label!,
                 style: TextStyles.bold20(context)
@@ -85,8 +90,8 @@ class AppSnackBar extends StatelessWidget {
       ),
     );
   }
-  
-    void show(BuildContext context) {
+
+  void show(BuildContext context) {
     // الشرط ده بيتأكد إن الـ widget اللي بنادي منه لسه mounted
     if (!context.mounted) return;
 
@@ -103,5 +108,4 @@ class AppSnackBar extends StatelessWidget {
       ),
     );
   }
-
 }

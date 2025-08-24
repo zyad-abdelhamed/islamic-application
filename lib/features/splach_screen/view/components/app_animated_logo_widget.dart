@@ -1,13 +1,16 @@
-
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 
 class AppAnimatedLogoWidget extends StatelessWidget {
   const AppAnimatedLogoWidget({
     super.key,
+    required this.textColor,
   });
- 
+
+  final Color textColor;
+
   @override
   Widget build(BuildContext context) {
     return AnimatedTextKit(
@@ -17,7 +20,7 @@ class AppAnimatedLogoWidget extends StatelessWidget {
           textStyle: TextStyle(
             fontSize: 80,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: textColor,
             shadows: [
               Shadow(
                 blurRadius: 30.0,
@@ -26,12 +29,10 @@ class AppAnimatedLogoWidget extends StatelessWidget {
               ),
             ],
           ),
-          duration: const Duration(seconds: 2),
+          duration: AppDurations.longDuration,
         ),
       ],
       isRepeatingAnimation: false,
-        repeatForever: false,
-        pause: const Duration(milliseconds: 500),
     );
   }
 }

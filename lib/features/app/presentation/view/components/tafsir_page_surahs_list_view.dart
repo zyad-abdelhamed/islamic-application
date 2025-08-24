@@ -40,6 +40,7 @@ class SurahListWithFuture extends StatelessWidget {
         return ListView.separated(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           itemCount: surahs.length,
+          physics: const BouncingScrollPhysics(),
           separatorBuilder: (_, __) => const SizedBox(height: 12),
           itemBuilder: (context, index) {
             bool isDark = ThemeCubit.controller(context).state;

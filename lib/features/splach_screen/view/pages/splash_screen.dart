@@ -7,63 +7,40 @@ import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/features/splach_screen/view/components/app_animated_logo_widget.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_prayer_times_controller.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  late final ValueNotifier<double> scaleNotifier;
-
-  @override
-  void initState() {
-    super.initState();
-    scaleNotifier = ValueNotifier<double>(1.0);
-    sl<GetPrayersTimesController>().getPrayersTimes(context,
-        scaleNotifier); // load data and forward animation before going to home page
-  }
-
-  @override
-  void dispose() {
-    scaleNotifier.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    Future.delayed(
+      AppDurations.longDuration,
+      () {
+        if (context.mounted) {
+          sl<GetPrayersTimesController>().getPrayersTimes(context);
+          // load data and forward animation before going to home page
+        }
+      },
+    );
+
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final Color textColor =
+        isDark ? AppColors.darkModeTextColor : AppColors.lightModeTextColor;
+
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: Stack(
         children: [
-          SizedBox.expand(
-            child: ListenableBuilder(
-              listenable: scaleNotifier,
-              builder: (_, __) => AnimatedScale(
-                duration: AppDurations.mediumDuration,
-                scale: scaleNotifier.value,
-                child: Image.asset(
-                  'assets/images/night_background.jpg',
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ),
-          Container(
-            color: Colors.black.withValues(alpha: 0.5),
-          ),
           Center(
             child: Column(
+              spacing: 20,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                AppAnimatedLogoWidget(),
-                const SizedBox(height: 20),
+                AppAnimatedLogoWidget(textColor: textColor),
                 Text(
                   'مستضيئون بنور الله',
                   textAlign: TextAlign.center,
-                  style: TextStyles.bold20(context)
-                      .copyWith(color: AppColors.white),
+                  style: TextStyles.bold20(context).copyWith(color: textColor),
                 ),
               ],
             ),
@@ -72,14 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
             bottom: 40,
             left: 0,
             right: 0,
-            child: Center(
-              child: ListenableBuilder(
-                listenable: scaleNotifier,
-                builder: (_, __) => AnimatedOpacity(
-                    duration: AppDurations.lowDuration,
-                    opacity: scaleNotifier.value == 1.0 ? 1.0 : 0.0,
-                  child: const GetAdaptiveLoadingWidget())),
-            ),
+            child: const GetAdaptiveLoadingWidget(),
           ),
         ],
       ),

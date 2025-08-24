@@ -1,8 +1,11 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:test_app/features/app/data/datasources/daily_adhkar_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/location_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/prayers_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/quran_local_data_source.dart';
 import 'package:test_app/features/app/domain/entities/book_mark_entity.dart';
+import 'package:test_app/features/app/domain/entities/daily_adhkar_adapter.dart';
+import 'package:test_app/features/app/domain/entities/daily_adhkar_entity.dart';
 import 'package:test_app/features/app/domain/entities/featured_record_entity.dart';
 import 'package:test_app/features/app/domain/entities/featured_record_type_adapter.dart';
 import 'package:test_app/features/app/domain/entities/location_entity.dart';
@@ -21,6 +24,8 @@ Future<void> setupHive() async {
   Hive.registerAdapter(PrayerSoundSettingsAdapter());
   Hive.registerAdapter(TypeAdapterForBookMark());
   Hive.registerAdapter(FeaturedRecordEntityAdapter());
+  Hive.registerAdapter(DailyAdhkarEntityAdapter());
+  await Hive.openBox<DailyAdhkarEntity>(DailyAdhkarLocalDataSourceImpl.boxName);
   await Hive.openBox<FeaturedRecordEntity>(DataBaseConstants.featuerdRecordsHiveKey);
   await Hive.openBox<bool>(DataBaseConstants.rTableBoxHiveKey);
   await Hive.openBox<LocationEntity>(LocationLocalDataSourceImpl.boxName);

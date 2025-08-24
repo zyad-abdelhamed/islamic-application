@@ -2,16 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/features/app/presentation/view/components/adhkar_button.dart';
 
-class AdhkarGridView extends StatefulWidget {
+class AdhkarGridView extends StatelessWidget {
   const AdhkarGridView({super.key, required this.crossAxisCount});
 
   final int crossAxisCount;
 
-  @override
-  State<AdhkarGridView> createState() => _AdhkarGridViewState();
-}
-
-class _AdhkarGridViewState extends State<AdhkarGridView> {
   @override
   Widget build(BuildContext context) {
     List names = AppStrings.translate("adhkarButtonsNames");
@@ -20,7 +15,7 @@ class _AdhkarGridViewState extends State<AdhkarGridView> {
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: widget.crossAxisCount,
+            crossAxisCount: crossAxisCount,
             mainAxisSpacing: 15,
             crossAxisSpacing: 15),
         children: List<AdhkarButton>.generate(
