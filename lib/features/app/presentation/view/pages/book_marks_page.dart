@@ -50,8 +50,18 @@ class _BookmarksPageState extends State<BookmarksPage> {
           opacity: .5,
           child: Scaffold(
             appBar: BookMarksPageAppBar(controller: controller),
-            body: BlocBuilder<BookmarksCubit, BookmarksState>(
-              builder: (_, state) {
+            body: BlocConsumer<BookmarksCubit, BookmarksState>(
+              listener: (ctx, state) {
+                if (state is BookmarksLoaded) {
+                  if (state.bookmarks.isNotEmpty) {
+                    AppSnackBar(
+                            message: "اضغط مطولا للحذف",
+                            type: AppSnackBarType.info)
+                        .show(ctx);
+                  }
+                }
+              },
+              builder: (ctx, state) {
                 if (state is BookmarksLoading) {
                   return const GetAdaptiveLoadingWidget();
                 } else if (state is BookmarksLoaded) {
@@ -60,11 +70,6 @@ class _BookmarksPageState extends State<BookmarksPage> {
                     return EmptyListTextWidget(
                         text: AppStrings.translate("noBookmarks"));
                   }
-
-                  AppSnackBar(
-                          message: "اضغط مطولا للحذف",
-                          type: AppSnackBarType.info)
-                      .show(context);
 
                   return BlocProvider<QuranCubit>(
                     create: (context) => sl<QuranCubit>(),

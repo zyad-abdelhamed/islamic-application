@@ -22,52 +22,64 @@ class AdhkarButton extends StatefulWidget {
 }
 
 class _AdhkarButtonState extends State<AdhkarButton> {
-  late double buttonScale;
+  late final ValueNotifier<double> scaleNoitfier;
 
   @override
   void initState() {
-    buttonScale = 1.0;
     super.initState();
+    scaleNoitfier = ValueNotifier<double>(1.0);
+  }
+
+  @override
+  void dispose() {
+    scaleNoitfier.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          buttonScale = .9;
-        });
-        sl<GetAdhkarController>().getAdhkar(AdhkarParameters(
-            nameOfAdhkar: widget.text,
-            context: context));
+        scaleNoitfier.value = .9;
+        sl<GetAdhkarController>().getAdhkar(
+            AdhkarParameters(nameOfAdhkar: widget.text, context: context));
       },
-      child: AnimatedScale(
-        duration: Duration.zero,
-        scale: buttonScale,
-        child: Container(
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-              color: ThemeCubit.controller(context).state ? AppColors.darkModeInActiveColor : AppColors.lightModeInActiveColor, borderRadius: BorderRadius.circular(50)),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                widget.icon,
-                color: Theme.of(context).primaryColor,
-                size: getResponsiveFontSize(context: context, fontSize: 60),
-              ),
-              FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                  widget.text,
-                  textAlign: TextAlign.center,
-                  style: TextStyles.semiBold18(context, Theme.of(context).primaryColor),
+      child: ValueListenableBuilder(
+          valueListenable: scaleNoitfier,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                color: ThemeCubit.controller(context).state
+                    ? AppColors.darkModeInActiveColor
+                    : AppColors.lightModeInActiveColor,
+                borderRadius: BorderRadius.circular(50)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  widget.icon,
+                  color: Theme.of(context).primaryColor,
+                  size: getResponsiveFontSize(context: context, fontSize: 60),
                 ),
-              )
-            ],
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    widget.text,
+                    textAlign: TextAlign.center,
+                    style: TextStyles.semiBold18(
+                        context, Theme.of(context).primaryColor),
+                  ),
+                )
+              ],
+            ),
           ),
-        ),
-      ),
+          builder: (BuildContext context, double value, Widget? child) {
+            return AnimatedScale(
+              duration: Duration.zero,
+              scale: value,
+              child: child,
+            );
+          }),
     );
   }
 }

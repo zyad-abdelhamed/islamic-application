@@ -15,7 +15,6 @@ class SurahsWidget extends StatelessWidget {
     return SafeArea(
       child: ListView.builder(
           itemCount: quranPageController.surahsInfoList.length,
-          physics: const BouncingScrollPhysics(),
           itemBuilder: (context, index) {
             final surahInfo = quranPageController.surahsInfoList[index];
             final int pageNum = (surahInfo['page']) - 1;
@@ -25,15 +24,18 @@ class SurahsWidget extends StatelessWidget {
                 QuranCubit.getQuranController(context).goToPageByNumber(
                     quranPageController,
                     pageNum,
-                    quranPageController.updateIndexNotifier(context, pageNum).toList());
+                    quranPageController
+                        .updateIndexNotifier(context, pageNum)
+                        .toList());
                 Navigator.pop(context);
               },
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16.0),
-                  color: quranPageController.indexsNotifier.value.contains(index)
-                    ? AppColors.secondryColor
-                    : Colors.transparent,
+                  color:
+                      quranPageController.indexsNotifier.value.contains(index)
+                          ? AppColors.secondryColor
+                          : Colors.transparent,
                 ),
                 padding: const EdgeInsets.all(8.0),
                 margin: const EdgeInsets.all(8.0),
@@ -60,6 +62,10 @@ class SurahsWidget extends StatelessWidget {
     );
   }
 
-  String _getSurahInfoText(surahInfo) =>
-      '${sl<BaseArabicConverterService>().convertToArabicDigits(surahInfo["ayahs"])} آية\n${surahInfo["type"]}';
+  String _getSurahInfoText(surahInfo) {
+    final numberOfAyahs = sl<BaseArabicConverterService>()
+        .convertToArabicDigits(surahInfo["ayahs"].toString());
+
+    return '$numberOfAyahs آية\n${surahInfo["type"]}';
+  }
 }

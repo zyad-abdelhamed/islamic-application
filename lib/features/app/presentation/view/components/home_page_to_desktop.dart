@@ -58,3 +58,8 @@ class HomePageToDesktop extends StatelessWidget {
     );
   }
 }
+
+// class _AdhkarGridViewState extends State<AdhkarGridView> {
+// @override Widget build(BuildContext context) { List names = AppStrings.translate("adhkarButtonsNames"); 
+//return GridView( shrinkWrap: true, physics: NeverScrollableScrollPhysics(), gridDelegate: SliverGridDelegateWithFixedCrossAxisCount( crossAxisCount: widget.crossAxisCount, mainAxisSpacing: 15, crossAxisSpacing: 15),
+// children: List<AdhkarButton>.generate( 8, (index) => AdhkarButton( icon: _supplicationIcons[index], text: names[index], ))); }

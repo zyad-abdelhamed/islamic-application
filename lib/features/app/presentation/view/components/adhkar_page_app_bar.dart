@@ -58,17 +58,15 @@ class AdhkarPageAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: ValueListenableBuilder(
-            valueListenable: adhkarPageController.switchNotfier,
-            builder: (_, __, ___) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 6.0),
-              child: AdaptiveSwitch(
-                mainAxisAlignment: MainAxisAlignment.center,
-                name: AppStrings.translate("adhkarPageSwitchText"),
-                onChanged: adhkarPageController.toggleIsDeletedSwitch,
-                value: adhkarPageController.switchNotfier.value,
-              ),
-            ),
-          ),
+              valueListenable: adhkarPageController.switchNotfier,
+              builder: (context, value, child) {
+                return AdaptiveSwitch(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  name: AppStrings.translate("adhkarPageSwitchText"),
+                  onChanged: adhkarPageController.toggleIsDeletedSwitch,
+                  value: adhkarPageController.switchNotfier.value,
+                );
+              }),
         ),
       ),
     );

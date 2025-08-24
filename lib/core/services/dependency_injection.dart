@@ -3,8 +3,10 @@ import 'package:get_it/get_it.dart';
 import 'package:test_app/core/services/arabic_converter_service.dart';
 import 'package:test_app/core/services/cache_service%20copy.dart';
 import 'package:test_app/core/services/city_name_service.dart';
+import 'package:test_app/core/services/image_picker_service.dart';
 import 'package:test_app/core/services/internet_connection.dart';
 import 'package:test_app/core/services/position_service.dart';
+import 'package:test_app/features/app/data/datasources/daily_adhkar_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/home_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/home_remote_data_source.dart';
 import 'package:test_app/features/app/data/datasources/location_local_data_source.dart';
@@ -14,6 +16,7 @@ import 'package:test_app/features/app/data/datasources/quran_local_data_source.d
 import 'package:test_app/features/app/data/datasources/quran_remote_data_source.dart';
 import 'package:test_app/features/app/data/datasources/r_table_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/records_local_data_source.dart';
+import 'package:test_app/features/app/data/repos/daily_adhkar_repo.dart';
 import 'package:test_app/features/app/data/repos/home_repo.dart';
 import 'package:test_app/features/app/data/repos/location_repo.dart';
 import 'package:test_app/features/app/data/repos/prayer_repo.dart';
@@ -21,6 +24,7 @@ import 'package:test_app/features/app/data/repos/qipla_repo.dart';
 import 'package:test_app/features/app/data/repos/quran_repo.dart';
 import 'package:test_app/features/app/data/repos/r_table_repo.dart';
 import 'package:test_app/features/app/data/repos/records_repo.dart';
+import 'package:test_app/features/app/domain/repositories/base_daily_adhkar_repo.dart';
 import 'package:test_app/features/app/domain/repositories/base_prayer_repo.dart';
 import 'package:test_app/features/app/domain/repositories/base_qipla_repo.dart';
 import 'package:test_app/features/app/domain/repositories/base_quran_repo.dart';
@@ -39,6 +43,7 @@ import 'package:test_app/features/app/domain/usecases/get_surah_with_tafsir_use_
 import 'package:test_app/features/app/domain/usecases/reset_booleans_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/update_booleans_use_case.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/book_mark_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/daily_adhkar_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_surah_with_tafsir_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/location_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_adhkar_controller.dart';
@@ -63,13 +68,12 @@ class DependencyInjection {
     sl.registerLazySingleton(() => GetPrayersTimesController(
         getPrayersTimesUseCase: sl(), baseLocationRepo: sl()));
     // cubits
-    sl.registerFactory( () => TafsirCubit(sl()));
+    sl.registerFactory(() => DailyAdhkarCubit(sl()));
+    sl.registerFactory(() => TafsirCubit(sl()));
     sl.registerFactory(() => BookmarksCubit(sl()));
     sl.registerFactory(() => QiblaCubit(sl()));
     sl.registerFactory(() => PrayerSoundSettingsCubit(basePrayerRepo: sl()));
-    sl.registerFactory(
-      () => QuranCubit(sl()),
-    );
+    sl.registerFactory(() => QuranCubit(sl()));
     sl.registerFactory(() => DuaaCubit(sl()));
     sl.registerFactory(() => LocationCubit(sl()));
     sl.registerFactory(() => GetPrayerTimesOfMonthCubit(sl()));
@@ -79,7 +83,8 @@ class DependencyInjection {
     sl.registerFactory(() => RtabelCubit(sl(), sl(), sl()));
     //controllers
     sl.registerLazySingleton(() => GetAdhkarController(getAdhkarUseCase: sl()));
-    sl.registerLazySingleton<OnBoardingController>(() => OnBoardingController());
+    sl.registerLazySingleton<OnBoardingController>(
+        () => OnBoardingController());
     //usecases
     sl.registerLazySingleton(
         () => GetSurahWithTafsirUseCase(baseQuranRepo: sl()));
@@ -101,6 +106,8 @@ class DependencyInjection {
     sl.registerLazySingleton<GetRecordsUseCase>(
         () => GetRecordsUseCase(baseRecordsRepo: sl()));
     //repositories
+    sl.registerLazySingleton<BaseDailyAdhkarRepo>(
+        () => DailyAdhkarRepo(localDataSource: sl()));
     sl.registerLazySingleton<BaseQiblaRepository>(() => QiblaRepository(sl()));
     sl.registerLazySingleton<BaseQuranRepo>(() => QuranRepo(sl(), sl(), sl()));
     sl.registerLazySingleton<BaseLocationRepo>(
@@ -117,6 +124,8 @@ class DependencyInjection {
         internetConnection: sl<InternetConnection>(),
         baseLocationRepo: sl<BaseLocationRepo>()));
     // data sources
+    sl.registerLazySingleton<BaseDailyAdhkarLocalDataSource>(
+        () => DailyAdhkarLocalDataSourceImpl());
     sl.registerLazySingleton<BaseQuranRemoteDataSource>(
       () => QuranRemoteDataSource(apiService: sl()),
     );
@@ -140,7 +149,10 @@ class DependencyInjection {
         () => PrayersRemoteDataSourceImpl(sl()));
 
     // services
-    sl.registerLazySingleton<BaseCacheService>(() => CacheImplBySharedPreferences());
+    sl.registerLazySingleton<BaseImagePickerService>(
+        () => ImagePickerService());
+    sl.registerLazySingleton<BaseCacheService>(
+        () => CacheImplBySharedPreferences());
     sl.registerLazySingleton<BaseArabicConverterService>(
         () => ArabicConverterServiceImpl());
     sl.registerLazySingleton<LocationNameService>(

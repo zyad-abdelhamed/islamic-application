@@ -54,48 +54,49 @@ class _PrayerTimesPageState extends State<PrayerTimesPage> {
       },
       child: ValueListenableBuilder<bool>(
         valueListenable: prayerTimesPageController.loadingNotifier,
-        builder: (_, __, ___) => ModalProgressHUD(
-          inAsyncCall: prayerTimesPageController.loadingNotifier.value,
-          progressIndicator: GetAdaptiveLoadingWidget(),
-          opacity: .5,
-          child: Scaffold(
-            backgroundColor: ThemeCubit.controller(context).state
-                ? AppColors.darkModeSettingsPageBackgroundColor
-                : AppColors.lightModeSettingsPageBackgroundColor,
-            appBar: prayerTimesPageAppBar(
-                context, prayerTimesPageController, prayerSoundSettingsCubit),
-            body: SingleChildScrollView(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  ChangeLocationWidget(
-                      prayerTimesPageController: prayerTimesPageController),
-                  const SizedBox(height: 50),
-                  PrayersSoundsSettingsBlocConsumer(
-                    controller: prayerTimesPageController,
+        child: Scaffold(
+          backgroundColor: ThemeCubit.controller(context).state
+              ? AppColors.darkModeSettingsPageBackgroundColor
+              : AppColors.lightModeSettingsPageBackgroundColor,
+          appBar: prayerTimesPageAppBar(
+              context, prayerTimesPageController, prayerSoundSettingsCubit),
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                ChangeLocationWidget(
+                    prayerTimesPageController: prayerTimesPageController),
+                const SizedBox(height: 50),
+                PrayersSoundsSettingsBlocConsumer(
+                  controller: prayerTimesPageController,
+                ),
+                const SizedBox(height: 30),
+                BlocProvider(
+                  create: (_) => sl<GetPrayerTimesOfMonthCubit>(),
+                  child: Column(
+                    spacing: 30,
+                    children: [
+                      GetPrayerTimesOfMonthButton(
+                        prayerTimesPageController: prayerTimesPageController,
+                      ),
+                      SizedBox(
+                        height: (context.height * .50) - 50,
+                        child: PrayerTimesOfMonthWidget(
+                            prayerTimesPageController:
+                                prayerTimesPageController),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 30),
-                  BlocProvider(
-                    create: (_) => sl<GetPrayerTimesOfMonthCubit>(),
-                    child: Column(
-                      spacing: 30,
-                      children: [
-                        GetPrayerTimesOfMonthButton(
-                          prayerTimesPageController: prayerTimesPageController,
-                        ),
-                        SizedBox(
-                          height: (context.height * .50) - 50,
-                          child: PrayerTimesOfMonthWidget(
-                              prayerTimesPageController:
-                                  prayerTimesPageController),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                )
+              ],
             ),
           ),
+        ),
+        builder: (_, bool isLoading, Widget? scaffold) => ModalProgressHUD(
+          inAsyncCall: isLoading,
+          progressIndicator: GetAdaptiveLoadingWidget(),
+          opacity: .5,
+          child: scaffold!,
         ),
       ),
     );

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/daily_adhkar_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/prayer_times_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/prayers_sound_settings_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/timer_cubit.dart';
+import 'package:test_app/features/app/presentation/view/pages/add_daily_adhkar_page.dart';
 import 'package:test_app/features/app/presentation/view/pages/home_page.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/features/app/presentation/view/pages/q_and_a_page.dart';
@@ -27,11 +29,14 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       return MaterialPageRoute<HomePage>(
         builder: (BuildContext context) => MultiBlocProvider(
           providers: [
-            BlocProvider(
-              create: (context) => sl<TimerCubit>(),
+            BlocProvider<TimerCubit>(
+              create: (_) => sl<TimerCubit>(),
             ),
-            BlocProvider(
-              create: (context) => sl<PrayerTimesCubit>(),
+            BlocProvider<PrayerTimesCubit>(
+              create: (_) => sl<PrayerTimesCubit>(),
+            ),
+            BlocProvider<DailyAdhkarCubit>(
+              create: (_) => sl<DailyAdhkarCubit>(),
             )
           ],
           child: const HomePage(),
@@ -56,6 +61,12 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       return MaterialPageRoute<LocationPermissionPage>(
         builder: (BuildContext context) => const LocationPermissionPage(),
       );
+    case RoutesConstants.addDailyAdhkarPage:
+      return MaterialPageRoute<AddDailyAdhkarPage>(
+          builder: (BuildContext context) => BlocProvider<DailyAdhkarCubit>(
+                create: (_) => sl<DailyAdhkarCubit>(),
+                child: const AddDailyAdhkarPage(),
+              ));
     default:
       return MaterialPageRoute<Scaffold>(
         builder: (BuildContext context) => const Scaffold(),

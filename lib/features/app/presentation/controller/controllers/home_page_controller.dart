@@ -10,6 +10,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/features/app/domain/repositories/home_repo.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_prayer_times_controller.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/daily_adhkar_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/prayer_times_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/features/app/presentation/view/components/custom_alert_dialog.dart';
@@ -24,6 +25,11 @@ class HomePageController {
       loadTodayHadith(context);
       _isShowed = true;
     }
+
+    // تهيئة DailyAdhkarCubit
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      DailyAdhkarCubit.get(context).getAllDailyAdhkar();
+    });
 
     // تهيئة PrayerTimesCubit
     if (sl<GetPrayersTimesController>().hasErrorNotifier.value == false) {
@@ -43,13 +49,13 @@ class HomePageController {
     if (permission == LocationPermission.denied ||
         permission == LocationPermission.deniedForever) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-          AppSnackBar(
-            message: 'تم رفض صلاحية الموقع.',
-            label: 'صلاحية الموقع',
-            onPressed: () => Navigator.pushNamedAndRemoveUntil(context,
-                RoutesConstants.locationPermissionPage, (route) => false),
-            type: AppSnackBarType.error,
-          ).show(context);
+        AppSnackBar(
+          message: 'تم رفض صلاحية الموقع.',
+          label: 'صلاحية الموقع',
+          onPressed: () => Navigator.pushNamedAndRemoveUntil(context,
+              RoutesConstants.locationPermissionPage, (route) => false),
+          type: AppSnackBarType.error,
+        ).show(context);
       });
     }
   }
@@ -59,10 +65,10 @@ class HomePageController {
     // إذا لم يكن متصلًا
     if (!connected) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-          AppSnackBar(
-            message: AppStrings.translate("noInternetConnection"),
-            type: AppSnackBarType.info,
-          ).show(context);
+        AppSnackBar(
+          message: AppStrings.translate("noInternetConnection"),
+          type: AppSnackBarType.info,
+        ).show(context);
       });
     }
   }

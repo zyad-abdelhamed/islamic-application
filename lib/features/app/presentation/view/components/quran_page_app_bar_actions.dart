@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
+import 'package:test_app/core/widgets/app_functionalty_button.dart';
 import 'package:test_app/core/widgets/app_sneak_bar.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/quran_page_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/book_mark_cubit.dart';
@@ -44,52 +44,28 @@ List<Widget> quranPageAppBarActions(
                         validator: BookmarksCubit.controller(context).validator,
                       ),
                       // زر الحفظ
-                      BlocConsumer<BookmarksCubit, BookmarksState>(
+                      BlocListener<BookmarksCubit, BookmarksState>(
                         listener: (context, state) {
                           if (state is AddBookmarksuccess) {
                             Navigator.pop(context);
                             AppSnackBar(
-                                message: "تم حفظ العلامة بنجاح",
-                                type: AppSnackBarType.success).show(context);
+                                    message: "تم حفظ العلامة بنجاح",
+                                    type: AppSnackBarType.success)
+                                .show(context);
                           } else if (state is BookmarksError) {
                             AppSnackBar(
-                                message: state.message,
-                                type: AppSnackBarType.error).show(context);
+                                    message: state.message,
+                                    type: AppSnackBarType.error)
+                                .show(context);
                           }
                         },
-                        builder: (context, state) {
-                          return MaterialButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              onPressed: () =>
-                                  BookmarksCubit.controller(context)
-                                      .addBookmark(quranPageController),
-                              disabledColor: Colors.grey,
-                              color: Theme.of(context).primaryColor,
-                              child:
-                                  BlocBuilder<BookmarksCubit, BookmarksState>(
-                                builder: (context, state) {
-                                  return Padding(
-                                      padding: const EdgeInsets.all(10),
-                                      child: state is AddBookmarkLoading
-                                          ? Row(
-                                              spacing: 5,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Text("يتم $_buttonName ..."),
-                                                GetAdaptiveLoadingWidget(),
-                                              ],
-                                            )
-                                          : Text(
-                                              _buttonName,
-                                              style: TextStyle(
-                                                  color: AppColors.white),
-                                            ));
-                                },
-                              ));
-                        },
+                        child: AppFunctionaltyButton<BookmarksCubit,
+                            BookmarksState>(
+                          buttonName: _buttonName,
+                          onPressed: () => BookmarksCubit.controller(context)
+                              .addBookmark(quranPageController),
+                          isLoading: (state) => state is AddBookmarkLoading,
+                        ),
                       ),
                     ],
                   ),

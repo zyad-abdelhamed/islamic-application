@@ -26,7 +26,7 @@ class CommonCircleLayout extends StatelessWidget {
   final double? gapDegree; // طول الـ gap بالدرجات
   final ValueNotifier<double> progressNotifier;
   final String Function()? textBuilder;
-  final List<int>? gapAt; // list of pattern indices to skip (0-based)>
+  final List<int>? gapAt; // list of pattern indices to skip (0-based)
   final VoidCallback? onPressed;
   final int? segments;
 
@@ -40,7 +40,7 @@ class CommonCircleLayout extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          // الخلفية (track) كاملة
+          // الخلفية (track) كاملة - ثابتة مش محتاجة RepaintBoundary
           CustomPaint(
             size: Size(customPaintSize, customPaintSize),
             painter: CirclePainter(
@@ -59,22 +59,27 @@ class CommonCircleLayout extends StatelessWidget {
           ListenableBuilder(
             listenable: progressNotifier,
             builder: (_, __) {
-              return CustomPaint(
-                size: Size(customPaintSize, customPaintSize),
-                painter: CirclePainter(
-                  context: context,
-                  segments: segments,
-                  gapAt: gapAt,
-                  gapDegree: gapDegree,
-                  progress: progressNotifier.value.toDouble(),
-                  maxProgress: maxProgress,
-                  lineSize: lineSize!,
-                  lineColor: Theme.of(context).primaryColor,
+              return RepaintBoundary(
+                // RepaintBoundary: عشان نعزل الدايرة في Layer منفصلة وتترسم بس لما يتغير progress،
+                // وده يقلل من الحمل على الأداء.
+                child: CustomPaint(
+                  size: Size(customPaintSize, customPaintSize),
+                  painter: CirclePainter(
+                    context: context,
+                    segments: segments,
+                    gapAt: gapAt,
+                    gapDegree: gapDegree,
+                    progress: progressNotifier.value.toDouble(),
+                    maxProgress: maxProgress,
+                    lineSize: lineSize!,
+                    lineColor: Theme.of(context).primaryColor,
+                  ),
                 ),
               );
             },
           ),
-          // زر في المنتصف
+
+          // زر في المنتصف + النص
           Visibility(
             visible: textBuilder != null,
             child: Positioned.fill(
@@ -94,7 +99,7 @@ class CommonCircleLayout extends StatelessWidget {
                       textBuilder!(),
                       textAlign: TextAlign.center,
                       softWrap: true,
-                      maxLines: 3, // تقدر تزود أو تشيل لو عايز عدد لا نهائي
+                      maxLines: 3,
                       style: TextStyles.bold20(context).copyWith(
                         color: isDark
                             ? AppColors.darkModeTextColor

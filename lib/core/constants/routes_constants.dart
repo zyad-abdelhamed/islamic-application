@@ -11,4 +11,5 @@ abstract class RoutesConstants {
   static const String tafsirJsonRouteName = 'assets/jsons/tafsir_edition.json';
   static const String appStringsJsonRouteName = 'assets/jsons/app_strings.json';
   static const String bookMarksPageRouteName = 'bookMarksPageRouteName';
+  static const String addDailyAdhkarPage = 'addDailyAdhkarPage';
 }
