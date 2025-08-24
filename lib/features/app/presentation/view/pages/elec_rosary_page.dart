@@ -7,6 +7,7 @@ import 'package:test_app/features/app/presentation/controller/controllers/elec_r
 import 'package:test_app/features/app/presentation/controller/cubit/featured_records_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/counter_widget.dart';
 import 'package:test_app/features/app/presentation/view/components/featured_records_widget.dart';
+import 'package:test_app/features/app/presentation/view/components/vibration_button.dart';
 
 class ElecRosaryPage extends StatefulWidget {
   const ElecRosaryPage({super.key});
@@ -17,17 +18,21 @@ class ElecRosaryPage extends StatefulWidget {
 
 class _ElecRosaryPageState extends State<ElecRosaryPage> {
   late final ElecRosaryPageController controller;
-
+  late final ValueNotifier<bool> vibrationNotifier;
   @override
   void initState() {
     super.initState();
     controller = ElecRosaryPageController();
+    vibrationNotifier = ValueNotifier<bool>(true);
+
     controller.initState();
   }
 
   @override
   void dispose() {
     controller.dispose();
+    vibrationNotifier.dispose();
+
     super.dispose();
   }
 
@@ -37,17 +42,22 @@ class _ElecRosaryPageState extends State<ElecRosaryPage> {
       appBar: AppBar(
         leading: const GetAdaptiveBackButtonWidget(),
         title: Text(AppStrings.appBarTitles(withTwoLines: false)[2]),
+        actions: [ VibrationButton(
+            vibrationNotifier: vibrationNotifier,
+          ),],
       ),
       body: ValueListenableBuilder<bool>(
         valueListenable: controller.isWidgetShowedNotifier,
         builder: (_, __, ___) => Stack(
           fit: StackFit.expand,
           children: [
-            CounterWidget(
-              counterNotifier: controller.counterNotifier,
-              isfeatuerdRecordsWidgetShowedNotifier:
-                  controller.isWidgetShowedNotifier,
-            ),
+           CounterWidget(
+                 vibrationNotifier: vibrationNotifier,
+                  counterNotifier: controller.counterNotifier,
+                  isfeatuerdRecordsWidgetShowedNotifier:
+                      controller.isWidgetShowedNotifier,
+                ),
+             
             BlocProvider<FeaturedRecordsCubit>(
               create: (_) => sl<FeaturedRecordsCubit>(),
               child: FeatuerdRecordsWidget(controller: controller),
