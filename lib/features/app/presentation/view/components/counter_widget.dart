@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
@@ -9,16 +10,22 @@ import 'package:test_app/features/app/presentation/view/components/featured_reco
 
 const double counterWidetDefaultMargin =
     showedFeatuerdRecordsWidgetButtonHight + 20;
+
 class CounterWidget extends StatelessWidget {
-  const CounterWidget(
-      {super.key,
-      required this.counterNotifier,
-      required this.isfeatuerdRecordsWidgetShowedNotifier});
+  const CounterWidget({
+    super.key,
+    required this.counterNotifier,
+    required this.isfeatuerdRecordsWidgetShowedNotifier,
+    required this.vibrationNotifier,
+  });
   final ValueNotifier<NumberAnimationModel> counterNotifier;
   final ValueNotifier<bool> isfeatuerdRecordsWidgetShowedNotifier;
+  final ValueNotifier<bool> vibrationNotifier;
 
   @override
   Widget build(BuildContext context) {
+    final ValueNotifier<double> scaleNotifier = ValueNotifier(1.0);
+
     const double spacing = 15;
     const double resetCircleAvatarRadius = 10;
     return AnimatedPadding(
@@ -69,14 +76,33 @@ class CounterWidget extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                  onTap: increaseCounter,
-                  child: AnimatedContainer(
-                      duration: AppDurations.longDuration,
-                      height: _increaseButtonSize(context),
-                      width: _increaseButtonSize(context),
-                      decoration: BoxDecoration(
+                onTapDown: (_) =>
+                    onTapDown(scaleNotifier: scaleNotifier), // عند الضغط
+                onTapUp: (_) =>
+                    onTapUp(scaleNotifier: scaleNotifier), // عند رفع الإصبع
+                onTapCancel: () =>
+                    onTapUp(scaleNotifier: scaleNotifier), // في حالة الإلغاء
+                child: ValueListenableBuilder<double>(
+                  valueListenable: scaleNotifier,
+                  builder: (context, scale, child) {
+                    return AnimatedScale(
+                      scale: scale,
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeOut,
+                      child: Container(
+                        height: _increaseButtonSize(context),
+                        width: _increaseButtonSize(context),
+                        decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: ThemeCubit.controller(context).state ? AppColors.darkModeInActiveColor : AppColors.lightModeInActiveColor)))
+                          color: ThemeCubit.controller(context).state
+                              ? AppColors.darkModeInActiveColor
+                              : AppColors.lightModeInActiveColor,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
             ]),
       ),
     );
@@ -119,5 +145,21 @@ class CounterWidget extends StatelessWidget {
     Future.delayed(AppDurations.lowDuration, () {
       counterNotifier.value = NumberAnimationModel(number: newValue);
     }); //reverse animation and stop
+  }
+
+  void onTapDown({required ValueNotifier<double> scaleNotifier}) {
+    if (vibrationNotifier.value) {
+      HapticFeedback.selectionClick();
+    }
+    scaleNotifier.value = 0.85;
+  }
+
+  void onTapUp({required ValueNotifier<double> scaleNotifier}) {
+    if (vibrationNotifier.value) {
+      print('vibration');
+      HapticFeedback.lightImpact();
+    }
+    scaleNotifier.value = 1.0;
+    increaseCounter();
   }
 }
