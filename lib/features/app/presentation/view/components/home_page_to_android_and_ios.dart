@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/prayer_times_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/adhkar_grid_view.dart';
 import 'package:test_app/features/app/presentation/view/components/daily_adhkar_list_view.dart';
 import 'package:test_app/features/app/presentation/view/components/home_buttons_list_view.dart';
@@ -8,7 +9,12 @@ import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/features/app/presentation/view/components/prayer_times_widget.dart';
 
 class HomePageToAndroidAndIos extends StatelessWidget {
-  const HomePageToAndroidAndIos({super.key});
+  const HomePageToAndroidAndIos({
+    super.key,
+    required this.nextPrayerController,
+  });
+
+  final NextPrayerController nextPrayerController;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +44,8 @@ class HomePageToAndroidAndIos extends StatelessWidget {
                 width: isPortraitOrientation
                     ? double.infinity
                     : (context.width * 3 / 4) - 20,
-                child: PrayerTimesWidget(),
+                child: PrayerTimesWidget(
+                    nextPrayerController: nextPrayerController),
               ),
             ),
 

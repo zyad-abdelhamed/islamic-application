@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/daily_adhkar_cubit.dart';
-import 'package:test_app/features/app/presentation/controller/cubit/prayer_times_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/prayers_sound_settings_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/timer_cubit.dart';
 import 'package:test_app/features/app/presentation/view/pages/add_daily_adhkar_page.dart';
@@ -31,9 +30,6 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
           providers: [
             BlocProvider<TimerCubit>(
               create: (_) => sl<TimerCubit>(),
-            ),
-            BlocProvider<PrayerTimesCubit>(
-              create: (_) => sl<PrayerTimesCubit>(),
             ),
             BlocProvider<DailyAdhkarCubit>(
               create: (_) => sl<DailyAdhkarCubit>(),

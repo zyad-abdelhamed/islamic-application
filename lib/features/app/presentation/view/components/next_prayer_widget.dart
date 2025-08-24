@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
@@ -25,30 +26,48 @@ class NextPrayerWidget extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(right: 50),
-          child: BlocBuilder<PrayerTimesCubit, NextPrayer>(
-            builder: (context, state) {
-              return Text(
-                "ال${state.name}",
-                style: TextStyle(
-                  color: AppColors.secondryColor,
-                  fontSize: 35,
-                  fontFamily: 'DataFontFamily',
-                  fontWeight: FontWeight.bold,
-                  shadows: [
-                    BoxShadow(
-                      spreadRadius: 2,
-                      offset: const Offset(-5.0, -5.0),
-                      color: context.watch<ThemeCubit>().state
-                          ?  Color(0xFF80D8FF).withValues(alpha: 0.10)
-                          : AppColors.purple.withValues(alpha: 0.2),
+            padding: const EdgeInsets.only(right: 50),
+            child: ValueListenableBuilder<NextPrayer>(
+              valueListenable:
+                  context.read<NextPrayerController>().nextPrayerNotifier,
+              builder: (context, value, child) {
+                return AnimatedSwitcher(
+                  duration: AppDurations.longDuration,
+                  transitionBuilder:
+                      (Widget child, Animation<double> animation) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: SlideTransition(
+                        position: Tween<Offset>(
+                          begin: const Offset(0, -0.2),
+                          end: Offset.zero,
+                        ).animate(animation),
+                        child: child,
+                      ),
+                    );
+                  },
+                  child: Text(
+                    "ال${value.name}",
+                    key: ValueKey<String>(value.name),
+                    style: TextStyle(
+                      color: AppColors.secondryColor,
+                      fontSize: 35,
+                      fontFamily: 'DataFontFamily',
+                      fontWeight: FontWeight.bold,
+                      shadows: [
+                        BoxShadow(
+                          spreadRadius: 2,
+                          offset: const Offset(-5.0, -5.0),
+                          color: context.watch<ThemeCubit>().state
+                              ? const Color(0xFF80D8FF).withAlpha(25)
+                              : AppColors.purple.withAlpha(25),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
+                  ),
+                );
+              },
+            )),
       ],
     );
   }

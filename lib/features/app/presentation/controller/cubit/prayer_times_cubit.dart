@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/services/adhan_notification_service.dart';
@@ -10,17 +9,25 @@ import 'package:test_app/features/app/domain/entities/timings.dart';
 import 'package:test_app/features/app/domain/repositories/base_prayer_repo.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_prayer_times_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/timer_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class PrayerTimesCubit extends Cubit<NextPrayer> {
-  PrayerTimesCubit(this.prayerRepo)
-      : super(NextPrayer(name: '', time: ''));
+class NextPrayerController {
+  NextPrayerController() {
+    prayerRepo = sl<BasePrayerRepo>();
+  }
 
-  final BasePrayerRepo prayerRepo;
+  late final BasePrayerRepo prayerRepo;
 
-  /// تهيئة الكيوبت بالمواعيد
-  init({required Timings timings, required BuildContext context}) async {
-    // 🕌 تحديد الصلاة القادمة
-    final nextPrayerTime = nextPrayer(
+  /// الحالة: الصلاة القادمة
+  final ValueNotifier<NextPrayer> nextPrayerNotifier =
+      ValueNotifier<NextPrayer>(NextPrayer(name: '', time: ''));
+
+  /// تهيئة الكنترولر بالمواعيد
+  Future<void> init({
+    required Timings timings,
+    required BuildContext context,
+  }) async {
+    final nextPrayerTime = _getNextPrayer(
       fajr: timings.fajr,
       dhuhr: timings.dhuhr,
       asr: timings.asr,
@@ -28,26 +35,19 @@ class PrayerTimesCubit extends Cubit<NextPrayer> {
       isha: timings.isha,
     );
 
-    // 🔄 إرسال الصلاة القادمة للواجهة
-    emit(nextPrayerTime);
+    nextPrayerNotifier.value = nextPrayerTime;
 
-    // ⏳ بدء المؤقت لغاية الصلاة القادمة
     context.read<TimerCubit>().startTimerUntil("${nextPrayerTime.time}:00");
-    intializeTimeListener(context);
+    _initializeTimeListener(context);
 
-///////////////////////////
     _loadAndSchedulePrayerNotifications(timings: timings, context: context);
-    // 🔔 جدولة الإشعارات لكل الصلوات
   }
 
-  static PrayerTimesCubit controller(BuildContext context) =>
-      context.read<PrayerTimesCubit>();
-
   /// مراقبة انتهاء المؤقت وتحديد الصلاة القادمة
-  intializeTimeListener(BuildContext context) {
+  void _initializeTimeListener(BuildContext context) {
     context.read<TimerCubit>().onTimerFinished = () {
       final Timings timings = sl<GetPrayersTimesController>().timings;
-      final NextPrayer nextPrayerTime = nextPrayer(
+      final NextPrayer nextPrayerTime = _getNextPrayer(
         fajr: timings.fajr,
         dhuhr: timings.dhuhr,
         asr: timings.asr,
@@ -55,18 +55,19 @@ class PrayerTimesCubit extends Cubit<NextPrayer> {
         isha: timings.isha,
       );
 
-      emit(nextPrayerTime);
+      nextPrayerNotifier.value = nextPrayerTime;
       context.read<TimerCubit>().startTimerUntil("${nextPrayerTime.time}:00");
     };
   }
 
-  /// 📅 دالة لجدولة الإشعارات لكل الصلوات حسب الإعدادات
+  /// جدولة الإشعارات
   void _scheduleAllPrayerNotifications(
-      Timings timings, PrayerSoundSettingsEntity soundSettings) {
+    Timings timings,
+    PrayerSoundSettingsEntity soundSettings,
+  ) {
     DateFormat format = DateFormat("HH:mm");
     DateTime now = DateTime.now();
 
-    // 🕌 مواعيد الصلوات مع إعدادات الصوت
     final prayers = [
       {"name": "فجر", "time": timings.fajr, "enabled": soundSettings.fajr},
       {"name": "ظهر", "time": timings.dhuhr, "enabled": soundSettings.dhuhr},
@@ -79,14 +80,9 @@ class PrayerTimesCubit extends Cubit<NextPrayer> {
       {"name": "عشاء", "time": timings.isha, "enabled": soundSettings.isha},
     ];
 
-    // 🔁 المرور على كل صلاة وجدولتها إذا مفعلة
     for (var prayer in prayers) {
-      if (prayer["enabled"] == false) {
-         
-        continue; // تخطي الصلاة إذا الإعداد False
-      }
+      if (prayer["enabled"] == false) continue;
 
-      // 🕒 تحويل الوقت إلى DateTime لليوم الحالي
       DateTime prayerTime = format.parse(prayer["time"] as String);
       prayerTime = DateTime(
         now.year,
@@ -96,19 +92,16 @@ class PrayerTimesCubit extends Cubit<NextPrayer> {
         prayerTime.minute,
       );
 
-      // ⏭ إذا الوقت فات، نخليه لليوم التالي
       if (prayerTime.isBefore(now)) {
-        prayerTime = prayerTime.add(Duration(days: 1));
+        prayerTime = prayerTime.add(const Duration(days: 1));
       }
 
-      // 🔔 جدولة الإشعار
       AdhanNotificationService.scheduleAdhanNotification(prayerTime);
-       
     }
   }
 
   /// تحديد الصلاة القادمة
-  NextPrayer nextPrayer({
+  NextPrayer _getNextPrayer({
     required String fajr,
     required String dhuhr,
     required String asr,
@@ -126,16 +119,14 @@ class PrayerTimesCubit extends Cubit<NextPrayer> {
       "عشاء": format.parse(isha),
     };
 
-    // 📅 ضبط التواريخ لتكون اليوم أو اليوم التالي
     prayers.forEach((key, value) {
       prayers[key] =
           DateTime(now.year, now.month, now.day, value.hour, value.minute);
       if (prayers[key]!.isBefore(now)) {
-        prayers[key] = prayers[key]!.add(Duration(days: 1));
+        prayers[key] = prayers[key]!.add(const Duration(days: 1));
       }
     });
 
-    // 🕌 اختيار أقرب صلاة قادمة
     var nextPrayer =
         prayers.entries.reduce((a, b) => a.value.isBefore(b.value) ? a : b);
 
@@ -145,23 +136,20 @@ class PrayerTimesCubit extends Cubit<NextPrayer> {
     );
   }
 
-  Future<void> _loadAndSchedulePrayerNotifications(
-      {required Timings timings, required BuildContext context}) async {
+  Future<void> _loadAndSchedulePrayerNotifications({
+    required Timings timings,
+    required BuildContext context,
+  }) async {
     final result = await prayerRepo.getPrayersSoundSettings();
 
     result.fold(
       (failure) {
-        // 🛑 في حالة الخطأ - نظهر SnackBar أوضح
         AppSnackBar(
           type: AppSnackBarType.error,
           message:
               "حدث خطأ ${failure.message}، تم تفعيل جميع الصلوات افتراضيًا.",
         ).show(context);
 
-        print(
-            "⚠️ Error loading settings: ${failure.toString()} - Using default (all true)");
-
-        // ✅ تفعيل كل القيم كـ true
         final defaultSettings = PrayerSoundSettingsEntity(
           fajr: true,
           dhuhr: true,
@@ -173,9 +161,13 @@ class PrayerTimesCubit extends Cubit<NextPrayer> {
         _scheduleAllPrayerNotifications(timings, defaultSettings);
       },
       (settings) {
-         
         _scheduleAllPrayerNotifications(timings, settings);
       },
     );
+  }
+
+  /// تدمير الكنترولر
+  void dispose() {
+    nextPrayerNotifier.dispose();
   }
 }
