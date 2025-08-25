@@ -61,14 +61,12 @@ class _AdhkarButtonState extends State<AdhkarButton> {
                   color: Theme.of(context).primaryColor,
                   size: getResponsiveFontSize(context: context, fontSize: 60),
                 ),
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    widget.text,
-                    textAlign: TextAlign.center,
-                    style: TextStyles.semiBold18(
-                        context, Theme.of(context).primaryColor),
-                  ),
+                Text(
+                  widget.text,
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                  style: TextStyles.semiBold18(
+                      context, Theme.of(context).primaryColor),
                 )
               ],
             ),

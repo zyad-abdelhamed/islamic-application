@@ -49,9 +49,8 @@ class CounterWidget extends StatelessWidget {
                     builder: (_, __, ___) => AnimatedSlide(
                         duration: AppDurations.lowDuration,
                         offset: controller.counterNotifier.value.offset!,
-                        child: AnimatedOpacity(
-                          opacity: controller.counterNotifier.value.opacity!,
-                          duration: const Duration(seconds: 0),
+                        child: Offstage(
+                          offstage: controller.counterNotifier.value.offStage!,
                           child: Text(
                             controller.counterNotifier.value.number.toString(),
                             style: TextStyles.semiBold32auto(

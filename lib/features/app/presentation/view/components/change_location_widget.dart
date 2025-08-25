@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
+import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/location_cubit.dart';
@@ -28,7 +29,7 @@ class ChangeLocationWidget extends StatelessWidget {
               text: 'تنويه: ',
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.redAccent,
+                color: AppColors.errorColor,
                 fontWeight: FontWeight.bold,
               ),
               children: [

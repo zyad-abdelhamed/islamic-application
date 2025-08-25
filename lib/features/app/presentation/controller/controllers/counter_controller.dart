@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
 import 'package:test_app/features/app/data/models/number_animation_model.dart';
 import 'package:test_app/features/app/presentation/view/components/counter_widget.dart';
@@ -40,27 +39,23 @@ class CounterController {
           : (context.width * 2 / 3) * .70;
 
   void increaseCounter() {
-    slideAnimation(slideValue: -.7, newValue: counterNotifier.value.number + 1);
+    counterNotifier.value.slideAnimation(
+      notifier: counterNotifier,
+      slideValue: -.7,
+      newValue: counterNotifier.value.number + 1,
+    );
   }
 
   void resetCounter() {
     if (counterNotifier.value.number != 0) {
-      slideAnimation(slideValue: .7, newValue: 0);
+      counterNotifier.value.slideAnimation(
+        notifier: counterNotifier,
+        slideValue: .7,
+        newValue: 0,
+      );
     }
 
     return;
-  }
-
-  void slideAnimation({required double slideValue, required int newValue}) {
-    counterNotifier.value = NumberAnimationModel(
-        number: counterNotifier.value.number,
-        offset: Offset(0, slideValue),
-        opacity: 0.0);
-    //start animation
-
-    Future.delayed(AppDurations.lowDuration, () {
-      counterNotifier.value = NumberAnimationModel(number: newValue);
-    }); //reverse animation and stop
   }
 
   void onTapDown({required ValueNotifier<double> scaleNotifier}) {

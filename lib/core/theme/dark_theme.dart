@@ -19,7 +19,6 @@ ThemeData darkTheme = ThemeData(
       shape: Border(
         bottom: BorderSide(color: AppColors.darkModeTextColor),
       ),
-      iconTheme: IconThemeData(color: Colors.grey),
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.light,

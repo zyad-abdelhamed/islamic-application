@@ -30,8 +30,7 @@ class PrayerTimesOfMonthWidget extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _swapButton(
-            context: context,
+        SwapButton(
             iconData: CupertinoIcons.chevron_right,
             onPressed: () => prayerTimesPageController.animateTopreviousPage(),
             visibleNotifier:
@@ -46,8 +45,7 @@ class PrayerTimesOfMonthWidget extends StatelessWidget {
                 SecondaryPrayerTimesWidget(timings: listOfTimings[index]),
           ),
         ),
-        _swapButton(
-            context: context,
+        SwapButton(
             iconData: CupertinoIcons.chevron_left,
             onPressed: () => prayerTimesPageController.animateToNextPage(),
             visibleNotifier:
@@ -55,22 +53,32 @@ class PrayerTimesOfMonthWidget extends StatelessWidget {
       ],
     );
   }
+}
 
-  ValueListenableBuilder<bool> _swapButton(
-      {required IconData iconData,
-      required void Function() onPressed,
-      required BuildContext context,
-      required ValueNotifier<bool> visibleNotifier}) {
+class SwapButton extends StatelessWidget {
+  const SwapButton({
+    super.key,
+    required this.iconData,
+    required this.onPressed,
+    required this.visibleNotifier,
+  });
+
+  final IconData iconData;
+  final void Function() onPressed;
+  final ValueNotifier<bool> visibleNotifier;
+
+  @override
+  Widget build(BuildContext context) {
     return ValueListenableBuilder<bool>(
         valueListenable: visibleNotifier,
-        builder: (_, __, ___) {
+        child: IconButton(onPressed: onPressed, icon: Icon(iconData, size: 35)),
+        builder: (BuildContext context, bool value, Widget? child) {
           return Visibility(
             visible: visibleNotifier.value,
             maintainSize: true,
             maintainAnimation: true,
             maintainState: true,
-            child: IconButton(
-                onPressed: onPressed, icon: Icon(iconData, size: 35)),
+            child: child!,
           );
         });
   }
