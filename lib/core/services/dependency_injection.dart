@@ -116,11 +116,15 @@ class DependencyInjection {
     sl.registerLazySingleton<BaseRecordsRepo>(
       () => RecordsRepo(recordsLocalDataSource: sl()),
     );
-    sl.registerLazySingleton<BasePrayerRepo>(() => PrayerRepo(
+    sl.registerLazySingleton<BasePrayerRepo>(
+      () => PrayerRepo(
         prayersRemoteDataSource: sl(),
         prayersLocalDataSource: sl(),
         internetConnection: sl<InternetConnection>(),
-        baseLocationRepo: sl<BaseLocationRepo>()));
+        baseLocationRepo: sl<BaseLocationRepo>(),
+        baseLocationService: sl(),
+      ),
+    );
     // data sources
     sl.registerLazySingleton<BaseDailyAdhkarLocalDataSource>(
         () => DailyAdhkarLocalDataSourceImpl());

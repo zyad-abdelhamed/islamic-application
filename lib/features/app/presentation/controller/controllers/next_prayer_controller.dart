@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
-import 'package:test_app/core/services/adhan_notification_service.dart';
 import 'package:test_app/core/widgets/app_sneak_bar.dart';
 import 'package:test_app/features/app/domain/entities/next_prayer_entity.dart';
 import 'package:test_app/features/app/domain/entities/prayer_sound_settings_entity.dart';
@@ -95,8 +94,6 @@ class NextPrayerController {
       if (prayerTime.isBefore(now)) {
         prayerTime = prayerTime.add(const Duration(days: 1));
       }
-
-      AdhanNotificationService.scheduleAdhanNotification(prayerTime);
     }
   }
 

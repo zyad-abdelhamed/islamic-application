@@ -55,18 +55,18 @@ class GetPrayerTimesOfMonthButton extends StatelessWidget {
                 Row(
                   spacing: 5,
                   children: [
-                    Icon(Icons.calendar_month, color: Colors.grey),
+                    const Icon(Icons.calendar_month, color: Colors.grey),
                     Text(AppStrings.translate("chooseDate"),
                         style: TextStyle(color: Colors.grey)),
                     IconButton(
-                        onPressed: () =>
-                            prayerTimesPageController.selectDate(context),
-                        icon: Icon(
-                          Icons.arrow_drop_down,
-                          color: Colors.grey[300],
-                          size: 35,
-                        )),
-                    Spacer(),
+                      onPressed: () =>
+                          prayerTimesPageController.selectDate(context),
+                      icon: const Icon(
+                        Icons.arrow_drop_down,
+                        size: 35,
+                      ),
+                    ),
+                    const Spacer(),
                     ExplainFeatureButton(
                         text:
                             AppStrings.translate("prayerTimesOfMonthInfoText")),

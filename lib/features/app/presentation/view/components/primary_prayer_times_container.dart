@@ -5,7 +5,7 @@ import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/features/app/domain/entities/next_prayer_entity.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_prayer_times_controller.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/primary_prayer_times_container_controller.dart';
-import 'package:test_app/features/app/presentation/controller/cubit/prayer_times_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/next_prayer_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/prayer_times_inner_container.dart';
 import 'package:test_app/features/app/presentation/view/components/prayer_times_widget_background_image.dart';
 

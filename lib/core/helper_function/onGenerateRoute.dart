@@ -10,6 +10,7 @@ import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/features/app/presentation/view/pages/q_and_a_page.dart';
 import 'package:test_app/features/onboarding/presentation/view/pages/location_permission_page.dart';
 import 'package:test_app/features/onboarding/presentation/view/pages/main_page.dart';
+import 'package:test_app/features/onboarding/presentation/view/pages/save_location_page.dart';
 import 'package:test_app/features/onboarding/presentation/view/pages/secondry_page.dart';
 import 'package:test_app/features/splach_screen/view/pages/splash_screen.dart';
 import 'package:test_app/features/app/presentation/view/pages/prayer_times_page.dart';
@@ -56,6 +57,10 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case RoutesConstants.locationPermissionPage:
       return MaterialPageRoute<LocationPermissionPage>(
         builder: (BuildContext context) => const LocationPermissionPage(),
+      );
+    case RoutesConstants.saveLocationPage:
+      return MaterialPageRoute<SaveLocationPage>(
+        builder: (BuildContext context) => const SaveLocationPage(),
       );
     case RoutesConstants.addDailyAdhkarPage:
       return MaterialPageRoute<AddDailyAdhkarPage>(

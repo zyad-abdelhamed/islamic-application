@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
 import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/services/position_service.dart';
@@ -16,8 +17,8 @@ class LocationPermissionPage extends StatefulWidget {
 }
 
 class _LocationPermissionPageState extends State<LocationPermissionPage> {
-  ValueNotifier<LocationPermission> permissionStatusNotifier =
-      ValueNotifier<LocationPermission>(LocationPermission.denied);
+  ValueNotifier<LocationPermission?> permissionStatusNotifier =
+      ValueNotifier<LocationPermission?>(null);
   late StreamSubscription<LocationPermission> permissionSubscription;
 
   @override
@@ -57,26 +58,27 @@ class _LocationPermissionPageState extends State<LocationPermissionPage> {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: ValueListenableBuilder<LocationPermission>(
+          child: ValueListenableBuilder<LocationPermission?>(
             valueListenable: permissionStatusNotifier,
-            builder: (_, __, ___) => AnimatedSwitcher(
-              duration: AppDurations.mediumDuration,
-              switchInCurve: Curves.easeInOut,
-              switchOutCurve: Curves.easeInOut,
-              transitionBuilder: (child, animation) {
-                return FadeTransition(
-                  opacity: animation,
-                  child: child,
-                );
-              },
-              child: Column(
-                key: ValueKey<bool>(shouldShowLocationButton),
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: shouldShowLocationButton
-                    ? activateLocationPermissionColumn(context)
-                    : saveLocationColumn(context),
-              ),
-            ),
+            builder: (_, LocationPermission? value, ___) => AnimatedSwitcher(
+                duration: AppDurations.mediumDuration,
+                switchInCurve: Curves.easeInOut,
+                switchOutCurve: Curves.easeInOut,
+                transitionBuilder: (child, animation) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+                child: Column(
+                  key: ValueKey<bool>(shouldShowLocationButton),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: value == null
+                      ? [const GetAdaptiveLoadingWidget()]
+                      : shouldShowLocationButton
+                          ? activateLocationPermissionColumn(context)
+                          : saveLocationColumn(context),
+                )),
           ),
         ),
       ),

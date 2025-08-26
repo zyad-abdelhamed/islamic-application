@@ -1,7 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/services/internet_connection.dart';
+import 'package:test_app/core/services/position_service.dart';
 import 'package:test_app/features/app/data/datasources/prayers_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/prayers_remote_data_source.dart';
 import 'package:test_app/features/app/data/models/get_prayer_times_of_month_prameters.dart';
@@ -17,20 +19,25 @@ class PrayerRepo extends BasePrayerRepo {
   final PrayersLocalDataSource prayersLocalDataSource;
   final InternetConnection internetConnection;
   final BaseLocationRepo baseLocationRepo;
+  final BaseLocationService baseLocationService;
+
   PrayerRepo({
     required this.prayersRemoteDataSource,
     required this.internetConnection,
     required this.prayersLocalDataSource,
     required this.baseLocationRepo,
+    required this.baseLocationService,
   });
 
   @override
   Future<Either<Failure, Timings>> getPrayerTimes() async {
     try {
-      final bool isConnected = await internetConnection.checkInternetConnection();
+      final bool isConnected =
+          await internetConnection.checkInternetConnection();
 
       if (isConnected) {
-        final Either<Failure, LocationEntity> locationResult = await baseLocationRepo.getCurrentLocation();
+        final Either<Failure, LocationEntity> locationResult =
+            await baseLocationRepo.getCurrentLocation();
 
         return await locationResult.fold<Future<Either<Failure, Timings>>>(
           (failure) async => left(Failure(failure.message)),
@@ -79,7 +86,15 @@ class PrayerRepo extends BasePrayerRepo {
     try {
       final timings = await prayersLocalDataSource.getLocalPrayersTimes();
       if (timings == null) {
-        return Left(Failure(AppStrings.translate("deniedLocationPermissionAlertDialogText")));
+        final LocationPermission locationPermission =
+            await baseLocationService.checkPermission;
+        if (locationPermission == LocationPermission.always ||
+            locationPermission == LocationPermission.whileInUse) {
+          return Left(Failure(AppStrings.translate("notLocationSaved")));
+        }
+
+        return Left(Failure(
+            AppStrings.translate("deniedLocationPermissionAlertDialogText")));
       }
       return Right(timings);
     } catch (e) {

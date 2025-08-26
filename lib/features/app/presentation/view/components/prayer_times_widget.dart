@@ -6,7 +6,7 @@ import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/features/app/domain/entities/timings.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_prayer_times_controller.dart';
-import 'package:test_app/features/app/presentation/controller/cubit/prayer_times_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/next_prayer_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/erorr_widget.dart';
 import 'package:test_app/features/app/presentation/view/components/primary_prayer_times_container.dart';
 import 'package:test_app/features/app/presentation/view/components/remaining_time_widget.dart';
@@ -55,10 +55,10 @@ class PrayerTimesWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Visibility(
-                              visible: controller.locationEntity.name !=
+                              visible: controller.locationEntity!.name !=
                                   AppStrings.translate("unknownCity"),
                               child: Text(
-                                controller.locationEntity.name,
+                                controller.locationEntity!.name,
                                 style: TextStyles.bold20(context)
                                     .copyWith(color: Colors.grey),
                               ),

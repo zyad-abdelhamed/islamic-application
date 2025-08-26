@@ -12,4 +12,5 @@ abstract class RoutesConstants {
   static const String appStringsJsonRouteName = 'assets/jsons/app_strings.json';
   static const String bookMarksPageRouteName = 'bookMarksPageRouteName';
   static const String addDailyAdhkarPage = 'addDailyAdhkarPage';
+  static const String saveLocationPage = "saveLocationPage";
 }

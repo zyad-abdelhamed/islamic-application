@@ -83,7 +83,7 @@ class ChangeLocationWidget extends StatelessWidget {
                   size: 35,
                 ),
                 Text(
-                  sl<GetPrayersTimesController>().locationEntity.name,
+                  sl<GetPrayersTimesController>().locationEntity!.name,
                   textAlign: TextAlign.center,
                   style: TextStyles.semiBold16_120(context)
                       .copyWith(color: dataColor, fontFamily: 'DataFontFamily'),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
-import 'package:test_app/features/app/presentation/controller/cubit/prayer_times_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/next_prayer_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/adhkar_grid_view.dart';
 import 'package:test_app/features/app/presentation/view/components/daily_adhkar_list_view.dart';
 import 'package:test_app/features/app/presentation/view/components/home_buttons_list_view.dart';

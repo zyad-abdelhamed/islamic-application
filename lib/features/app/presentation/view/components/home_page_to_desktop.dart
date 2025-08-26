@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/utils/sized_boxs.dart';
-import 'package:test_app/features/app/presentation/controller/cubit/prayer_times_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/next_prayer_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/adhkar_grid_view.dart';
 import 'package:test_app/features/app/presentation/view/components/home_button.dart';
 import 'package:test_app/features/app/presentation/view/components/home_page_drawer.dart';

@@ -4,7 +4,7 @@ import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/primary_prayer_times_container_controller.dart';
-import 'package:test_app/features/app/presentation/controller/cubit/prayer_times_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/next_prayer_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/next_prayer_widget.dart';
 
 class PrayerTimesInnerContainer extends StatelessWidget {
