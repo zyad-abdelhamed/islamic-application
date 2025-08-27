@@ -5,6 +5,7 @@ import 'package:test_app/core/services/cache_service%20copy.dart';
 import 'package:test_app/core/services/city_name_service.dart';
 import 'package:test_app/core/services/image_picker_service.dart';
 import 'package:test_app/core/services/internet_connection.dart';
+import 'package:test_app/core/services/notifications_service.dart';
 import 'package:test_app/core/services/position_service.dart';
 import 'package:test_app/features/app/data/datasources/daily_adhkar_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/home_local_data_source.dart';
@@ -151,6 +152,8 @@ class DependencyInjection {
         () => PrayersRemoteDataSourceImpl(sl()));
 
     // services
+    sl.registerLazySingleton<BaseNotificationsService>(
+        () => NotificationsServiceByFlutterLocalNotifications());
     sl.registerLazySingleton<BaseImagePickerService>(
         () => ImagePickerService());
     sl.registerLazySingleton<BaseCacheService>(

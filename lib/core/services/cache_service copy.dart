@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class BaseCacheService {
-  void cacheintIalization();
+  Future<void> cacheintIalization();
   Future<bool> insertStringToCache(
       {required String key, required String value});
   String? getStringFromCache({required String key});
@@ -16,11 +16,11 @@ abstract class BaseCacheService {
 }
 
 class CacheImplBySharedPreferences extends BaseCacheService {
-  late final  SharedPreferences _sharedPreferences;
+  late final SharedPreferences _sharedPreferences;
 
   //ialization
   @override
-  void cacheintIalization() async {
+  Future<void> cacheintIalization() async {
     _sharedPreferences = await SharedPreferences.getInstance();
   }
 
