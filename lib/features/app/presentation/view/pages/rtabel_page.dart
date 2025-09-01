@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
 import 'package:test_app/core/adaptive/orentation_layout.dart';
 import 'package:test_app/core/constants/app_strings.dart';
-import 'package:test_app/core/widgets/empty_list_text_widget.dart';
+import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/rtabel_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/land_scape_ramadan_table.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
@@ -38,8 +38,12 @@ class RamadanTabelPage extends StatelessWidget {
             ),
             body: OrentationLayout(
               landScapeWidget: (context) => LandScapeWidgetToRTablePage(),
-              portraitWidget: (context) => EmptyListTextWidget(
-                  text: AppStrings.translate("portraitOrientationToRTablePageText")),
+              portraitWidget: (context) => Center(
+                child: Text(
+                    AppStrings.translate("portraitOrientationToRTablePageText"),
+                    textAlign: TextAlign.center,
+                    style: TextStyles.bold20(context)),
+              ),
             ),
           );
         },

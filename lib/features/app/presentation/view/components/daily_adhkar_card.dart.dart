@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/features/app/domain/entities/daily_adhkar_entity.dart';
-import 'package:test_app/features/app/presentation/view/pages/daily_adhkar_page.dart';
 
 const double circleSize = 80.0;
 
@@ -10,10 +9,12 @@ class DailyAdhkarCard extends StatelessWidget {
     super.key,
     required this.dailyAdhkarEntity,
     required this.index,
+    required this.onTap,
   });
 
   final DailyAdhkarEntity dailyAdhkarEntity;
   final int index;
+  final void Function() onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +23,7 @@ class DailyAdhkarCard extends StatelessWidget {
       spacing: 3.0,
       children: [
         GestureDetector(
-          onTap: () => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => DailyAdhkarPage(
-                        entity: dailyAdhkarEntity,
-                        index: index,
-                      ))),
+          onTap: onTap,
           child: Container(
             height: circleSize,
             width: circleSize,

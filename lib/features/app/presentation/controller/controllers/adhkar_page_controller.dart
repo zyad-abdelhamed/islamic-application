@@ -55,36 +55,37 @@ class AdhkarPageController {
     final int count = countPrameters.adhkarEntity.countNotifier.value.number;
 
     if (count > 1) {
-      _slideAnimation(
-          slideValue: .3,
-          newValue: countPrameters.countNotifier.value.number - 1,
-          countNotifier: countPrameters.countNotifier);
+      _decreaseWithAnimation(countPrameters.adhkarEntity.countNotifier);
     } else if (count == 1 && switchNotfier.value) {
-      _slideAnimation(
-          slideValue: .3,
-          newValue: countPrameters.countNotifier.value.number - 1,
-          countNotifier: countPrameters.countNotifier);
+      _decreaseWithAnimation(countPrameters.adhkarEntity.countNotifier);
+
       Future.delayed(AppDurations.mediumDuration, () {
         _removeAnimation(countPrameters.index, countPrameters.adhkarEntity);
       });
     } else if (count == 1 && !switchNotfier.value) {
-      _slideAnimation(
-          slideValue: .3,
-          newValue: countPrameters.countNotifier.value.number - 1,
-          countNotifier: countPrameters.countNotifier);
+      _decreaseWithAnimation(countPrameters.adhkarEntity.countNotifier);
+
       _reduceLengthNotifierValue();
     }
 
     return;
   }
 
+  void _decreaseWithAnimation(ValueNotifier<NumberAnimationModel> notifier) {
+    notifier.value.slideAnimation(
+      newValue: notifier.value.number - 1,
+      notifier: notifier,
+      slideValue: .3,
+    );
+  }
+
   void resetCount({required CountPrameters countPrameters}) {
     if (countPrameters.countNotifier.value.number !=
         countPrameters.adhkarEntity.count) {
-      _slideAnimation(
+      countPrameters.countNotifier.value.slideAnimation(
           slideValue: -.3,
           newValue: countPrameters.adhkarEntity.count,
-          countNotifier: countPrameters.countNotifier);
+          notifier: countPrameters.countNotifier);
       if (countPrameters.countNotifier.value.number == 0) {
         _increaseLengthNotifierValue();
       }
@@ -121,21 +122,6 @@ class AdhkarPageController {
 
   void _increaseLengthNotifierValue() {
     lengthNotfier.value++;
-  }
-
-  void _slideAnimation(
-      {required double slideValue,
-      required int newValue,
-      required ValueNotifier<NumberAnimationModel> countNotifier}) {
-    countNotifier.value = NumberAnimationModel(
-        number: countNotifier.value.number,
-        offset: Offset(0, slideValue),
-        opacity: 0.0);
-    //start animation
-
-    Future.delayed(AppDurations.lowDuration, () {
-      countNotifier.value = NumberAnimationModel(number: newValue);
-    }); //reverse animation and stop
   }
 }
 

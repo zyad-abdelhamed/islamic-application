@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
-import 'package:test_app/features/app/presentation/controller/controllers/elec_rosary_page_controller.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/featured_records_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/featured_records_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/featured_records_state.dart';
 import 'package:test_app/features/app/presentation/view/components/erorr_widget.dart';
@@ -14,7 +14,7 @@ class FeaturedRecordesBlocListener extends StatelessWidget {
     required this.controller,
   });
 
-  final ElecRosaryPageController controller;
+  final FeaturedRecordsController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +60,9 @@ class FeaturedRecordesBlocListener extends StatelessWidget {
             return const GetAdaptiveLoadingWidget();
           } else if (state is LoadFeaturedRecordsError) {
             return FittedBox(
-                fit: BoxFit.scaleDown,
+              fit: BoxFit.scaleDown,
               child: ErrorWidgetIslamic(message: state.message),
-              );
+            );
           } else if (state is FeaturedRecordsLoaded) {
             return FeaturedRecordsAnimatedList(controller: controller);
           }

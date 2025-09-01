@@ -25,8 +25,15 @@ class LocationRepo extends BaseLocationRepo {
       if (locationEntity != null) {
         return Right(locationEntity);
       } else {
-        return Left(
-            Failure(AppStrings.translate("deniedLocationPermissionAlertDialogText")));
+        final LocationPermission locationPermission =
+            await baseLocationService.checkPermission;
+        if (locationPermission == LocationPermission.always ||
+            locationPermission == LocationPermission.whileInUse) {
+          return Left(Failure(AppStrings.translate("notLocationSaved")));
+        }
+
+        return Left(Failure(
+            AppStrings.translate("deniedLocationPermissionAlertDialogText")));
       }
     } catch (e) {
       return Left(Failure(e.toString()));

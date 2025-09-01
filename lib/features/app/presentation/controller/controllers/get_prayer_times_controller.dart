@@ -19,8 +19,7 @@ class GetPrayersTimesController {
   Timings timings = Timings.empty();
   String? errorMessage;
   final ValueNotifier<bool> hasErrorNotifier = ValueNotifier(false);
-  LocationEntity locationEntity =
-      LocationEntity(latitude: 0.0, longitude: 0.0, name: '');
+  LocationEntity? locationEntity;
 
   Future<void> getPrayersTimes(BuildContext context) async {
     final Either<Failure, Timings> result = await getPrayersTimesUseCase();

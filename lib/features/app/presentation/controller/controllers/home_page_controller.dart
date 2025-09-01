@@ -11,14 +11,14 @@ import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/features/app/domain/repositories/home_repo.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_prayer_times_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/daily_adhkar_cubit.dart';
-import 'package:test_app/features/app/presentation/controller/cubit/prayer_times_cubit.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/next_prayer_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/custom_alert_dialog.dart';
 
 bool _isShowed = false;
 
 class HomePageController {
-  void initState(BuildContext context) {
+  void initState(BuildContext context,
+      {required NextPrayerController nextPrayerController}) {
     if (_isShowed == false) {
       checkLocationPermission(context);
       checkInternetConnection(context);
@@ -34,10 +34,10 @@ class HomePageController {
     // تهيئة PrayerTimesCubit
     if (sl<GetPrayersTimesController>().hasErrorNotifier.value == false) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        context.read<PrayerTimesCubit>().init(
-              timings: sl<GetPrayersTimesController>().timings,
-              context: context,
-            );
+        nextPrayerController.init(
+          timings: sl<GetPrayersTimesController>().timings,
+          context: context,
+        );
       });
     }
   }
@@ -47,13 +47,30 @@ class HomePageController {
         await sl<BaseLocationService>().checkPermission;
 
     if (permission == LocationPermission.denied ||
-        permission == LocationPermission.deniedForever) {
+        permission == LocationPermission.deniedForever ||
+        (permission == LocationPermission.unableToDetermine &&
+            sl<GetPrayersTimesController>().locationEntity == null)) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         AppSnackBar(
           message: 'تم رفض صلاحية الموقع.',
-          label: 'صلاحية الموقع',
+          label: 'طلب الصلاحية',
           onPressed: () => Navigator.pushNamedAndRemoveUntil(context,
               RoutesConstants.locationPermissionPage, (route) => false),
+          type: AppSnackBarType.error,
+        ).show(context);
+      });
+      return;
+    }
+
+    if ((permission == LocationPermission.whileInUse ||
+            permission == LocationPermission.always) &&
+        sl<GetPrayersTimesController>().locationEntity == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        AppSnackBar(
+          message: 'لم يتم تحديد الموقع.',
+          label: 'حفظ الموقع',
+          onPressed: () => Navigator.pushNamedAndRemoveUntil(
+              context, RoutesConstants.saveLocationPage, (route) => false),
           type: AppSnackBarType.error,
         ).show(context);
       });

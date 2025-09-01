@@ -69,7 +69,8 @@ class _AdhkarWidgetState extends State<AdhkarWidget> {
                           widget.adhkarEntity.description!,
                           style: TextStyles.regular16_120(context,
                                   color: AppColors.secondryColor)
-                              .copyWith(fontFamily: 'Amiri',
+                              .copyWith(
+                                  fontFamily: 'Amiri',
                                   fontSize: (widget.adhkarPageController
                                           .fontSizeNotfier.value) -
                                       4),
@@ -91,10 +92,9 @@ class _AdhkarWidgetState extends State<AdhkarWidget> {
                     builder: (context, value, _) => AnimatedSlide(
                       duration: AppDurations.lowDuration,
                       offset: widget.adhkarEntity.countNotifier.value.offset!,
-                      child: AnimatedOpacity(
-                          opacity:
-                              widget.adhkarEntity.countNotifier.value.opacity!,
-                          duration: const Duration(seconds: 0),
+                      child: Offstage(
+                          offstage:
+                              widget.adhkarEntity.countNotifier.value.offStage!,
                           child: Text(
                             widget.adhkarEntity.countNotifier.value.number
                                 .toString(),
@@ -148,7 +148,9 @@ class _AdhkarWidgetState extends State<AdhkarWidget> {
       GestureDetector(
         onTap: function,
         child: CircleAvatar(
-          backgroundColor: ThemeCubit.controller(context).state ? AppColors.darkModeInActiveColor : AppColors.lightModeInActiveColor,
+          backgroundColor: ThemeCubit.controller(context).state
+              ? AppColors.darkModeInActiveColor
+              : AppColors.lightModeInActiveColor,
           radius: getResponsiveFontSize(context: context, fontSize: 37),
           child: Icon(
             icon,

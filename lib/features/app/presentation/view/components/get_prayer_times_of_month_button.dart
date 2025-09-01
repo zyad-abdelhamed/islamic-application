@@ -55,20 +55,21 @@ class GetPrayerTimesOfMonthButton extends StatelessWidget {
                 Row(
                   spacing: 5,
                   children: [
-                    Icon(Icons.calendar_month, color: Colors.grey),
+                    const Icon(Icons.calendar_month, color: Colors.grey),
                     Text(AppStrings.translate("chooseDate"),
                         style: TextStyle(color: Colors.grey)),
                     IconButton(
-                        onPressed: () =>
-                            prayerTimesPageController.selectDate(context),
-                        icon: Icon(
-                          Icons.arrow_drop_down,
-                          color: Colors.grey[300],
-                          size: 35,
-                        )),
-                    Spacer(),
+                      onPressed: () =>
+                          prayerTimesPageController.selectDate(context),
+                      icon: const Icon(
+                        Icons.arrow_drop_down,
+                        size: 35,
+                      ),
+                    ),
+                    const Spacer(),
                     ExplainFeatureButton(
-                        text: AppStrings.translate("prayerTimesOfMonthInfoText")),
+                        text:
+                            AppStrings.translate("prayerTimesOfMonthInfoText")),
                   ],
                 ),
                 Row(
@@ -85,10 +86,11 @@ class GetPrayerTimesOfMonthButton extends StatelessWidget {
                               builder: (_, __, ___) => Row(
                                     children: List.generate(
                                         3,
-                                        (index) => _dateContainer(context,
-                                            text: prayerTimesPageController
-                                                .dateData[index],
-                                            width: index == 2 ? 90 : 60)),
+                                        (index) => DateContainer(
+                                              text: prayerTimesPageController
+                                                  .dateData[index],
+                                              width: index == 2 ? 90 : 60,
+                                            )),
                                   )),
                           Center(
                             child: SizedBox(
@@ -122,9 +124,20 @@ class GetPrayerTimesOfMonthButton extends StatelessWidget {
       ],
     );
   }
+}
 
-  Container _dateContainer(BuildContext context,
-      {required String text, required double width}) {
+class DateContainer extends StatelessWidget {
+  const DateContainer({
+    super.key,
+    required this.text,
+    required this.width,
+  });
+
+  final String text;
+  final double width;
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor,

@@ -58,8 +58,10 @@ class _PrayerTimesPageState extends State<PrayerTimesPage> {
           backgroundColor: ThemeCubit.controller(context).state
               ? AppColors.darkModeSettingsPageBackgroundColor
               : AppColors.lightModeSettingsPageBackgroundColor,
-          appBar: prayerTimesPageAppBar(
-              context, prayerTimesPageController, prayerSoundSettingsCubit),
+          appBar: PrayerTimesPageAppBar(
+            prayerSoundSettingsCubit: prayerSoundSettingsCubit,
+            prayerTimesPageController: prayerTimesPageController,
+          ),
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -94,7 +96,7 @@ class _PrayerTimesPageState extends State<PrayerTimesPage> {
         ),
         builder: (_, bool isLoading, Widget? scaffold) => ModalProgressHUD(
           inAsyncCall: isLoading,
-          progressIndicator: GetAdaptiveLoadingWidget(),
+          progressIndicator: const GetAdaptiveLoadingWidget(),
           opacity: .5,
           child: scaffold!,
         ),

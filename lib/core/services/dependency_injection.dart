@@ -51,7 +51,6 @@ import 'package:test_app/features/app/presentation/controller/controllers/get_pr
 import 'package:test_app/features/app/presentation/controller/cubit/get_prayer_times_of_month_cubit.dart';
 import 'package:test_app/features/app/domain/usecases/get_records_use_case.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/featured_records_cubit.dart';
-import 'package:test_app/features/app/presentation/controller/cubit/prayer_times_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/prayers_sound_settings_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/qibla_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/quran_cubit.dart';
@@ -78,7 +77,6 @@ class DependencyInjection {
     sl.registerFactory(() => LocationCubit(sl()));
     sl.registerFactory(() => GetPrayerTimesOfMonthCubit(sl()));
     sl.registerFactory(() => TimerCubit());
-    sl.registerFactory(() => PrayerTimesCubit(sl()));
     sl.registerFactory(() => FeaturedRecordsCubit(sl(), sl(), sl(), sl()));
     sl.registerFactory(() => RtabelCubit(sl(), sl(), sl()));
     //controllers
@@ -118,11 +116,15 @@ class DependencyInjection {
     sl.registerLazySingleton<BaseRecordsRepo>(
       () => RecordsRepo(recordsLocalDataSource: sl()),
     );
-    sl.registerLazySingleton<BasePrayerRepo>(() => PrayerRepo(
+    sl.registerLazySingleton<BasePrayerRepo>(
+      () => PrayerRepo(
         prayersRemoteDataSource: sl(),
         prayersLocalDataSource: sl(),
         internetConnection: sl<InternetConnection>(),
-        baseLocationRepo: sl<BaseLocationRepo>()));
+        baseLocationRepo: sl<BaseLocationRepo>(),
+        baseLocationService: sl(),
+      ),
+    );
     // data sources
     sl.registerLazySingleton<BaseDailyAdhkarLocalDataSource>(
         () => DailyAdhkarLocalDataSourceImpl());

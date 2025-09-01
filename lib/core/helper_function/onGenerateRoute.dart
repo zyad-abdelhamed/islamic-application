@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/daily_adhkar_cubit.dart';
-import 'package:test_app/features/app/presentation/controller/cubit/prayer_times_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/prayers_sound_settings_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/timer_cubit.dart';
 import 'package:test_app/features/app/presentation/view/pages/add_daily_adhkar_page.dart';
@@ -11,6 +10,7 @@ import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/features/app/presentation/view/pages/q_and_a_page.dart';
 import 'package:test_app/features/onboarding/presentation/view/pages/location_permission_page.dart';
 import 'package:test_app/features/onboarding/presentation/view/pages/main_page.dart';
+import 'package:test_app/features/onboarding/presentation/view/pages/save_location_page.dart';
 import 'package:test_app/features/onboarding/presentation/view/pages/secondry_page.dart';
 import 'package:test_app/features/splach_screen/view/pages/splash_screen.dart';
 import 'package:test_app/features/app/presentation/view/pages/prayer_times_page.dart';
@@ -31,9 +31,6 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
           providers: [
             BlocProvider<TimerCubit>(
               create: (_) => sl<TimerCubit>(),
-            ),
-            BlocProvider<PrayerTimesCubit>(
-              create: (_) => sl<PrayerTimesCubit>(),
             ),
             BlocProvider<DailyAdhkarCubit>(
               create: (_) => sl<DailyAdhkarCubit>(),
@@ -60,6 +57,10 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case RoutesConstants.locationPermissionPage:
       return MaterialPageRoute<LocationPermissionPage>(
         builder: (BuildContext context) => const LocationPermissionPage(),
+      );
+    case RoutesConstants.saveLocationPage:
+      return MaterialPageRoute<SaveLocationPage>(
+        builder: (BuildContext context) => const SaveLocationPage(),
       );
     case RoutesConstants.addDailyAdhkarPage:
       return MaterialPageRoute<AddDailyAdhkarPage>(

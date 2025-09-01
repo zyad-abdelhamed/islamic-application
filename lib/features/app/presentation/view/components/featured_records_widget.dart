@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
-import 'package:test_app/features/app/presentation/controller/controllers/elec_rosary_page_controller.dart';
+import 'package:test_app/features/app/data/models/number_animation_model.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/featured_records_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/featured_records_cubit.dart';
 import 'fetured_records_container.dart';
 
@@ -11,66 +11,66 @@ const double featuerdRecordsWidgetHight = 50 + 150 * 1.5 + 10.0;
 const double showedFeatuerdRecordsWidgetButtonHight = 35;
 
 class FeatuerdRecordsWidget extends StatelessWidget {
-  const FeatuerdRecordsWidget({super.key, required this.controller});
+  const FeatuerdRecordsWidget({
+    super.key,
+    required this.controller,
+    required this.counterNotifier,
+  });
 
-  final ElecRosaryPageController controller;
+  final FeaturedRecordsController controller;
+  final ValueNotifier<NumberAnimationModel> counterNotifier;
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedPositioned(
-      duration: AppDurations.longDuration,
-      top: controller.isWidgetShowedNotifier.value
-          ? 0.0
-          : -featuerdRecordsWidgetHight,
-      child: Container(
-        width: context.width,
-        padding: const EdgeInsets.only(top: 50),
-        margin: const EdgeInsets.only(bottom: 100),
-        color: ThemeCubit.controller(context).state ? AppColors.darkModeSettingsPageBackgroundColor : AppColors.lightModeSettingsPageBackgroundColor,
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    FeaturedRecordsCubit.controller(context)
-                        .addFeaturedRecord(
-                            controller.counterNotifier.value.number);
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: ThemeCubit.controller(context).state
-                          ? AppColors.darkModeInActiveColor
-                          : AppColors.lightModeInActiveColor,
-                      borderRadius: BorderRadius.circular(23),
-                    ),
-                    child: Icon(Icons.save,
-                        color: Theme.of(context).primaryColor, size: 40),
+    return Container(
+      width: context.width,
+      padding: const EdgeInsets.only(top: 50),
+      margin: const EdgeInsets.only(bottom: 100),
+      color: ThemeCubit.controller(context).state
+          ? AppColors.darkModeSettingsPageBackgroundColor
+          : AppColors.lightModeSettingsPageBackgroundColor,
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  FeaturedRecordsCubit.controller(context)
+                      .addFeaturedRecord(counterNotifier.value.number);
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: ThemeCubit.controller(context).state
+                        ? AppColors.darkModeInActiveColor
+                        : AppColors.lightModeInActiveColor,
+                    borderRadius: BorderRadius.circular(23),
                   ),
+                  child: Icon(Icons.save,
+                      color: Theme.of(context).primaryColor, size: 40),
                 ),
-                FeturedRecordsContainer(controller: controller),
-              ],
-            ),
-            GestureDetector(
-              onTap: controller.toggleWidgetVisibility,
-              child: SizedBox(
-                width: double.infinity,
-                height: showedFeatuerdRecordsWidgetButtonHight,
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Divider(
-                    thickness: 5,
-                    color: const Color(0xFFE0E0E0),
-                    indent: 150,
-                    endIndent: 150,
-                  ),
+              ),
+              FeturedRecordsContainer(controller: controller),
+            ],
+          ),
+          GestureDetector(
+            onTap: controller.toggleWidgetVisibility,
+            child: SizedBox(
+              width: double.infinity,
+              height: showedFeatuerdRecordsWidgetButtonHight,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Divider(
+                  thickness: 5,
+                  color: const Color(0xFFE0E0E0),
+                  indent: 150,
+                  endIndent: 150,
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

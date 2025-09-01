@@ -4,6 +4,7 @@ import 'package:test_app/core/adaptive/adaptive_widget_depending_on_os.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/theme/app_colors.dart';
+import 'package:test_app/core/theme/theme_provider.dart';
 
 class GetAdaptiveBackButtonWidget extends StatelessWidget {
   const GetAdaptiveBackButtonWidget({
@@ -21,18 +22,21 @@ class GetAdaptiveBackButtonWidget extends StatelessWidget {
   }
 
   Widget _getDefaultBackButton(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.arrow_back),
-      onPressed: () => _goBack(context),
+    return OpacityLayout(
+      child: GestureDetector(
+        child: const Icon(Icons.arrow_back),
+        onTap: () => _goBack(context),
+      ),
     );
   }
 
   Widget _getCupertinoBackButton(BuildContext context) {
-    return CupertinoButton(
+    return OpacityLayout(
+        child: CupertinoButton(
       padding: EdgeInsets.zero,
       onPressed: () => _goBack(context),
       child: const Icon(CupertinoIcons.back),
-    );
+    ));
   }
 
   Widget _getWindowsBackButton(BuildContext context) {
@@ -49,5 +53,26 @@ class GetAdaptiveBackButtonWidget extends StatelessWidget {
   void _goBack(context) {
     Navigator.pushNamedAndRemoveUntil(
         context, RoutesConstants.homePageRouteName, (route) => false);
+  }
+}
+
+class OpacityLayout extends StatelessWidget {
+  const OpacityLayout({super.key, required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: (ThemeCubit.controller(context).state
+                      ? AppColors.white
+                      : AppColors.black)
+                  .withAlpha(35)),
+          child: child,
+        ));
   }
 }

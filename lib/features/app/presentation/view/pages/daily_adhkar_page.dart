@@ -7,11 +7,11 @@ import 'package:test_app/features/app/presentation/controller/controllers/daily_
 class DailyAdhkarPage extends StatefulWidget {
   const DailyAdhkarPage({
     super.key,
-    required this.entity,
+    required this.entities,
     required this.index,
   });
 
-  final DailyAdhkarEntity entity;
+  final List<DailyAdhkarEntity> entities;
   final int index;
 
   @override
@@ -28,7 +28,7 @@ class _DailyAdhkarPageState extends State<DailyAdhkarPage>
     controller = DailyAdhkarController(
       vsync: this,
       context: context,
-      entity: widget.entity,
+      entities: widget.entities,
       index: widget.index,
     );
   }
@@ -44,22 +44,33 @@ class _DailyAdhkarPageState extends State<DailyAdhkarPage>
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
     final Color textColor =
         isDark ? AppColors.darkModeTextColor : AppColors.lightModeTextColor;
+    final DailyAdhkarEntity entity = widget.entities[widget.index];
 
     return Scaffold(
       body: GestureDetector(
         onLongPress: controller.onLongPress,
         onLongPressEnd: controller.onLongPressEnd,
+        onHorizontalDragEnd: (details) {
+          // لو السرعة موجبة → من الشمال لليمين
+          if (details.primaryVelocity! > 0) {
+            controller.toNextPage();
+          }
+          // لو السرعة سالبة → من اليمين للشمال
+          else if (details.primaryVelocity! < 0) {
+            controller.toPreviousPage();
+          }
+        },
         behavior: HitTestBehavior.opaque,
         child: Stack(
           children: [
             // الخلفية (صورة أو لون)
             Positioned.fill(
-              child: widget.entity.image != null
+              child: entity.image != null
                   ? Stack(
                       fit: StackFit.expand,
                       children: [
                         Image.memory(
-                          widget.entity.image!,
+                          entity.image!,
                           fit: BoxFit.cover,
                         ),
                         Container(color: Colors.grey.withAlpha(77)),
@@ -70,7 +81,7 @@ class _DailyAdhkarPageState extends State<DailyAdhkarPage>
             // النص
             Center(
               child: Text(
-                widget.entity.text ?? '',
+                entity.text ?? '',
                 textAlign: TextAlign.center,
                 style: TextStyles.bold20(context).copyWith(color: textColor),
               ),

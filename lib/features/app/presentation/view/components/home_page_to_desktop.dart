@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/utils/sized_boxs.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/next_prayer_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/adhkar_grid_view.dart';
 import 'package:test_app/features/app/presentation/view/components/home_button.dart';
 import 'package:test_app/features/app/presentation/view/components/home_page_drawer.dart';
@@ -9,7 +10,10 @@ import 'package:test_app/features/app/presentation/view/components/prayer_times_
 class HomePageToDesktop extends StatelessWidget {
   const HomePageToDesktop({
     super.key,
+    required this.nextPrayerController,
   });
+
+  final NextPrayerController nextPrayerController;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +41,10 @@ class HomePageToDesktop extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBoxs.sizedBoxH30,
-                    SizedBox(width: 450, child: PrayerTimesWidget()),
+                    SizedBox(
+                        width: 450,
+                        child: PrayerTimesWidget(
+                            nextPrayerController: nextPrayerController)),
                     Spacer(),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -48,8 +55,8 @@ class HomePageToDesktop extends StatelessWidget {
                                     withTwoLines: true)[index],
                                 index: index,
                                 page: AppStrings.translate("pages")[index],
-                                image:
-                                    AppStrings.translate("imagesOfHomePageButtons")[index])))
+                                image: AppStrings.translate(
+                                    "imagesOfHomePageButtons")[index])))
                   ],
                 ),
               )),
@@ -58,8 +65,3 @@ class HomePageToDesktop extends StatelessWidget {
     );
   }
 }
-
-// class _AdhkarGridViewState extends State<AdhkarGridView> {
-// @override Widget build(BuildContext context) { List names = AppStrings.translate("adhkarButtonsNames"); 
-//return GridView( shrinkWrap: true, physics: NeverScrollableScrollPhysics(), gridDelegate: SliverGridDelegateWithFixedCrossAxisCount( crossAxisCount: widget.crossAxisCount, mainAxisSpacing: 15, crossAxisSpacing: 15),
-// children: List<AdhkarButton>.generate( 8, (index) => AdhkarButton( icon: _supplicationIcons[index], text: names[index], ))); }

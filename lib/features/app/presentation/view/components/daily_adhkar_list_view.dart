@@ -8,6 +8,7 @@ import 'package:test_app/features/app/domain/entities/daily_adhkar_entity.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/daily_adhkar_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/daily_adhkar_state.dart';
 import 'package:test_app/features/app/presentation/view/components/daily_adhkar_card.dart.dart';
+import 'package:test_app/features/app/presentation/view/pages/daily_adhkar_page.dart';
 
 class DailyAdhkarListView extends StatelessWidget {
   const DailyAdhkarListView({super.key});
@@ -62,17 +63,26 @@ class DailyAdhkarListView extends StatelessWidget {
                   );
                 }
 
+                final int length = adhkar.length;
+
                 return Skeletonizer(
                   enabled: isLoading,
                   child: ListView.builder(
                     physics: const BouncingScrollPhysics(),
                     scrollDirection: Axis.horizontal,
-                    itemCount: adhkar.length,
+                    itemCount: length,
                     itemBuilder: (context, index) {
                       final DailyAdhkarEntity entity = adhkar[index];
                       return DailyAdhkarCard(
                         dailyAdhkarEntity: entity,
                         index: index,
+                        onTap: () => Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DailyAdhkarPage(
+                                      entities: adhkar,
+                                      index: index,
+                                    ))),
                       );
                     },
                   ),
