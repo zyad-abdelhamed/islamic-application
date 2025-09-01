@@ -22,18 +22,6 @@ class QuranRepo implements BaseQuranRepo {
   );
 
   @override
-  Future<Either<Failure, List<SurahEntity>>> getPartSurahs(
-      {required String part}) async {
-    try {
-      final List<SurahEntity> result =
-          await _quranLocalDataSource.getInfoQuran(part: part);
-      return Right(result);
-    } catch (e) {
-      return Left(Failure(e.toString()));
-    }
-  }
-
-  @override
   Future<Either<Failure, List<BookMarkEntity>>> getBookMarks() async {
     try {
       final result = await quranLocalDataSource.getBookMarks();
@@ -64,7 +52,6 @@ class QuranRepo implements BaseQuranRepo {
     }
   }
 
-
   @override
   Future<Either<Failure, List<TafsirAyahEntity>>> getSurahWithTafsir(
       TafsirRequestParams params) async {
@@ -73,20 +60,30 @@ class QuranRepo implements BaseQuranRepo {
           await _baseQuranRemoteDataSource.getSurahWithTafsir(params);
       return Right(result);
     } catch (e) {
-      if(e is DioException){
+      if (e is DioException) {
         return Left(ServerFailure.fromDiorError(e));
       }
       return Left(ServerFailure(AppStrings.translate("unExpectedError")));
     }
   }
-  
+
   @override
-  Future<Either<Failure, Unit>> deleteBookmarksList({required List<int> indexs}) async{
-     try {
+  Future<Either<Failure, Unit>> deleteBookmarksList(
+      {required List<int> indexs}) async {
+    try {
       await quranLocalDataSource.deleteBookmarksList(indexes: indexs);
       return right(unit);
     } catch (e) {
       return left(Failure('خطأ في مسح العلامة'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<SurahEntity>>> getSurahsInfo() async {
+    try {
+      return right(await _quranLocalDataSource.getSurahsInfo());
+    } catch (_) {
+      return left(Failure(''));
     }
   }
 }

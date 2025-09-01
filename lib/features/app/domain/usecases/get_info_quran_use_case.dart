@@ -5,12 +5,11 @@ import 'package:test_app/core/errors/failures.dart';
 import 'package:test_app/core/utils/base_use_case.dart';
 
 class GetInfoQuranUseCase
-    extends BaseUseCaseWithParameters<List<SurahEntity>, String> {
+    extends BaseUseCaseWithoutParameters<List<SurahEntity>> {
   final BaseQuranRepo baseQuranRepo;
   GetInfoQuranUseCase(this.baseQuranRepo);
   @override
-  Future<Either<Failure, List<SurahEntity>>> call(
-      {required String parameters}) async {
-    return await baseQuranRepo.getPartSurahs(part: parameters);
+  Future<Either<Failure, List<SurahEntity>>> call() async {
+    return await baseQuranRepo.getSurahsInfo();
   }
 }
