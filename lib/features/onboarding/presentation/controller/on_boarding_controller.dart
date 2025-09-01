@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/constants/cache_constants.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
-import 'package:test_app/core/services/cache_service%20copy.dart';
+import 'package:test_app/core/services/cache_service.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 
 class OnBoardingController {
@@ -12,12 +12,14 @@ class OnBoardingController {
 
   // Load state from SharedPreferences
   bool get loadState {
-    return _cacheService.getboolFromCache(key: CacheConstants.isDisplayed) ?? false;
+    return _cacheService.getboolFromCache(key: CacheConstants.isDisplayed) ??
+        false;
   }
 
   // Mark onboarding as displayed
   Future<void> markAsDisplayed() async {
-    await _cacheService.insertBoolToCache(key: CacheConstants.isDisplayed, value: true);
+    await _cacheService.insertBoolToCache(
+        key: CacheConstants.isDisplayed, value: true);
   }
 
   // Navigate to next page

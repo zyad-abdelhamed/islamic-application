@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_durations.dart';
+import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/features/app/data/models/number_animation_model.dart';
 import 'package:test_app/features/app/domain/entities/adhkar_entity.dart';
@@ -17,15 +18,27 @@ class AdhkarPageController {
   double maxProgress = 0.0;
 
   initState(BuildContext context) {
-    progressNotfier = ValueNotifier(0.0);
-    switchNotfier = ValueNotifier(true);
-    fontSizeNotfier = ValueNotifier(20.0);
+    progressNotfier = ValueNotifier<double>(0.0);
+    switchNotfier = ValueNotifier<bool>(true);
+    fontSizeNotfier = ValueNotifier<double>(20.0);
     adhkarScrollController = ScrollController();
     animatedLIstKey = GlobalKey<AnimatedListState>();
 
     adhkarScrollController.addListener(() {
       maxProgress = adhkarScrollController.position.maxScrollExtent;
       progressNotfier.value = adhkarScrollController.position.pixels;
+    });
+
+    lengthNotfier.addListener(() {
+      if (lengthNotfier.value == 0) {
+        Future.delayed(
+          AppDurations.longDuration,
+          () => Navigator.pushReplacementNamed(
+            context,
+            RoutesConstants.homePageRouteName,
+          ),
+        );
+      }
     });
   }
 

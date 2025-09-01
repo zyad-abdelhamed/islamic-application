@@ -1,5 +1,8 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:test_app/core/models/notification_request_prameters.dart';
+import 'package:test_app/core/services/dependency_injection.dart';
+import 'package:test_app/features/notifications/domain/repos/base_prayer_times_notifications_repo.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_all.dart' as tz1;
 
@@ -7,6 +10,9 @@ abstract class BaseNotificationsService {
   Future<void> init() async {
     // initialize timezone data
     tz1.initializeTimeZones();
+
+    final String currentTimeZone = await FlutterTimezone.getLocalTimezone();
+    tz.setLocalLocation(tz.getLocation(currentTimeZone));
   }
 
   Future<void> periodicallyShowWithDuration(
@@ -24,17 +30,36 @@ abstract class BaseNotificationsService {
 
 class NotificationsServiceByFlutterLocalNotifications
     extends BaseNotificationsService {
+  final BasePrayerTimesNotificationsRepo prayerTimesNotificationsRepo;
   final FlutterLocalNotificationsPlugin instance =
       FlutterLocalNotificationsPlugin();
+
+  NotificationsServiceByFlutterLocalNotifications(
+      this.prayerTimesNotificationsRepo);
 
   @override
   Future<void> init() async {
     super.init();
     final settings = InitializationSettings(
       android: AndroidInitializationSettings("@mipmap/launcher_icon"),
-      iOS: DarwinInitializationSettings(),
+      iOS: DarwinInitializationSettings(), // لاحقا يتم عمل الاعدادات الخاصه بها
     );
-    await instance.initialize(settings);
+    await instance.initialize(
+      settings,
+      // onDidReceiveNotificationResponse: (details) async {
+      //   if (details.actionId != null &&
+      //       details.actionId!.startsWith('cancel_action_')) {
+      //     final int prayerId =
+      //         int.tryParse(details.actionId!.split('_').last) ?? 0;
+      //     await prayerTimesNotificationsRepo.cancelPrayerNotification(prayerId);
+      //   }
+      // },
+      // onDidReceiveBackgroundNotificationResponse:
+      //     prayerNotificationBackgroundHandler,
+      //   الـ details هنا جاي من النظام تلقائي.
+// لو حاولت تستخدم closure أو lambda مباشرة، هتلاقي AssertionError لأن الخلفية ما بتعرفش على الـ closure.
+// يعني: ما بتباصيش أي حاجة، النظام هو اللي بيمرر NotificationResponse للـ top-level function.
+    );
   }
 
   @override
@@ -73,16 +98,9 @@ class NotificationsServiceByFlutterLocalNotifications
 
   @override
   Future<void> zonedSchedule(NotificationRequestPrameters request) async {
-    // لازم يكون عندنا وقت محدد علشان نقدر نعمل جدولة
-    if (request.scheduledTime == null) {
-      throw ArgumentError("scheduledTime must not be null "
-          "when using zonedSchedule");
-    }
-
     // تحويل وقت الجدولة العادي (DateTime) إلى وقت مرتبط بالـ timezone المحلي
     final tz.TZDateTime scheduledDate =
         tz.TZDateTime.from(request.scheduledTime!, tz.local);
-
     // استدعاء دالة المكتبة لجدولة الإشعار
     await instance.zonedSchedule(
       // رقم مميز للإشعار
@@ -111,7 +129,8 @@ class NotificationsServiceByFlutterLocalNotifications
       // - DateTimeComponents.time = يتكرر يومياً في نفس الساعة والدقيقة
       // - DateTimeComponents.dayOfWeekAndTime = يتكرر أسبوعياً في نفس اليوم والوقت
       // - null = مرة واحدة فقط
-      matchDateTimeComponents: null,
+      matchDateTimeComponents:
+          null, // مهم نسيب دي كدا علشان الwork manger كل يوم يجدول اشعارات بالاوقات الجديده لان مثلاDateTimeComponents.time هيكرر الاشعار يوميا ف نفس الوقت
     );
   }
 
@@ -123,5 +142,19 @@ class NotificationsServiceByFlutterLocalNotifications
   @override
   Future<void> cancelAll() async {
     await instance.cancelAll();
+  }
+}
+
+// ⚠️ مهم جدًا: أي كود في الـ background لازم يكون top-level، مش closures أو async lambdas داخل initialize.
+// top-level function
+@pragma('vm:entry-point')
+Future<void> prayerNotificationBackgroundHandler(
+    NotificationResponse details) async {
+  if (details.actionId != null &&
+      details.actionId!.startsWith('cancel_action_')) {
+    final int prayerId = int.tryParse(details.actionId!.split('_').last) ?? 0;
+    final BaseNotificationsService notifications =
+        sl<BaseNotificationsService>();
+    await notifications.cancel(prayerId);
   }
 }

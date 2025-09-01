@@ -3,16 +3,15 @@ import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 
 class AdaptiveSwitch extends StatelessWidget {
-  const AdaptiveSwitch({
-    super.key,
-    required this.name,
-    required this.onChanged,
-    required this.value,
-    this.mainAxisAlignment = MainAxisAlignment.spaceBetween
-  });
+  const AdaptiveSwitch(
+      {super.key,
+      required this.name,
+      required this.onChanged,
+      required this.value,
+      this.mainAxisAlignment = MainAxisAlignment.spaceBetween});
 
   final String name;
-  final void Function() onChanged;
+  final void Function(bool value) onChanged;
   final bool value;
   final MainAxisAlignment mainAxisAlignment;
 
@@ -31,7 +30,7 @@ class AdaptiveSwitch extends StatelessWidget {
         const SizedBox(width: 12),
         Switch.adaptive(
           value: value,
-          onChanged: (_) => onChanged(),
+          onChanged: onChanged,
           activeColor: AppColors.grey400,
           activeTrackColor: AppColors.successColor,
           inactiveThumbColor: AppColors.grey400,

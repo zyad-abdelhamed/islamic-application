@@ -76,6 +76,7 @@ class ChangeLocationWidget extends StatelessWidget {
             child: Column(
               spacing: 5,
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(
                   Icons.location_pin,
@@ -85,6 +86,8 @@ class ChangeLocationWidget extends StatelessWidget {
                 Text(
                   sl<GetPrayersTimesController>().locationEntity!.name,
                   textAlign: TextAlign.center,
+                  softWrap: true,
+                  maxLines: 3,
                   style: TextStyles.semiBold16_120(context)
                       .copyWith(color: dataColor, fontFamily: 'DataFontFamily'),
                 )

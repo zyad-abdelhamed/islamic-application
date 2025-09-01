@@ -1,6 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:test_app/core/constants/cache_constants.dart';
 import 'package:test_app/core/errors/failures.dart';
+import 'package:test_app/core/services/cache_service.dart';
+import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/features/app/domain/entities/location_entity.dart';
 import 'package:test_app/features/app/domain/entities/timings.dart';
 import 'package:test_app/features/app/domain/repositories/location_repo.dart';
@@ -15,10 +18,9 @@ class GetPrayersTimesController {
 
   final GetPrayersTimesUseCase getPrayersTimesUseCase;
   final BaseLocationRepo baseLocationRepo;
+  final BaseCacheService cache = sl<BaseCacheService>();
 
   Timings timings = Timings.empty();
-  String? errorMessage;
-  final ValueNotifier<bool> hasErrorNotifier = ValueNotifier(false);
   LocationEntity? locationEntity;
 
   Future<void> getPrayersTimes(BuildContext context) async {
@@ -26,16 +28,17 @@ class GetPrayersTimesController {
 
     await result.fold(
       (failure) {
-        hasErrorNotifier.value = true;
-
-        errorMessage = failure.message;
+        cache.insertStringToCache(
+            key: CacheConstants.getPrayersTimesErrorMessage,
+            value: failure.message);
 
         _goToHomePage(context);
       },
       (prayerTimes) async {
-        timings = prayerTimes;
+        cache.insertStringToCache(
+            key: CacheConstants.getPrayersTimesErrorMessage, value: '');
 
-        hasErrorNotifier.value = false;
+        timings = prayerTimes;
 
         final Either<Failure, LocationEntity> locationResult =
             await baseLocationRepo.getCurrentLocation();

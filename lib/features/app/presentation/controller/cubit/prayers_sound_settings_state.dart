@@ -12,10 +12,7 @@ class PrayerSoundSettingsLoaded extends PrayerSoundSettingsState {
 
 class PrayerSoundSettingsSaving extends PrayerSoundSettingsState {}
 
-class PrayerSoundSettingsSaved extends PrayerSoundSettingsState {
-  final PrayerSoundSettingsEntity settings;
-  PrayerSoundSettingsSaved(this.settings);
-}
+class PrayerSoundSettingsSaved extends PrayerSoundSettingsState {}
 
 class PrayerSoundSettingsError extends PrayerSoundSettingsState {
   final String message;

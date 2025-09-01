@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
+import 'package:test_app/features/app/data/models/number_animation_model.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/featured_records_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/featured_records_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/featured_records_state.dart';
@@ -12,9 +13,11 @@ class FeaturedRecordesBlocListener extends StatelessWidget {
   const FeaturedRecordesBlocListener({
     super.key,
     required this.controller,
+    required this.counterNotifier,
   });
 
   final FeaturedRecordsController controller;
+  final ValueNotifier<NumberAnimationModel> counterNotifier;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +29,7 @@ class FeaturedRecordesBlocListener extends StatelessWidget {
             controller.recordsLengthNotifier.value =
                 controller.initRecords.length;
           } else if (state is FeaturedRecordsAddSuccess) {
+            counterNotifier.value.number = 0;
             controller.addAnimation(newRecord: state.newRecord);
 
             AppSnackBar(

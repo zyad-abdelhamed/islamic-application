@@ -5,22 +5,23 @@ import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
 
 void showDeleteAlertDialog(BuildContext context,
-    {required VoidCallback deleteFunction}) {
+    {required VoidCallback deleteFunction, Widget? content}) {
   showAdaptiveDialog(
     context: context,
     builder: (context) {
       return AlertDialog.adaptive(
         actionsAlignment: MainAxisAlignment.start,
         title: Text(AppStrings.translate("areYouSure")),
+        content: content,
         actions: [
-          OutlinedButton(
+          TextButton(
               onPressed: deleteFunction,
               child: Text(
                 AppStrings.translate("yes"),
                 style: TextStyles.regular16_120(context,
                     color: AppColors.errorColor),
               )),
-          OutlinedButton(
+          TextButton(
               onPressed: () => Navigator.pop(context),
               child: Text(AppStrings.translate("no"),
                   style: TextStyles.regular16_120(context,

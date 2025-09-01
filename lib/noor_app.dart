@@ -6,7 +6,6 @@ import 'package:test_app/core/helper_function/onGenerateRoute.dart';
 import 'package:test_app/core/theme/dark_theme.dart';
 import 'package:test_app/core/theme/light_theme.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
-import 'package:test_app/features/app/presentation/view/components/change_interval_between_adhkar_notifications.dart';
 
 class NoorApp extends StatelessWidget {
   const NoorApp({super.key});
@@ -29,8 +28,7 @@ class NoorApp extends StatelessWidget {
             ],
             theme: isDarkMode ? darkTheme : lightTheme,
             debugShowCheckedModeBanner: false,
-            //initialRoute: getInitRoute,
-            home: const AdhkarSettingsScreen(),
+            initialRoute: getInitRoute,
             onGenerateRoute: onGenerateRoute,
           );
         },

@@ -51,7 +51,10 @@ class FeatuerdRecordsWidget extends StatelessWidget {
                       color: Theme.of(context).primaryColor, size: 40),
                 ),
               ),
-              FeturedRecordsContainer(controller: controller),
+              FeturedRecordsContainer(
+                controller: controller,
+                counterNotifier: counterNotifier,
+              ),
             ],
           ),
           GestureDetector(

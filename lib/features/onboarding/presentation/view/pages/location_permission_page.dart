@@ -5,6 +5,7 @@ import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_wid
 import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/services/position_service.dart';
+import 'package:test_app/features/app/presentation/view/components/show_location_warning%20_dialog.dart';
 import 'package:test_app/features/onboarding/presentation/controller/on_boarding_controller.dart';
 import 'package:test_app/features/onboarding/presentation/view/component/activate_location_permission_column.dart';
 import 'package:test_app/features/onboarding/presentation/view/component/save_location_column.dart';
@@ -73,11 +74,20 @@ class _LocationPermissionPageState extends State<LocationPermissionPage> {
                 child: Column(
                   key: ValueKey<bool>(shouldShowLocationButton),
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: value == null
-                      ? [const GetAdaptiveLoadingWidget()]
-                      : shouldShowLocationButton
-                          ? activateLocationPermissionColumn(context)
-                          : saveLocationColumn(context),
+                  children: [
+                    const Spacer(),
+                    ...value == null
+                        ? [const GetAdaptiveLoadingWidget()]
+                        : shouldShowLocationButton
+                            ? activateLocationPermissionColumn(context)
+                            : saveLocationColumn(context),
+                    const Spacer(),
+                    TextButton(
+                      onPressed: () => showLocationWarningDialog(
+                          context, shouldShowLocationButton),
+                      child: Text("لاحقاً"),
+                    ),
+                  ],
                 )),
           ),
         ),

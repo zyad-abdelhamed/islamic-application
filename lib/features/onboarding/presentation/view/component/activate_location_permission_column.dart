@@ -3,7 +3,6 @@ import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/services/position_service.dart';
 import 'package:test_app/core/theme/text_styles.dart';
-import 'package:test_app/features/app/presentation/view/components/show_location_warning%20_dialog.dart';
 
 List<Widget> activateLocationPermissionColumn(BuildContext context) {
   return <Widget>[
@@ -25,10 +24,6 @@ List<Widget> activateLocationPermissionColumn(BuildContext context) {
       onPressed: () async =>
           await sl<BaseLocationService>().requestPermission(),
       child: Text(AppStrings.translate("activationLocationNow")),
-    ),
-    TextButton(
-      onPressed: () => showLocationWarningDialog(context),
-      child: Text("لاحقاً"),
     ),
   ];
 }

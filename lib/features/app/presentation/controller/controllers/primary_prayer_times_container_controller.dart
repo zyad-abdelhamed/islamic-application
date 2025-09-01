@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/constants/constants_values.dart';
 import 'package:test_app/core/theme/app_colors.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/next_prayer_controller.dart';
 
 class PrimaryPrayerTimesContainerController {
@@ -32,9 +31,7 @@ class PrimaryPrayerTimesContainerController {
       color:
           context.read<NextPrayerController>().nextPrayerNotifier.value.name ==
                   names[i]
-              ? !ThemeCubit.controller(context).state
-                  ? AppColors.darkModeInActiveColor
-                  : AppColors.lightModeInActiveColor
+              ? AppColors.darkModeInActiveColor
               : Colors.transparent,
     );
   }

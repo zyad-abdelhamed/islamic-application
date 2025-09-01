@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/widgets/app_sneak_bar.dart';
 import 'package:test_app/features/app/domain/entities/prayer_sound_settings_entity.dart';
@@ -11,7 +12,8 @@ import 'package:test_app/features/app/presentation/view/components/prayers_sound
 class PrayersSoundsSettingsBlocConsumer extends StatelessWidget {
   final PrayerTimesPageController controller;
 
-  const PrayersSoundsSettingsBlocConsumer({super.key, required this.controller});
+  const PrayersSoundsSettingsBlocConsumer(
+      {super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -25,15 +27,18 @@ class PrayersSoundsSettingsBlocConsumer extends StatelessWidget {
           controller.markAsSaved();
           controller.loadingNotifier.value = false;
           AppSnackBar(
-              message: AppStrings.translate("settingsSaved"), type: AppSnackBarType.success).show(context);
+                  message: AppStrings.translate("settingsSaved"),
+                  type: AppSnackBarType.success)
+              .show(context);
         } else if (state is PrayerSoundSettingsError) {
           controller.loadingNotifier.value = false;
-          AppSnackBar(message: state.message, type: AppSnackBarType.error).show(context);
+          AppSnackBar(message: state.message, type: AppSnackBarType.error)
+              .show(context);
         }
       },
       builder: (context, state) {
         if (controller.prayerSoundSettingsEntityNotifier.value == null) {
-          return const Center(child: CircularProgressIndicator());
+          return const GetAdaptiveLoadingWidget();
         }
 
         return ValueListenableBuilder<PrayerSoundSettingsEntity?>(

@@ -13,4 +13,5 @@ abstract class RoutesConstants {
   static const String bookMarksPageRouteName = 'bookMarksPageRouteName';
   static const String addDailyAdhkarPage = 'addDailyAdhkarPage';
   static const String saveLocationPage = "saveLocationPage";
+  static const String settingsPage = "settingsPage";
 }

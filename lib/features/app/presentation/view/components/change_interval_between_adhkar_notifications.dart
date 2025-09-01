@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/repeat_interval_controller.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/settings_page_controller.dart';
 
-class AdhkarSettingsScreen extends StatelessWidget {
-  const AdhkarSettingsScreen({super.key});
+class ChangeIntervalBetweenAdhkarNotificationsWidget extends StatelessWidget {
+  const ChangeIntervalBetweenAdhkarNotificationsWidget({
+    super.key,
+    required this.stateNotifier,
+  });
 
+  final ValueNotifier<SettingsPageState> stateNotifier;
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<RepeatIntervalProvider>(
@@ -13,9 +19,6 @@ class AdhkarSettingsScreen extends StatelessWidget {
       create: (_) => RepeatIntervalProvider(),
       child: Card(
         elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Consumer<RepeatIntervalProvider>(
@@ -52,14 +55,16 @@ class AdhkarSettingsScreen extends StatelessWidget {
                     divisions: 17,
                     label: controller.formattedTime,
                     activeColor: controller.sliderColor,
-                    inactiveColor: Colors.grey.shade300,
+                    inactiveColor: ThemeCubit.controller(context).state
+                        ? Colors.grey.shade800
+                        : Colors.grey.shade300,
                     onChanged: (value) =>
                         controller.updateMinutes(value.toInt()),
                   ),
                   if (controller.isChanged) ...[
                     const SizedBox(height: 12),
                     ElevatedButton.icon(
-                      onPressed: controller.saveInterval,
+                      onPressed: () => controller.saveInterval(stateNotifier),
                       icon: const Icon(Icons.save),
                       label: const Text("تحديث"),
                       style: ElevatedButton.styleFrom(

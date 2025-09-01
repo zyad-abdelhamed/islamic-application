@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/cache_constants.dart';
-import 'package:test_app/core/helper_function/schedule_daily_adhkar_notification.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
-import 'package:test_app/core/services/cache_service%20copy.dart';
+import 'package:test_app/core/services/cache_service.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/settings_page_controller.dart';
+import 'package:test_app/features/notifications/domain/repos/base_daily_adhkar_notifications_repo.dart';
 
 class RepeatIntervalProvider extends ChangeNotifier {
-  final BaseCacheService _cache = sl<BaseCacheService>();
-
+  late final BaseCacheService _cache;
+  late final BaseDailyAdhkarNotificationsRepo _dailyAdhkarNotificationsRepo;
   int _currentMinutes = 60; // القيمة الحالية
   int _savedMinutes = 60; // القيمة المخزنة في الكاش
 
   RepeatIntervalProvider() {
+    _cache = sl<BaseCacheService>();
+    _dailyAdhkarNotificationsRepo = sl<BaseDailyAdhkarNotificationsRepo>();
     _loadFromCache();
   }
 
@@ -51,9 +54,12 @@ class RepeatIntervalProvider extends ChangeNotifier {
   }
 
   // حفظ القيمة وإعادة جدولة إشعارات اليوم
-  Future<void> saveInterval() async {
-    await rescheduleDailyAdhkar(_currentMinutes);
+  Future<void> saveInterval(
+      ValueNotifier<SettingsPageState> stateNotifier) async {
+    stateNotifier.value = SettingsPageState.loading;
+    await _dailyAdhkarNotificationsRepo.rescheduleDailyAdhkar(_currentMinutes);
     _savedMinutes = _currentMinutes;
     notifyListeners();
+    stateNotifier.value = SettingsPageState.idle;
   }
 }

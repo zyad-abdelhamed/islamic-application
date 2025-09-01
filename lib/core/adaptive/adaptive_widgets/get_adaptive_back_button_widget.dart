@@ -25,7 +25,7 @@ class GetAdaptiveBackButtonWidget extends StatelessWidget {
     return OpacityLayout(
       child: GestureDetector(
         child: const Icon(Icons.arrow_back),
-        onTap: () => _goBack(context),
+        onTap: () => _back(context),
       ),
     );
   }
@@ -34,14 +34,14 @@ class GetAdaptiveBackButtonWidget extends StatelessWidget {
     return OpacityLayout(
         child: CupertinoButton(
       padding: EdgeInsets.zero,
-      onPressed: () => _goBack(context),
+      onPressed: () => _back(context),
       child: const Icon(CupertinoIcons.back),
     ));
   }
 
   Widget _getWindowsBackButton(BuildContext context) {
     return TextButton.icon(
-      onPressed: () => _goBack(context),
+      onPressed: () => _back(context),
       icon: const Icon(Icons.arrow_back, color: AppColors.black),
       label: Text(
         AppStrings.translate("back"),
@@ -50,7 +50,7 @@ class GetAdaptiveBackButtonWidget extends StatelessWidget {
     );
   }
 
-  void _goBack(context) {
+  void _back(context) {
     Navigator.pushNamedAndRemoveUntil(
         context, RoutesConstants.homePageRouteName, (route) => false);
   }

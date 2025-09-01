@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_app/core/adaptive/adaptive_widgets/adaptive_switch.dart';
+import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
+import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/widgets/app_divider.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/duaa_cubit.dart';
@@ -28,14 +28,20 @@ class HomeDrawerWidget extends StatelessWidget {
 
             const AppDivider(),
 
-            // Theme Toggle
-            Align(
-              alignment: Alignment.centerRight,
-              child: AdaptiveSwitch(
-                mainAxisAlignment: MainAxisAlignment.start,
-                name: AppStrings.translate("darkMode"),
-                onChanged: ThemeCubit.controller(context).toggleTheme,
-                value: context.watch<ThemeCubit>().state,
+            GestureDetector(
+              onTap: () {
+                Navigator.pushReplacementNamed(
+                    context, RoutesConstants.settingsPage);
+              },
+              child: Row(
+                spacing: 8,
+                children: [
+                  const Icon(Icons.settings),
+                  Text(
+                    AppStrings.translate("settings"),
+                    style: TextStyles.bold20(context).copyWith(fontSize: 23),
+                  ),
+                ],
               ),
             ),
           ],

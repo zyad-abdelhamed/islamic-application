@@ -62,31 +62,31 @@ class PrayersSoundSettingsWidget extends StatelessWidget {
                   AdaptiveSwitch(
                     name: names[0],
                     value: settings.fajr,
-                    onChanged: () => controller.updatePrayerSoundSetting(
+                    onChanged: (_) => controller.updatePrayerSoundSetting(
                         names[0], !settings.fajr),
                   ),
                   AdaptiveSwitch(
                     name: names[1],
                     value: settings.dhuhr,
-                    onChanged: () => controller.updatePrayerSoundSetting(
+                    onChanged: (_) => controller.updatePrayerSoundSetting(
                         names[1], !settings.dhuhr),
                   ),
                   AdaptiveSwitch(
                     name: names[2],
                     value: settings.asr,
-                    onChanged: () => controller.updatePrayerSoundSetting(
+                    onChanged: (_) => controller.updatePrayerSoundSetting(
                         names[2], !settings.asr),
                   ),
                   AdaptiveSwitch(
                     name: names[3],
                     value: settings.maghrib,
-                    onChanged: () => controller.updatePrayerSoundSetting(
+                    onChanged: (_) => controller.updatePrayerSoundSetting(
                         names[3], !settings.maghrib),
                   ),
                   AdaptiveSwitch(
                     name: names[4],
                     value: settings.isha,
-                    onChanged: () => controller.updatePrayerSoundSetting(
+                    onChanged: (_) => controller.updatePrayerSoundSetting(
                         names[4], !settings.isha),
                   )
                 ],

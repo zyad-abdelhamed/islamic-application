@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_strings.dart';
+import 'package:test_app/core/constants/cache_constants.dart';
+import 'package:test_app/core/services/cache_service.dart';
 import 'package:test_app/core/services/position_service.dart';
 import 'package:test_app/core/services/internet_connection.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
@@ -17,6 +19,7 @@ import 'package:test_app/features/app/presentation/view/components/custom_alert_
 bool _isShowed = false;
 
 class HomePageController {
+  final BaseCacheService cache = sl<BaseCacheService>();
   void initState(BuildContext context,
       {required NextPrayerController nextPrayerController}) {
     if (_isShowed == false) {
@@ -31,8 +34,9 @@ class HomePageController {
       DailyAdhkarCubit.get(context).getAllDailyAdhkar();
     });
 
-    // تهيئة PrayerTimesCubit
-    if (sl<GetPrayersTimesController>().hasErrorNotifier.value == false) {
+    final String? errorMessage = cache.getStringFromCache(
+        key: CacheConstants.getPrayersTimesErrorMessage);
+    if (errorMessage != null && errorMessage.isEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         nextPrayerController.init(
           timings: sl<GetPrayersTimesController>().timings,
@@ -69,8 +73,8 @@ class HomePageController {
         AppSnackBar(
           message: 'لم يتم تحديد الموقع.',
           label: 'حفظ الموقع',
-          onPressed: () => Navigator.pushNamedAndRemoveUntil(
-              context, RoutesConstants.saveLocationPage, (route) => false),
+          onPressed: () => Navigator.pushNamedAndRemoveUntil(context,
+              RoutesConstants.locationPermissionPage, (route) => false),
           type: AppSnackBarType.error,
         ).show(context);
       });

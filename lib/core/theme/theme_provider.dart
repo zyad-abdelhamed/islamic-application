@@ -9,7 +9,8 @@ class ThemeCubit extends HydratedCubit<bool> {
 
   ThemeData get theme => state ? darkTheme : lightTheme;
 
-  static ThemeCubit controller(BuildContext context) => context.read<ThemeCubit>();
+  static ThemeCubit controller(BuildContext context) =>
+      context.read<ThemeCubit>();
 
   void toggleTheme() => emit(!state);
 
@@ -22,4 +23,6 @@ class ThemeCubit extends HydratedCubit<bool> {
   Map<String, dynamic> toJson(bool state) {
     return {'isDark': state};
   }
+
+  void changeTheme(bool value) {}
 }

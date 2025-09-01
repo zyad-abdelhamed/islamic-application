@@ -60,7 +60,9 @@ class AdhkarPageAppBar extends StatelessWidget implements PreferredSizeWidget {
                 return AdaptiveSwitch(
                   mainAxisAlignment: MainAxisAlignment.center,
                   name: AppStrings.translate("adhkarPageSwitchText"),
-                  onChanged: adhkarPageController.toggleIsDeletedSwitch,
+                  onChanged: (_) {
+                    adhkarPageController.toggleIsDeletedSwitch();
+                  },
                   value: adhkarPageController.switchNotfier.value,
                 );
               }),

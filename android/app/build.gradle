@@ -5,14 +5,14 @@ plugins {
 }
 
 android {
-    namespace = "com.example.test_app"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    namespace "com.example.test_app"
+    compileSdk 35
+    ndkVersion "29.0.13846066" // <-- تم تعديل نسخة NDK هنا
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-        coreLibraryDesugaringEnabled true // تفعيل desugaring
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+        coreLibraryDesugaringEnabled true
     }
 
     kotlinOptions {
@@ -20,25 +20,32 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.test_app"
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        applicationId "com.example.test_app"
+        minSdk 21
+        targetSdk 35
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
     }
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.debug
+            signingConfig signingConfigs.debug
         }
     }
 }
 
 flutter {
-    source = "../.."
+    source "../.."
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0"
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5' // ✅ محدث
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.10"
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.5"
+
+    // WorkManager
+    implementation "androidx.work:work-runtime-ktx:2.8.1"
+
+    // Flutter Local Notifications dependencies
+    implementation "androidx.core:core-ktx:1.12.0"
 }
