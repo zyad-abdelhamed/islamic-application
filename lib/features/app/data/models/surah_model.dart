@@ -4,11 +4,13 @@ class SurahModel extends SurahEntity {
   const SurahModel(
       {required super.surah,
       required super.numberOfAyat,
+      required super.type,
       required super.pageNumber});
   factory SurahModel.fromJson(Map<String, dynamic> json) {
     return SurahModel(
       surah: json['surah'],
       numberOfAyat: json['numberOfAyat'],
+      type: json['type'],
       pageNumber: json['pageNumber'],
     );
   }
