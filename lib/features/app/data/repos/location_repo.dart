@@ -16,14 +16,14 @@ class LocationRepo extends BaseLocationRepo {
   final LocationNameService locationNameService;
   final InternetConnection internetConnection;
   final BaseLocationService baseLocationService;
-  final NotificationsBackgroundTasksBaseRepo _notificationsBackgroundTasksRepo;
+  final NotificationsBackgroundTasksBaseRepo notificationsBackgroundTasksRepo;
 
   LocationRepo(
     this.baseLocationLocalDataSource,
     this.locationNameService,
     this.internetConnection,
     this.baseLocationService,
-    this._notificationsBackgroundTasksRepo,
+    this.notificationsBackgroundTasksRepo,
   );
   @override
   Future<Either<Failure, LocationEntity>> getCurrentLocation() async {
@@ -72,7 +72,7 @@ class LocationRepo extends BaseLocationRepo {
           );
         });
 
-        await _notificationsBackgroundTasksRepo
+        await notificationsBackgroundTasksRepo
             .registerPrayerTimesNotificationsTask(); // register prayer times notifications
         return Right(unit);
       } catch (e) {

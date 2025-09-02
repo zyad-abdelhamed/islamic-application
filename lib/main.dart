@@ -14,8 +14,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await DependencyInjection.init();
-  // استنى كل الـ async singletons
-  await sl.allReady();
 
   await sl<BaseCacheService>().cacheintIalization();
 
