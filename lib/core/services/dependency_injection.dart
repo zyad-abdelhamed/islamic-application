@@ -64,6 +64,7 @@ import 'package:test_app/core/services/api_services.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/timer_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/duaa_cubit.dart';
 import 'package:test_app/features/notifications/data/data_sources/local_data_source/daily_adhkar_notifications_local_data_source.dart';
+import 'package:test_app/features/notifications/data/data_sources/local_data_source/notifications_background_tasks_local_data_source.dart';
 import 'package:test_app/features/notifications/data/repos/daily_adhkar_notifications_repo_impl.dart';
 import 'package:test_app/features/notifications/data/repos/notifications_background_tasks_repo_impl.dart';
 import 'package:test_app/features/notifications/data/repos/prayer_times_notifications_repo_impl.dart';
@@ -123,6 +124,9 @@ class DependencyInjection {
     sl.registerLazySingleton<BasePrayerTimesNotificationsRepo>(
       () => PrayerTimesNotificationsRepoImpl(sl(), sl(), sl()),
     );
+    sl.registerLazySingleton<NotificationsBackgroundTasksBaseRepo>(
+      () => NotificationsBackgroundTasksRepoImpl(sl(), sl(), sl(), sl()),
+    );
     sl.registerLazySingleton<BaseAppRepo>(() => AppRepoImpl(
         cache: sl(), backgroundTasksService: sl(), notifications: sl()));
     sl.registerLazySingleton<BaseDailyAdhkarRepo>(
@@ -141,8 +145,8 @@ class DependencyInjection {
       () => PrayerRepo(
         prayersRemoteDataSource: sl(),
         prayersLocalDataSource: sl(),
-        internetConnection: sl<InternetConnection>(),
-        baseLocationRepo: sl<BaseLocationRepo>(),
+        internetConnection: sl(),
+        baseLocationRepo: sl(),
         baseLocationService: sl(),
       ),
     );
@@ -150,8 +154,8 @@ class DependencyInjection {
     sl.registerLazySingleton<BaseDailyAdhkarNotificationsLocalDataSource>(
       () => DailyAdhkarNotificationsLocalDataSourceImpl(cache: sl()),
     );
-    sl.registerLazySingleton<NotificationsBackgroundTasksBaseRepo>(
-      () => NotificationsBackgroundTasksRepoImpl(sl(), sl(), sl(), sl()),
+    sl.registerLazySingleton<BaseNotificationsBackgroundTasksLocalDataSource>(
+      () => NotificationsBackgroundTasksLocalDataSource(cache: sl()),
     );
     sl.registerLazySingleton<BaseDailyAdhkarLocalDataSource>(
         () => DailyAdhkarLocalDataSourceImpl());
@@ -181,7 +185,7 @@ class DependencyInjection {
     sl.registerLazySingleton<BaseBackgroundTasksService>(
         () => BackgroundTasksServiceImplByWorkManager());
     sl.registerLazySingleton<BaseNotificationsService>(
-        () => NotificationsServiceByFlutterLocalNotifications(sl()));
+        () => NotificationsServiceByFlutterLocalNotifications());
     sl.registerLazySingleton<BaseImagePickerService>(
         () => ImagePickerService());
     sl.registerLazySingleton<BaseCacheService>(

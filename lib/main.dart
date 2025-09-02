@@ -14,12 +14,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await DependencyInjection.init();
+  // استنى كل الـ async singletons
+  await sl.allReady();
 
   await sl<BaseCacheService>().cacheintIalization();
-
-  await sl<BaseNotificationsService>().init();
-
-  await sl<BaseBackgroundTasksService>().init();
 
   await setupHive();
 
@@ -30,6 +28,10 @@ void main() async {
   );
 
   await AppStrings.load();
+
+  await sl<BaseNotificationsService>().init();
+
+  await sl<BaseBackgroundTasksService>().init();
 
   await sl<NotificationsBackgroundTasksBaseRepo>()
       .registerDailyAdhkarNotificationsTask();

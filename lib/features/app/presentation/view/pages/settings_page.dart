@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_exit_app/flutter_exit_app.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
@@ -59,9 +58,7 @@ class _SettingsPageState extends State<SettingsPage> {
             } else if (state is ResetAppError) {
               AppSnackBar(message: state.message, type: AppSnackBarType.error)
                   .show(context);
-            } else if (state is ResetAppSuccess) {
-              FlutterExitApp.exitApp();
-            }
+            } else if (state is ResetAppSuccess) {}
           },
           child: ValueListenableBuilder<SettingsPageState>(
             valueListenable: settingsController.pageState,

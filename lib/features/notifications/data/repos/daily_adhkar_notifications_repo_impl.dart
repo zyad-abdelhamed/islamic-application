@@ -46,7 +46,6 @@ class DailyAdhkarNotificationsRepoImpl
       channelDescription: 'Random adhkar notifications',
       importance: Importance.max,
       priority: Priority.high,
-      playSound: true,
       sound: RawResourceAndroidNotificationSound('adhkar'),
     );
     final iosDetails = DarwinNotificationDetails();

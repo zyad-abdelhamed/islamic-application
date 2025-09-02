@@ -2,7 +2,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:test_app/core/models/notification_request_prameters.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
-import 'package:test_app/features/notifications/domain/repos/base_prayer_times_notifications_repo.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_all.dart' as tz1;
 
@@ -30,16 +29,12 @@ abstract class BaseNotificationsService {
 
 class NotificationsServiceByFlutterLocalNotifications
     extends BaseNotificationsService {
-  final BasePrayerTimesNotificationsRepo prayerTimesNotificationsRepo;
   final FlutterLocalNotificationsPlugin instance =
       FlutterLocalNotificationsPlugin();
 
-  NotificationsServiceByFlutterLocalNotifications(
-      this.prayerTimesNotificationsRepo);
-
   @override
   Future<void> init() async {
-    super.init();
+    await super.init();
     final settings = InitializationSettings(
       android: AndroidInitializationSettings("@mipmap/launcher_icon"),
       iOS: DarwinInitializationSettings(), // لاحقا يتم عمل الاعدادات الخاصه بها
