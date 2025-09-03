@@ -3,7 +3,6 @@ import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
 
 class HomeButton extends StatelessWidget {
   const HomeButton(
@@ -58,7 +57,7 @@ class HomeButton extends StatelessWidget {
             Text(
               text,
               style: TextStyles.bold20(context).copyWith(
-                  color: ThemeCubit.controller(context).state
+                  color: Theme.of(context).brightness == Brightness.dark
                       ? AppColors.darkModeTextColor
                       : AppColors.lightModeTextColor,
                   fontSize: 23),

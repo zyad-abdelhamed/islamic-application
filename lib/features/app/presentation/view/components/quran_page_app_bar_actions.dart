@@ -4,7 +4,6 @@ import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/core/widgets/app_functionalty_button.dart';
 import 'package:test_app/core/widgets/app_sneak_bar.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/quran_page_controller.dart';
@@ -16,8 +15,9 @@ import 'package:test_app/features/app/presentation/view/pages/book_marks_page.da
 const String _buttonName = 'حفظ العلامة';
 List<Widget> quranPageAppBarActions(
     BuildContext context, QuranPageController quranPageController) {
-  final color =
-      ThemeCubit.controller(context).state ? Colors.white : Colors.black;
+  final Color color = Theme.of(context).brightness == Brightness.dark
+      ? Colors.white
+      : Colors.black;
 
   return [
     GestureDetector(

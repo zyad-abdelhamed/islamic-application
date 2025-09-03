@@ -21,53 +21,52 @@ class QuranPageController {
   }
 
   /// الميزة في هذه الطريقة:
-/// - نستخدم بحث ثنائي (Binary Search) للوصول لأول سورة بنفس الصفحة بسرعة كبيرة O(log n).
-/// - بعد ما نلاقي أول تطابق، نكمل لوب بسيط جدًا (O(k)) لجمع كل السور اللي صفحتها نفس الرقم.
-/// - الكود بسيط وسهل القراءة، والأداء ممتاز لأن k صغير (عادة 1 أو 2 سور فقط).
-/// - الطريقة دي أسرع بكثير من البحث الخطي العادي O(n) خصوصًا مع قوائم كبيرة.
+  /// - نستخدم بحث ثنائي (Binary Search) للوصول لأول سورة بنفس الصفحة بسرعة كبيرة O(log n).
+  /// - بعد ما نلاقي أول تطابق، نكمل لوب بسيط جدًا (O(k)) لجمع كل السور اللي صفحتها نفس الرقم.
+  /// - الكود بسيط وسهل القراءة، والأداء ممتاز لأن k صغير (عادة 1 أو 2 سور فقط).
+  /// - الطريقة دي أسرع بكثير من البحث الخطي العادي O(n) خصوصًا مع قوائم كبيرة.
 
-Set<int> updateIndexNotifier(BuildContext context, int pageNumber) {
-  // هنخزن هنا كل إندكسات السور اللي صفحتها تساوي pageNumber
-  final Set<int> indexes = {};
+  Set<int> updateIndexNotifier(BuildContext context, int pageNumber) {
+    // هنخزن هنا كل إندكسات السور اللي صفحتها تساوي pageNumber
+    final Set<int> indexes = {};
 
-  // متغيرات البحث الثنائي
-  int low = 0;
-  int high = surahsInfoList.length - 1;
-  int firstMatchIndex = -1; // هنا هنخزن أول مكان نلاقي فيه نفس الصفحة
+    // متغيرات البحث الثنائي
+    int low = 0;
+    int high = surahsInfoList.length - 1;
+    int firstMatchIndex = -1; // هنا هنخزن أول مكان نلاقي فيه نفس الصفحة
 
-  // بحث ثنائي للعثور على أول سورة بنفس الصفحة
-  while (low <= high) {
-    int mid = (low + high) >> 1; // قسمة على 2 لكن أسرع باستخدام البت شيفت
-    int page = surahsInfoList[mid]["page"] - 1; // ننقص 1 لأن الصفحات 0-based
+    // بحث ثنائي للعثور على أول سورة بنفس الصفحة
+    while (low <= high) {
+      int mid = (low + high) >> 1; // قسمة على 2 لكن أسرع باستخدام البت شيفت
+      int page = surahsInfoList[mid]["page"] - 1; // ننقص 1 لأن الصفحات 0-based
 
-    if (page == pageNumber) {
-      firstMatchIndex = mid; 
-      high = mid - 1; // نكمل نبحث في النصف الشمال عشان نلاقي أول تطابق
-    } else if (page < pageNumber) {
-      low = mid + 1; // الصفحة أكبر من المطلوب → نروح يمين
-    } else {
-      high = mid - 1; // الصفحة أصغر من المطلوب → نروح شمال
+      if (page == pageNumber) {
+        firstMatchIndex = mid;
+        high = mid - 1; // نكمل نبحث في النصف الشمال عشان نلاقي أول تطابق
+      } else if (page < pageNumber) {
+        low = mid + 1; // الصفحة أكبر من المطلوب → نروح يمين
+      } else {
+        high = mid - 1; // الصفحة أصغر من المطلوب → نروح شمال
+      }
     }
-  }
 
-  // من أول تطابق، نجمع كل السور اللي صفحتها نفس الرقم
-  for (int i = firstMatchIndex; i < surahsInfoList.length; i++) {
-    if (surahsInfoList[i]["page"] - 1 == pageNumber) {
-      indexes.add(i);
-    } else {
-      break; // وقفنا أول ما الصفحات اختلفت (عشان نوفر وقت)
+    // من أول تطابق، نجمع كل السور اللي صفحتها نفس الرقم
+    for (int i = firstMatchIndex; i < surahsInfoList.length; i++) {
+      if (surahsInfoList[i]["page"] - 1 == pageNumber) {
+        indexes.add(surahsInfoList[i]["page"]);
+      } else {
+        break; // وقفنا أول ما الصفحات اختلفت (عشان نوفر وقت)
+      }
     }
+
+    // تحديث الـ Notifier والـ Controller لو فيه تطابقات
+    if (indexes.isNotEmpty) {
+      indexsNotifier.value = indexes;
+      QuranCubit.getQuranController(context).updateIndex(indexes.toList());
+    }
+
+    return indexes;
   }
-
-  // تحديث الـ Notifier والـ Controller لو فيه تطابقات
-  if (indexes.isNotEmpty) {
-    indexsNotifier.value = indexes;
-    QuranCubit.getQuranController(context).updateIndex(indexes.toList());
-  }
-
-  return indexes;
-}
-
 
   void dispose() {
     indexsNotifier.dispose();

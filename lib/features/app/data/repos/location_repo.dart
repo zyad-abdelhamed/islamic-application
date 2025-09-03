@@ -9,21 +9,19 @@ import 'package:test_app/features/app/data/datasources/location_local_data_sourc
 import 'package:test_app/features/app/data/models/location_model.dart';
 import 'package:test_app/features/app/domain/entities/location_entity.dart';
 import 'package:test_app/features/app/domain/repositories/location_repo.dart';
-import 'package:test_app/features/notifications/domain/repos/notifications_background_tasks_base_repo.dart';
+import 'package:test_app/features/notifications/data/repos/notifications_background_tasks_repo_impl.dart';
 
 class LocationRepo extends BaseLocationRepo {
   final BaseLocationLocalDataSource baseLocationLocalDataSource;
   final LocationNameService locationNameService;
   final InternetConnection internetConnection;
   final BaseLocationService baseLocationService;
-  final NotificationsBackgroundTasksBaseRepo notificationsBackgroundTasksRepo;
 
   LocationRepo(
     this.baseLocationLocalDataSource,
     this.locationNameService,
     this.internetConnection,
     this.baseLocationService,
-    this.notificationsBackgroundTasksRepo,
   );
   @override
   Future<Either<Failure, LocationEntity>> getCurrentLocation() async {
@@ -72,7 +70,7 @@ class LocationRepo extends BaseLocationRepo {
           );
         });
 
-        await notificationsBackgroundTasksRepo
+        await NotificationsBackgroundTasksRepoImpl
             .registerPrayerTimesNotificationsTask(); // register prayer times notifications
         return Right(unit);
       } catch (e) {

@@ -11,6 +11,7 @@
   "theIndex": "الفهرس",
   "settings": "الاعدادات",
   "done": "تم بحمد الله",
+  "surahsSearchHintText": "ابحث عن سورة",
   "unExpectedError": " حدث خطأ غير متوقع، يرجى المحاولة مرة أخرى",
   "usesOfActivationLocation": "لكي تتمكن من استخدام:\n\n• مواقيت الصلاة حسب موقعك\n• تحديد اتجاه القبلة بدقة\"",
   "activationLocationNow": "تفعيل الموقع الآن",

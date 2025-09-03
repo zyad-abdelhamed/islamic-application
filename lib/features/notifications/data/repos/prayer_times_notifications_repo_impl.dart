@@ -86,8 +86,8 @@ class PrayerTimesNotificationsRepoImpl
   }
 
   @override
-  Future<void> rescheduleRemainingPrayers(
-      PrayerSoundSettingsEntity soundSettings) async {
+  Future<void> rescheduleRemainingPrayers() async {
+    final PrayerSoundSettingsEntity soundSettings = await _getSoundSettings();
     // جلب أوقات الصلاة
     final Either<Failure, Timings> result = await repo.getPrayerTimes();
 
@@ -216,7 +216,6 @@ class PrayerTimesNotificationsRepoImpl
         channelDescription: 'إشعارات الأذان',
         importance: Importance.max,
         priority: Priority.high,
-        playSound: true,
         sound: RawResourceAndroidNotificationSound('aladhan'),
         fullScreenIntent: true,
         color: AppColors.lightModePrimaryColor,

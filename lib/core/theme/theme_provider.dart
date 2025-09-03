@@ -1,28 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:test_app/core/theme/dark_theme.dart';
-import 'package:test_app/core/theme/light_theme.dart';
 
-class ThemeCubit extends HydratedCubit<bool> {
-  ThemeCubit() : super(false); // false = light mode by default
-
-  ThemeData get theme => state ? darkTheme : lightTheme;
+class ThemeCubit extends HydratedCubit<ThemeMode> {
+  ThemeCubit() : super(ThemeMode.light);
 
   static ThemeCubit controller(BuildContext context) =>
       context.read<ThemeCubit>();
 
-  void toggleTheme() => emit(!state);
+  void toggleTheme(ThemeMode themeMode) => emit(themeMode);
 
   @override
-  bool fromJson(Map<String, dynamic> json) {
-    return json['isDark'] as bool? ?? false;
+  ThemeMode fromJson(Map<String, dynamic> json) {
+    final mode = json['theme'] as String?;
+    switch (mode) {
+      case 'light':
+        return ThemeMode.light;
+      case 'dark':
+        return ThemeMode.dark;
+      case 'system':
+        return ThemeMode.system;
+      default:
+        return ThemeMode.light;
+    }
   }
 
   @override
-  Map<String, dynamic> toJson(bool state) {
-    return {'isDark': state};
+  Map<String, dynamic> toJson(ThemeMode state) {
+    String mode;
+    switch (state) {
+      case ThemeMode.light:
+        mode = 'light';
+        break;
+      case ThemeMode.dark:
+        mode = 'dark';
+        break;
+      case ThemeMode.system:
+        mode = 'system';
+        break;
+    }
+    return {'theme': mode};
   }
-
-  void changeTheme(bool value) {}
 }

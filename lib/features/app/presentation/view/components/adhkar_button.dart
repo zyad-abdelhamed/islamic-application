@@ -3,7 +3,6 @@ import 'package:test_app/core/helper_function/get_responsive_font_size.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/data/models/adhkar_parameters.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_adhkar_controller.dart';
 
@@ -49,7 +48,7 @@ class _AdhkarButtonState extends State<AdhkarButton> {
           child: Container(
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
-                color: ThemeCubit.controller(context).state
+                color: Theme.of(context).brightness == Brightness.dark
                     ? AppColors.darkModeInActiveColor
                     : AppColors.lightModeInActiveColor,
                 borderRadius: BorderRadius.circular(50)),

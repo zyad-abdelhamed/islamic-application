@@ -57,7 +57,8 @@ class RepeatIntervalProvider extends ChangeNotifier {
   Future<void> saveInterval(
       ValueNotifier<SettingsPageState> stateNotifier) async {
     stateNotifier.value = SettingsPageState.loading;
-    await _dailyAdhkarNotificationsRepo.rescheduleDailyAdhkar(_currentMinutes);
+    await _dailyAdhkarNotificationsRepo.rescheduleDailyAdhkar(
+        newMinutes: _currentMinutes);
     _savedMinutes = _currentMinutes;
     notifyListeners();
     stateNotifier.value = SettingsPageState.idle;

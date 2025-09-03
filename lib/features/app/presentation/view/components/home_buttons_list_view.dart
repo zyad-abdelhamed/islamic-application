@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_strings.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/get_surahs_info_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/quran_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/home_button.dart';
 import 'package:test_app/features/app/presentation/view/pages/alquran_alkarim_page.dart';
@@ -40,7 +41,10 @@ List _pages = [
     create: (context) => sl<QuranCubit>(),
     child: AlquranAlkarimPage(),
   ),
-  SurahListPage(),
+  BlocProvider<GetSurahsInfoCubit>(
+    create: (_) => sl<GetSurahsInfoCubit>(),
+    child: SurahListPage(),
+  ),
   ElecRosaryPage(),
   RamadanTabelPage(),
   QiblaPage(),

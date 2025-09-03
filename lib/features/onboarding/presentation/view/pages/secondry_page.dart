@@ -4,7 +4,6 @@ import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/onboarding/presentation/controller/on_boarding_controller.dart';
 import 'package:test_app/features/onboarding/presentation/view/component/feature_description_widget.dart';
 import 'package:test_app/features/onboarding/presentation/view/component/on_boarding_button.dart';
@@ -33,7 +32,8 @@ class _SecondryPageState extends State<SecondryPage> {
 
   @override
   Widget build(BuildContext context) {
-    final OnBoardingController onBoardingController = sl<OnBoardingController>();
+    final OnBoardingController onBoardingController =
+        sl<OnBoardingController>();
 
     return Scaffold(
       body: Padding(
@@ -59,7 +59,7 @@ class _SecondryPageState extends State<SecondryPage> {
               count: onBoardingController.featuresNumber,
               effect: ScrollingDotsEffect(
                 maxVisibleDots: onBoardingController.featuresNumber,
-                dotColor: ThemeCubit.controller(context).state
+                dotColor: Theme.of(context).brightness == Brightness.dark
                     ? AppColors.darkModeInActiveColor
                     : AppColors.lightModeInActiveColor,
                 activeDotColor: Theme.of(context).primaryColor,
@@ -81,7 +81,8 @@ class _SecondryPageState extends State<SecondryPage> {
                 ),
                 TextButton(
                   onPressed: () {
-                    onBoardingController.goToLocationPermissionPage(context: context);
+                    onBoardingController.goToLocationPermissionPage(
+                        context: context);
                   },
                   child: Text(
                     AppStrings.translate("skip"),

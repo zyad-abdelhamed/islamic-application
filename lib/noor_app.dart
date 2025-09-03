@@ -14,8 +14,8 @@ class NoorApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ThemeCubit(),
-      child: BlocBuilder<ThemeCubit, bool>(
-        builder: (_, isDarkMode) {
+      child: BlocBuilder<ThemeCubit, ThemeMode>(
+        builder: (_, ThemeMode themeMode) {
           return MaterialApp(
             locale: const Locale('ar'),
             supportedLocales: const [
@@ -26,7 +26,9 @@ class NoorApp extends StatelessWidget {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            theme: isDarkMode ? darkTheme : lightTheme,
+            theme: lightTheme,
+            darkTheme: darkTheme,
+            themeMode: themeMode,
             debugShowCheckedModeBanner: false,
             initialRoute: getInitRoute,
             onGenerateRoute: onGenerateRoute,

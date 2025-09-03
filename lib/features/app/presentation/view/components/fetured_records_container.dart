@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/data/models/number_animation_model.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/featured_records_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/delete_all_featured_records_button.dart';
@@ -51,13 +50,14 @@ class FeturedRecordsContainer extends StatelessWidget {
 
   BoxDecoration _boxDecoration(BuildContext context) {
     return BoxDecoration(
-      color:
-          ThemeCubit.controller(context).state ? AppColors.grey2 : Colors.white,
+      color: Theme.of(context).brightness == Brightness.dark
+          ? AppColors.grey2
+          : Colors.white,
       borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(13),
         topRight: Radius.circular(13),
       ),
-      boxShadow: ThemeCubit.controller(context).state
+      boxShadow: Theme.of(context).brightness == Brightness.dark
           ? []
           : [
               BoxShadow(

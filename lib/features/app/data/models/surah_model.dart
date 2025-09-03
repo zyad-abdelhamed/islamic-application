@@ -2,16 +2,16 @@ import 'package:test_app/features/app/domain/entities/surah_entity.dart';
 
 class SurahModel extends SurahEntity {
   const SurahModel(
-      {required super.surah,
+      {required super.name,
       required super.numberOfAyat,
       required super.type,
       required super.pageNumber});
   factory SurahModel.fromJson(Map<String, dynamic> json) {
     return SurahModel(
-      surah: json['surah'],
-      numberOfAyat: json['numberOfAyat'],
-      type: json['type'],
-      pageNumber: json['pageNumber'],
+      name: json["name"],
+      numberOfAyat: json["ayahs"],
+      type: json["type"],
+      pageNumber: json["page"],
     );
   }
 }

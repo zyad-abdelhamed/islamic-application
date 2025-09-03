@@ -3,6 +3,7 @@ import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/features/app/domain/entities/tafsir_edition_entity.dart';
 import 'package:test_app/features/app/presentation/view/components/edition_drop_down_button.dart';
+import 'package:test_app/features/app/presentation/view/components/surahs_search_text_filed.dart';
 import 'package:test_app/features/app/presentation/view/components/tafsir_page_surahs_list_view.dart';
 
 class SurahListPage extends StatefulWidget {
@@ -18,8 +19,7 @@ class _SurahListPageState extends State<SurahListPage> {
   @override
   void initState() {
     selectedEditionNotifier = ValueNotifier<TafsirEditionEntity>(
-      TafsirEditionEntity(name: "تفسير الطبري", identifier: "ar.tabari")
-    );
+        TafsirEditionEntity(name: "تفسير الطبري", identifier: "ar.tabari"));
     super.initState();
   }
 
@@ -40,8 +40,12 @@ class _SurahListPageState extends State<SurahListPage> {
           children: [
             TafsirEditionDropdown(
                 selectedEditionNotifier: selectedEditionNotifier),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: SurahsSearchTextFiled(),
+            ),
             Expanded(
-                child: SurahListWithFuture(
+                child: TafsirPageSurahsListView(
                     selectedEditionNotifier: selectedEditionNotifier)),
           ],
         ));

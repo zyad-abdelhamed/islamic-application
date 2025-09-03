@@ -75,7 +75,8 @@ class DailyAdhkarNotificationsRepoImpl
   }
 
   @override
-  Future<void> rescheduleDailyAdhkar(int newMinutes) async {
+  Future<void> rescheduleDailyAdhkar({int? newMinutes}) async {
+    newMinutes ??= localDataSource.getMinutes();
     // جلب الفاصل القديم
     final oldMinutes = localDataSource.getMinutes();
     final oldTotalCount = ((24 * 60) ~/ oldMinutes);

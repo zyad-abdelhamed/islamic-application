@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
 
 class CustomAlertDialog extends StatelessWidget {
   const CustomAlertDialog({
@@ -18,7 +17,7 @@ class CustomAlertDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = ThemeCubit.controller(context).state;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final backgroundColor = isDark ? AppColors.black : AppColors.white;
 
     return Dialog(
@@ -67,7 +66,10 @@ class CustomAlertDialog extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 12),
-                  Divider(color: ThemeCubit.controller(context).state ? AppColors.darkModeInActiveColor : AppColors.lightModeInActiveColor),
+                  Divider(
+                      color: isDark
+                          ? AppColors.darkModeInActiveColor
+                          : AppColors.lightModeInActiveColor),
                   const SizedBox(height: 12),
                   Flexible(
                     child: SingleChildScrollView(

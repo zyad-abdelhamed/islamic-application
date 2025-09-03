@@ -3,7 +3,6 @@ import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/presentation/view/components/other_page_button.dart';
 import 'package:test_app/features/app/presentation/view/components/post_prayer_adhkar_widget.dart';
 import 'package:test_app/features/app/presentation/view/components/rosary_ring%20widget.dart';
@@ -19,7 +18,7 @@ class OtherPage extends StatelessWidget {
         textAlign: TextAlign.center,
         style: TextStyles.bold20(context).copyWith(
           fontFamily: 'DataFontFamily',
-          color: ThemeCubit.controller(context).state
+          color: Theme.of(context).brightness == Brightness.dark
               ? Colors.grey
               : AppColors.black,
         ),
@@ -27,7 +26,7 @@ class OtherPage extends StatelessWidget {
       DrawRosaryRingWidget(),
       PostPrayerAdhkarWidget(),
     ];
-    
+
     const double spacing = 10.0;
 
     return Scaffold(
@@ -40,14 +39,14 @@ class OtherPage extends StatelessWidget {
           shrinkWrap: true,
           padding: const EdgeInsets.all(spacing),
           physics: const BouncingScrollPhysics(),
-          gridDelegate:
-              SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                mainAxisSpacing: spacing,
-                crossAxisSpacing: spacing,
-                childAspectRatio: 0.75, 
-                ),
-          children: List.generate(textButtonsAlertDialogWidgets.length, (index) {
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            mainAxisSpacing: spacing,
+            crossAxisSpacing: spacing,
+            childAspectRatio: 0.75,
+          ),
+          children:
+              List.generate(textButtonsAlertDialogWidgets.length, (index) {
             return OtherPageButton(
               text: AppStrings.translate("homeDrawerTextButtons")[index],
               logo: AppStrings.translate("otherPagePhotos")[index],
@@ -60,4 +59,3 @@ class OtherPage extends StatelessWidget {
     );
   }
 }
-

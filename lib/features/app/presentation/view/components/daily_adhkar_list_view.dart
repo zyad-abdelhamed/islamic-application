@@ -8,6 +8,7 @@ import 'package:test_app/features/app/domain/entities/daily_adhkar_entity.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/daily_adhkar_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/daily_adhkar_state.dart';
 import 'package:test_app/features/app/presentation/view/components/daily_adhkar_card.dart.dart';
+import 'package:test_app/features/app/presentation/view/components/delete_alert_dialog.dart';
 import 'package:test_app/features/app/presentation/view/pages/daily_adhkar_page.dart';
 
 class DailyAdhkarListView extends StatelessWidget {
@@ -43,6 +44,8 @@ class DailyAdhkarListView extends StatelessWidget {
                   AppSnackBar(
                           message: state.message, type: AppSnackBarType.error)
                       .show(context);
+                } else if (state is DailyAdhkarDeleteSuccess) {
+                  Navigator.pop(context);
                 }
               },
               builder: (context, state) {
@@ -83,6 +86,12 @@ class DailyAdhkarListView extends StatelessWidget {
                                       entities: adhkar,
                                       index: index,
                                     ))),
+                        onLongPress: () => showDeleteAlertDialog(
+                          context,
+                          content: Text("اضغط نعم للحذف"),
+                          deleteFunction: () => DailyAdhkarCubit.get(context)
+                              .deleteDailyAdhkar(index),
+                        ),
                       );
                     },
                   ),

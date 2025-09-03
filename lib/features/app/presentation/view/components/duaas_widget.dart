@@ -16,17 +16,8 @@ class DuaasWidget extends StatelessWidget {
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: TextField(
-          style:  TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
           decoration: InputDecoration(
-            hintText: 'ابحث عن الدعاء',
-            prefixIcon: Icon(
-              Icons.search,
-              color: Theme.of(context).colorScheme.primary,
-            ),
+            hintText: 'ابحث عن دعاء',
           ),
           onChanged: (value) {
             context.read<DuaaCubit>().searchDuaa(value);

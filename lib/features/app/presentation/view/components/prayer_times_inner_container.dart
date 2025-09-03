@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/theme/app_colors.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/primary_prayer_times_container_controller.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/next_prayer_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/next_prayer_widget.dart';
@@ -21,7 +20,7 @@ class PrayerTimesInnerContainer extends StatelessWidget {
       margin: const EdgeInsets.only(left: 5.0, right: 5.0, bottom: 10.0),
       padding: const EdgeInsets.only(top: 20.0, left: 5.0, right: 5.0),
       decoration: controller.boxDecoration(
-        color: ThemeCubit.controller(context).state
+        color: Theme.of(context).brightness == Brightness.dark
             ? AppColors.darkModeInActiveColor
             : AppColors.lightModeInActiveColor,
       ),

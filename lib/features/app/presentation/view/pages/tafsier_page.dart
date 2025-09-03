@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/theme/app_colors.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/core/widgets/empty_list_text_widget.dart';
 import 'package:test_app/features/app/data/models/tafsir_request_params.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/tafsir_page_controller.dart';
@@ -36,7 +35,7 @@ class _TafsirPageState extends State<TafsirPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = ThemeCubit.controller(context).state;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final Color textColor = Colors.brown;
     final Color backgroundColor = isDark
         ? AppColors.darkModeInActiveColor

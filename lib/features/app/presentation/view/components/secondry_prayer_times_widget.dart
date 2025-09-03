@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/domain/entities/timings.dart';
 
 class SecondaryPrayerTimesWidget extends StatelessWidget {
   const SecondaryPrayerTimesWidget({super.key, required this.timings});
-  
+
   final Timings timings;
   @override
   Widget build(BuildContext context) {
@@ -22,7 +21,7 @@ class SecondaryPrayerTimesWidget extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: ThemeCubit.controller(context).state
+        color: Theme.of(context).brightness == Brightness.dark
             ? AppColors.black
             : AppColors.white,
         borderRadius: BorderRadius.circular(20.0),
@@ -61,8 +60,7 @@ class SecondaryPrayerTimesWidget extends StatelessWidget {
     );
   }
 
-  Column _getColumnOfPrayers(BuildContext context,
-      {required List textList}) {
+  Column _getColumnOfPrayers(BuildContext context, {required List textList}) {
     return Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: List<Text>.generate(
@@ -70,7 +68,8 @@ class SecondaryPrayerTimesWidget extends StatelessWidget {
           (index) => Text(
             textList[index],
             textAlign: TextAlign.center,
-            style: TextStyles.bold20(context).copyWith(fontFamily: 'DataFontFamily'),
+            style: TextStyles.bold20(context)
+                .copyWith(fontFamily: 'DataFontFamily'),
           ),
         ));
   }
@@ -81,11 +80,11 @@ class SecondaryPrayerTimesWidget extends StatelessWidget {
         children: List<Image>.generate(
           6,
           (index) => Image.asset(
-                AppStrings.translate("iconsOfTimings")[index],
-                height: 25,
-                width: 25,
-                color: AppColors.grey400,
-              ),
+            AppStrings.translate("iconsOfTimings")[index],
+            height: 25,
+            width: 25,
+            color: AppColors.grey400,
+          ),
         ));
   }
 }

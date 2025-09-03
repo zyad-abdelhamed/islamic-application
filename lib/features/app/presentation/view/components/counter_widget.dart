@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/data/models/number_animation_model.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/counter_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/featured_records_widget.dart';
@@ -81,7 +80,7 @@ class CounterWidget extends StatelessWidget {
                         width: controller.increaseButtonSize(context),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: ThemeCubit.controller(context).state
+                          color: Theme.of(context).brightness == Brightness.dark
                               ? AppColors.darkModeInActiveColor
                               : AppColors.lightModeInActiveColor,
                         ),

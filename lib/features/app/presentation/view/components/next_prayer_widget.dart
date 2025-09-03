@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/theme/app_colors.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/domain/entities/next_prayer_entity.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/next_prayer_controller.dart';
 
@@ -58,7 +57,7 @@ class NextPrayerWidget extends StatelessWidget {
                         BoxShadow(
                           spreadRadius: 2,
                           offset: const Offset(-5.0, -5.0),
-                          color: context.watch<ThemeCubit>().state
+                          color: Theme.of(context).brightness == Brightness.dark
                               ? const Color(0xFF80D8FF).withAlpha(25)
                               : AppColors.purple.withAlpha(25),
                         ),

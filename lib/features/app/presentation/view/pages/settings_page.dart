@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:provider/provider.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
+import 'package:test_app/core/services/exit_app_service.dart';
 import 'package:test_app/core/theme/app_colors.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/core/widgets/app_sneak_bar.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/notifications_settings_controller.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/settings_page_controller.dart';
@@ -56,9 +55,15 @@ class _SettingsPageState extends State<SettingsPage> {
               settingsController.pageState.value =
                   SettingsPageState.deletingAllData;
             } else if (state is ResetAppError) {
+              settingsController.pageState.value = SettingsPageState.idle;
+
               AppSnackBar(message: state.message, type: AppSnackBarType.error)
                   .show(context);
-            } else if (state is ResetAppSuccess) {}
+            } else if (state is ResetAppSuccess) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                sl<BaseExitAppService>().exitApp();
+              });
+            }
           },
           child: ValueListenableBuilder<SettingsPageState>(
             valueListenable: settingsController.pageState,
@@ -74,7 +79,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     );
             },
             child: Scaffold(
-              backgroundColor: context.watch<ThemeCubit>().state
+              backgroundColor: Theme.of(context).brightness == Brightness.dark
                   ? AppColors.darkModeSettingsPageBackgroundColor
                   : AppColors.lightModeSettingsPageBackgroundColor,
               appBar: AppBar(
@@ -83,27 +88,40 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               body: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  spacing: 20,
-                  children: [
-                    ValueListenableBuilder<bool>(
-                        valueListenable:
-                            notificationsController.isAdhkarEnabled,
-                        child: ChangeIntervalBetweenAdhkarNotificationsWidget(
-                          stateNotifier: settingsController.pageState,
-                        ),
-                        builder:
-                            (BuildContext context, bool value, Widget? child) {
-                          return Visibility(
-                            visible: value,
-                            child: child!,
-                          );
-                        }),
-                    NotificationsSettingsWidget(
-                        notificationsController: notificationsController),
-                    const ToggleThemeButton(),
-                    const Spacer(),
-                    ResetAppButton(settingsController: settingsController),
+                child: CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: ValueListenableBuilder<bool>(
+                          valueListenable:
+                              notificationsController.isAdhkarEnabled,
+                          child: ChangeIntervalBetweenAdhkarNotificationsWidget(
+                            stateNotifier: settingsController.pageState,
+                          ),
+                          builder: (BuildContext context, bool value,
+                              Widget? child) {
+                            return Visibility(
+                              visible: value,
+                              child: child!,
+                            );
+                          }),
+                    ),
+                    const SliverToBoxAdapter(child: SizedBox(height: 20)),
+                    SliverToBoxAdapter(
+                      child: NotificationsSettingsWidget(
+                          notificationsController: notificationsController),
+                    ),
+                    const SliverToBoxAdapter(child: SizedBox(height: 20)),
+                    const SliverToBoxAdapter(
+                      child: ToggleThemeButton(),
+                    ),
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: ResetAppButton(
+                            settingsController: settingsController),
+                      ),
+                    ),
                   ],
                 ),
               ),

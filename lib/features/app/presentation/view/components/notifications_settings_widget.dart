@@ -20,9 +20,15 @@ class NotificationsSettingsWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "إعدادات الإشعارات",
-              style: Theme.of(context).textTheme.titleMedium,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "إعدادات الإشعارات",
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                const Icon(Icons.notifications),
+              ],
             ),
             const AppDivider(),
             ValueListenableBuilder<bool>(
@@ -31,7 +37,7 @@ class NotificationsSettingsWidget extends StatelessWidget {
                 return AdaptiveSwitch(
                   name: "إشعارات الصلوات",
                   value: value,
-                  onChanged: notificationsController.togglePrayer,
+                  onChanged: (value) => notificationsController.togglePrayer(),
                 );
               },
             ),
@@ -41,7 +47,7 @@ class NotificationsSettingsWidget extends StatelessWidget {
                 return AdaptiveSwitch(
                   name: "إشعارات الأذكار اليومية",
                   value: value,
-                  onChanged: notificationsController.toggleAdhkar,
+                  onChanged: (value) => notificationsController.toggleAdhkar(),
                 );
               },
             ),

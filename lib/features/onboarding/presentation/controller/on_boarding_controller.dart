@@ -4,6 +4,7 @@ import 'package:test_app/core/constants/cache_constants.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/services/cache_service.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
+import 'package:test_app/features/notifications/data/repos/notifications_background_tasks_repo_impl.dart';
 
 class OnBoardingController {
   final BaseCacheService _cacheService = sl<BaseCacheService>();
@@ -18,6 +19,9 @@ class OnBoardingController {
 
   // Mark onboarding as displayed
   Future<void> markAsDisplayed() async {
+    await NotificationsBackgroundTasksRepoImpl
+        .registerDailyAdhkarNotificationsTask();
+
     await _cacheService.insertBoolToCache(
         key: CacheConstants.isDisplayed, value: true);
   }

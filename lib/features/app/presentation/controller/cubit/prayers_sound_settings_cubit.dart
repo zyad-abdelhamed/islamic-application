@@ -40,7 +40,7 @@ class PrayerSoundSettingsCubit extends Cubit<PrayerSoundSettingsState> {
       },
       (_) async {
         // لو تم الحفظ بنجاح، نعيد جدولة الصلوات المتبقية
-        await prayerTimesNotificationsRepo.rescheduleRemainingPrayers(settings);
+        await prayerTimesNotificationsRepo.rescheduleRemainingPrayers();
 
         // إرسال state بأن الإعدادات تم حفظها
         emit(PrayerSoundSettingsSaved());

@@ -81,9 +81,13 @@ class QuranRepo implements BaseQuranRepo {
   @override
   Future<Either<Failure, List<SurahEntity>>> getSurahsInfo() async {
     try {
-      return right(await _quranLocalDataSource.getSurahsInfo());
+      final List<SurahEntity> surahsInfo =
+          await _quranLocalDataSource.getSurahsInfo();
+      return right(surahsInfo);
     } catch (_) {
-      return left(Failure(''));
+      print(_);
+      print('///////////////');
+      return left(Failure(AppStrings.translate("unExpectedError")));
     }
   }
 }

@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/errors/failures.dart';
 import 'package:test_app/core/services/cache_service.dart';
@@ -33,6 +34,8 @@ class AppRepoImpl extends BaseAppRepo {
   @override
   Future<Either<Failure, Unit>> resetApp() async {
     try {
+      await Future.delayed(AppDurations.longDuration);
+
       await cache.deletecache();
 
       await Hive.box<DailyAdhkarEntity>(DailyAdhkarLocalDataSourceImpl.boxName)

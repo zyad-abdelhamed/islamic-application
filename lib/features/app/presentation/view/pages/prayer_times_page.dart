@@ -5,7 +5,6 @@ import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_wid
 import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/prayer_times_page_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_prayer_times_of_month_cubit.dart';
@@ -55,7 +54,7 @@ class _PrayerTimesPageState extends State<PrayerTimesPage> {
       child: ValueListenableBuilder<bool>(
         valueListenable: prayerTimesPageController.loadingNotifier,
         child: Scaffold(
-          backgroundColor: ThemeCubit.controller(context).state
+          backgroundColor: Theme.of(context).brightness == Brightness.dark
               ? AppColors.darkModeSettingsPageBackgroundColor
               : AppColors.lightModeSettingsPageBackgroundColor,
           appBar: PrayerTimesPageAppBar(

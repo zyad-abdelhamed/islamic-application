@@ -1,25 +1,21 @@
 import 'package:test_app/core/constants/tasks_constants.dart';
+import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/services/work_manger_service.dart';
 import 'package:test_app/features/notifications/data/data_sources/local_data_source/notifications_background_tasks_local_data_source.dart';
 import 'package:test_app/features/notifications/domain/repos/base_daily_adhkar_notifications_repo.dart';
 import 'package:test_app/features/notifications/domain/repos/base_prayer_times_notifications_repo.dart';
-import 'package:test_app/features/notifications/domain/repos/notifications_background_tasks_base_repo.dart';
 
-class NotificationsBackgroundTasksRepoImpl
-    implements NotificationsBackgroundTasksBaseRepo {
-  NotificationsBackgroundTasksRepoImpl(
-    this.localDataSource,
-    this.dailyAdhkarNotificationsRepo,
-    this.prayerTimesNotificationsRepo,
-    this._backgroundTasksService,
-  );
-  final BaseNotificationsBackgroundTasksLocalDataSource localDataSource;
-  final BaseDailyAdhkarNotificationsRepo dailyAdhkarNotificationsRepo;
-  final BasePrayerTimesNotificationsRepo prayerTimesNotificationsRepo;
-  final BaseBackgroundTasksService _backgroundTasksService;
+class NotificationsBackgroundTasksRepoImpl {
+  static final BaseNotificationsBackgroundTasksLocalDataSource localDataSource =
+      sl<BaseNotificationsBackgroundTasksLocalDataSource>();
+  static final BaseDailyAdhkarNotificationsRepo dailyAdhkarNotificationsRepo =
+      sl<BaseDailyAdhkarNotificationsRepo>();
+  static final BasePrayerTimesNotificationsRepo prayerTimesNotificationsRepo =
+      sl<BasePrayerTimesNotificationsRepo>();
+  static final BaseBackgroundTasksService _backgroundTasksService =
+      sl<BaseBackgroundTasksService>();
 
-  @override
-  Future<void> registerDailyAdhkarNotificationsTask() async {
+  static Future<void> registerDailyAdhkarNotificationsTask() async {
     final bool isNotRegistered = localDataSource.isDailyAdhkarNotRegistered();
 
     if (isNotRegistered) {
@@ -33,8 +29,7 @@ class NotificationsBackgroundTasksRepoImpl
     }
   }
 
-  @override
-  Future<void> registerPrayerTimesNotificationsTask() async {
+  static Future<void> registerPrayerTimesNotificationsTask() async {
     final bool isNotRegistered = localDataSource.isPrayerTimesNotRegistered();
 
     if (isNotRegistered) {
@@ -48,15 +43,13 @@ class NotificationsBackgroundTasksRepoImpl
     }
   }
 
-  @override
-  Future<void> cancelDailyAdhkarNotificationsTask() async {
+  static Future<void> cancelDailyAdhkarNotificationsTask() async {
     await _backgroundTasksService
         .cancelTask(TasksConstants.dailyAdhkarUniqueName);
     await localDataSource.setDailyIsAdhkarNotRegistered(true);
   }
 
-  @override
-  Future<void> cancelPrayerTimesNotificationsTask() async {
+  static Future<void> cancelPrayerTimesNotificationsTask() async {
     await _backgroundTasksService
         .cancelTask(TasksConstants.prayerTimesUniqueName);
     await localDataSource.setPrayerTimesIsNotRegistered(true);

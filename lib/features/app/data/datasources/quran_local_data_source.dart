@@ -20,9 +20,11 @@ class QuranLocalDataSourceImpl implements QuranLocalDataSource {
   @override
   Future<List<SurahModel>> getSurahsInfo() async {
     final List data = await getJson(RoutesConstants.surahsJsonRouteName);
-    return List.from(data.map(
-      (json) => SurahModel.fromJson(json),
-    ));
+    return List.from(data
+        .map(
+          (json) => SurahModel.fromJson(json),
+        )
+        .toList());
   }
 
   @override

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/theme/app_colors.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
 import 'package:test_app/features/app/data/models/number_animation_model.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/featured_records_controller.dart';
@@ -26,7 +25,7 @@ class FeatuerdRecordsWidget extends StatelessWidget {
       width: context.width,
       padding: const EdgeInsets.only(top: 50),
       margin: const EdgeInsets.only(bottom: 100),
-      color: ThemeCubit.controller(context).state
+      color: Theme.of(context).brightness == Brightness.dark
           ? AppColors.darkModeSettingsPageBackgroundColor
           : AppColors.lightModeSettingsPageBackgroundColor,
       child: Column(
@@ -42,7 +41,7 @@ class FeatuerdRecordsWidget extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: ThemeCubit.controller(context).state
+                    color: Theme.of(context).brightness == Brightness.dark
                         ? AppColors.darkModeInActiveColor
                         : AppColors.lightModeInActiveColor,
                     borderRadius: BorderRadius.circular(23),

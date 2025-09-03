@@ -16,7 +16,7 @@ class BackgroundTasksServiceImplByWorkManager
   Future<void> init() async {
     await workmanager.initialize(
       workManagerCallbackDispatcher,
-      isInDebugMode: true, // خليها false في الإنتاج
+      isInDebugMode: false, // خليها false في الإنتاج
     );
   }
 
@@ -27,7 +27,7 @@ class BackgroundTasksServiceImplByWorkManager
       uniqueName,
       taskName,
       frequency: const Duration(hours: 24),
-      initialDelay: const Duration(seconds: 10), // optional
+      initialDelay: const Duration(hours: 24),
     );
   }
 

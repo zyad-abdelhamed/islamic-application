@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/location_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_prayer_times_controller.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/prayer_times_page_controller.dart';
@@ -18,8 +17,9 @@ class ChangeLocationWidget extends StatelessWidget {
   final PrayerTimesPageController prayerTimesPageController;
   @override
   Widget build(BuildContext context) {
-    Color dataColor =
-        ThemeCubit.controller(context).state ? Colors.grey : Colors.black;
+    Color dataColor = Theme.of(context).brightness == Brightness.dark
+        ? Colors.grey
+        : Colors.black;
     return BlocProvider(
       create: (context) => sl<LocationCubit>(),
       child: Column(

@@ -23,7 +23,7 @@ class NotificationsBackgroundTasksLocalDataSource
 
   @override
   Future<void> setDailyIsAdhkarNotRegistered(bool value) async {
-    cache.insertBoolToCache(
+    await cache.insertBoolToCache(
         key: CacheConstants.isDailyAdhkarNotRegisteredInWorkManger,
         value: value);
   }

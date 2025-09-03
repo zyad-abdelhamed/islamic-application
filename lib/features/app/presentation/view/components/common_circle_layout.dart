@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/presentation/view/components/circle_painter.dart';
 
 class CommonCircleLayout extends StatelessWidget {
@@ -32,7 +31,7 @@ class CommonCircleLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isDark = ThemeCubit.controller(context).state;
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
 
     return SizedBox(
       width: customPaintSize,

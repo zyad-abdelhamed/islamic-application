@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/theme/app_colors.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
 
 class ExplainFeatureButton extends StatelessWidget {
   const ExplainFeatureButton({
@@ -10,7 +9,7 @@ class ExplainFeatureButton extends StatelessWidget {
   final String text;
   @override
   Widget build(BuildContext context) {
-    Color dataColor = ThemeCubit.controller(context).state
+    Color dataColor = Theme.of(context).brightness == Brightness.dark
         ? AppColors.darkModeTextColor
         : AppColors.lightModePrimaryColor;
     return IconButton(

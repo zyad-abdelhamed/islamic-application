@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/repeat_interval_controller.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/settings_page_controller.dart';
 
@@ -55,9 +54,10 @@ class ChangeIntervalBetweenAdhkarNotificationsWidget extends StatelessWidget {
                     divisions: 17,
                     label: controller.formattedTime,
                     activeColor: controller.sliderColor,
-                    inactiveColor: ThemeCubit.controller(context).state
-                        ? Colors.grey.shade800
-                        : Colors.grey.shade300,
+                    inactiveColor:
+                        Theme.of(context).brightness == Brightness.dark
+                            ? Colors.grey.shade800
+                            : Colors.grey.shade300,
                     onChanged: (value) =>
                         controller.updateMinutes(value.toInt()),
                   ),

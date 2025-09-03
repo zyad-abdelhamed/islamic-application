@@ -10,11 +10,13 @@ class DailyAdhkarCard extends StatelessWidget {
     required this.dailyAdhkarEntity,
     required this.index,
     required this.onTap,
+    required this.onLongPress,
   });
 
   final DailyAdhkarEntity dailyAdhkarEntity;
   final int index;
   final void Function() onTap;
+  final void Function() onLongPress;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +26,7 @@ class DailyAdhkarCard extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: onTap,
+          onLongPress: onLongPress,
           child: Container(
             height: circleSize,
             width: circleSize,

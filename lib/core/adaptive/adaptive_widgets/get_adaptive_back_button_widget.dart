@@ -4,7 +4,6 @@ import 'package:test_app/core/adaptive/adaptive_widget_depending_on_os.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/theme/app_colors.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
 
 class GetAdaptiveBackButtonWidget extends StatelessWidget {
   const GetAdaptiveBackButtonWidget({
@@ -68,7 +67,7 @@ class OpacityLayout extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: (ThemeCubit.controller(context).state
+              color: (Theme.of(context).brightness == Brightness.dark
                       ? AppColors.white
                       : AppColors.black)
                   .withAlpha(35)),
