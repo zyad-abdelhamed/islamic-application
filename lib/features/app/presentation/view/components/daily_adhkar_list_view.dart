@@ -46,6 +46,11 @@ class DailyAdhkarListView extends StatelessWidget {
                       .show(context);
                 } else if (state is DailyAdhkarDeleteSuccess) {
                   Navigator.pop(context);
+                  AppSnackBar(
+                          message: "تم حذف الريكورد بنجاح",
+                          type: AppSnackBarType.success)
+                      .show(context);
+                  DailyAdhkarCubit.get(context).getAllDailyAdhkar();
                 }
               },
               builder: (context, state) {

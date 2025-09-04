@@ -9,9 +9,6 @@ abstract class BaseNotificationsService {
   Future<void> init() async {
     // initialize timezone data
     tz1.initializeTimeZones();
-
-    final String currentTimeZone = await FlutterTimezone.getLocalTimezone();
-    tz.setLocalLocation(tz.getLocation(currentTimeZone));
   }
 
   Future<void> periodicallyShowWithDuration(
@@ -93,6 +90,8 @@ class NotificationsServiceByFlutterLocalNotifications
 
   @override
   Future<void> zonedSchedule(NotificationRequestPrameters request) async {
+    final String currentTimeZone = await FlutterTimezone.getLocalTimezone();
+    tz.setLocalLocation(tz.getLocation(currentTimeZone));
     // تحويل وقت الجدولة العادي (DateTime) إلى وقت مرتبط بالـ timezone المحلي
     final tz.TZDateTime scheduledDate =
         tz.TZDateTime.from(request.scheduledTime!, tz.local);
