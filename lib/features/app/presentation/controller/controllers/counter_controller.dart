@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
 import 'package:test_app/features/app/data/models/number_animation_model.dart';
 import 'package:test_app/features/app/presentation/view/components/counter_widget.dart';
 import 'package:test_app/features/app/presentation/view/components/featured_records_widget.dart';
+import 'package:vibration/vibration.dart';
 
 class CounterController {
   CounterController(ValueNotifier<bool> notifier) {
@@ -58,16 +58,21 @@ class CounterController {
     return;
   }
 
-  void onTapDown({required ValueNotifier<double> scaleNotifier}) {
+  void onTapDown({required ValueNotifier<double> scaleNotifier}) async {
     if (vibrationNotifier.value) {
-      HapticFeedback.selectionClick();
+      print('vibration');
+      if (await Vibration.hasVibrator()) {
+        Vibration.vibrate(duration: 20, amplitude: 130);
+      }
     }
     scaleNotifier.value = 0.9;
   }
 
-  void onTapUp({required ValueNotifier<double> scaleNotifier}) {
+  void onTapUp({required ValueNotifier<double> scaleNotifier}) async {
     if (vibrationNotifier.value) {
-      HapticFeedback.lightImpact();
+      if (await Vibration.hasVibrator()) {
+        Vibration.vibrate(duration: 30, amplitude: 200);
+      }
     }
     scaleNotifier.value = 1.0;
     increaseCounter();
