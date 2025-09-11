@@ -16,10 +16,12 @@ class GetSurahWithTafsirCubit extends Cubit<GetSurahWithTafsirState> {
   late SurahWithTafsirEntity _firstBatch;
   int _currentOffset = 0;
   final int _limit = 10;
-  bool _hasMore = true;
 
-  late final TafsirRequestParams baseTafsirRequestParams;
-  late final SurahRequestParams baseSurahRequestParams;
+  late TafsirRequestParams baseTafsirRequestParams;
+  late SurahRequestParams baseSurahRequestParams;
+
+  /// لتخزين آخر عملية (تحميل أول مرة أو لود مور)
+  Future<void> Function()? _lastOperation;
 
   Future<void> getSurahWithTafsir({
     required TafsirRequestParams tafsirRequestParams,
@@ -27,6 +29,12 @@ class GetSurahWithTafsirCubit extends Cubit<GetSurahWithTafsirState> {
   }) async {
     baseTafsirRequestParams = tafsirRequestParams;
     baseSurahRequestParams = surahRequestParams;
+
+    // خزّن آخر عملية
+    _lastOperation = () => getSurahWithTafsir(
+          tafsirRequestParams: tafsirRequestParams,
+          surahRequestParams: surahRequestParams,
+        );
 
     final Either<Failure, SurahWithTafsirEntity> result =
         await baseRepo.getSurahWithTafsir(
@@ -38,20 +46,20 @@ class GetSurahWithTafsirCubit extends Cubit<GetSurahWithTafsirState> {
       (failure) => emit(GetSurahWithTafsirFailure(failure.message)),
       (data) {
         _firstBatch = data;
-        emit(GetSurahWithTafsirSuccess(data));
+        emit(GetSurahWithTafsirSuccess(data, hasMore: hasMore));
       },
     );
   }
 
   Future<void> loadMore() async {
-    if (!_hasMore) {
-      emit(GetSurahWithTafsirNoMoreData());
-      return;
+    if (state is GetSurahWithTafsirSuccess) {
+      emit((state as GetSurahWithTafsirSuccess).copyWith(isLoadingMore: true));
     }
 
-    emit(GetSurahWithTafsirLoadingMore());
-
     _currentOffset += _limit;
+
+    // خزّن آخر عملية
+    _lastOperation = loadMore;
 
     final Either<Failure, SurahWithTafsirEntity> result =
         await baseRepo.getSurahWithTafsir(
@@ -61,32 +69,45 @@ class GetSurahWithTafsirCubit extends Cubit<GetSurahWithTafsirState> {
           baseSurahRequestParams.copyWith(offset: _currentOffset),
     );
 
-    result.fold(
-      (failure) => emit(GetSurahWithTafsirFailure(failure.message)),
-      (newData) {
-        if (newData.ayahsList.isEmpty && newData.allTafsir.isEmpty) {
-          _hasMore = false;
-          emit(GetSurahWithTafsirNoMoreData());
-        } else {
-          final SurahWithTafsirEntity merged = SurahWithTafsirEntity(
-            ayahsList: [
-              ..._firstBatch.ayahsList,
-              ...newData.ayahsList,
-            ],
-            allTafsir: _mergeTafsir(newData.allTafsir),
-          );
+    result.fold((failure) {
+      if (state is GetSurahWithTafsirSuccess) {
+        // لو في بيانات قديمة، منفضلها ونعلم بس إن في error في اللود مور
+        final current = state as GetSurahWithTafsirSuccess;
+        emit(current.copyWith(
+          isLoadingMore: false,
+          loadMoreError: failure.message,
+        ));
+      } else {
+        // لو مفيش بيانات أصلاً
+        emit(GetSurahWithTafsirFailure(failure.message));
+      }
+    }, (newData) {
+      final SurahWithTafsirEntity merged = SurahWithTafsirEntity(
+        ayahsList: [
+          ..._firstBatch.ayahsList,
+          ...newData.ayahsList,
+        ],
+        allTafsir: _mergeTafsir(newData.allTafsir),
+      );
 
-          _firstBatch = merged;
-          emit(GetSurahWithTafsirSuccess(merged));
-        }
-      },
-    );
+      _firstBatch = merged;
+      emit(GetSurahWithTafsirSuccess(
+        merged,
+        hasMore: hasMore,
+      ));
+    });
+  }
+
+  /// إعادة المحاولة لآخر عملية
+  Future<void> retry() async {
+    if (_lastOperation != null) {
+      await _lastOperation!();
+    }
   }
 
   // helper functions
   Map<String, List<TafsirAyahEntity>> _mergeTafsir(
       Map<String, List<TafsirAyahEntity>> newData) {
-    // دمج البيانات القديمة والجديدة
     final Map<String, List<TafsirAyahEntity>> mergedTafsir =
         <String, List<TafsirAyahEntity>>{};
 
@@ -105,5 +126,10 @@ class GetSurahWithTafsirCubit extends Cubit<GetSurahWithTafsirState> {
     });
 
     return mergedTafsir;
+  }
+
+  bool get hasMore {
+    final bool hasMore = baseSurahRequestParams.numberOfAyahs! > _currentOffset;
+    return hasMore;
   }
 }

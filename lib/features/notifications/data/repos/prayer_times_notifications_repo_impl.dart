@@ -249,7 +249,7 @@ class PrayerTimesNotificationsRepoImpl
     required LocalNotificationsService notifications,
   }) async {
     if (isPrayerNotificationEnabled) {
-      final scheduledTime = _parseTime(time);
+      final DateTime scheduledTime = _parseTime(time);
 
       // تجاهل أي وقت فات
       if (scheduledTime.isBefore(DateTime.now())) {

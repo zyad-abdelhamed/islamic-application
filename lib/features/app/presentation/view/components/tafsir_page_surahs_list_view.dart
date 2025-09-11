@@ -4,7 +4,6 @@ import 'package:test_app/core/helper_function/get_widget_depending_on_reuest_sta
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/features/app/data/models/quran_request_params.dart';
 import 'package:test_app/features/app/domain/entities/surah_entity.dart';
-import 'package:test_app/features/app/domain/entities/tafsir_edition_entity.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_surah_with_tafsir_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_surahs_info_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/slidable_item.dart';
@@ -35,23 +34,7 @@ class TafsirPageSurahsListView extends StatelessWidget {
                 final SurahEntity surah = state.surahsInfo[index];
 
                 return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => BlocProvider<GetSurahWithTafsirCubit>(
-                          create: (_) => sl<GetSurahWithTafsirCubit>(),
-                          child: TafsirPage(
-                            params: TafsirRequestParams(
-                              surahNumber: _getSurahNumber(context, surah),
-                              edition: selectedEdition.identifier,
-                              surahName: surah.name,
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
+                  onTap: () => _goToAlquranAndTafsirPage(context, surah),
                   child: SlidableItem(
                     surah: surah,
                     textColor: textColor,
@@ -62,6 +45,26 @@ class TafsirPageSurahsListView extends StatelessWidget {
             ),
             erorrMessage: state.errorMessage);
       },
+    );
+  }
+
+  void _goToAlquranAndTafsirPage(BuildContext context, SurahEntity surah) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => BlocProvider<GetSurahWithTafsirCubit>(
+          create: (_) => sl<GetSurahWithTafsirCubit>(),
+          child: TafsirPage(
+            tafsirRequestParams: TafsirRequestParams(
+              surahNumber: _getSurahNumber(context, surah),
+              surahName: surah.name,
+            ),
+            surahParams: SurahRequestParams(
+              surahNumber: _getSurahNumber(context, surah),
+            ),
+          ),
+        ),
+      ),
     );
   }
 

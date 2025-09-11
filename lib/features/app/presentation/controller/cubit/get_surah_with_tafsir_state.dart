@@ -12,11 +12,38 @@ class GetSurahWithTafsirLoading extends GetSurahWithTafsirState {}
 
 class GetSurahWithTafsirSuccess extends GetSurahWithTafsirState {
   final SurahWithTafsirEntity surahWithTafsir;
+  final bool isLoadingMore;
+  final bool hasMore;
+  final String? loadMoreError;
 
-  const GetSurahWithTafsirSuccess(this.surahWithTafsir);
+  const GetSurahWithTafsirSuccess(
+    this.surahWithTafsir, {
+    this.isLoadingMore = false,
+    this.hasMore = true,
+    this.loadMoreError,
+  });
+
+  GetSurahWithTafsirSuccess copyWith({
+    SurahWithTafsirEntity? surahWithTafsir,
+    bool? isLoadingMore,
+    bool? hasMore,
+    String? loadMoreError,
+  }) {
+    return GetSurahWithTafsirSuccess(
+      surahWithTafsir ?? this.surahWithTafsir,
+      isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+      hasMore: hasMore ?? this.hasMore,
+      loadMoreError: loadMoreError,
+    );
+  }
 
   @override
-  List<Object?> get props => [surahWithTafsir];
+  List<Object?> get props => [
+        surahWithTafsir,
+        isLoadingMore,
+        hasMore,
+        loadMoreError,
+      ];
 }
 
 class GetSurahWithTafsirFailure extends GetSurahWithTafsirState {
@@ -27,7 +54,3 @@ class GetSurahWithTafsirFailure extends GetSurahWithTafsirState {
   @override
   List<Object?> get props => [message];
 }
-
-class GetSurahWithTafsirLoadingMore extends GetSurahWithTafsirState {}
-
-class GetSurahWithTafsirNoMoreData extends GetSurahWithTafsirState {}

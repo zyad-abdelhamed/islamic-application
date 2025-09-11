@@ -3,9 +3,16 @@ import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 
 class ErrorWidgetIslamic extends StatelessWidget {
-  final String message;
+  const ErrorWidgetIslamic({
+    super.key,
+    required this.message,
+    this.onPressed,
+    this.buttonWidget,
+  });
 
-  const ErrorWidgetIslamic({super.key, required this.message});
+  final String message;
+  final void Function()? onPressed;
+  final Widget? buttonWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +43,8 @@ class ErrorWidgetIslamic extends StatelessWidget {
                 style: TextStyles.regular16_120(context, color: Colors.grey),
                 textAlign: TextAlign.center,
               ),
+              if (buttonWidget != null)
+                TextButton(onPressed: onPressed, child: buttonWidget!),
             ],
           ),
         ),

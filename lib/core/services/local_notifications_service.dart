@@ -136,8 +136,8 @@ class LocalNotificationsServiceByFlutterLocalNotifications
       // - DateTimeComponents.time = يتكرر يومياً في نفس الساعة والدقيقة
       // - DateTimeComponents.dayOfWeekAndTime = يتكرر أسبوعياً في نفس اليوم والوقت
       // - null = مرة واحدة فقط
-      matchDateTimeComponents:
-          null, // مهم نسيب دي كدا علشان الwork manger كل يوم يجدول اشعارات بالاوقات الجديده لان مثلاDateTimeComponents.time هيكرر الاشعار يوميا ف نفس الوقت
+      matchDateTimeComponents: request
+          .dateTimeComponents, // مهم نسيب دي كدا علشان الwork manger كل يوم يجدول اشعارات بالاوقات الجديده لان مثلاDateTimeComponents.time هيكرر الاشعار يوميا ف نفس الوقت
     );
   }
 

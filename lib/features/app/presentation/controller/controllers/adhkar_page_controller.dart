@@ -30,7 +30,7 @@ class AdhkarPageController {
     });
 
     lengthNotfier.addListener(() {
-      if (lengthNotfier.value == 0) {
+      if (lengthNotfier.value == 0 && switchNotfier.value == true) {
         Future.delayed(
           AppDurations.longDuration,
           () => Navigator.pushReplacementNamed(

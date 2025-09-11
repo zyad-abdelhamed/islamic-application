@@ -12,15 +12,8 @@ Widget buildDeleteDialog(
 ) {
   if (state is DeleteSurahWithTafsirLoading) {
     return AlertDialog(
-      title: Text('جارٍ الحذف...'),
-      content: Column(
-        spacing: 5.0,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Lottie.asset('assets/animations/Delete.json', repeat: true),
-          Text('جاري حذف سورة "${surah.name}" من التنزيلات.'),
-        ],
-      ),
+      title: const Text('جارٍ الحذف...'),
+      content: Text('جاري حذف سورة "${surah.name}" من التنزيلات.'),
     );
   } else if (state is DeleteSurahWithTafsirSuccess) {
     return AlertDialog(

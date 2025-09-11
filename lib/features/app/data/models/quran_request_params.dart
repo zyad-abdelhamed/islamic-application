@@ -38,7 +38,10 @@ class TafsirRequestParams extends QuranRequestParams {
 }
 
 class SurahRequestParams extends QuranRequestParams {
+  final int? numberOfAyahs;
+
   const SurahRequestParams({
+    this.numberOfAyahs,
     required super.surahNumber,
     super.offset,
     super.limit,

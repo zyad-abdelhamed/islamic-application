@@ -28,6 +28,8 @@ class NotificationRequestPrameters {
   /// يرن مرة واحدة ولا متكرر؟
   final bool repeat;
 
+  final DateTimeComponents? dateTimeComponents;
+
   const NotificationRequestPrameters({
     required this.id,
     required this.title,
@@ -40,5 +42,6 @@ class NotificationRequestPrameters {
     this.repeatInterval,
     this.androidScheduleMode,
     this.repeat = false,
+    this.dateTimeComponents,
   });
 }
