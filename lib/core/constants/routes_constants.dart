@@ -14,4 +14,6 @@ abstract class RoutesConstants {
   static const String addDailyAdhkarPage = 'addDailyAdhkarPage';
   static const String saveLocationPage = "saveLocationPage";
   static const String settingsPage = "settingsPage";
+  static const String quranAndTafsirPage = "quranAndTafsirPage";
+  static const String editTafsirPage = "editTafsirPage";
 }

@@ -6,6 +6,6 @@ String get getInitRoute {
   final OnBoardingController controller = sl<OnBoardingController>();
 
   return controller.loadState
-      ? RoutesConstants.splashScreenRouteName
+      ? RoutesConstants.quranAndTafsirPage
       : RoutesConstants.mainPageOnBoarding;
 }
