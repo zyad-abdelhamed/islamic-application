@@ -1,89 +1,109 @@
-import 'package:bloc/bloc.dart';
-import 'package:test_app/features/app/data/models/tafsir_request_params.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:dartz/dartz.dart';
+import 'package:test_app/core/errors/failures.dart';
+import 'package:test_app/features/app/data/models/quran_request_params.dart';
+import 'package:test_app/features/app/domain/entities/surah_with_tafsir_entity.dart';
 import 'package:test_app/features/app/domain/entities/tafsir_ayah_entity.dart';
-import 'package:test_app/features/app/domain/usecases/get_surah_with_tafsir_use_case.dart';
-import 'package:test_app/features/app/presentation/controller/cubit/get_surah_with_tafsir_state.dart';
+import 'package:test_app/features/app/domain/repositories/base_quran_repo.dart';
 
-class TafsirCubit extends Cubit<TafsirState> {
-  final GetSurahWithTafsirUseCase getSurahWithTafsirUseCase;
+import 'get_surah_with_tafsir_state.dart';
 
-  TafsirCubit(this.getSurahWithTafsirUseCase) : super(TafsirInitial());
+class GetSurahWithTafsirCubit extends Cubit<GetSurahWithTafsirState> {
+  final BaseQuranRepo baseRepo;
 
-  List<TafsirAyahEntity> ayahs = [];
-  int currentOffset = 0;
-  final int limit = 10;
-  bool isLoadingMore = false;
-  bool hasMore = true;
-  late TafsirRequestParams baseParams;
+  GetSurahWithTafsirCubit(this.baseRepo) : super(GetSurahWithTafsirLoading());
 
-  // لاستدعاء التفسير لأول مرة
-  Future<void> getSurahWithTafsir(TafsirRequestParams params) async {
-    if (!isClosed) {
-      emit(TafsirLoading());
-    }
+  late SurahWithTafsirEntity _firstBatch;
+  int _currentOffset = 0;
+  final int _limit = 10;
+  bool _hasMore = true;
 
-    baseParams = params;
-    currentOffset = 0;
-    hasMore = true;
-    ayahs.clear();
+  late final TafsirRequestParams baseTafsirRequestParams;
+  late final SurahRequestParams baseSurahRequestParams;
 
-    final result = await getSurahWithTafsirUseCase(
-      parameters: params.copyWith(offset: currentOffset, limit: limit),
+  Future<void> getSurahWithTafsir({
+    required TafsirRequestParams tafsirRequestParams,
+    required SurahRequestParams surahRequestParams,
+  }) async {
+    baseTafsirRequestParams = tafsirRequestParams;
+    baseSurahRequestParams = surahRequestParams;
+
+    final Either<Failure, SurahWithTafsirEntity> result =
+        await baseRepo.getSurahWithTafsir(
+      tafsirRequestParams: tafsirRequestParams,
+      surahRequestParams: surahRequestParams,
     );
 
     result.fold(
-      (failure) {
-        if (!isClosed) {
-          emit(TafsirError(failure.message));
-        }
-      },
+      (failure) => emit(GetSurahWithTafsirFailure(failure.message)),
       (data) {
-        ayahs = data;
-        if (!isClosed) {
-          emit(TafsirLoaded(List.from(ayahs)));
+        _firstBatch = data;
+        emit(GetSurahWithTafsirSuccess(data));
+      },
+    );
+  }
+
+  Future<void> loadMore() async {
+    if (!_hasMore) {
+      emit(GetSurahWithTafsirNoMoreData());
+      return;
+    }
+
+    emit(GetSurahWithTafsirLoadingMore());
+
+    _currentOffset += _limit;
+
+    final Either<Failure, SurahWithTafsirEntity> result =
+        await baseRepo.getSurahWithTafsir(
+      tafsirRequestParams:
+          baseTafsirRequestParams.copyWith(offset: _currentOffset),
+      surahRequestParams:
+          baseSurahRequestParams.copyWith(offset: _currentOffset),
+    );
+
+    result.fold(
+      (failure) => emit(GetSurahWithTafsirFailure(failure.message)),
+      (newData) {
+        if (newData.ayahsList.isEmpty && newData.allTafsir.isEmpty) {
+          _hasMore = false;
+          emit(GetSurahWithTafsirNoMoreData());
+        } else {
+          final SurahWithTafsirEntity merged = SurahWithTafsirEntity(
+            ayahsList: [
+              ..._firstBatch.ayahsList,
+              ...newData.ayahsList,
+            ],
+            allTafsir: _mergeTafsir(newData.allTafsir),
+          );
+
+          _firstBatch = merged;
+          emit(GetSurahWithTafsirSuccess(merged));
         }
       },
     );
   }
 
-  // للتحميل عند التمرير
-  Future<void> loadMore() async {
-    if (isLoadingMore || !hasMore) return;
+  // helper functions
+  Map<String, List<TafsirAyahEntity>> _mergeTafsir(
+      Map<String, List<TafsirAyahEntity>> newData) {
+    // دمج البيانات القديمة والجديدة
+    final Map<String, List<TafsirAyahEntity>> mergedTafsir =
+        <String, List<TafsirAyahEntity>>{};
 
-    isLoadingMore = true;
+    // القديم
+    _firstBatch.allTafsir.forEach((mufassir, tafsirList) {
+      mergedTafsir[mufassir] = List.from(tafsirList);
+    });
 
-    // Emit الحالة الحالية مع isLoadingMore=true
-    if (!isClosed) {
-      emit(TafsirLoaded(List.from(ayahs), isLoadingMore: true));
-    }
+    // الجديد
+    newData.forEach((mufassir, tafsirList) {
+      if (mergedTafsir.containsKey(mufassir)) {
+        mergedTafsir[mufassir]!.addAll(tafsirList);
+      } else {
+        mergedTafsir[mufassir] = List.from(tafsirList);
+      }
+    });
 
-    currentOffset += limit;
-
-    final result = await getSurahWithTafsirUseCase(
-      parameters: baseParams.copyWith(offset: currentOffset, limit: limit),
-    );
-
-    result.fold(
-      (failure) {
-        isLoadingMore = false;
-        if (!isClosed) {
-          emit(TafsirError(failure.message));
-        }
-      },
-      (data) {
-        if (data.isEmpty) {
-          hasMore = false;
-        } else {
-          ayahs.addAll(data);
-        }
-
-        isLoadingMore = false;
-
-        // Emit بعد التحميل
-        if (!isClosed) {
-          emit(TafsirLoaded(List.from(ayahs)));
-        }
-      },
-    );
+    return mergedTafsir;
   }
 }

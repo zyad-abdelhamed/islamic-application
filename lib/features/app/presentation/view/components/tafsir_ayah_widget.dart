@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:test_app/core/services/arabic_converter_service.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/text_styles.dart';
-import 'package:test_app/features/app/domain/entities/tafsir_ayah_entity.dart';
+import 'package:test_app/features/app/domain/entities/ayah_entity.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/tafsir_page_controller.dart';
 
 class TafsirAyahWidget extends StatelessWidget {
-  final TafsirAyahEntity ayah;
+  final AyahEntity ayah;
   final Color ayahNumberColor;
   final Color textColor;
   final bool isDark;
@@ -47,7 +47,8 @@ class TafsirAyahWidget extends StatelessWidget {
                   color: ayahNumberColor,
                 ),
                 Text(
-                  sl<BaseArabicConverterService>().convertToArabicDigits(ayah.number.toString()),
+                  sl<BaseArabicConverterService>()
+                      .convertToArabicDigits(ayah.number.toString()),
                   style: TextStyles.semiBold16_120(context),
                 ),
               ],

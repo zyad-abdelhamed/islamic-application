@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
+import 'package:test_app/core/theme/app_colors.dart';
+import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/widgets/app_sneak_bar.dart';
 import 'package:test_app/features/app/domain/entities/daily_adhkar_entity.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/daily_adhkar_cubit.dart';
@@ -47,9 +50,10 @@ class DailyAdhkarListView extends StatelessWidget {
                 } else if (state is DailyAdhkarDeleteSuccess) {
                   Navigator.pop(context);
                   AppSnackBar(
-                          message: "تم حذف الريكورد بنجاح",
+                          message: "تم الحذف بنجاح",
                           type: AppSnackBarType.success)
                       .show(context);
+
                   DailyAdhkarCubit.get(context).getAllDailyAdhkar();
                 }
               },
@@ -91,11 +95,28 @@ class DailyAdhkarListView extends StatelessWidget {
                                       entities: adhkar,
                                       index: index,
                                     ))),
-                        onLongPress: () => showDeleteAlertDialog(
-                          context,
-                          content: Text("اضغط نعم للحذف"),
-                          deleteFunction: () => DailyAdhkarCubit.get(context)
-                              .deleteDailyAdhkar(index),
+                        onLongPress: () => showModalBottomSheet(
+                          context: context,
+                          builder: (context) => Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ListTile(
+                                leading: const Icon(CupertinoIcons.delete,
+                                    color: AppColors.errorColor),
+                                title: Text(
+                                  "حذف",
+                                  style: TextStyles.bold20(context)
+                                      .copyWith(color: AppColors.errorColor),
+                                ),
+                                onTap: () => showDeleteAlertDialog(
+                                  context,
+                                  deleteFunction: () =>
+                                      DailyAdhkarCubit.get(context)
+                                          .deleteDailyAdhkar(index),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },

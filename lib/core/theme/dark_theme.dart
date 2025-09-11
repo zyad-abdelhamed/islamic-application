@@ -8,10 +8,9 @@ ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     fontFamily: 'SemiBoldCairo',
     appBarTheme: const AppBarTheme(
-      centerTitle: true,
       backgroundColor: Colors.transparent,
       titleTextStyle: TextStyle(
-        fontFamily: 'Cairo',
+        fontFamily: "Cairo",
         color: AppColors.darkModeTextColor,
         fontWeight: FontWeight.bold,
         fontSize: 23,

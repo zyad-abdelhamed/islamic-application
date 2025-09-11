@@ -1,6 +1,6 @@
 import 'package:test_app/core/helper_function/get_random.dart';
 import 'package:test_app/features/app/data/models/get_prayer_times_of_month_prameters.dart';
-import 'package:test_app/features/app/data/models/tafsir_request_params.dart';
+import 'package:test_app/features/app/data/models/quran_request_params.dart';
 
 class Apiconstants {
   static String getTimingsUrl(
@@ -23,4 +23,9 @@ class Apiconstants {
   static String getTafsirUrl(TafsirRequestParams params) {
     return '$baseQuranApi/v1/surah/${params.surahNumber}/${params.edition}?offset=${params.offset}&limit=${params.limit}';
   }
+
+  static String getSurahUrl(SurahRequestParams params) {
+    return '$baseQuranApi/v1/surah/${params.surahNumber}?offset=${params.offset}&limit=${params.limit}';
+  }
+  //https://api.quranhub.com/v1/surah/1
 }

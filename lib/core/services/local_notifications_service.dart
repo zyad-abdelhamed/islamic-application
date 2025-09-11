@@ -5,11 +5,13 @@ import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_all.dart' as tz1;
 
-abstract class BaseNotificationsService {
+abstract class LocalNotificationsService {
   Future<void> init() async {
     // initialize timezone data
     tz1.initializeTimeZones();
   }
+
+  Future<void> show(NotificationRequestPrameters request);
 
   Future<void> periodicallyShowWithDuration(
       NotificationRequestPrameters request);
@@ -24,8 +26,8 @@ abstract class BaseNotificationsService {
   Future<void> cancelAll();
 }
 
-class NotificationsServiceByFlutterLocalNotifications
-    extends BaseNotificationsService {
+class LocalNotificationsServiceByFlutterLocalNotifications
+    extends LocalNotificationsService {
   final FlutterLocalNotificationsPlugin instance =
       FlutterLocalNotificationsPlugin();
 
@@ -51,6 +53,17 @@ class NotificationsServiceByFlutterLocalNotifications
       //   الـ details هنا جاي من النظام تلقائي.
 // لو حاولت تستخدم closure أو lambda مباشرة، هتلاقي AssertionError لأن الخلفية ما بتعرفش على الـ closure.
 // يعني: ما بتباصيش أي حاجة، النظام هو اللي بيمرر NotificationResponse للـ top-level function.
+    );
+  }
+
+  @override
+  Future<void> show(NotificationRequestPrameters request) async {
+    await instance.show(
+      request.id,
+      request.title,
+      request.body,
+      request.notificationDetails,
+      payload: request.payload,
     );
   }
 
@@ -147,8 +160,8 @@ Future<void> prayerNotificationBackgroundHandler(
   if (details.actionId != null &&
       details.actionId!.startsWith('cancel_action_')) {
     final int prayerId = int.tryParse(details.actionId!.split('_').last) ?? 0;
-    final BaseNotificationsService notifications =
-        sl<BaseNotificationsService>();
+    final LocalNotificationsService notifications =
+        sl<LocalNotificationsService>();
     await notifications.cancel(prayerId);
   }
 }

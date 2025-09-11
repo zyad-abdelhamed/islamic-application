@@ -6,10 +6,11 @@ import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/errors/failures.dart';
 import 'package:test_app/core/services/cache_service.dart';
-import 'package:test_app/core/services/notifications_service.dart';
+import 'package:test_app/core/services/local_notifications_service.dart';
 import 'package:test_app/core/services/work_manger_service.dart';
 import 'package:test_app/features/app/data/datasources/daily_adhkar_local_data_source.dart';
 import 'package:test_app/features/app/domain/entities/daily_adhkar_entity.dart';
+import 'package:test_app/features/app/domain/entities/surah_with_tafsir_entity.dart';
 import 'package:test_app/features/app/domain/repositories/base_app_repo.dart';
 import 'package:test_app/features/app/data/datasources/location_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/prayers_local_data_source.dart';
@@ -24,7 +25,7 @@ import 'package:test_app/core/constants/data_base_constants.dart';
 class AppRepoImpl extends BaseAppRepo {
   final BaseCacheService cache;
   final BaseBackgroundTasksService backgroundTasksService;
-  final BaseNotificationsService notifications;
+  final LocalNotificationsService notifications;
 
   AppRepoImpl(
       {required this.cache,
@@ -52,6 +53,10 @@ class AppRepoImpl extends BaseAppRepo {
               PrayersLocalDataSourceImpl.soundSettingsBoxName)
           .clear();
       await Hive.box<BookMarkEntity>(QuranLocalDataSourceImpl.bookMarksBoxName)
+          .clear();
+
+      await Hive.box<SurahWithTafsirEntity>(
+              QuranLocalDataSourceImpl.quranWithTafsirBoxName)
           .clear();
 
       await HydratedBloc.storage.clear();

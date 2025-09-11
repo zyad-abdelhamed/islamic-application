@@ -24,6 +24,7 @@ class HomePageToAndroidAndIos extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppStrings.translate("mainPage")),
+        centerTitle: true,
       ),
       drawer: Drawer(child: HomeDrawerWidget()),
       body: Padding(

@@ -14,10 +14,9 @@ ThemeData lightTheme = ThemeData(
       backgroundColor: Colors.transparent,
     ),
     appBarTheme: const AppBarTheme(
-      centerTitle: true,
       backgroundColor: Colors.transparent,
       titleTextStyle: TextStyle(
-        fontFamily: 'Cairo',
+        fontFamily: "Cairo",
         color: AppColors.lightModePrimaryColor,
         fontWeight: FontWeight.bold,
         fontSize: 23,

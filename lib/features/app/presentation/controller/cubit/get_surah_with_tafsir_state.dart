@@ -1,38 +1,33 @@
 import 'package:equatable/equatable.dart';
-import 'package:test_app/features/app/domain/entities/tafsir_ayah_entity.dart';
+import 'package:test_app/features/app/domain/entities/surah_with_tafsir_entity.dart';
 
-sealed class TafsirState extends Equatable {
-  const TafsirState();
+abstract class GetSurahWithTafsirState extends Equatable {
+  const GetSurahWithTafsirState();
 
   @override
   List<Object?> get props => [];
 }
 
-class TafsirInitial extends TafsirState {
-  const TafsirInitial();
-}
+class GetSurahWithTafsirLoading extends GetSurahWithTafsirState {}
 
-class TafsirLoading extends TafsirState {
-  const TafsirLoading();
-}
+class GetSurahWithTafsirSuccess extends GetSurahWithTafsirState {
+  final SurahWithTafsirEntity surahWithTafsir;
 
-class TafsirLoaded extends TafsirState {
-  final List<TafsirAyahEntity> tafsir;
-  final bool isLoadingMore;
-
-  const TafsirLoaded(this.tafsir, {this.isLoadingMore = false});
+  const GetSurahWithTafsirSuccess(this.surahWithTafsir);
 
   @override
-  List<Object?> get props => [tafsir, isLoadingMore];
+  List<Object?> get props => [surahWithTafsir];
 }
 
-
-class TafsirError extends TafsirState {
+class GetSurahWithTafsirFailure extends GetSurahWithTafsirState {
   final String message;
 
-  const TafsirError(this.message);
+  const GetSurahWithTafsirFailure(this.message);
 
   @override
   List<Object?> get props => [message];
 }
 
+class GetSurahWithTafsirLoadingMore extends GetSurahWithTafsirState {}
+
+class GetSurahWithTafsirNoMoreData extends GetSurahWithTafsirState {}

@@ -5,12 +5,21 @@ class SurahEntity extends Equatable {
   final int numberOfAyat;
   final String type;
   final int pageNumber;
+  final bool isDownloaded;
 
-  const SurahEntity(
-      {required this.name,
-      required this.numberOfAyat,
-      required this.type,
-      required this.pageNumber});
+  const SurahEntity({
+    required this.name,
+    required this.numberOfAyat,
+    required this.type,
+    required this.pageNumber,
+    required this.isDownloaded,
+  });
   @override
-  List<Object?> get props => [name, numberOfAyat, pageNumber, type];
+  List<Object?> get props => [
+        name,
+        numberOfAyat,
+        pageNumber,
+        type,
+        isDownloaded,
+      ];
 }

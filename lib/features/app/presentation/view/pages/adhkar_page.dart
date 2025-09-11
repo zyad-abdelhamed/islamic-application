@@ -31,11 +31,12 @@ class _AdhkarPageState extends State<AdhkarPage> {
     adhkarPageController = AdhkarPageController();
     adhkarPageController.initState(context);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _insertOverlay();
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _insertOverlay();
+    // });
   }
 
+  // ignore: unused_element
   void _insertOverlay() {
     // نتأكد إن الـ OverlayEntry مش مضاف قبل كده عشان ما يتكررش
     if (_overlayEntry != null) return;
@@ -77,10 +78,9 @@ class _AdhkarPageState extends State<AdhkarPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Navigator.pushNamedAndRemoveUntil(
+        Navigator.pushReplacementNamed(
           context,
           RoutesConstants.homePageRouteName,
-          (route) => false,
         );
         return false;
       },
