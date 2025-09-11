@@ -29,7 +29,6 @@ class _AdhkarWidgetState extends State<AdhkarWidget> {
     const double countContainerHight = 40;
     const double countContainerWidth = 80;
     const double parentColumnSpacing = 15;
-    const double childColumnSpacing = 5;
 
     return Column(
         key: ObjectKey(widget.adhkarEntity),
@@ -45,12 +44,10 @@ class _AdhkarWidgetState extends State<AdhkarWidget> {
               color: AppColors.grey1,
             ),
             child: Column(
-              spacing: childColumnSpacing,
               children: [
                 ValueListenableBuilder<double>(
                   valueListenable: widget.adhkarPageController.fontSizeNotfier,
                   builder: (_, __, ___) => Column(
-                    spacing: childColumnSpacing,
                     children: [
                       Text(
                         widget.adhkarEntity.content,
@@ -79,6 +76,7 @@ class _AdhkarWidgetState extends State<AdhkarWidget> {
                     ],
                   ),
                 ),
+                const SizedBox(height: 5),
                 Container(
                   alignment: Alignment.topCenter,
                   width: countContainerWidth,

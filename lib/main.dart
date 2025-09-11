@@ -4,26 +4,25 @@ import 'package:test_app/core/helper_function/init_hydrated_bloc_storage.dart';
 import 'package:test_app/core/helper_function/setup_hive.dart';
 import 'package:test_app/core/services/cache_service.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
-import 'package:test_app/core/services/notifications_service.dart';
+import 'package:test_app/core/services/local_notifications_service.dart';
 import 'package:test_app/core/services/work_manger_service.dart';
 import 'package:test_app/noor_app.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await initDependencyInjection();
+  await Future.wait([
+    initDependencyInjection(),
+    setupHive(),
+    initHydratedBlocStorage(),
+    AppStrings.load(),
+  ]);
 
-  await sl<BaseCacheService>().cacheintIalization();
-
-  await setupHive();
-
-  await initHydratedBlocStorage();
-
-  await AppStrings.load();
-
-  await sl<BaseNotificationsService>().init();
-
-  await sl<BaseBackgroundTasksService>().init();
+  await Future.wait([
+    sl<BaseCacheService>().cacheintIalization(),
+    sl<LocalNotificationsService>().init(),
+    sl<BaseBackgroundTasksService>().init(),
+  ]);
 
   runApp(const NoorApp());
 }

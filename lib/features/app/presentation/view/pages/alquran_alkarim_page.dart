@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
-import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
-import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/quran_page_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_surahs_info_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/quran_cubit.dart';
-import 'package:test_app/features/app/presentation/view/components/quran_page_app_bar_actions.dart';
+import 'package:test_app/features/app/presentation/view/components/quran_page_app_bar.dart';
 import 'package:test_app/features/app/presentation/view/components/surahs_widget.dart';
 
 class AlquranAlkarimPage extends StatefulWidget {
@@ -39,16 +37,7 @@ class _AlquranAlkarimPageState extends State<AlquranAlkarimPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: const GetAdaptiveBackButtonWidget(),
-        title: FittedBox(
-          child: Text(
-            AppStrings.appBarTitles(withTwoLines: false)[0],
-          ),
-        ),
-        centerTitle: false,
-        actions: quranPageAppBarActions(context, _quranPageController),
-      ),
+      appBar: QuranPageAppBar(quranPageController: _quranPageController),
       drawer: Drawer(
         child: BlocProvider<GetSurahsInfoCubit>(
           create: (_) => sl<GetSurahsInfoCubit>(),
@@ -64,9 +53,6 @@ class _AlquranAlkarimPageState extends State<AlquranAlkarimPage> {
                   filePath: state.filePath,
                   nightMode: Theme.of(context).brightness == Brightness.dark,
                   swipeHorizontal: true,
-                  pageSnap: true,
-                  autoSpacing: true,
-                  fitEachPage: true,
                   defaultPage: state.defaultPage,
                   onViewCreated: (controller) {
                     _quranPageController.setPdfController(controller);

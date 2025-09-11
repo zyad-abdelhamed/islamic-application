@@ -1,7 +1,7 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:test_app/core/helper_function/get_random.dart';
 import 'package:test_app/core/models/notification_request_prameters.dart';
-import 'package:test_app/core/services/notifications_service.dart';
+import 'package:test_app/core/services/local_notifications_service.dart';
 import 'package:test_app/features/notifications/data/data_sources/local_data_source/daily_adhkar_notifications_local_data_source.dart';
 import 'package:test_app/features/notifications/domain/repos/base_daily_adhkar_notifications_repo.dart';
 
@@ -11,7 +11,7 @@ class DailyAdhkarNotificationsRepoImpl
       this.localDataSource, this.notifications);
 
   final BaseDailyAdhkarNotificationsLocalDataSource localDataSource;
-  final BaseNotificationsService notifications;
+  final LocalNotificationsService notifications;
 
   @override
   Future<void> scheduleDailyAdhkar({Duration? repeatEvery}) async {
@@ -46,6 +46,8 @@ class DailyAdhkarNotificationsRepoImpl
       channelDescription: 'Random adhkar notifications',
       importance: Importance.max,
       priority: Priority.high,
+      playSound: true,
+      audioAttributesUsage: AudioAttributesUsage.alarm,
       sound: RawResourceAndroidNotificationSound('adhkar'),
     );
     final iosDetails = DarwinNotificationDetails();

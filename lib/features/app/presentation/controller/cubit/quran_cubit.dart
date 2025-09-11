@@ -20,7 +20,7 @@ class QuranCubit extends HydratedCubit<QuranState> {
 
   static QuranCubit getQuranController(BuildContext context) =>
       context.read<QuranCubit>();
-      
+
   Future<void> loadPdfFromAssets(
       QuranPageController quranPageController) async {
     await quranPageController.loadSurahs();
@@ -32,15 +32,16 @@ class QuranCubit extends HydratedCubit<QuranState> {
     emit(state.copyWith(filePath: file.path));
   }
 
-  void goToPageByNumber(
-      QuranPageController quranPageController, int pageNumber, List<int> indexs) {
-      quranPageController.pdfViewController.setPage(pageNumber);
-      emit(state.copyWith(indexs: indexs, defaultPage: pageNumber));
-      quranPageController.indexsNotifier.value = indexs.toSet();
+  void goToPageByNumber(QuranPageController quranPageController, int pageNumber,
+      List<int> indexs) {
+    quranPageController.pdfViewController.setPage(pageNumber);
+    emit(state.copyWith(indexs: indexs, defaultPage: pageNumber));
+    quranPageController.indexsNotifier.value = indexs.toSet();
   }
 
   void updateDefaultPage(int? page) => emit(state.copyWith(defaultPage: page));
-  void updateIndex(List<int> newValue) => emit(state.copyWith(indexs: newValue));
+  void updateIndex(List<int> newValue) =>
+      emit(state.copyWith(indexs: newValue));
 
   @override
   QuranState? fromJson(Map<String, dynamic> json) {

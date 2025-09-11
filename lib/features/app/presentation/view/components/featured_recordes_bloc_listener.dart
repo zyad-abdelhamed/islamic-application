@@ -29,7 +29,8 @@ class FeaturedRecordesBlocListener extends StatelessWidget {
             controller.recordsLengthNotifier.value =
                 controller.initRecords.length;
           } else if (state is FeaturedRecordsAddSuccess) {
-            counterNotifier.value.number = 0;
+            counterNotifier.value = NumberAnimationModel(number: 0);
+
             controller.addAnimation(newRecord: state.newRecord);
 
             AppSnackBar(

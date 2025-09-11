@@ -54,8 +54,7 @@ class _SaveOrUpdateLocationWidgetState
           height: 15,
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          spacing: 30,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             ValueListenableBuilder<bool>(
               valueListenable: _controller.isConnectedNotifier,

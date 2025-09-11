@@ -1,13 +1,12 @@
 import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/helper_function/get_from_json.dart';
 
-
 abstract class AppStrings {
   static List<String> appBarTitles({required bool withTwoLines}) {
     String getNewlineOrWightSpace() => withTwoLines ? '\n ' : ' ';
     return <String>[
       'القرآن${getNewlineOrWightSpace()}الكريم',
-      'تفسير${getNewlineOrWightSpace()}القرآن',
+      'القرآن${getNewlineOrWightSpace()}و التفسير',
       'السبحه${getNewlineOrWightSpace()}الالكترونيه',
       'جدول${getNewlineOrWightSpace()}رمضان',
       'اتجاه${getNewlineOrWightSpace()}القبله',

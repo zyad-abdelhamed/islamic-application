@@ -38,7 +38,7 @@ class DailyAdhkarCard extends StatelessWidget {
                   color: dailyAdhkarEntity.isShowed
                       ? AppColors.grey2
                       : Theme.of(context).primaryColor,
-                  width: 5.0),
+                  width: 3.0),
             ),
             child: ClipOval(
               child: dailyAdhkarEntity.image != null

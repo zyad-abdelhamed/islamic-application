@@ -3,7 +3,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:test_app/core/errors/failures.dart';
 import 'package:test_app/core/models/notification_request_prameters.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
-import 'package:test_app/core/services/notifications_service.dart';
+import 'package:test_app/core/services/local_notifications_service.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/features/app/data/datasources/prayers_local_data_source.dart';
 import 'package:test_app/features/app/domain/entities/prayer_sound_settings_entity.dart';
@@ -17,7 +17,7 @@ class PrayerTimesNotificationsRepoImpl
       this.repo, this.notifications, this.prayersLocalDataSource);
 
   final BasePrayerRepo repo;
-  final BaseNotificationsService notifications;
+  final LocalNotificationsService notifications;
   final PrayersLocalDataSource prayersLocalDataSource;
 
   @override
@@ -80,8 +80,8 @@ class PrayerTimesNotificationsRepoImpl
 
   /// إلغاء إشعار محدد
   Future<void> cancelPrayerNotification(int id) async {
-    final BaseNotificationsService notifications =
-        sl<BaseNotificationsService>();
+    final LocalNotificationsService notifications =
+        sl<LocalNotificationsService>();
     await notifications.cancel(id);
   }
 
@@ -216,6 +216,8 @@ class PrayerTimesNotificationsRepoImpl
         channelDescription: 'إشعارات الأذان',
         importance: Importance.max,
         priority: Priority.high,
+        playSound: true,
+        audioAttributesUsage: AudioAttributesUsage.alarm,
         sound: RawResourceAndroidNotificationSound('aladhan'),
         fullScreenIntent: true,
         color: AppColors.lightModePrimaryColor,
@@ -244,7 +246,7 @@ class PrayerTimesNotificationsRepoImpl
     required String title,
     required String body,
     required String time,
-    required BaseNotificationsService notifications,
+    required LocalNotificationsService notifications,
   }) async {
     if (isPrayerNotificationEnabled) {
       final scheduledTime = _parseTime(time);

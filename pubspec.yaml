@@ -3,7 +3,7 @@ description: "A new Flutter project."
 
 publish_to: 'none'
 
-version: 1.0.0+1
+version: 2.0.0+2
 
 environment:
   sdk: ^3.6.2
@@ -56,6 +56,9 @@ dependencies:
   flutter_timezone: ^4.1.1
   app_settings: ^6.1.1
   flutter_exit_app: ^1.1.4
+  auto_size_text: ^3.0.0
+  flutter_slidable: ^4.0.1
+  lottie: ^3.3.1
 
 dev_dependencies:
   flutter_test:
@@ -71,7 +74,7 @@ flutter:
     - assets/pdfs/
     - assets/jsons/
     - assets/fonts/
-    - assets/sounds/
+    - assets/animations/
 
   fonts:
     - family: Cairo

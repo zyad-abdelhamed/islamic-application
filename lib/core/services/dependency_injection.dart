@@ -6,7 +6,7 @@ import 'package:test_app/core/services/city_name_service.dart';
 import 'package:test_app/core/services/exit_app_service.dart';
 import 'package:test_app/core/services/image_picker_service.dart';
 import 'package:test_app/core/services/internet_connection.dart';
-import 'package:test_app/core/services/notifications_service.dart';
+import 'package:test_app/core/services/local_notifications_service.dart';
 import 'package:test_app/core/services/position_service.dart';
 import 'package:test_app/core/services/work_manger_service.dart';
 import 'package:test_app/features/app/data/datasources/daily_adhkar_local_data_source.dart';
@@ -45,11 +45,11 @@ import 'package:test_app/features/app/domain/usecases/get_booleans_use_case.dart
 import 'package:test_app/features/app/domain/usecases/get_info_quran_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/get_prayer_times_of_month_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/get_prayers_times_use_case.dart';
-import 'package:test_app/features/app/domain/usecases/get_surah_with_tafsir_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/reset_booleans_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/update_booleans_use_case.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/book_mark_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/daily_adhkar_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/download_surah_with_tafsir_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_surah_with_tafsir_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_surahs_info_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/location_cubit.dart';
@@ -82,8 +82,9 @@ Future<void> initDependencyInjection() async {
   // cubits
   sl.registerFactory(() => GetSurahsInfoCubit(sl()));
   sl.registerFactory(() => ResetAppCubit(sl()));
+  sl.registerFactory(() => GetSurahWithTafsirCubit(sl()));
+  sl.registerFactory(() => DownloadSurahWithTafsirCubit(sl()));
   sl.registerFactory(() => DailyAdhkarCubit(sl()));
-  sl.registerFactory(() => TafsirCubit(sl()));
   sl.registerFactory(() => BookmarksCubit(sl()));
   sl.registerFactory(() => QiblaCubit(sl()));
   sl.registerFactory(() => PrayerSoundSettingsCubit(sl(), sl()));
@@ -99,8 +100,6 @@ Future<void> initDependencyInjection() async {
   sl.registerLazySingleton<OnBoardingController>(() => OnBoardingController());
   //usecases
   sl.registerLazySingleton(() => GetInfoQuranUseCase(sl()));
-  sl.registerLazySingleton(
-      () => GetSurahWithTafsirUseCase(baseQuranRepo: sl()));
   sl.registerLazySingleton(
       () => GetPrayerTimesOfMonthUseCase(basePrayerRepo: sl()));
   sl.registerLazySingleton(() => GetPrayersTimesUseCase(basePrayerRepo: sl()));
@@ -188,8 +187,8 @@ Future<void> initDependencyInjection() async {
   );
   sl.registerLazySingleton<BaseBackgroundTasksService>(
       () => BackgroundTasksServiceImplByWorkManager());
-  sl.registerLazySingleton<BaseNotificationsService>(
-      () => NotificationsServiceByFlutterLocalNotifications());
+  sl.registerLazySingleton<LocalNotificationsService>(
+      () => LocalNotificationsServiceByFlutterLocalNotifications());
   sl.registerLazySingleton<BaseImagePickerService>(() => ImagePickerService());
   sl.registerLazySingleton<BaseCacheService>(
       () => CacheImplBySharedPreferences());

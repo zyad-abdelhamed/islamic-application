@@ -21,7 +21,6 @@ class OnBoardingController {
   Future<void> markAsDisplayed() async {
     await NotificationsBackgroundTasksRepoImpl
         .registerDailyAdhkarNotificationsTask();
-
     await _cacheService.insertBoolToCache(
         key: CacheConstants.isDisplayed, value: true);
   }
