@@ -52,13 +52,13 @@ class SurahsWidget extends StatelessWidget {
                           Navigator.pop(context);
                         },
                         child: SurahItem(
-                            surah: surahInfo,
-                            textColor: Colors.white,
-                            cardColor: isSelected
-                                ? AppColors.secondryColor
-                                : Colors.transparent,
-                            borderColor: Colors.transparent,
-                            borderRadius: 0.0),
+                          surah: surahInfo,
+                          textColor: Colors.white,
+                          cardColor: isSelected
+                              ? AppColors.secondryColor
+                              : Colors.transparent,
+                          borderColor: Colors.transparent,
+                        ),
                       );
                     },
                   ),

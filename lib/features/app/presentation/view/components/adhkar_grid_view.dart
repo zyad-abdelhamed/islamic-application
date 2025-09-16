@@ -3,9 +3,13 @@ import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/features/app/presentation/view/components/adhkar_button.dart';
 
 class AdhkarGridView extends StatelessWidget {
-  const AdhkarGridView({super.key, required this.crossAxisCount});
+  const AdhkarGridView(
+      {super.key,
+      required this.crossAxisCount,
+      this.physics = const NeverScrollableScrollPhysics()});
 
   final int crossAxisCount;
+  final ScrollPhysics? physics;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +17,7 @@ class AdhkarGridView extends StatelessWidget {
 
     return GridView(
         shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
+        physics: physics,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,
             mainAxisSpacing: 15,

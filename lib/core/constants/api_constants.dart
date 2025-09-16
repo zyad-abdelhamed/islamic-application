@@ -27,5 +27,17 @@ class Apiconstants {
   static String getSurahUrl(SurahRequestParams params) {
     return '$baseQuranApi/v1/surah/${params.surahNumber}?offset=${params.offset}&limit=${params.limit}';
   }
-  //https://api.quranhub.com/v1/surah/1
+
+  static String getSearchUrl(String query) {
+    // مهم: لازم نعمل encode للـ query عشان لو فيه مسافات أو تشكيل
+    final encodedQuery = Uri.encodeComponent(query);
+    return '$baseQuranApi/v1/search/$encodedQuery';
+  }
+
+  static String getAyahTafsirUrl({
+    required int ayahNumber,
+    required String edition,
+  }) {
+    return '$baseQuranApi/v1/ayah/$ayahNumber/$edition';
+  }
 }

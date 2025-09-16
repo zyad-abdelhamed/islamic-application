@@ -64,6 +64,7 @@ import 'package:test_app/features/app/presentation/controller/cubit/quran_cubit.
 import 'package:test_app/features/app/presentation/controller/cubit/reset_app_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/rtabel_cubit.dart';
 import 'package:test_app/core/services/api_services.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/tafsir_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/timer_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/duaa_cubit.dart';
 import 'package:test_app/features/notifications/data/data_sources/local_data_source/daily_adhkar_notifications_local_data_source.dart';
@@ -80,6 +81,7 @@ Future<void> initDependencyInjection() async {
   sl.registerLazySingleton(() => GetPrayersTimesController(
       getPrayersTimesUseCase: sl(), baseLocationRepo: sl()));
   // cubits
+  sl.registerFactory(() => TafsirEditCubit());
   sl.registerFactory(() => GetSurahsInfoCubit(sl()));
   sl.registerFactory(() => ResetAppCubit(sl()));
   sl.registerFactory(() => GetSurahWithTafsirCubit(sl()));

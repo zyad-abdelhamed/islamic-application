@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const Color lightModePrimaryColor = Color(0xFF1391A2);
-  static const Color darkModePrimaryColor = Color(0xFF0D1B2A);
+  static const Color lightModePrimaryColor = Color(0xFF004D40);
+  static const Color lightModeScaffoldBackGroundColor = Color(0xffe9f6f3);
+  static const Color darkModeScaffoldBackGroundColor = Color(0xFF121212);
+  static const Color darkModePrimaryColor = Color(0xFF004D40);
   static final Color lightModeInActiveColor =
-      const Color.fromARGB(255, 156, 211, 218).withValues(alpha: .3);
+      const Color(0x33004D40) // 0x80 = 128 = نصف الشفافية
+      ;
   static final Color darkModeInActiveColor =
-      const Color(0xFF2A3D50).withValues(alpha: .5);
-  static const Color secondryColor = Color.fromARGB(255, 216, 189, 105);
+      const Color(0xB3004D40) // 0x80 = 128 = نصف الشفافية
+      ;
+  static const Color secondryColor = Color(0xFFD8BD69);
+  static const Color secondryColorInActiveColor = Color(0x14D8BD69);
   static const Color errorColor = Color.fromARGB(255, 225, 19, 88);
   static const Color inActiveErrorColor = Color.fromARGB(255, 242, 163, 190);
-  static const Color successColor = Color(0xFF388E3C);
+  static const Color successColor = Color(0xff185a9d);
   static const Color purple = Color(0xFF39073E);
   static const Color black = Colors.black;
   static const Color inActiveBlackColor = Color.fromARGB(255, 44, 43, 43);

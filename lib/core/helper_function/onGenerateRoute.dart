@@ -5,11 +5,8 @@ import 'package:test_app/features/app/presentation/controller/cubit/daily_adhkar
 import 'package:test_app/features/app/presentation/controller/cubit/prayers_sound_settings_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/timer_cubit.dart';
 import 'package:test_app/features/app/presentation/view/pages/add_daily_adhkar_page.dart';
-import 'package:test_app/features/app/presentation/view/pages/edit_tafsir.dart';
 import 'package:test_app/features/app/presentation/view/pages/home_page.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
-import 'package:test_app/features/app/presentation/view/pages/q_and_a_page.dart';
-import 'package:test_app/features/app/presentation/view/pages/quran_and_tafsir_page.dart';
 import 'package:test_app/features/app/presentation/view/pages/settings_page.dart';
 import 'package:test_app/features/onboarding/presentation/view/pages/location_permission_page.dart';
 import 'package:test_app/features/onboarding/presentation/view/pages/main_page.dart';
@@ -45,10 +42,6 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       return MaterialPageRoute<SplashScreen>(
         builder: (BuildContext context) => const SplashScreen(),
       );
-    case RoutesConstants.qAndAPageRouteName:
-      return MaterialPageRoute<QAndAPage>(
-        builder: (BuildContext context) => const QAndAPage(),
-      );
     case RoutesConstants.prayersTimePage:
       return MaterialPageRoute<PrayerTimesPage>(
         builder: (BuildContext context) => BlocProvider(
@@ -69,14 +62,6 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case RoutesConstants.settingsPage:
       return MaterialPageRoute<SettingsPage>(
         builder: (BuildContext context) => const SettingsPage(),
-      );
-    case RoutesConstants.quranAndTafsirPage:
-      return MaterialPageRoute<QuranAndTafsirPage>(
-        builder: (BuildContext context) => const QuranAndTafsirPage(),
-      );
-    case RoutesConstants.editTafsirPage:
-      return MaterialPageRoute<QuranAndTafsirPage>(
-        builder: (BuildContext context) => const EditTafsir(),
       );
     default:
       return MaterialPageRoute<Scaffold>(

@@ -1,36 +1,15 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'tafsir_state.dart';
 
-class TafsirEditCubit extends Cubit<TafsirEditState> {
-  TafsirEditCubit()
-      : super(const TafsirEditState(
-          selected: [],
-          available: [
-            'تفسير البغوي',
-            'تفسير السعدي',
-            'تفسير ابن كثير',
-            'معاني الكلمات',
-            'التفسير الميسر',
-            'تفسير الجلالين',
-          ],
-        ));
-
-  static const _selectedKey = 'selected_tafsir';
+class TafsirEditCubit extends HydratedCubit<TafsirEditState> {
+  TafsirEditCubit() : super(const TafsirEditState()) {
+    loadTafsir();
+  }
 
   Future<void> loadTafsir() async {
-    final prefs = await SharedPreferences.getInstance();
-    final saved = prefs.getStringList(_selectedKey);
-
-    if (saved != null && saved.isNotEmpty) {
-      final available = List<String>.from(state.available)
-        ..removeWhere((e) => saved.contains(e));
-
-      emit(TafsirEditState(selected: saved, available: available));
-    } else {
+    if (state.selected.isEmpty) {
       final all = List<String>.from(state.available);
       emit(TafsirEditState(selected: all, available: []));
-      await _save(all);
     }
   }
 
@@ -39,7 +18,6 @@ class TafsirEditCubit extends Cubit<TafsirEditState> {
     final newAvailable = List<String>.from(state.available)..remove(tafsir);
 
     emit(state.copyWith(selected: newSelected, available: newAvailable));
-    await _save(newSelected);
   }
 
   Future<void> removeTafsir(String tafsir) async {
@@ -49,7 +27,6 @@ class TafsirEditCubit extends Cubit<TafsirEditState> {
     final newSelected = List<String>.from(state.selected)..remove(tafsir);
 
     emit(state.copyWith(selected: newSelected, available: newAvailable));
-    await _save(newSelected);
   }
 
   Future<void> reorder(int oldIndex, int newIndex) async {
@@ -59,11 +36,26 @@ class TafsirEditCubit extends Cubit<TafsirEditState> {
     newSelected.insert(newIndex, item);
 
     emit(state.copyWith(selected: newSelected));
-    await _save(newSelected);
   }
 
-  Future<void> _save(List<String> selected) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList(_selectedKey, selected);
+  // Hydrated overrides
+  @override
+  TafsirEditState? fromJson(Map<String, dynamic> json) {
+    try {
+      return TafsirEditState(
+        selected: List<String>.from(json['selected'] ?? []),
+        available: List<String>.from(json['available'] ?? []),
+      );
+    } catch (_) {
+      return null;
+    }
+  }
+
+  @override
+  Map<String, dynamic>? toJson(TafsirEditState state) {
+    return {
+      'selected': state.selected,
+      'available': state.available,
+    };
   }
 }

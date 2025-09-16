@@ -23,10 +23,9 @@ class GetPrayerTimesOfMonthCubit extends Cubit<GetPrayerTimesOfMonthState> {
 
   void getPrayerTimesOfMonth(
       GetPrayerTimesOfMonthPrameters getPrayerTimesOfMonthPrameters) async {
-    if (!isClosed) {
-      emit(GetPrayerTimesOfMonthState(
-          getPrayerTimesOfMonthState: RequestStateEnum.loading));
-    }
+    emit(GetPrayerTimesOfMonthState(
+        getPrayerTimesOfMonthState: RequestStateEnum.loading));
+
     final Either<Failure, List<Timings>> result =
         await getPrayerTimesOfMonthUseCase(
             parameters: getPrayerTimesOfMonthPrameters);

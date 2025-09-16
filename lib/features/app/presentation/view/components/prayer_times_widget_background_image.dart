@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/core/constants/constants_values.dart';
 
 class PrayerTimesWidgetBackgroundImage extends StatelessWidget {
   const PrayerTimesWidgetBackgroundImage({
@@ -21,10 +20,8 @@ class PrayerTimesWidgetBackgroundImage extends StatelessWidget {
         blendMode: BlendMode.dstIn,
         child: ClipRRect(
           borderRadius: BorderRadius.only(
-            bottomLeft:
-                Radius.circular(ConstantsValues.prayerTimesWidgetBorderRadius),
-            bottomRight:
-                Radius.circular(ConstantsValues.prayerTimesWidgetBorderRadius),
+            bottomLeft: Radius.circular(35),
+            bottomRight: Radius.circular(35),
           ),
           child: Transform(
             alignment: Alignment.center,

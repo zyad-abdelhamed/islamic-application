@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/next_prayer_controller.dart';
-import 'package:test_app/features/app/presentation/view/components/adhkar_grid_view.dart';
 import 'package:test_app/features/app/presentation/view/components/daily_adhkar_list_view.dart';
 import 'package:test_app/features/app/presentation/view/components/home_buttons_list_view.dart';
 import 'package:test_app/features/app/presentation/view/components/home_page_drawer.dart';
@@ -12,9 +11,11 @@ class HomePageToAndroidAndIos extends StatelessWidget {
   const HomePageToAndroidAndIos({
     super.key,
     required this.nextPrayerController,
+    required this.scaffoldKey,
   });
 
   final NextPrayerController nextPrayerController;
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
   @override
   Widget build(BuildContext context) {
@@ -22,51 +23,56 @@ class HomePageToAndroidAndIos extends StatelessWidget {
         MediaQuery.of(context).orientation == Orientation.portrait;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppStrings.translate("mainPage")),
-        centerTitle: true,
-      ),
+      key: scaffoldKey,
       drawer: Drawer(child: HomeDrawerWidget()),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: CustomScrollView(
-          physics: const BouncingScrollPhysics(),
-          slivers: [
-            /// ========== Stories ==========
-            SliverToBoxAdapter(
-              child: DailyAdhkarListView(),
+      body: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
+        slivers: [
+          SliverAppBar(
+              title: Text(AppStrings.translate("mainPage")),
+              floating: true, // يبان أول ما تسكرول لفوق
+              snap: true, // حركة سريعة
+              leading: IconButton(
+                onPressed: () => scaffoldKey.currentState?.openDrawer(),
+                icon: Column(
+                  spacing: 3,
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: List.generate(
+                      3,
+                      (i) => Container(
+                            width: i == 0 ? 20 : 15,
+                            height: 3,
+                            color: Color(0xFF004D40),
+                          )),
+                ),
+              )),
+
+          /// ========== Stories ==========
+          SliverToBoxAdapter(
+            child: DailyAdhkarListView(),
+          ),
+
+          const SliverPadding(padding: EdgeInsets.only(top: 20)),
+
+          /// ========== Prayer Times ==========
+          SliverToBoxAdapter(
+            child: SizedBox(
+              width: isPortraitOrientation
+                  ? double.infinity
+                  : (context.width * 3 / 4) - 20,
+              child:
+                  PrayerTimesWidget(nextPrayerController: nextPrayerController),
             ),
+          ),
 
-            const SliverPadding(padding: EdgeInsets.only(top: 20)),
+          const SliverPadding(padding: EdgeInsets.only(top: 20)),
 
-            /// ========== Prayer Times ==========
-            SliverToBoxAdapter(
-              child: SizedBox(
-                width: isPortraitOrientation
-                    ? double.infinity
-                    : (context.width * 3 / 4) - 20,
-                child: PrayerTimesWidget(
-                    nextPrayerController: nextPrayerController),
-              ),
-            ),
-
-            const SliverPadding(padding: EdgeInsets.only(top: 20)),
-
-            /// ========== Home Buttons ==========
-            SliverToBoxAdapter(
-              child: HomeButtonsListView(),
-            ),
-
-            const SliverPadding(padding: EdgeInsets.only(top: 20)),
-
-            /// ========== Grid ==========
-            SliverToBoxAdapter(
-              child: AdhkarGridView(
-                crossAxisCount: isPortraitOrientation ? 2 : 4,
-              ),
-            ),
-          ],
-        ),
+          /// ========== Home Buttons ==========
+          const SliverToBoxAdapter(
+            child: HomeButtonsListView(),
+          ),
+        ],
       ),
     );
   }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/constants/constants_values.dart';
-import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/next_prayer_controller.dart';
 
 class PrimaryPrayerTimesContainerController {
@@ -17,21 +16,26 @@ class PrimaryPrayerTimesContainerController {
   late final List names;
   late final List icons;
 
-  TextStyle get dataTextStyle {
-    return const TextStyle(
-        color: AppColors.white,
+  TextStyle dataTextStyle(BuildContext context, int i) {
+    return TextStyle(
+        color: Colors.white,
         fontFamily: 'Amiri',
         fontSize: 20.0,
         fontWeight: FontWeight.bold);
   }
 
+  get timings => null;
+
   BoxDecoration highlightBoxDecoration(BuildContext context, int i) {
     return BoxDecoration(
-      borderRadius: BorderRadius.circular(10.0),
+      borderRadius: BorderRadius.circular(15.0),
       color:
           context.read<NextPrayerController>().nextPrayerNotifier.value.name ==
                   names[i]
-              ? AppColors.darkModeInActiveColor
+              ? (Theme.of(context).brightness == Brightness.dark
+                      ? Colors.black
+                      : Colors.white)
+                  .withOpacity(0.2)
               : Colors.transparent,
     );
   }

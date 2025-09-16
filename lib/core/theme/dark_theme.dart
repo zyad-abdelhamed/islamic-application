@@ -4,19 +4,19 @@ import 'package:test_app/core/theme/app_colors.dart';
 
 ThemeData darkTheme = ThemeData(
     primaryColor: AppColors.darkModePrimaryColor,
-    colorScheme: ColorScheme.dark(primary: AppColors.darkModeTextColor),
     brightness: Brightness.dark,
     fontFamily: 'SemiBoldCairo',
+    scaffoldBackgroundColor: AppColors.darkModeScaffoldBackGroundColor,
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.transparent,
+      centerTitle: true,
+      scrolledUnderElevation: 0,
+      surfaceTintColor: Colors.transparent,
       titleTextStyle: TextStyle(
         fontFamily: "Cairo",
-        color: AppColors.darkModeTextColor,
+        color: AppColors.darkModePrimaryColor,
         fontWeight: FontWeight.bold,
         fontSize: 23,
-      ),
-      shape: Border(
-        bottom: BorderSide(color: AppColors.darkModeTextColor),
       ),
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -35,7 +35,7 @@ ThemeData darkTheme = ThemeData(
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: Colors.grey[850],
+      fillColor: Colors.black,
       contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       hintStyle: TextStyle(color: Colors.grey[400], fontSize: 15),
       border: OutlineInputBorder(
@@ -64,6 +64,28 @@ ThemeData darkTheme = ThemeData(
             borderRadius: BorderRadius.all(Radius.circular(15.0)),
           ),
         ),
+      ),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+        textStyle: WidgetStatePropertyAll(
+          TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        foregroundColor: WidgetStatePropertyAll(AppColors.white),
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: ButtonStyle(
+        textStyle: WidgetStatePropertyAll(
+          TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        foregroundColor: WidgetStatePropertyAll(AppColors.white),
       ),
     ),
     chipTheme: ChipThemeData(

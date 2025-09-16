@@ -13,7 +13,7 @@ class TafsirContent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('تفسيراتى', style: TextStyles.semiBold18(context, Colors.black)),
+        Text('تفسيراتى', style: TextStyles.semiBold16_120(context)),
         const SizedBox(height: 8),
         BlocSelector<TafsirEditCubit, TafsirEditState, List<String>>(
           selector: (state) => state.selected,
@@ -21,7 +21,7 @@ class TafsirContent extends StatelessWidget {
               SelectedTafsirList(selected: selected),
         ),
         const SizedBox(height: 20),
-        Text('التفاسير', style: TextStyles.semiBold18(context, Colors.black)),
+        Text('التفاسير', style: TextStyles.semiBold16_120(context)),
         const SizedBox(height: 8),
         BlocSelector<TafsirEditCubit, TafsirEditState, List<String>>(
           selector: (state) => state.available,
@@ -41,7 +41,8 @@ class SelectedTafsirList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<TafsirEditCubit>();
+    final TafsirEditCubit cubit = context.read<TafsirEditCubit>();
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
@@ -70,7 +71,7 @@ class SelectedTafsirList extends StatelessWidget {
             leading: IconButton(
               onPressed: () => cubit.removeTafsir(tafsir),
               icon: const Icon(Icons.remove_circle),
-              color: AppColors.errorColor,
+              color: Colors.grey,
             ),
             title: Text(
               tafsir,
@@ -105,7 +106,7 @@ class AvailableTafsirList extends StatelessWidget {
             leading: IconButton(
               onPressed: () => cubit.addTafsir(tafsir),
               icon: const Icon(Icons.add_circle),
-              color: AppColors.purple,
+              color: AppColors.successColor,
             ),
             title: Text(
               tafsir,
@@ -123,18 +124,18 @@ class InfoRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return const Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(Icons.info_outline, color: AppColors.purple),
-        const SizedBox(width: 5),
+        Icon(
+          Icons.info_outline,
+          color: AppColors.lightModePrimaryColor,
+        ),
+        SizedBox(width: 5),
         Expanded(
           child: Text(
             'يمكن تغيير ترتيب التفاسير عن طريق ضغطة مطولة عليها ثم تحريكها',
-            style: TextStyles.semiBold16(
-              context: context,
-              color: AppColors.black,
-            ),
+            style: TextStyle(color: Colors.grey),
           ),
         ),
       ],

@@ -64,13 +64,10 @@ class HomeButton extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 3.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(15.0),
-                child: Image.asset(
-                  image,
-                  fit: BoxFit.fill,
-                  width: 200 - 120,
-                ),
+              child: Image.asset(
+                image,
+                fit: BoxFit.fill,
+                width: 200 - 120,
               ),
             )
           ],

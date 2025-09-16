@@ -79,11 +79,12 @@ Widget buildDownloadDialog(
         onPressed: () {
           context.read<DownloadSurahWithTafsirCubit>().downloadSurahWithTafsir(
                 tafsirRequestParams: TafsirRequestParams(
-                  surahName: surah.name,
+                  surah: surah,
                   surahNumber: surahNumber,
                   limit: surah.numberOfAyat,
                 ),
                 surahRequestParams: SurahRequestParams(
+                  surah: surah,
                   surahNumber: surahNumber,
                   limit: surah.numberOfAyat,
                 ),

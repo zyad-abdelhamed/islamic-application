@@ -21,7 +21,7 @@ class GetAdhkarController {
       (data) {
         adhkar = data.toSet();
 
-        Navigator.pushReplacement(
+        Navigator.push(
             adhkarParameters.context,
             MaterialPageRoute(
               builder: (context) => AdhkarPage(

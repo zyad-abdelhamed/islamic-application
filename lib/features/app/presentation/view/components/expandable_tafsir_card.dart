@@ -1,67 +1,113 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/core/widgets/share_button.dart';
 import 'package:test_app/features/app/presentation/view/components/copy_button.dart';
 
-class ExpandableTafsirCard extends StatelessWidget {
+class ExpandableTafsirCard extends StatefulWidget {
   final String tafsirText;
-  final Color color;
   final String title;
-
+  final Color dataColor;
   const ExpandableTafsirCard({
     super.key,
     required this.tafsirText,
-    required this.color,
     required this.title,
+    required this.dataColor,
   });
 
   @override
-  Widget build(BuildContext context) {
-    final ValueNotifier<bool> isExpanded = ValueNotifier(false);
+  State<ExpandableTafsirCard> createState() => _ExpandableTafsirCardState();
+}
 
+class _ExpandableTafsirCardState extends State<ExpandableTafsirCard> {
+  late final ValueNotifier<bool> isExpanded;
+
+  @override
+  void initState() {
+    isExpanded = ValueNotifier<bool>(false);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    isExpanded.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color, width: 1.2),
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                title,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                widget.title,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "Cairo",
+                  color: widget.dataColor,
+                ),
               ),
-              CopyButton(
-                textToCopy: tafsirText,
-                color: color,
-              ),
+              const Spacer(),
+              CopyButton(textToCopy: widget.tafsirText),
+              ShareButton(text: widget.tafsirText)
             ],
           ),
-          const SizedBox(height: 12),
+          const Divider(height: 20, thickness: 0.8),
           ValueListenableBuilder<bool>(
             valueListenable: isExpanded,
             builder: (context, expanded, _) {
               final textToShow = expanded
-                  ? tafsirText
-                  : (tafsirText.length > 150
-                      ? '${tafsirText.substring(0, 150)}...'
-                      : tafsirText);
+                  ? widget.tafsirText
+                  : (widget.tafsirText.length > 150
+                      ? '${widget.tafsirText.substring(0, 150)}...'
+                      : widget.tafsirText);
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     textToShow,
-                    style: const TextStyle(fontSize: 14, height: 1.5),
+                    style: TextStyle(
+                      fontSize: 18,
+                      height: 1.6,
+                      fontFamily: "Amiri",
+                      color: widget.dataColor,
+                    ),
                   ),
-                  if (tafsirText.length > 150)
-                    TextButton(
-                      onPressed: () => isExpanded.value = !expanded,
-                      child: Text(expanded ? 'إخفاء' : 'رؤية المزيد'),
+                  if (widget.tafsirText.length > 150)
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          minimumSize: const Size(50, 30),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        onPressed: () => isExpanded.value = !expanded,
+                        child: Text(
+                          expanded ? 'إخفاء' : 'رؤية المزيد',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
                     ),
                 ],
               );

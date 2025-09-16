@@ -22,7 +22,8 @@ class AdhkarPageAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       centerTitle: false,
       title: Text(appBarTitle),
-      leading: const GetAdaptiveBackButtonWidget(),
+      leading:
+          const GetAdaptiveBackButtonWidget(backBehavior: BackBehavior.pop),
       actions: [
         ControleFontSizeButtons(
           fontSizeNotfier: adhkarPageController.fontSizeNotfier,

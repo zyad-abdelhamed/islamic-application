@@ -5,10 +5,15 @@ import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 
+enum BackBehavior { pop, backToHomeBage }
+
 class GetAdaptiveBackButtonWidget extends StatelessWidget {
   const GetAdaptiveBackButtonWidget({
     super.key,
+    this.backBehavior = BackBehavior.backToHomeBage,
   });
+
+  final BackBehavior backBehavior;
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +28,11 @@ class GetAdaptiveBackButtonWidget extends StatelessWidget {
   Widget _getDefaultBackButton(BuildContext context) {
     return OpacityLayout(
       child: GestureDetector(
-        child: const Icon(Icons.arrow_back),
-        onTap: () => _back(context),
+        child: const Icon(
+          Icons.arrow_back,
+          color: AppColors.lightModePrimaryColor,
+        ),
+        onTap: () => _back(context, backBehavior),
       ),
     );
   }
@@ -33,14 +41,17 @@ class GetAdaptiveBackButtonWidget extends StatelessWidget {
     return OpacityLayout(
         child: CupertinoButton(
       padding: EdgeInsets.zero,
-      onPressed: () => _back(context),
-      child: const Icon(CupertinoIcons.back),
+      onPressed: () => _back(context, backBehavior),
+      child: const Icon(
+        CupertinoIcons.back,
+        color: AppColors.lightModePrimaryColor,
+      ),
     ));
   }
 
   Widget _getWindowsBackButton(BuildContext context) {
     return TextButton.icon(
-      onPressed: () => _back(context),
+      onPressed: () => _back(context, backBehavior),
       icon: const Icon(Icons.arrow_back, color: AppColors.black),
       label: Text(
         AppStrings.translate("back"),
@@ -49,9 +60,14 @@ class GetAdaptiveBackButtonWidget extends StatelessWidget {
     );
   }
 
-  void _back(context) {
-    Navigator.pushNamedAndRemoveUntil(
-        context, RoutesConstants.homePageRouteName, (route) => false);
+  void _back(context, BackBehavior backBehavior) {
+    switch (backBehavior) {
+      case BackBehavior.pop:
+        Navigator.maybePop(context);
+      case BackBehavior.backToHomeBage:
+        Navigator.pushNamedAndRemoveUntil(
+            context, RoutesConstants.homePageRouteName, (route) => false);
+    }
   }
 }
 

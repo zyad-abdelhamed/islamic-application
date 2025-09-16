@@ -109,32 +109,36 @@ class _AddDailyAdhkarPageState extends State<AddDailyAdhkarPage> {
               ],
             ),
           ),
-          bottomNavigationBar: BlocListener<DailyAdhkarCubit, DailyAdhkarState>(
-            listener: (context, state) {
-              if (state is DailyAdhkarAdding) {
-                _controller.isLoading.value = true;
-              }
-              if (state is DailyAdhkarAddSuccess) {
-                Navigator.pushReplacementNamed(
-                  context,
-                  RoutesConstants.homePageRouteName,
-                );
-              }
-              if (state is DailyAdhkarError) {
-                _controller.isLoading.value = false;
+          bottomNavigationBar: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: BlocListener<DailyAdhkarCubit, DailyAdhkarState>(
+              listener: (context, state) {
+                if (state is DailyAdhkarAdding) {
+                  _controller.isLoading.value = true;
+                }
+                if (state is DailyAdhkarAddSuccess) {
+                  Navigator.pushReplacementNamed(
+                    context,
+                    RoutesConstants.homePageRouteName,
+                  );
+                }
+                if (state is DailyAdhkarError) {
+                  _controller.isLoading.value = false;
 
-                AppSnackBar(
-                  message: state.message,
-                  type: AppSnackBarType.error,
-                ).show(context);
-              }
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: AppFunctionaltyButton<DailyAdhkarCubit, DailyAdhkarState>(
-                buttonName: "اضافة",
-                onPressed: () => _controller.onAddPressed(context),
-                isLoading: (state) => state is DailyAdhkarAdding,
+                  AppSnackBar(
+                    message: state.message,
+                    type: AppSnackBarType.error,
+                  ).show(context);
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child:
+                    AppFunctionaltyButton<DailyAdhkarCubit, DailyAdhkarState>(
+                  buttonName: "اضافة",
+                  onPressed: () => _controller.onAddPressed(context),
+                  isLoading: (state) => state is DailyAdhkarAdding,
+                ),
               ),
             ),
           ),

@@ -1,11 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_app/core/constants/app_durations.dart';
-import 'package:test_app/core/services/dependency_injection.dart';
-import 'package:test_app/features/app/domain/entities/next_prayer_entity.dart';
-import 'package:test_app/features/app/presentation/controller/controllers/get_prayer_times_controller.dart';
-import 'package:test_app/features/app/presentation/controller/controllers/primary_prayer_times_container_controller.dart';
-import 'package:test_app/features/app/presentation/controller/controllers/next_prayer_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/prayer_times_inner_container.dart';
 import 'package:test_app/features/app/presentation/view/components/prayer_times_widget_background_image.dart';
 
@@ -14,69 +7,87 @@ class PrimaryPrayerTimesContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final PrimaryPrayerTimesContainerController controller1 =
-        PrimaryPrayerTimesContainerController.instance;
-    final controller = sl<GetPrayersTimesController>();
-    final timings = controller.timings;
-
-    final List<String> prayerTimes = [
-      timings.fajrArabic,
-      timings.sunriseArabic,
-      timings.dhuhrArabic,
-      timings.asrArabic,
-      timings.maghribArabic,
-      timings.ishaArabic,
-    ];
-
     return Container(
+      height: 210.0,
       margin: const EdgeInsets.symmetric(vertical: 10.0),
-      padding: const EdgeInsets.only(top: 10.0),
-      decoration:
-          controller1.boxDecoration(color: Theme.of(context).primaryColor),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(35),
+        gradient: LinearGradient(
+          colors: Theme.of(context).brightness == Brightness.dark
+              ? [Color(0xFF2A7BAE), Color(0xFF3B8E75)]
+              : [const Color(0xFF4CC8F4), const Color(0xFF6AD6B9)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
       child: Stack(
         children: [
-          Positioned(
+          const Positioned(
             left: 0,
             right: 0,
             bottom: 0,
             child: PrayerTimesWidgetBackgroundImage(),
           ),
-          Column(
-            children: <Widget>[
-              // صف أوقات الصلاة
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
-                child: ValueListenableBuilder<NextPrayer>(
-                    valueListenable:
-                        context.read<NextPrayerController>().nextPrayerNotifier,
-                    builder: (context, value, child) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: List.generate(
-                          prayerTimes.length,
-                          (index) => Expanded(
-                            child: AnimatedContainer(
-                              duration: AppDurations.longDuration,
-                              decoration: controller1.highlightBoxDecoration(
-                                  context, index),
-                              child: Text(
-                                prayerTimes[index],
-                                textAlign: TextAlign.center,
-                                style: controller1.dataTextStyle,
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-              ),
-              // الحاوية الداخلية
-              PrayerTimesInnerContainer(),
-            ],
-          ),
+          const PrayerTimesInnerContainer(),
         ],
       ),
     );
   }
+}
+
+class WavesPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint1 = Paint()
+      ..color = Colors.white.withOpacity(0.2)
+      ..style = PaintingStyle.fill;
+
+    final paint2 = Paint()
+      ..color = Colors.white.withOpacity(0.3)
+      ..style = PaintingStyle.fill;
+
+    final paint3 = Paint()
+      ..color = Colors.white.withOpacity(0.4)
+      ..style = PaintingStyle.fill;
+
+    // الموجة الأولى
+    final path1 = Path()
+      ..moveTo(0, size.height * 0.25)
+      ..quadraticBezierTo(size.width * 0.25, size.height * 0.05,
+          size.width * 0.75, size.height * 0.3)
+      ..quadraticBezierTo(
+          size.width * 0.95, size.height * 0.4, size.width, size.height * 0.2)
+      ..lineTo(size.width, 0)
+      ..lineTo(0, 0)
+      ..close();
+
+    // الموجة الثانية
+    final path2 = Path()
+      ..moveTo(0, size.height * 0.5)
+      ..quadraticBezierTo(size.width * 0.2, size.height * 0.3, size.width * 0.6,
+          size.height * 0.55)
+      ..quadraticBezierTo(
+          size.width * 0.9, size.height * 0.65, size.width, size.height * 0.4)
+      ..lineTo(size.width, 0)
+      ..lineTo(0, 0)
+      ..close();
+
+    // الموجة الثالثة
+    final path3 = Path()
+      ..moveTo(0, size.height * 0.7)
+      ..quadraticBezierTo(size.width * 0.25, size.height * 0.5,
+          size.width * 0.55, size.height * 0.72)
+      ..quadraticBezierTo(
+          size.width * 0.85, size.height * 0.8, size.width, size.height * 0.55)
+      ..lineTo(size.width, 0)
+      ..lineTo(0, 0)
+      ..close();
+
+    canvas.drawPath(path1, paint1);
+    canvas.drawPath(path2, paint2);
+    canvas.drawPath(path3, paint3);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

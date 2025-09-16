@@ -15,10 +15,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late final HomePageController _homePageController;
   late final NextPrayerController nextPrayerController;
+  late final GlobalKey<ScaffoldState> scaffoldKey;
 
   @override
   void initState() {
     super.initState();
+    scaffoldKey = GlobalKey<ScaffoldState>();
     _homePageController = HomePageController();
     nextPrayerController = NextPrayerController();
     _homePageController.initState(
@@ -32,10 +34,10 @@ class _HomePageState extends State<HomePage> {
     return adaptiveWidgetDependingOnOs(
       defaultWidget:
           HomePageToDesktop(nextPrayerController: nextPrayerController),
-      androidWidget:
-          HomePageToAndroidAndIos(nextPrayerController: nextPrayerController),
-      iosWidget:
-          HomePageToAndroidAndIos(nextPrayerController: nextPrayerController),
+      androidWidget: HomePageToAndroidAndIos(
+          nextPrayerController: nextPrayerController, scaffoldKey: scaffoldKey),
+      iosWidget: HomePageToAndroidAndIos(
+          nextPrayerController: nextPrayerController, scaffoldKey: scaffoldKey),
     );
   }
 }

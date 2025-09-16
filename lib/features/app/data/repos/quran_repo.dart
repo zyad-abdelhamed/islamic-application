@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/features/app/data/datasources/quran_local_data_source.dart';
+import 'package:test_app/features/app/domain/entities/ayah_search_result_entity.dart';
 import 'package:test_app/features/app/domain/entities/book_mark_entity.dart';
 import 'package:test_app/features/app/data/datasources/quran_remote_data_source.dart';
 import 'package:test_app/features/app/data/models/quran_request_params.dart';
@@ -34,7 +35,8 @@ class QuranRepo implements BaseQuranRepo {
     try {
       final SurahWithTafsirEntity? cachedSurahWithTafsir =
           await _quranLocalDataSource.getSurahWithTafsir(
-              key: surahRequestParams.surahNumber.toString());
+              key: tafsirRequestParams.surah.name);
+
       if (cachedSurahWithTafsir != null) {
         return Right(cachedSurahWithTafsir);
       }
@@ -71,10 +73,13 @@ class QuranRepo implements BaseQuranRepo {
           await _getSurahWithTafsirFromRemoteDataSoruce(
               tafsirRequestParams, surahRequestParams);
       await _quranLocalDataSource.saveSurahWithTafsir(
-          surah: remoteSurahWithTafsir, key: tafsirRequestParams.surahName);
+          surah: remoteSurahWithTafsir, key: tafsirRequestParams.surah.name);
       return right(unit);
-    } catch (_) {
-      return left(Failure(AppStrings.translate("unExpectedError")));
+    } catch (e) {
+      if (e is DioException) {
+        return Left(ServerFailure.fromDiorError(e));
+      }
+      return Left(ServerFailure(AppStrings.translate("unExpectedError")));
     }
   }
 
@@ -131,6 +136,119 @@ class QuranRepo implements BaseQuranRepo {
     }
   }
 
+  @override
+  Future<Either<Failure, SearchAyahWithTafsirEntity>> search(
+    String query,
+  ) async {
+    try {
+      // 1) Call remote data source للبحث عن الآيات
+      final AyahSearchResultEntity searchResult =
+          await _baseQuranRemoteDataSource.searchInQuran(query);
+
+      if (searchResult.count == 0) {
+        return left(Failure("لا يوجد نتائج للبحث"));
+      }
+
+      // 2) Load tafsir editions
+      final List<TafsirEditionEntity> tafsirEditions =
+          await loadTafsirEditions();
+
+      // 3) جهز كل الريكوستات (ayah tafsir لكل edition) مع retry
+      final List<Future<TafsirAyahEntity>> allRequests = [];
+
+      for (final ayah in searchResult.ayahs) {
+        for (final edition in tafsirEditions) {
+          allRequests.add(
+            _safeGetAyahTafsir(
+              ayah.number,
+              edition.identifier,
+            ),
+          );
+        }
+      }
+
+      List<TafsirAyahEntity> responses;
+
+      try {
+        // 4) جرّب كلهم مرّة واحدة
+        responses = await Future.wait(allRequests);
+        print("✅ responses length: ${responses.length}");
+      } on DioException catch (e) {
+        // لو حصل overload أو rate-limit (مثلاً 429 أو 503)
+        if (e.response?.statusCode == 429 || e.response?.statusCode == 503) {
+          responses = await _runInBatches(allRequests, batchSize: 20);
+        } else {
+          return Left(ServerFailure.fromDiorError(e));
+        }
+      }
+
+      // 5) رتب الناتج النهائي: لكل مفسر → List<TafsirAyahEntity>
+      final Map<String, List<TafsirAyahEntity>> ayahsAllTafsir = {};
+
+      for (int i = 0; i < searchResult.ayahs.length; i++) {
+        for (int j = 0; j < tafsirEditions.length; j++) {
+          final edition = tafsirEditions[j];
+          final index = i * tafsirEditions.length + j;
+
+          final TafsirAyahEntity tafsirEntity = responses[index];
+
+          ayahsAllTafsir.putIfAbsent(edition.name, () => []);
+          ayahsAllTafsir[edition.name]!.add(tafsirEntity);
+        }
+      }
+
+      // 6) بناء الـ Entity النهائي
+      final SearchAyahWithTafsirEntity entity = SearchAyahWithTafsirEntity(
+        ayahsAllTafsir: ayahsAllTafsir,
+        ayahSearchResultEntity: searchResult,
+      );
+
+      return right(entity);
+    } catch (e) {
+      if (e is DioException) {
+        return Left(ServerFailure.fromDiorError(e));
+      }
+      print("❌ Unhandled error: $e");
+      return Left(Failure(e.toString()));
+    }
+  }
+
+  /// Safe tafsir fetch with retry + fallback
+  Future<TafsirAyahEntity> _safeGetAyahTafsir(
+    int ayahNumber,
+    String edition, {
+    int retries = 3,
+  }) async {
+    int attempt = 0;
+
+    while (attempt < retries) {
+      try {
+        final tafsir = await _baseQuranRemoteDataSource.getAyahTafsir(
+          ayahNumber,
+          edition,
+        );
+        return tafsir;
+      } catch (e) {
+        attempt++;
+        print(
+            "⚠️ Attempt $attempt failed for ayah=$ayahNumber, edition=$edition, error=$e");
+
+        if (attempt >= retries) {
+          return const TafsirAyahEntity(
+            text: "لا يوجد تفسير متاح لهذه الآية",
+          );
+        }
+
+        // delay قبل المحاولة التالية
+        await Future.delayed(const Duration(milliseconds: 500));
+      }
+    }
+
+    return const TafsirAyahEntity(
+      text: "لا يوجد تفسير متاح لهذه الآية",
+    );
+  }
+
   // helper functions
   Future<SurahWithTafsirEntity> _getSurahWithTafsirFromRemoteDataSoruce(
     TafsirRequestParams tafsirRequestParams,
@@ -151,7 +269,7 @@ class QuranRepo implements BaseQuranRepo {
     ]);
 
 // الآيات
-    final ayahsList = data[0] as List<AyahEntity>;
+    final List<AyahEntity> ayahsList = data[0] as List<AyahEntity>;
 
 // باقي العناصر = تفاسير كل Edition بالترتيب
     final tafsirResults = data.sublist(1);
@@ -179,5 +297,20 @@ class QuranRepo implements BaseQuranRepo {
     final List data = await getJson(RoutesConstants.tafsirJsonRouteName);
 
     return data.map((map) => TafsirEditionModel.fromJson(map)).toList();
+  }
+
+  Future<List<TafsirAyahEntity>> _runInBatches(
+    List<Future<TafsirAyahEntity>> requests, {
+    int batchSize = 20,
+  }) async {
+    final List<TafsirAyahEntity> results = [];
+
+    for (var i = 0; i < requests.length; i += batchSize) {
+      final batch = requests.skip(i).take(batchSize);
+      final batchResults = await Future.wait(batch);
+      results.addAll(batchResults as Iterable<TafsirAyahEntity>);
+    }
+
+    return results;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:test_app/features/app/domain/entities/ayah_search_result_entity.dart';
 import 'package:test_app/features/app/domain/entities/book_mark_entity.dart';
 import 'package:test_app/features/app/data/models/quran_request_params.dart';
 import 'package:test_app/features/app/domain/entities/surah_entity.dart';
@@ -20,4 +21,5 @@ abstract class BaseQuranRepo {
   Future<Either<Failure, Unit>> deleteBookmarksList(
       {required List<int> indexs});
   Future<Either<Failure, List<BookMarkEntity>>> getBookMarks();
+  Future<Either<Failure, SearchAyahWithTafsirEntity>> search(String query);
 }

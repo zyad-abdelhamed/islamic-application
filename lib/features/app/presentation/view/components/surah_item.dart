@@ -10,7 +10,6 @@ class SurahItem extends StatelessWidget {
     required this.textColor,
     required this.cardColor,
     required this.borderColor,
-    required this.borderRadius,
     super.key,
   });
 
@@ -18,7 +17,6 @@ class SurahItem extends StatelessWidget {
   final Color textColor;
   final Color cardColor;
   final Color borderColor;
-  final double borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +24,9 @@ class SurahItem extends StatelessWidget {
       padding: const EdgeInsets.all(12.0),
       decoration: BoxDecoration(
         color: cardColor,
-        borderRadius: BorderRadius.circular(borderRadius),
-        border: Border.all(color: borderColor, width: 1.5),
+        border: Border(
+          bottom: BorderSide(color: borderColor, width: 1),
+        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

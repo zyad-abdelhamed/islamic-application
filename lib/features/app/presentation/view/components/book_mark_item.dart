@@ -43,7 +43,9 @@ class BookmarkItem extends StatelessWidget {
                   // open book mark
                   Navigator.pop(context);
                   QuranCubit.getQuranController(context).goToPageByNumber(
-                      quranPageController, bookmark.pageNumber, bookmark.indexs);    
+                      quranPageController,
+                      bookmark.pageNumber,
+                      bookmark.indexs);
                 }
               },
               onLongPress: () {
@@ -57,13 +59,11 @@ class BookmarkItem extends StatelessWidget {
                     duration: const Duration(milliseconds: 250),
                     decoration: BoxDecoration(
                       color: isSelected
-                          ? (isDark
-                              ? AppColors.successColor.withOpacity(0.25)
-                              : Colors.green[100])
+                          ? (AppColors.lightModeInActiveColor)
                           : (isDark ? Colors.grey[850] : Colors.white),
                       border: Border.all(
                         color: isSelected
-                            ? AppColors.successColor
+                            ? AppColors.lightModePrimaryColor
                             : Colors.transparent,
                         width: 2,
                       ),
@@ -80,7 +80,7 @@ class BookmarkItem extends StatelessWidget {
                       softWrap: true,
                       style: TextStyles.bold20(context).copyWith(
                           color: isSelected
-                              ? AppColors.successColor
+                              ? AppColors.lightModePrimaryColor
                               : (isDark ? Colors.white : Colors.black87)),
                     ),
                   ),
@@ -95,13 +95,15 @@ class BookmarkItem extends StatelessWidget {
                       duration: const Duration(milliseconds: 250),
                       child: Container(
                         decoration: const BoxDecoration(
-                          color: Colors.green,
+                          color: AppColors.successColor,
                           shape: BoxShape.circle,
                         ),
                         padding: const EdgeInsets.all(4),
-                        child: const Icon(
+                        child: Icon(
                           Icons.check,
-                          color: Colors.white,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.black
+                              : Colors.white,
                           size: 18,
                         ),
                       ),

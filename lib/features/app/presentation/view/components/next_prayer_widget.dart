@@ -18,8 +18,7 @@ class NextPrayerWidget extends StatelessWidget {
       children: [
         Text(
           AppStrings.translate("nextPrayer"),
-          style: TextStyle(
-            color: AppColors.grey400,
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),

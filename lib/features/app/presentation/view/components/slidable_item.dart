@@ -12,11 +12,13 @@ class SlidableItem extends StatefulWidget {
     required this.surah,
     required this.surahNumber,
     required this.textColor,
+    required this.showSaveIcon,
   });
 
   final SurahEntity surah;
   final int surahNumber;
   final Color textColor;
+  final bool showSaveIcon;
 
   @override
   State<SlidableItem> createState() => _SlidableItemState();
@@ -80,33 +82,35 @@ class _SlidableItemState extends State<SlidableItem> {
             surah: widget.surah,
             textColor: widget.textColor,
             cardColor: Colors.transparent,
-            borderColor: Theme.of(context).primaryColor,
-            borderRadius: 12.0,
+            borderColor: Theme.of(context).brightness == Brightness.dark
+                ? Colors.grey.shade800
+                : Colors.grey.shade300,
           ),
-          Positioned(
-            right: -4,
-            top: -4,
-            child: ValueListenableBuilder<bool>(
-              valueListenable: isDownloadedNotifier,
-              builder: (_, bool value, __) {
-                return AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 400),
-                  transitionBuilder: (child, animation) {
-                    return ScaleTransition(
-                      scale: CurvedAnimation(
-                        parent: animation,
-                        curve: Curves.easeOutBack,
-                      ),
-                      child: child,
-                    );
-                  },
-                  child: value
-                      ? const DownloadedMark()
-                      : const SizedBox.shrink(), // لو مش متحمل نخفيها
-                );
-              },
+          if (widget.showSaveIcon)
+            Positioned(
+              right: -4,
+              top: -4,
+              child: ValueListenableBuilder<bool>(
+                valueListenable: isDownloadedNotifier,
+                builder: (_, bool value, __) {
+                  return AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 400),
+                    transitionBuilder: (child, animation) {
+                      return ScaleTransition(
+                        scale: CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.easeOutBack,
+                        ),
+                        child: child,
+                      );
+                    },
+                    child: value
+                        ? const DownloadedMark()
+                        : const SizedBox.shrink(), // لو مش متحمل نخفيها
+                  );
+                },
+              ),
             ),
-          ),
         ],
       ),
     );
@@ -126,10 +130,12 @@ class DownloadedMark extends StatelessWidget {
         color: AppColors.successColor,
         shape: BoxShape.circle,
       ),
-      child: const Icon(
+      child: Icon(
         Icons.check,
         size: 14,
-        color: Colors.white,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? Colors.black
+            : Colors.white,
       ),
     );
   }

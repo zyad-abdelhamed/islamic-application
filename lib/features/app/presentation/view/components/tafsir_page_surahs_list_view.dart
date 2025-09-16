@@ -11,39 +11,55 @@ import 'package:test_app/features/app/presentation/view/pages/tafsier_page.dart'
 import 'package:test_app/core/services/dependency_injection.dart';
 
 class TafsirPageSurahsListView extends StatelessWidget {
-  const TafsirPageSurahsListView({super.key});
+  final bool showOnlyDownloaded;
+  final bool showOnlyNotDownloaded;
+
+  const TafsirPageSurahsListView({
+    super.key,
+    this.showOnlyDownloaded = false,
+    this.showOnlyNotDownloaded = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GetSurahsInfoCubit, GetSurahsInfoState>(
       builder: (context, state) {
+        int tabNumber;
+        // فلترة حسب التبويب
+        List<SurahEntity> filtered = state.surahsInfo;
+        tabNumber = 1;
+        if (showOnlyDownloaded) {
+          filtered = state.surahsInfo.where((s) => s.isDownloaded).toList();
+          tabNumber = 2;
+        } else if (showOnlyNotDownloaded) {
+          filtered = state.surahsInfo.where((s) => !s.isDownloaded).toList();
+          tabNumber = 3;
+        }
+
         return getWidgetDependingOnReuestState(
-            requestStateEnum: state.state,
-            widgetIncaseSuccess: ListView.separated(
-              padding: const EdgeInsets.all(16),
-              itemCount: state.surahsInfo.length,
-              physics: const BouncingScrollPhysics(),
-              separatorBuilder: (_, __) => const SizedBox(height: 20),
-              itemBuilder: (BuildContext context, int index) {
-                bool isDark = Theme.of(context).brightness == Brightness.dark;
+          requestStateEnum: state.state,
+          widgetIncaseSuccess: ListView.separated(
+            padding: const EdgeInsets.all(16),
+            itemCount: filtered.length,
+            physics: const BouncingScrollPhysics(),
+            separatorBuilder: (_, __) => const SizedBox(height: 20),
+            itemBuilder: (BuildContext context, int index) {
+              final SurahEntity surah = filtered[index];
 
-                Color textColor = isDark
-                    ? AppColors.darkModeTextColor
-                    : AppColors.lightModePrimaryColor;
-
-                final SurahEntity surah = state.surahsInfo[index];
-
-                return GestureDetector(
-                  onTap: () => _goToAlquranAndTafsirPage(context, surah),
-                  child: SlidableItem(
-                    surah: surah,
-                    textColor: textColor,
-                    surahNumber: _getSurahNumber(context, surah),
-                  ),
-                );
-              },
-            ),
-            erorrMessage: state.errorMessage);
+              return GestureDetector(
+                onTap: () => _goToAlquranAndTafsirPage(context, surah),
+                child: SlidableItem(
+                  key: ObjectKey(surah),
+                  surah: surah,
+                  textColor: AppColors.lightModePrimaryColor,
+                  surahNumber: _getSurahNumber(context, surah),
+                  showSaveIcon: tabNumber == 1,
+                ),
+              );
+            },
+          ),
+          erorrMessage: state.errorMessage,
+        );
       },
     );
   }
@@ -55,12 +71,14 @@ class TafsirPageSurahsListView extends StatelessWidget {
         builder: (_) => BlocProvider<GetSurahWithTafsirCubit>(
           create: (_) => sl<GetSurahWithTafsirCubit>(),
           child: TafsirPage(
+            surahEntity: surah,
             tafsirRequestParams: TafsirRequestParams(
               surahNumber: _getSurahNumber(context, surah),
-              surahName: surah.name,
+              surah: surah,
             ),
             surahParams: SurahRequestParams(
               surahNumber: _getSurahNumber(context, surah),
+              surah: surah,
             ),
           ),
         ),
@@ -69,7 +87,7 @@ class TafsirPageSurahsListView extends StatelessWidget {
   }
 
   int _getSurahNumber(BuildContext context, SurahEntity surah) {
-    return context.read<GetSurahsInfoCubit>().surahsInfo.indexOf(surah) +
-        1; // هنا لازم نجيب الرقم من الليست الاصليه علشان ميحصلش تضارب مع ليست السيرش
+    return context.read<GetSurahsInfoCubit>().surahsInfo.indexOf(surah) + 1;
+    // هنا لازم نجيب الرقم من الليست الاصليه علشان ميحصلش تضارب مع ليست السيرش
   }
 }

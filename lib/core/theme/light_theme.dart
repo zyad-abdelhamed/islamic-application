@@ -8,21 +8,21 @@ ThemeData lightTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
     primaryColor: AppColors.lightModePrimaryColor,
-    colorScheme: ColorScheme.light(primary: AppColors.lightModePrimaryColor),
     fontFamily: 'SemiBoldCairo',
+    scaffoldBackgroundColor: AppColors.lightModeScaffoldBackGroundColor,
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: Colors.transparent,
     ),
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.transparent,
+      centerTitle: true,
+      scrolledUnderElevation: 0,
+      surfaceTintColor: Colors.transparent,
       titleTextStyle: TextStyle(
         fontFamily: "Cairo",
         color: AppColors.lightModePrimaryColor,
         fontWeight: FontWeight.bold,
         fontSize: 23,
-      ),
-      shape: Border(
-        bottom: BorderSide(color: AppColors.lightModePrimaryColor),
       ),
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -41,7 +41,7 @@ ThemeData lightTheme = ThemeData(
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: Colors.grey[100],
+      fillColor: AppColors.white,
       contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       hintStyle: TextStyle(color: Colors.grey[600], fontSize: 15),
       border: OutlineInputBorder(
@@ -70,6 +70,28 @@ ThemeData lightTheme = ThemeData(
             borderRadius: BorderRadius.all(Radius.circular(15.0)),
           ),
         ),
+      ),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+        textStyle: WidgetStatePropertyAll(
+          TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        foregroundColor: WidgetStatePropertyAll(AppColors.black),
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: ButtonStyle(
+        textStyle: WidgetStatePropertyAll(
+          TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        foregroundColor: WidgetStatePropertyAll(AppColors.black),
       ),
     ),
     chipTheme: ChipThemeData(

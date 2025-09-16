@@ -6,10 +6,7 @@ import 'package:test_app/core/constants/app_strings.dart';
 class AppAnimatedLogoWidget extends StatelessWidget {
   const AppAnimatedLogoWidget({
     super.key,
-    required this.textColor,
   });
-
-  final Color textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +17,7 @@ class AppAnimatedLogoWidget extends StatelessWidget {
           textStyle: TextStyle(
             fontSize: 80,
             fontWeight: FontWeight.bold,
-            color: textColor,
+            color: Colors.white,
             shadows: [
               Shadow(
                 blurRadius: 30.0,
