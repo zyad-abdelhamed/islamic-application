@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
 import 'package:test_app/core/constants/app_durations.dart';
+import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/features/splach_screen/view/components/app_animated_logo_widget.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_prayer_times_controller.dart';
@@ -15,6 +16,14 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   late final ValueNotifier<bool> showLoading;
 
+  void _goToHomePage() {
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      RoutesConstants.homePageRouteName,
+      (route) => false,
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -26,7 +35,8 @@ class _SplashScreenState extends State<SplashScreen> {
         showLoading.value = true;
 
         /// بعدها تبدأ تحميل البيانات
-        sl<GetPrayersTimesController>().getPrayersTimes(context);
+        sl<GetPrayersTimesController>()
+            .getPrayersTimes(onTerminated: _goToHomePage);
       }
     });
   }
