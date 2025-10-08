@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:test_app/core/helper_function/is_dark.dart';
 import 'package:test_app/core/helper_function/is_land_scape_orintation.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
@@ -20,12 +19,8 @@ class CustomAlertDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool dark = isDark(context);
-    final Color backgroundColor =
-        dark ? AppColors.darkModeSettingsPageBackgroundColor : Colors.white;
-
     return Dialog(
-      backgroundColor: backgroundColor,
+      backgroundColor: Theme.of(context).cardColor,
       insetPadding: isLandScapeOrientation(context)
           ? const EdgeInsets.all(8.0)
           : const EdgeInsets.symmetric(horizontal: 24, vertical: 40),

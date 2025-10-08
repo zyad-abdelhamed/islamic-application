@@ -30,7 +30,9 @@ class AyahAudioCard extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.black
+                    : Colors.white,
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: const [
                   BoxShadow(
@@ -44,57 +46,63 @@ class AyahAudioCard extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundImage: NetworkImage(reciterImageUrl),
-                        radius: 28,
+                  ListTile(
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: Image.network(
+                        reciterImageUrl,
+                        height: 40,
+                        width: 40,
                       ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          reciterName,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primaryColor,
-                          ),
-                        ),
+                    ),
+                    title: Text(
+                      reciterName,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.primaryColor,
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.close,
-                            color: Colors.grey,),
-                        onPressed: controller.removeCard,
+                    ),
+                    trailing: IconButton(
+                      icon: const Icon(
+                        Icons.close,
+                        color: Colors.grey,
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  ValueListenableBuilder<Duration>(
-                    valueListenable: controller.position,
-                    builder: (_, pos, __) => Slider(
-                      activeColor: AppColors.primaryColor,
-                      inactiveColor: AppColors.primaryColorInActiveColor,
-                      value: pos.inSeconds.toDouble(),
-                      max: 1.0, // يمكن تعديله حسب مدة الصوت
-                      onChanged: (val) =>
-                          controller.seek(Duration(seconds: val.toInt())),
+                      onPressed: controller.removeCard,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    spacing: 8,
+                    children: <ValueListenableBuilder>[
                       ValueListenableBuilder<PlayerStatus>(
                         valueListenable: controller.status,
-                        builder: (_, status, __) => IconButton(
-                          icon: Icon(
-                            status == PlayerStatus.playing
-                                ? Icons.pause_circle_filled
-                                : Icons.play_circle_fill,
-                            color: AppColors.primaryColor,
+                        builder: (_, status, __) => Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: AppColors.primaryColorInActiveColor,
+                            shape: BoxShape.circle,
                           ),
-                          iconSize: 56,
-                          onPressed: controller.togglePlayPause,
+                          child: IconButton(
+                            icon: Icon(
+                              status == PlayerStatus.playing
+                                  ? Icons.pause_circle_filled
+                                  : Icons.play_circle_fill,
+                            ),
+                            iconSize: 56,
+                            onPressed: controller.togglePlayPause,
+                          ),
+                        ),
+                      ),
+                      ValueListenableBuilder<Duration>(
+                        valueListenable: controller.position,
+                        builder: (_, pos, __) => Slider(
+                          activeColor: AppColors.primaryColor,
+                          inactiveColor: AppColors.primaryColorInActiveColor,
+                          value: pos.inSeconds.toDouble(),
+                          max: 1.0, // يمكن تعديله حسب مدة الصوت
+                          onChanged: (val) =>
+                              controller.seek(Duration(seconds: val.toInt())),
                         ),
                       ),
                       ValueListenableBuilder<double>(
@@ -110,9 +118,8 @@ class AyahAudioCard extends StatelessWidget {
                             child: Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: AppColors.secondryColorInActiveColor,
-                                shape: BoxShape.circle
-                              ),
+                                  color: AppColors.secondryColorInActiveColor,
+                                  shape: BoxShape.circle),
                               child: Text(
                                 "${speed}x",
                                 style: const TextStyle(

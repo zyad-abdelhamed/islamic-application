@@ -15,6 +15,4 @@ class AppColors {
   static const Color grey2 = Color.fromARGB(31, 134, 133, 133);
   static Color? grey400 = Colors.grey[400];
   static const Color darkModeTextColor = Color(0xFFB0BEC5);
-  static const Color darkModeSettingsPageBackgroundColor = Color(0xFF1E1E1E);
-  static const Color lightModeSettingsPageBackgroundColor = Color(0xFFF2F1F6);
 }
