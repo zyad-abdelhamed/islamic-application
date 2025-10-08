@@ -10,7 +10,7 @@ import 'package:test_app/core/widgets/app_sneak_bar.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/quran_page_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/book_mark_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/book_mark_state.dart';
-import 'package:test_app/features/app/presentation/view/components/custom_alert_dialog.dart';
+import 'package:test_app/core/widgets/custom_alert_dialog.dart';
 import 'package:test_app/features/app/presentation/view/pages/book_marks_page.dart';
 
 const String _buttonName = 'حفظ العلامة';

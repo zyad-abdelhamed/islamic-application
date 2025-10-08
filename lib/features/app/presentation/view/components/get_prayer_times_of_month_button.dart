@@ -23,9 +23,7 @@ class GetPrayerTimesOfMonthButton extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? AppColors.darkModeInActiveColor
-                    : AppColors.lightModeInActiveColor,
+                color: AppColors.primaryColorInActiveColor,
                 borderRadius: BorderRadius.circular(20)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -44,9 +42,7 @@ class GetPrayerTimesOfMonthButton extends StatelessWidget {
             width: context.width * 3 / 4,
             padding: const EdgeInsets.all(10.0),
             decoration: BoxDecoration(
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? AppColors.darkModeInActiveColor
-                    : AppColors.lightModeInActiveColor,
+                color: AppColors.primaryColorInActiveColor,
                 borderRadius: BorderRadius.circular(20)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,8 +101,8 @@ class GetPrayerTimesOfMonthButton extends StatelessWidget {
                                       thickness: 3,
                                       indent: 5,
                                       endIndent: 5,
-                                      color: AppColors.white
-                                          .withValues(alpha: 0.5),
+                                      color:
+                                          Colors.white.withValues(alpha: 0.5),
                                     ),
                                   ),
                                 ),

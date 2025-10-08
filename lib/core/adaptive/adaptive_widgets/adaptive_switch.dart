@@ -31,8 +31,9 @@ class AdaptiveSwitch extends StatelessWidget {
         Switch.adaptive(
           value: value,
           onChanged: onChanged,
-          activeColor: AppColors.grey400,
-          activeTrackColor: AppColors.lightModePrimaryColor,
+          trackOutlineWidth: WidgetStatePropertyAll(0.0),
+          activeThumbColor: AppColors.primaryColor,
+          activeTrackColor: Colors.white,
           inactiveThumbColor: AppColors.grey400,
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),

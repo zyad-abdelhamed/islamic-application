@@ -22,8 +22,8 @@ class SecondaryPrayerTimesWidget extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).brightness == Brightness.dark
-            ? AppColors.black
-            : AppColors.white,
+            ? Colors.black
+            : Colors.white,
         borderRadius: BorderRadius.circular(20.0),
       ),
       child: Padding(

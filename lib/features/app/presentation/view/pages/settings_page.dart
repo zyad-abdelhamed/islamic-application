@@ -7,7 +7,6 @@ import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/services/exit_app_service.dart';
-import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/widgets/app_sneak_bar.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/notifications_settings_controller.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/settings_page_controller.dart';
@@ -88,9 +87,6 @@ class _SettingsPageState extends State<SettingsPage> {
                       );
               },
               child: Scaffold(
-                backgroundColor: Theme.of(context).brightness == Brightness.dark
-                    ? AppColors.darkModeSettingsPageBackgroundColor
-                    : AppColors.lightModeSettingsPageBackgroundColor,
                 appBar: AppBar(
                   title: Text(AppStrings.translate("settings")),
                   leading: const GetAdaptiveBackButtonWidget(),

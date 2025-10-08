@@ -39,7 +39,7 @@ class QuranTextView extends StatelessWidget {
 
   List<InlineSpan> _getSpans(BuildContext context) {
     final Color dataColor = Theme.of(context).brightness == Brightness.dark
-        ? Colors.grey
+        ? AppColors.darkModeTextColor
         : Colors.black;
 
     final List<InlineSpan> spans = [];
@@ -54,7 +54,6 @@ class QuranTextView extends StatelessWidget {
     for (int i = 0; i < ayat.length; i++) {
       final String text = ayat[i].text;
       final int num = ayat[i].number;
-      final bool sajda = ayat[i].sajda;
       final bool isSelected = (selectedAyah.value == num);
 
       // نص الآية
@@ -63,7 +62,7 @@ class QuranTextView extends StatelessWidget {
           text: "$text ",
           style: isSelected
               ? baseStyle.copyWith(
-                  backgroundColor: AppColors.successColor.withOpacity(0.3),
+                  backgroundColor: AppColors.successColor.withAlpha(75),
                 )
               : baseStyle,
           recognizer: (LongPressGestureRecognizer()
@@ -83,19 +82,6 @@ class QuranTextView extends StatelessWidget {
           ),
         ),
       );
-
-      // علامة السجدة
-      if (sajda) {
-        spans.add(
-          TextSpan(
-            text: "🧎‍♂️ ",
-            style: baseStyle.copyWith(
-              fontSize: baseStyle.fontSize! * 1.2,
-              color: Theme.of(context).primaryColor,
-            ),
-          ),
-        );
-      }
 
       // مسافة صغيرة بين الآيات
       spans.add(const TextSpan(text: " "));

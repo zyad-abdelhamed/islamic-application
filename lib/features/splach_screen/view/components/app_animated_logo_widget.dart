@@ -18,6 +18,7 @@ class AppAnimatedLogoWidget extends StatelessWidget {
             fontSize: 80,
             fontWeight: FontWeight.bold,
             color: Colors.white,
+            fontFamily: "normal",
             shadows: [
               Shadow(
                 blurRadius: 30.0,

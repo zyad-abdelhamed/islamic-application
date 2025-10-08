@@ -48,9 +48,7 @@ class _AdhkarButtonState extends State<AdhkarButton> {
           child: Container(
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? AppColors.darkModeInActiveColor
-                    : AppColors.lightModeInActiveColor,
+                color: AppColors.primaryColorInActiveColor,
                 borderRadius: BorderRadius.circular(50)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

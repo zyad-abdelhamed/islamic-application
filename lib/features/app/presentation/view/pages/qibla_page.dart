@@ -19,7 +19,7 @@ class QiblaPage extends StatelessWidget {
       create: (_) => QiblaCubit(sl<BaseQiblaRepository>())..startQibla(),
       child: Scaffold(
         appBar: AppBar(
-          title: Text(AppStrings.appBarTitles(withTwoLines: false)[4]),
+          title: Text(AppStrings.appBarTitles(withTwoLines: false)[6]),
           leading: const GetAdaptiveBackButtonWidget(),
         ),
         body: BlocBuilder<QiblaCubit, QiblaState>(
@@ -44,7 +44,8 @@ class QiblaPage extends StatelessWidget {
                     // زر تغيير الدقة
                     Align(
                         alignment: Alignment.topRight,
-                        child: QiplaAccuracyButton(state: state, isLoading: state is QiblaLoading)),
+                        child: QiplaAccuracyButton(
+                            state: state, isLoading: state is QiblaLoading)),
                     const Spacer(),
                     Transform.rotate(
                       angle: angle,

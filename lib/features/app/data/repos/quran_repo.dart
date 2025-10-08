@@ -49,7 +49,8 @@ class QuranRepo implements BaseQuranRepo {
       if (e is DioException) {
         return Left(ServerFailure.fromDiorError(e));
       }
-      return Left(ServerFailure(AppStrings.translate("unExpectedError")));
+      print("❌ getSurahWithTafsir error: $e");
+      return Left(ServerFailure(AppStrings.translate(e.toString())));
     }
   }
 
@@ -79,7 +80,7 @@ class QuranRepo implements BaseQuranRepo {
       if (e is DioException) {
         return Left(ServerFailure.fromDiorError(e));
       }
-      return Left(ServerFailure(AppStrings.translate("unExpectedError")));
+      return Left(ServerFailure(AppStrings.translate(e.toString())));
     }
   }
 

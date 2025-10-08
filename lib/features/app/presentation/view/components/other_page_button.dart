@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
-import 'package:test_app/features/app/presentation/view/components/custom_alert_dialog.dart';
+import 'package:test_app/core/widgets/custom_alert_dialog.dart';
 
 class OtherPageButton extends StatelessWidget {
   const OtherPageButton({

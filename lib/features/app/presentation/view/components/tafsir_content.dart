@@ -46,7 +46,7 @@ class SelectedTafsirList extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColors.lightModePrimaryColor,
+        color: AppColors.primaryColor,
       ),
       child: ReorderableListView.builder(
         shrinkWrap: true,
@@ -75,7 +75,7 @@ class SelectedTafsirList extends StatelessWidget {
             ),
             title: Text(
               tafsir,
-              style: TextStyles.semiBold18(context, AppColors.white),
+              style: TextStyles.semiBold18(context, Colors.white),
             ),
           );
         },
@@ -94,7 +94,7 @@ class AvailableTafsirList extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColors.lightModePrimaryColor,
+        color: AppColors.primaryColor,
       ),
       child: ListView.builder(
         shrinkWrap: true,
@@ -110,7 +110,7 @@ class AvailableTafsirList extends StatelessWidget {
             ),
             title: Text(
               tafsir,
-              style: TextStyles.semiBold18(context, AppColors.white),
+              style: TextStyles.semiBold18(context, Colors.white),
             ),
           );
         },
@@ -129,7 +129,7 @@ class InfoRow extends StatelessWidget {
       children: [
         Icon(
           Icons.info_outline,
-          color: AppColors.lightModePrimaryColor,
+          color: AppColors.primaryColor,
         ),
         SizedBox(width: 5),
         Expanded(

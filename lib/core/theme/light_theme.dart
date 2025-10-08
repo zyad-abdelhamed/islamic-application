@@ -7,7 +7,7 @@ const double appBarBorderRadius = 50.0;
 ThemeData lightTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
-    primaryColor: AppColors.lightModePrimaryColor,
+    primaryColor: AppColors.primaryColor,
     fontFamily: 'SemiBoldCairo',
     scaffoldBackgroundColor: AppColors.lightModeScaffoldBackGroundColor,
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
@@ -20,7 +20,7 @@ ThemeData lightTheme = ThemeData(
       surfaceTintColor: Colors.transparent,
       titleTextStyle: TextStyle(
         fontFamily: "Cairo",
-        color: AppColors.lightModePrimaryColor,
+        color: AppColors.primaryColor,
         fontWeight: FontWeight.bold,
         fontSize: 23,
       ),
@@ -31,7 +31,7 @@ ThemeData lightTheme = ThemeData(
       ),
     ),
     drawerTheme: const DrawerThemeData(
-      backgroundColor: AppColors.lightModePrimaryColor,
+      backgroundColor: AppColors.primaryColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30),
@@ -41,7 +41,7 @@ ThemeData lightTheme = ThemeData(
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: AppColors.white,
+      fillColor: Colors.white,
       contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       hintStyle: TextStyle(color: Colors.grey[600], fontSize: 15),
       border: OutlineInputBorder(
@@ -80,7 +80,7 @@ ThemeData lightTheme = ThemeData(
             fontWeight: FontWeight.w600,
           ),
         ),
-        foregroundColor: WidgetStatePropertyAll(AppColors.black),
+        foregroundColor: WidgetStatePropertyAll(Colors.black),
       ),
     ),
     textButtonTheme: TextButtonThemeData(
@@ -91,9 +91,9 @@ ThemeData lightTheme = ThemeData(
             fontWeight: FontWeight.w600,
           ),
         ),
-        foregroundColor: WidgetStatePropertyAll(AppColors.black),
+        foregroundColor: WidgetStatePropertyAll(Colors.black),
       ),
     ),
     chipTheme: ChipThemeData(
-      backgroundColor: AppColors.lightModePrimaryColor,
+      backgroundColor: AppColors.primaryColor,
     ));

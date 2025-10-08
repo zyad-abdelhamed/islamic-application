@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
 
 class AppFunctionaltyButton<C extends StateStreamable<S>, S>
@@ -51,7 +50,7 @@ class AppFunctionaltyButton<C extends StateStreamable<S>, S>
                   )
                 : Text(
                     buttonName,
-                    style: const TextStyle(color: AppColors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
           ),
         );

@@ -75,30 +75,19 @@ class GetSurahWithTafsirSuccessStateView extends StatelessWidget {
           ),
         if (state.hasMore)
           Align(
-            alignment: Alignment.bottomCenter,
+            alignment: Alignment.center,
             child: Card(
-              elevation: 2,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(12),
-                onTap: () => controller.tafsirCubit.loadMore(),
-                child: const Row(
-                  spacing: 8,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.menu_book,
-                        size: 20, color: AppColors.secondryColor),
-                    Text(
-                      "عرض المزيد",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.secondryColor,
-                      ),
-                    ),
-                  ],
+              child: TextButton.icon(
+                onPressed: () => controller.tafsirCubit.loadMore(),
+                icon: const Icon(Icons.menu_book,
+                    size: 20, color: AppColors.secondryColor),
+                label: const Text(
+                  "عرض المزيد",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.secondryColor,
+                  ),
                 ),
               ),
             ),

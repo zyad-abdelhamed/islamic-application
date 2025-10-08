@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/theme/app_colors.dart';
-import 'package:test_app/core/theme/text_styles.dart';
 
 /// Enum لتحديد نوع الـ SnackBar
 enum AppSnackBarType {
@@ -26,25 +25,21 @@ class AppSnackBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color backgroundColor;
-    final Color textColor;
     final IconData icon;
 
     switch (type) {
       case AppSnackBarType.success:
         backgroundColor = AppColors.successColor;
-        textColor = AppColors.white;
         icon = Icons.check_circle;
         break;
 
       case AppSnackBarType.error:
-        backgroundColor = AppColors.inActiveErrorColor;
-        textColor = AppColors.errorColor;
+        backgroundColor = AppColors.errorColor;
         icon = Icons.warning_amber_rounded;
         break;
 
       case AppSnackBarType.info:
         backgroundColor = AppColors.secondryColor;
-        textColor = AppColors.white;
         icon = Icons.info_outline;
         break;
     }
@@ -64,12 +59,17 @@ class AppSnackBar extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(icon, color: textColor),
+          Icon(icon, color: Colors.white),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
               message,
-              style: TextStyles.regular16_120(context, color: textColor),
+              textAlign: TextAlign.justify,
+              style: const TextStyle(
+                color: Colors.white,
+                fontFamily: "DataFontFamily",
+                fontSize: 16,
+              ),
             ),
           ),
           if (label != null)
@@ -82,8 +82,11 @@ class AppSnackBar extends StatelessWidget {
               },
               child: Text(
                 label!,
-                style: TextStyles.bold20(context)
-                    .copyWith(color: Theme.of(context).primaryColor),
+                style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.primaryColor,
+                    fontSize: 16,
+                    fontFamily: "Cairo"),
               ),
             ),
         ],

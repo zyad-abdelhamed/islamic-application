@@ -25,10 +25,10 @@ class GetAdaptiveLoadingWidget extends StatelessWidget {
 Container _getWindowsLoadingWidget(BuildContext context) {
   return Container(
     padding: const EdgeInsets.all(8.0),
-    color: AppColors.white,
+    color: Colors.white,
     child: Text(
       AppStrings.translate("loadingText"),
-      style: TextStyles.bold20(context).copyWith( color: AppColors.black),
+      style: TextStyles.bold20(context).copyWith(color: Colors.black),
     ),
   );
 }

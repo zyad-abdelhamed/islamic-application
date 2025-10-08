@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
-import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 
 class HomeButton extends StatelessWidget {
@@ -56,11 +55,8 @@ class HomeButton extends StatelessWidget {
           children: [
             Text(
               text,
-              style: TextStyles.bold20(context).copyWith(
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? AppColors.darkModeTextColor
-                      : AppColors.lightModeTextColor,
-                  fontSize: 23),
+              style: TextStyles.bold20(context)
+                  .copyWith(color: Colors.white, fontSize: 23),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 3.0),

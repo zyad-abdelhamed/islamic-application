@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
 import 'package:test_app/core/constants/app_strings.dart';
-import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/features/app/presentation/view/components/other_page_button.dart';
 import 'package:test_app/features/app/presentation/view/components/post_prayer_adhkar_widget.dart';
@@ -20,7 +19,7 @@ class OtherPage extends StatelessWidget {
           fontFamily: 'DataFontFamily',
           color: Theme.of(context).brightness == Brightness.dark
               ? Colors.grey
-              : AppColors.black,
+              : Colors.black,
         ),
       ),
       DrawRosaryRingWidget(),
@@ -31,7 +30,7 @@ class OtherPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppStrings.appBarTitles(withTwoLines: false)[5]),
+        title: Text(AppStrings.appBarTitles(withTwoLines: false)[7]),
         leading: const GetAdaptiveBackButtonWidget(),
       ),
       body: Center(

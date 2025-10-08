@@ -26,118 +26,106 @@ class AdhkarWidget extends StatefulWidget {
 class _AdhkarWidgetState extends State<AdhkarWidget> {
   @override
   Widget build(BuildContext context) {
-    const double countContainerHight = 40;
-    const double countContainerWidth = 80;
-    const double parentColumnSpacing = 15;
-
-    return Column(
-        key: ObjectKey(widget.adhkarEntity),
-        spacing: parentColumnSpacing,
-        children: [
-          Container(
-            margin: EdgeInsets.only(
-              top: widget.index != 0 ? 30.0 : 0.0, //space between items
+    return Column(key: ObjectKey(widget.adhkarEntity), spacing: 15, children: [
+      Container(
+        margin: EdgeInsets.only(
+          top: widget.index != 0 ? 30.0 : 0.0, //space between items
+        ),
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: AppColors.grey1,
+        ),
+        child: Column(
+          children: [
+            ValueListenableBuilder<double>(
+              valueListenable: widget.adhkarPageController.fontSizeNotfier,
+              builder: (_, __, ___) => Column(
+                children: [
+                  Text(
+                    widget.adhkarEntity.content,
+                    style: TextStyles.bold20(context).copyWith(
+                        fontFamily: 'DataFontFamily',
+                        fontSize:
+                            widget.adhkarPageController.fontSizeNotfier.value),
+                  ),
+                  Visibility(
+                    visible: widget.adhkarEntity.description != null,
+                    child: Text(
+                      widget.adhkarEntity.description!,
+                      style: TextStyles.regular16_120(context,
+                              color: AppColors.secondryColor)
+                          .copyWith(
+                              fontFamily: 'Amiri',
+                              fontSize: (widget.adhkarPageController
+                                      .fontSizeNotfier.value) -
+                                  4),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: AppColors.grey1,
-            ),
-            child: Column(
-              children: [
-                ValueListenableBuilder<double>(
-                  valueListenable: widget.adhkarPageController.fontSizeNotfier,
-                  builder: (_, __, ___) => Column(
-                    children: [
-                      Text(
-                        widget.adhkarEntity.content,
+            const SizedBox(height: 5),
+            Container(
+              alignment: Alignment.topCenter,
+              width: 80,
+              height: 40,
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                  borderRadius: BorderRadius.circular(10),
+                  color: AppColors.grey2),
+              child: ValueListenableBuilder<NumberAnimationModel>(
+                valueListenable: widget.adhkarEntity.countNotifier,
+                builder: (context, value, _) => AnimatedSlide(
+                  duration: AppDurations.lowDuration,
+                  offset: widget.adhkarEntity.countNotifier.value.offset!,
+                  child: Offstage(
+                      offstage:
+                          widget.adhkarEntity.countNotifier.value.offStage!,
+                      child: Text(
+                        widget.adhkarEntity.countNotifier.value.number
+                            .toString(),
                         style: TextStyles.bold20(context).copyWith(
-                            fontFamily: 'DataFontFamily',
+                            fontSize: 25,
                             color:
                                 Theme.of(context).brightness == Brightness.dark
                                     ? AppColors.grey400
                                     : Colors.black,
-                            fontSize: widget
-                                .adhkarPageController.fontSizeNotfier.value),
-                      ),
-                      Visibility(
-                        visible: widget.adhkarEntity.description != null,
-                        child: Text(
-                          widget.adhkarEntity.description!,
-                          style: TextStyles.regular16_120(context,
-                                  color: AppColors.secondryColor)
-                              .copyWith(
-                                  fontFamily: 'Amiri',
-                                  fontSize: (widget.adhkarPageController
-                                          .fontSizeNotfier.value) -
-                                      4),
-                        ),
-                      ),
-                    ],
-                  ),
+                            fontFamily: 'normal'),
+                      )),
                 ),
-                const SizedBox(height: 5),
-                Container(
-                  alignment: Alignment.topCenter,
-                  width: countContainerWidth,
-                  height: countContainerHight,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
-                      borderRadius: BorderRadius.circular(10),
-                      color: AppColors.grey2),
-                  child: ValueListenableBuilder<NumberAnimationModel>(
-                    valueListenable: widget.adhkarEntity.countNotifier,
-                    builder: (context, value, _) => AnimatedSlide(
-                      duration: AppDurations.lowDuration,
-                      offset: widget.adhkarEntity.countNotifier.value.offset!,
-                      child: Offstage(
-                          offstage:
-                              widget.adhkarEntity.countNotifier.value.offStage!,
-                          child: Text(
-                            widget.adhkarEntity.countNotifier.value.number
-                                .toString(),
-                            style: TextStyles.bold20(context).copyWith(
-                                fontSize: 25,
-                                color: Theme.of(context).brightness ==
-                                        Brightness.dark
-                                    ? AppColors.grey400
-                                    : Colors.black,
-                                fontFamily: 'normal'),
-                          )),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          Row(
-              spacing: context.width * .10,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <GestureDetector>[
-                _circleAvatarButton(
-                    context: context,
-                    icon: Icons.minimize_outlined,
-                    function: () {
-                      widget.adhkarPageController.decreaseCount(
-                          countPrameters: CountPrameters(
-                              index: widget.index,
-                              adhkarEntity: widget.adhkarEntity,
-                              countNotifier:
-                                  widget.adhkarEntity.countNotifier));
-                    }),
-                _circleAvatarButton(
-                  context: context,
-                  icon: Icons.loop,
-                  function: () {
-                    widget.adhkarPageController.resetCount(
-                        countPrameters: CountPrameters(
-                            index: widget.index,
-                            adhkarEntity: widget.adhkarEntity,
-                            countNotifier: widget.adhkarEntity.countNotifier));
-                  },
-                )
-              ])
-        ]);
+              ),
+            )
+          ],
+        ),
+      ),
+      Row(
+          spacing: context.width * .10,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <GestureDetector>[
+            _circleAvatarButton(
+                context: context,
+                icon: Icons.minimize_outlined,
+                function: () {
+                  widget.adhkarPageController.decreaseCount(
+                      countPrameters: CountPrameters(
+                          index: widget.index,
+                          adhkarEntity: widget.adhkarEntity,
+                          countNotifier: widget.adhkarEntity.countNotifier));
+                }),
+            _circleAvatarButton(
+              context: context,
+              icon: Icons.loop,
+              function: () {
+                widget.adhkarPageController.resetCount(
+                    countPrameters: CountPrameters(
+                        index: widget.index,
+                        adhkarEntity: widget.adhkarEntity,
+                        countNotifier: widget.adhkarEntity.countNotifier));
+              },
+            )
+          ])
+    ]);
   }
 
   GestureDetector _circleAvatarButton(
@@ -147,9 +135,7 @@ class _AdhkarWidgetState extends State<AdhkarWidget> {
       GestureDetector(
         onTap: function,
         child: CircleAvatar(
-          backgroundColor: Theme.of(context).brightness == Brightness.dark
-              ? AppColors.darkModeInActiveColor
-              : AppColors.lightModeInActiveColor,
+          backgroundColor: AppColors.primaryColorInActiveColor,
           radius: getResponsiveFontSize(context: context, fontSize: 37),
           child: Icon(
             icon,

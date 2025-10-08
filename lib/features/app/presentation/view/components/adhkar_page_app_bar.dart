@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/adaptive_switch.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
 import 'package:test_app/core/constants/app_strings.dart';
-import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/adhkar_page_controller.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/features/app/presentation/view/components/controle_font_size_buttons.dart';
@@ -41,9 +40,7 @@ class AdhkarPageAppBar extends StatelessWidget implements PreferredSizeWidget {
             builder: (_, __, ___) => Text(
               adhkarPageController.lengthNotfier.value.toString(),
               style: TextStyles.semiBold16_120(context).copyWith(
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? AppColors.darkModeTextColor
-                    : AppColors.lightModeTextColor,
+                color: Colors.white,
                 fontFamily: 'normal',
               ),
             ),

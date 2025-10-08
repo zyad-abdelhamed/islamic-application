@@ -102,7 +102,7 @@ class CommonCircleLayout extends StatelessWidget {
                       style: TextStyles.bold20(context).copyWith(
                         color: isDark
                             ? AppColors.darkModeTextColor
-                            : AppColors.lightModePrimaryColor,
+                            : AppColors.primaryColor,
                       ),
                     ),
                   ),

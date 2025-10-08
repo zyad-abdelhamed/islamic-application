@@ -29,7 +29,6 @@ class SearchAyahEntity {
   final int juz;
   final int page;
   final Surah surah;
-  final bool sajda;
 
   const SearchAyahEntity({
     required this.number,
@@ -38,7 +37,6 @@ class SearchAyahEntity {
     required this.juz,
     required this.page,
     required this.surah,
-    required this.sajda,
   });
 }
 

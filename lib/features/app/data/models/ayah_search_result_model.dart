@@ -26,7 +26,6 @@ class SearchAyahModel extends SearchAyahEntity {
     required super.juz,
     required super.page,
     required super.surah,
-    required super.sajda,
   });
 
   factory SearchAyahModel.fromJson(Map<String, dynamic> json) {
@@ -36,7 +35,6 @@ class SearchAyahModel extends SearchAyahEntity {
       numberInSurah: json['numberInSurah'] ?? 0,
       juz: json['juz'] ?? 0,
       page: json['page'] ?? 0,
-      sajda: json['sajda'],
       surah: SurahModel.fromJson(json['surah']),
     );
   }

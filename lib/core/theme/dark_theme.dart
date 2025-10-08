@@ -3,10 +3,15 @@ import 'package:flutter/services.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 
 ThemeData darkTheme = ThemeData(
-    primaryColor: AppColors.darkModePrimaryColor,
+    primaryColor: AppColors.primaryColor,
     brightness: Brightness.dark,
     fontFamily: 'SemiBoldCairo',
     scaffoldBackgroundColor: AppColors.darkModeScaffoldBackGroundColor,
+    textTheme: ThemeData.light().textTheme.apply(
+          bodyColor: AppColors.darkModeTextColor, // لون النصوص العادية
+          displayColor: AppColors.darkModeTextColor, // لون العناوين الكبيرة
+          fontFamily: 'SemiBoldCairo',
+        ),
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.transparent,
       centerTitle: true,
@@ -14,7 +19,7 @@ ThemeData darkTheme = ThemeData(
       surfaceTintColor: Colors.transparent,
       titleTextStyle: TextStyle(
         fontFamily: "Cairo",
-        color: AppColors.darkModePrimaryColor,
+        color: AppColors.primaryColor,
         fontWeight: FontWeight.bold,
         fontSize: 23,
       ),
@@ -25,7 +30,7 @@ ThemeData darkTheme = ThemeData(
       ),
     ),
     drawerTheme: const DrawerThemeData(
-      backgroundColor: AppColors.darkModePrimaryColor,
+      backgroundColor: AppColors.primaryColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30),
@@ -74,7 +79,7 @@ ThemeData darkTheme = ThemeData(
             fontWeight: FontWeight.w600,
           ),
         ),
-        foregroundColor: WidgetStatePropertyAll(AppColors.white),
+        foregroundColor: WidgetStatePropertyAll(Colors.white),
       ),
     ),
     textButtonTheme: TextButtonThemeData(
@@ -85,9 +90,9 @@ ThemeData darkTheme = ThemeData(
             fontWeight: FontWeight.w600,
           ),
         ),
-        foregroundColor: WidgetStatePropertyAll(AppColors.white),
+        foregroundColor: WidgetStatePropertyAll(Colors.white),
       ),
     ),
     chipTheme: ChipThemeData(
-      backgroundColor: AppColors.darkModePrimaryColor,
+      backgroundColor: AppColors.primaryColor,
     ));

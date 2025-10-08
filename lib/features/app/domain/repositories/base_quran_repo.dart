@@ -22,4 +22,5 @@ abstract class BaseQuranRepo {
       {required List<int> indexs});
   Future<Either<Failure, List<BookMarkEntity>>> getBookMarks();
   Future<Either<Failure, SearchAyahWithTafsirEntity>> search(String query);
+  
 }

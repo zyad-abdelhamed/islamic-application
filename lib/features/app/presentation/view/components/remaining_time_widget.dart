@@ -43,7 +43,7 @@ class RemainingTimeWidget extends StatelessWidget {
                           thickness: 3,
                           indent: 10,
                           endIndent: 10,
-                          color: AppColors.white.withValues(alpha: 0.5),
+                          color: Colors.white.withValues(alpha: 0.5),
                         ),
                       ),
                     ),
@@ -101,9 +101,11 @@ List<BorderRadiusGeometry> _getBorderRadiuses() {
   const double borderRadius = 10.0;
   return <BorderRadiusGeometry>[
     const BorderRadius.only(
-        topLeft: Radius.circular(borderRadius), bottomLeft: Radius.circular(borderRadius)),
+        topLeft: Radius.circular(borderRadius),
+        bottomLeft: Radius.circular(borderRadius)),
     BorderRadius.circular(borderRadius),
     const BorderRadius.only(
-        topRight: Radius.circular(borderRadius), bottomRight: Radius.circular(borderRadius)),
+        topRight: Radius.circular(borderRadius),
+        bottomRight: Radius.circular(borderRadius)),
   ];
 }
