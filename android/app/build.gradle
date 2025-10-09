@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace "com.example.test_app"
-    compileSdk 35
+    compileSdk 36
     ndkVersion "29.0.13846066" // <-- تم تعديل نسخة NDK هنا
 
     compileOptions {
@@ -21,8 +21,8 @@ android {
 
     defaultConfig {
         applicationId "com.example.test_app"
-        minSdk 21
-        targetSdk 35
+        minSdkVersion flutter.minSdkVersion
+        targetSdk 36
         versionCode 1
         versionName "1.0"
         multiDexEnabled true

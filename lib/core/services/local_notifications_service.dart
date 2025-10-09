@@ -103,8 +103,9 @@ class LocalNotificationsServiceByFlutterLocalNotifications
 
   @override
   Future<void> zonedSchedule(NotificationRequestPrameters request) async {
-    final String currentTimeZone = await FlutterTimezone.getLocalTimezone();
-    tz.setLocalLocation(tz.getLocation(currentTimeZone));
+    final TimezoneInfo currentTimeZone =
+        await FlutterTimezone.getLocalTimezone();
+    tz.setLocalLocation(tz.getLocation(currentTimeZone.identifier));
     // تحويل وقت الجدولة العادي (DateTime) إلى وقت مرتبط بالـ timezone المحلي
     final tz.TZDateTime scheduledDate =
         tz.TZDateTime.from(request.scheduledTime!, tz.local);

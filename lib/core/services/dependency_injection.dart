@@ -18,6 +18,7 @@ import 'package:test_app/features/app/data/datasources/prayers_remote_data_sourc
 import 'package:test_app/features/app/data/datasources/quran_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/quran_remote_data_source.dart';
 import 'package:test_app/features/app/data/datasources/r_table_local_data_source.dart';
+import 'package:test_app/features/app/data/datasources/reciters_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/records_local_data_source.dart';
 import 'package:test_app/features/app/data/repos/app_repo.dart';
 import 'package:test_app/features/app/data/repos/daily_adhkar_repo.dart';
@@ -27,12 +28,14 @@ import 'package:test_app/features/app/data/repos/prayer_repo.dart';
 import 'package:test_app/features/app/data/repos/qipla_repo.dart';
 import 'package:test_app/features/app/data/repos/quran_repo.dart';
 import 'package:test_app/features/app/data/repos/r_table_repo.dart';
+import 'package:test_app/features/app/data/repos/reciters_repo.dart';
 import 'package:test_app/features/app/data/repos/records_repo.dart';
 import 'package:test_app/features/app/domain/repositories/base_app_repo.dart';
 import 'package:test_app/features/app/domain/repositories/base_daily_adhkar_repo.dart';
 import 'package:test_app/features/app/domain/repositories/base_prayer_repo.dart';
 import 'package:test_app/features/app/domain/repositories/base_qipla_repo.dart';
 import 'package:test_app/features/app/domain/repositories/base_quran_repo.dart';
+import 'package:test_app/features/app/domain/repositories/base_reciters_repo.dart';
 import 'package:test_app/features/app/domain/repositories/base_records_repo.dart';
 import 'package:test_app/features/app/domain/repositories/home_repo.dart';
 import 'package:test_app/features/app/domain/repositories/location_repo.dart';
@@ -61,6 +64,7 @@ import 'package:test_app/features/app/presentation/controller/cubit/featured_rec
 import 'package:test_app/features/app/presentation/controller/cubit/prayers_sound_settings_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/qibla_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/quran_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/reciters_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/reset_app_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/rtabel_cubit.dart';
 import 'package:test_app/core/services/api_services.dart';
@@ -81,6 +85,7 @@ Future<void> initDependencyInjection() async {
   sl.registerLazySingleton(() => GetPrayersTimesController(
       getPrayersTimesUseCase: sl(), baseLocationRepo: sl()));
   // cubits
+  sl.registerFactory(() => RecitersCubit(sl()));
   sl.registerFactory(() => TafsirEditCubit());
   sl.registerFactory(() => GetSurahsInfoCubit(sl()));
   sl.registerFactory(() => ResetAppCubit(sl()));
@@ -119,6 +124,8 @@ Future<void> initDependencyInjection() async {
   sl.registerLazySingleton<GetRecordsUseCase>(
       () => GetRecordsUseCase(baseRecordsRepo: sl()));
   //repositories
+  sl.registerLazySingleton<BaseRecitersRepo>(
+      () => RecitersRepo(recitersLocalDataSource: sl()));
   sl.registerLazySingleton<BaseDailyAdhkarNotificationsRepo>(
     () => DailyAdhkarNotificationsRepoImpl(sl(), sl()),
   );
@@ -153,6 +160,8 @@ Future<void> initDependencyInjection() async {
     ),
   );
   // data sources
+  sl.registerLazySingleton<RecitersLocalDataSource>(
+      () => RecitersLocalDataSourceImpl());
   sl.registerLazySingleton<BaseDailyAdhkarNotificationsLocalDataSource>(
     () => DailyAdhkarNotificationsLocalDataSourceImpl(cache: sl()),
   );
