@@ -66,7 +66,7 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       );
     case RoutesConstants.recitersPage:
       return MaterialPageRoute<RecitersPage>(
-        builder: (BuildContext context) => const RecitersPage(),
+        builder: (BuildContext context) => RecitersPage(),
       );
     default:
       return MaterialPageRoute<Scaffold>(
