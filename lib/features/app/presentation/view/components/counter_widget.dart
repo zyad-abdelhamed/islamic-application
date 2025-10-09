@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_durations.dart';
+import 'package:test_app/core/helper_function/is_land_scape_orintation.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/features/app/data/models/number_animation_model.dart';
@@ -29,7 +30,9 @@ class CounterWidget extends StatelessWidget {
           horizontal: controller.horizontalPadding(context), vertical: 10.0),
       child: AnimatedContainer(
         duration: AppDurations.longDuration,
-        margin: EdgeInsets.only(top: controller.getMargine),
+        margin: isLandScapeOrientation(context)
+            ? const EdgeInsets.all(0.0)
+            : EdgeInsets.only(top: controller.getMargine),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -58,7 +61,7 @@ class CounterWidget extends StatelessWidget {
                           ),
                         )),
                   )),
-              SizedBox(height: spacing),
+              const SizedBox(height: spacing),
               resetButton,
               GestureDetector(
                 onTapDown: (_) => controller.onTapDown(
@@ -80,9 +83,7 @@ class CounterWidget extends StatelessWidget {
                         width: controller.increaseButtonSize(context),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? AppColors.darkModeInActiveColor
-                              : AppColors.lightModeInActiveColor,
+                          color: AppColors.primaryColorInActiveColor,
                         ),
                       ),
                     );

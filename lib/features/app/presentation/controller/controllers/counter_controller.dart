@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/core/helper_function/is_land_scape_orintation.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
 import 'package:test_app/features/app/data/models/number_animation_model.dart';
 import 'package:test_app/features/app/presentation/view/components/counter_widget.dart';
@@ -34,9 +35,11 @@ class CounterController {
   }
 
   double increaseButtonSize(BuildContext context) =>
-      !isfeatuerdRecordsWidgetShowedNotifier.value
-          ? ((context.width - 20))
-          : (context.width * 2 / 3) * .70;
+      isLandScapeOrientation(context)
+          ? (context.height) - (100 + 100 + 20 + 15)
+          : !isfeatuerdRecordsWidgetShowedNotifier.value
+              ? ((context.width - 20))
+              : (context.width * 2 / 3) * .70;
 
   void increaseCounter() {
     counterNotifier.value.slideAnimation(

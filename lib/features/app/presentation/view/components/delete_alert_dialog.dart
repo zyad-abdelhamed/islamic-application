@@ -24,9 +24,7 @@ void showDeleteAlertDialog(BuildContext context,
               onPressed: () => Navigator.pop(context),
               child: Text(AppStrings.translate("no"),
                   style: TextStyles.regular16_120(context,
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? AppColors.darkModeTextColor
-                          : AppColors.lightModePrimaryColor)))
+                      color: AppColors.primaryColor))),
         ],
       );
     },

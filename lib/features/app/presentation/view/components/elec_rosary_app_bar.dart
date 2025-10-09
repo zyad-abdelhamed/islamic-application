@@ -17,7 +17,7 @@ class ElecRosaryAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       leading: const GetAdaptiveBackButtonWidget(),
-      title: Text(AppStrings.appBarTitles(withTwoLines: false)[2]),
+      title: Text(AppStrings.appBarTitles(withTwoLines: false)[4]),
       actions: [
         ValueListenableBuilder<bool>(
           valueListenable: counterController.vibrationNotifier,

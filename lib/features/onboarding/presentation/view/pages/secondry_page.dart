@@ -59,9 +59,7 @@ class _SecondryPageState extends State<SecondryPage> {
               count: onBoardingController.featuresNumber,
               effect: ScrollingDotsEffect(
                 maxVisibleDots: onBoardingController.featuresNumber,
-                dotColor: Theme.of(context).brightness == Brightness.dark
-                    ? AppColors.darkModeInActiveColor
-                    : AppColors.lightModeInActiveColor,
+                dotColor: AppColors.primaryColorInActiveColor,
                 activeDotColor: Theme.of(context).primaryColor,
                 dotHeight: 10,
                 dotWidth: 10,

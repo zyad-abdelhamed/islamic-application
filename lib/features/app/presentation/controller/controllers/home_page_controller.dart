@@ -14,7 +14,7 @@ import 'package:test_app/features/app/domain/repositories/home_repo.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_prayer_times_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/daily_adhkar_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/next_prayer_controller.dart';
-import 'package:test_app/features/app/presentation/view/components/custom_alert_dialog.dart';
+import 'package:test_app/core/widgets/custom_alert_dialog.dart';
 
 bool _isShowed = false;
 

@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/features/app/domain/entities/daily_adhkar_entity.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/daily_adhkar_page_controller.dart';
@@ -105,7 +104,7 @@ class _DailyAdhkarPageState extends State<DailyAdhkarPage>
                             minHeight: 4,
                             backgroundColor: Colors.white.withAlpha(64),
                             valueColor: AlwaysStoppedAnimation<Color>(
-                              AppColors.white,
+                              Colors.white,
                             ),
                           ),
                         );

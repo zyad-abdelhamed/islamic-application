@@ -77,7 +77,7 @@ class PrayerTimesPageAppBar extends StatelessWidget
                   Text(
                     "تأكيد",
                     style: TextStyles.semiBold16(
-                        context: context, color: AppColors.white),
+                        context: context, color: Colors.white),
                   ),
                 ]),
               ),

@@ -74,7 +74,9 @@ Widget buildDownloadDialog(
         label: const Text('تنزيل'),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.lightBlueAccent,
-          foregroundColor: Colors.white,
+          foregroundColor: Theme.of(context).brightness == Brightness.dark
+              ? Colors.black
+              : Colors.white,
         ),
         onPressed: () {
           context.read<DownloadSurahWithTafsirCubit>().downloadSurahWithTafsir(

@@ -50,7 +50,7 @@ class RadioButton extends StatelessWidget {
     ThemeCubit themeCubit = ThemeCubit.controller(context);
 
     return RadioListTile<ThemeMode>(
-      activeColor: AppColors.successColor,
+      activeColor: AppColors.primaryColor,
       title: Text(title,
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
       value: themeMode,

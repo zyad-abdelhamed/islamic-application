@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/widgets/app_divider.dart';
 import 'package:test_app/core/widgets/share_button.dart';
 import 'package:test_app/features/app/domain/entities/ayah_search_result_entity.dart';
 import 'package:test_app/features/app/domain/entities/tafsir_ayah_entity.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/ayah_audio_card_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/tafsir_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/tafsir_state.dart';
+import 'package:test_app/features/app/presentation/view/components/ayah_audio_card.dart';
 import 'package:test_app/features/app/presentation/view/components/copy_button.dart';
 import 'package:test_app/features/app/presentation/view/components/go_to_Tafsir_edit_page_button.dart';
 
@@ -62,6 +65,23 @@ class AyahsSearchResultPageView extends StatelessWidget {
                         children: [
                           const GoToTafsirEditPageButton(),
                           ShareButton(text: ayah.text),
+                          IconButton(onPressed: () {
+              final controller = AyahAudioCardController(
+                audioSource: AudioSource.uri(Uri.parse(
+                    "https://cdn.islamic.network/quran/audio/128/ar.alafasy/262.mp3")),
+              );
+
+              final entry = OverlayEntry(
+                builder: (_) => AyahAudioCard(
+                  controller: controller,
+                  reciterName: "مشاري راشد العفاسي",
+                  reciterImageUrl: "",
+                ),
+              );
+
+              controller.setEntry(entry);
+              Overlay.of(context).insert(entry);
+            }, icon: const Icon(Icons.headphones)),
                           const Spacer(),
                           Text(
                             "${index + 1} / ${ayahs.length}",
@@ -153,7 +173,7 @@ class AyahsSearchResultPageView extends StatelessWidget {
       {"label": "رقم الآية في السورة", "value": "${ayah.numberInSurah}"},
       {"label": "الجزء", "value": "${ayah.juz}"},
       {"label": "الصفحة", "value": "${ayah.page}"},
-      {"label": "سجدة", "value": ayah.sajda ? "نعم" : "لا"},
+      {"label": "سجدة", "value": containsSajda(ayah) ? "نعم" : "لا"},
       {"label": "السورة", "value": ayah.surah.name},
       {"label": "رقم السورة", "value": "${ayah.surah.number}"},
       {"label": "الاسم بالإنجليزية", "value": ayah.surah.englishName},
@@ -173,6 +193,8 @@ class AyahsSearchResultPageView extends StatelessWidget {
       ),
     );
   }
+
+  bool containsSajda(SearchAyahEntity ayah) => ayah.text.endsWith("۩");
 
   Widget _infoItem(String title, String value) {
     return Container(

@@ -38,11 +38,10 @@ class TafsirPageSurahsListView extends StatelessWidget {
 
         return getWidgetDependingOnReuestState(
           requestStateEnum: state.state,
-          widgetIncaseSuccess: ListView.separated(
-            padding: const EdgeInsets.all(16),
+          widgetIncaseSuccess: ListView.builder(
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 30.0),
             itemCount: filtered.length,
             physics: const BouncingScrollPhysics(),
-            separatorBuilder: (_, __) => const SizedBox(height: 20),
             itemBuilder: (BuildContext context, int index) {
               final SurahEntity surah = filtered[index];
 
@@ -51,7 +50,7 @@ class TafsirPageSurahsListView extends StatelessWidget {
                 child: SlidableItem(
                   key: ObjectKey(surah),
                   surah: surah,
-                  textColor: AppColors.lightModePrimaryColor,
+                  textColor: AppColors.primaryColor,
                   surahNumber: _getSurahNumber(context, surah),
                   showSaveIcon: tabNumber == 1,
                 ),

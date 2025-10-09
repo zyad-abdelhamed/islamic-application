@@ -52,7 +52,7 @@ class RamadanCalendarWidget extends StatelessWidget {
                   thickness: 3,
                   indent: 10.0,
                   endIndent: 10.0,
-                  color: AppColors.white.withOpacity(0.5),
+                  color: Colors.white.withOpacity(0.5),
                 ),
               ),
             ),

@@ -8,7 +8,6 @@ import 'package:test_app/features/app/domain/entities/location_entity.dart';
 import 'package:test_app/features/app/domain/entities/timings.dart';
 import 'package:test_app/features/app/domain/repositories/location_repo.dart';
 import 'package:test_app/features/app/domain/usecases/get_prayers_times_use_case.dart';
-import 'package:test_app/core/constants/routes_constants.dart';
 
 class GetPrayersTimesController {
   GetPrayersTimesController({
@@ -23,7 +22,7 @@ class GetPrayersTimesController {
   Timings timings = Timings.empty();
   LocationEntity? locationEntity;
 
-  Future<void> getPrayersTimes(BuildContext context) async {
+  Future<void> getPrayersTimes({VoidCallback? onTerminated}) async {
     final Either<Failure, Timings> result = await getPrayersTimesUseCase();
 
     await result.fold(
@@ -32,7 +31,7 @@ class GetPrayersTimesController {
             key: CacheConstants.getPrayersTimesErrorMessage,
             value: failure.message);
 
-        _goToHomePage(context);
+        onTerminated?.call();
       },
       (prayerTimes) async {
         cache.insertStringToCache(
@@ -48,18 +47,8 @@ class GetPrayersTimesController {
           (location) => locationEntity = location,
         );
 
-        if (context.mounted) {
-          _goToHomePage(context);
-        }
+        onTerminated?.call();
       },
-    );
-  }
-
-  void _goToHomePage(BuildContext context) {
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      RoutesConstants.homePageRouteName,
-      (route) => false,
     );
   }
 }

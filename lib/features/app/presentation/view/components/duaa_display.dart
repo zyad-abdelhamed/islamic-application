@@ -18,7 +18,7 @@ class DuaaDisplay extends StatefulWidget {
 
 class _DuaaDisplayState extends State<DuaaDisplay> {
   final ValueNotifier<bool> visibilityNotifier = ValueNotifier(false);
-  
+
   @override
   void dispose() {
     visibilityNotifier.dispose();
@@ -36,8 +36,8 @@ class _DuaaDisplayState extends State<DuaaDisplay> {
             Text(
               widget.duaaTitle,
               style: TextStyles.semiBold16(
-               context:  context,
-               color:  AppColors.secondryColor,
+                context: context,
+                color: AppColors.secondryColor,
               ),
             ),
             ValueListenableBuilder<bool>(
@@ -48,14 +48,15 @@ class _DuaaDisplayState extends State<DuaaDisplay> {
                   turns: visible ? 0.5 : 0.0, // تدوير السهم لأعلى/أسفل
                   child: IconButton(
                     onPressed: () => visibilityNotifier.value = !visible,
-                    icon: const Icon(Icons.expand_more, size: 30, color: Colors.grey),
+                    icon: const Icon(Icons.expand_more,
+                        size: 30, color: Colors.grey),
                   ),
                 );
               },
             ),
           ],
         ),
-    
+
         // محتوى الدعاء المتحرك
         ValueListenableBuilder<bool>(
           valueListenable: visibilityNotifier,
@@ -80,7 +81,7 @@ class _DuaaDisplayState extends State<DuaaDisplay> {
                         child: Text(
                           widget.duaaBody,
                           style: TextStyles.semiBold16_120(context).copyWith(
-                              color: AppColors.white,
+                              color: Colors.white,
                               fontFamily: 'DataFontFamily'),
                         ),
                       )

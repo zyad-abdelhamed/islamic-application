@@ -220,7 +220,7 @@ class PrayerTimesNotificationsRepoImpl
         audioAttributesUsage: AudioAttributesUsage.alarm,
         sound: RawResourceAndroidNotificationSound('aladhan'),
         fullScreenIntent: true,
-        color: AppColors.lightModePrimaryColor,
+        color: AppColors.primaryColor,
         colorized: true, // مهم للون
         enableLights: true,
         actions: <AndroidNotificationAction>[

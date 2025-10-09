@@ -24,8 +24,8 @@ class _SurahListPageState extends State<SurahListPage> {
           bottom: const TabBar(
             isScrollable: false,
             dividerColor: Colors.transparent,
-            indicatorColor: AppColors.lightModePrimaryColor,
-            labelColor: AppColors.lightModePrimaryColor,
+            indicatorColor: AppColors.primaryColor,
+            labelColor: AppColors.primaryColor,
             tabAlignment: TabAlignment.center,
             tabs: [
               Tab(text: "جميع السور"),
@@ -41,7 +41,8 @@ class _SurahListPageState extends State<SurahListPage> {
             Column(
               children: const [
                 Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding:
+                      EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
                   child: SurahsSearchTextFiled(),
                 ),
                 Expanded(

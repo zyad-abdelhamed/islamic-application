@@ -14,7 +14,7 @@ class CustomTopBar extends StatelessWidget {
       height: context.height * 0.1,
       alignment: Alignment.centerRight,
       decoration: BoxDecoration(
-        color: AppColors.lightModePrimaryColor,
+        color: AppColors.primaryColor,
         borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(16),
           bottomRight: Radius.circular(16),

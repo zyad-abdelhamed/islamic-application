@@ -59,11 +59,11 @@ class BookmarkItem extends StatelessWidget {
                     duration: const Duration(milliseconds: 250),
                     decoration: BoxDecoration(
                       color: isSelected
-                          ? (AppColors.lightModeInActiveColor)
+                          ? (AppColors.primaryColorInActiveColor)
                           : (isDark ? Colors.grey[850] : Colors.white),
                       border: Border.all(
                         color: isSelected
-                            ? AppColors.lightModePrimaryColor
+                            ? AppColors.primaryColor
                             : Colors.transparent,
                         width: 2,
                       ),
@@ -80,7 +80,7 @@ class BookmarkItem extends StatelessWidget {
                       softWrap: true,
                       style: TextStyles.bold20(context).copyWith(
                           color: isSelected
-                              ? AppColors.lightModePrimaryColor
+                              ? AppColors.primaryColor
                               : (isDark ? Colors.white : Colors.black87)),
                     ),
                   ),

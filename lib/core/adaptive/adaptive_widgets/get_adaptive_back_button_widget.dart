@@ -30,7 +30,7 @@ class GetAdaptiveBackButtonWidget extends StatelessWidget {
       child: GestureDetector(
         child: const Icon(
           Icons.arrow_back,
-          color: AppColors.lightModePrimaryColor,
+          color: AppColors.primaryColor,
         ),
         onTap: () => _back(context, backBehavior),
       ),
@@ -44,7 +44,7 @@ class GetAdaptiveBackButtonWidget extends StatelessWidget {
       onPressed: () => _back(context, backBehavior),
       child: const Icon(
         CupertinoIcons.back,
-        color: AppColors.lightModePrimaryColor,
+        color: AppColors.primaryColor,
       ),
     ));
   }
@@ -52,10 +52,10 @@ class GetAdaptiveBackButtonWidget extends StatelessWidget {
   Widget _getWindowsBackButton(BuildContext context) {
     return TextButton.icon(
       onPressed: () => _back(context, backBehavior),
-      icon: const Icon(Icons.arrow_back, color: AppColors.black),
+      icon: const Icon(Icons.arrow_back, color: Colors.black),
       label: Text(
         AppStrings.translate("back"),
-        style: TextStyle(color: AppColors.black),
+        style: TextStyle(color: Colors.black),
       ),
     );
   }
@@ -84,8 +84,8 @@ class OpacityLayout extends StatelessWidget {
           decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: (Theme.of(context).brightness == Brightness.dark
-                      ? AppColors.white
-                      : AppColors.black)
+                      ? Colors.white
+                      : Colors.black)
                   .withAlpha(35)),
           child: child,
         ));

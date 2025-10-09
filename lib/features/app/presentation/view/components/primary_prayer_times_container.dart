@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/features/app/presentation/view/components/prayer_times_inner_container.dart';
 import 'package:test_app/features/app/presentation/view/components/prayer_times_widget_background_image.dart';
 
@@ -19,6 +20,14 @@ class PrimaryPrayerTimesContainer extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primaryColor.withOpacity(0.6),
+            blurRadius: 12,
+            spreadRadius: 1,
+            offset: Offset(0, 6),
+          ),
+        ],
       ),
       child: Stack(
         children: [

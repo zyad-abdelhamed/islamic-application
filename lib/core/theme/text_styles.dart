@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/helper_function/get_responsive_font_size.dart';
-import 'package:test_app/core/theme/app_colors.dart';
 
 class TextStyles {
-
   static TextStyle semiBold16({
     required BuildContext context,
     required Color? color,
@@ -50,7 +48,7 @@ class TextStyles {
 
   static TextStyle semiBold20(BuildContext context) {
     return TextStyle(
-      color: AppColors.white,
+      color: Colors.white,
       fontWeight: FontWeight.w600,
       fontSize: getResponsiveFontSize(context: context, fontSize: 20),
       height: 1.5,
@@ -74,7 +72,8 @@ class TextStyles {
     );
   }
 
-  static TextStyle semiBold32Decoreted(BuildContext context, {required Color color}) {
+  static TextStyle semiBold32Decoreted(BuildContext context,
+      {required Color color}) {
     return TextStyle(
       color: color,
       fontWeight: FontWeight.w600,

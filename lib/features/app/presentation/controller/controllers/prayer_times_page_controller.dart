@@ -10,7 +10,7 @@ import 'package:test_app/features/app/data/models/get_prayer_times_of_month_pram
 import 'package:test_app/features/app/domain/entities/prayer_sound_settings_entity.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/location_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_prayer_times_of_month_cubit.dart';
-import 'package:test_app/features/app/presentation/view/components/custom_alert_dialog.dart';
+import 'package:test_app/core/widgets/custom_alert_dialog.dart';
 import 'package:test_app/core/widgets/save_or_update_location_widget.dart';
 
 class PrayerTimesPageController {

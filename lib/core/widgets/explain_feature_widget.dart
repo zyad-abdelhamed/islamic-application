@@ -9,9 +9,7 @@ class ExplainFeatureButton extends StatelessWidget {
   final String text;
   @override
   Widget build(BuildContext context) {
-    Color dataColor = Theme.of(context).brightness == Brightness.dark
-        ? AppColors.darkModeTextColor
-        : AppColors.lightModePrimaryColor;
+    Color dataColor = AppColors.primaryColor;
     return IconButton(
       icon: Icon(Icons.info_outline, color: Theme.of(context).primaryColor),
       onPressed: () {
