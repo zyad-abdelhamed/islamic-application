@@ -22,11 +22,7 @@ android {
     defaultConfig {
         applicationId "com.example.test_app"
         minSdkVersion flutter.minSdkVersion
-<<<<<<< HEAD
         targetSdk 36
-=======
-        targetSdk 35
->>>>>>> 4fe9d7db68ece699b6c02518bd92a313a0397eab
         versionCode 1
         versionName "1.0"
         multiDexEnabled true

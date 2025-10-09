@@ -1,31 +1,31 @@
 [
     {
         "identifier": "ar.alafasy",
-        "language": "Arabic",
+        "language": "العربية",
         "name": "مشاري العفاسي",
         "image": "assets/images/recitersImages/alafasy.jpg"
     },
     {
         "identifier": "ar.mahermuaiqly",
-        "language": "Arabic",
+        "language": "العربية",
         "name": "ماهر المعيقلي",
         "image": "assets/images/recitersImages/maher_muaiqly.jpg"
     },
     {
         "identifier": "ar.abdurrahmaansudais",
-        "language": "Arabic",
+        "language": "العربية",
         "name": "عبدالرحمن السديس",
         "image": "assets/images/recitersImages/alsudais.jpg"
     },
     {
         "identifier": "ar.minshawi",
-        "language": "Arabic",
+        "language": "العربية",
         "name": "محمد صديق المنشاوي",
         "image": "assets/images/recitersImages/minshawi.jpeg"
     },
     {
         "identifier": "ar.husary",
-        "language": "Arabic",
+        "language": "العربية",
         "name": "محمود خليل الحصري",
         "image": "assets/images/recitersImages/husary.png"
     },

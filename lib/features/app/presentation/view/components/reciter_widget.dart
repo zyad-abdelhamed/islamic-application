@@ -30,7 +30,7 @@ class ReciterCardWidget extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: Card(
               elevation: 6,
-              color: AppColors.lightModePrimaryColor,
+              color: AppColors.primaryColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),
@@ -56,7 +56,7 @@ class ReciterCardWidget extends StatelessWidget {
                         SizedBox(height: context.height * 0.007),
 
                         // اللغة
-                        Text("اللغة: ${reciter.language}",
+                        Text(reciter.language,
                             style: TextStyles.semiBold16(
                                 context: context,
                                 color: AppColors.darkModeTextColor)),
