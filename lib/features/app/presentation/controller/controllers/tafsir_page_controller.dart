@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_app/core/utils/status_bar_utils.dart';
 import 'package:test_app/features/app/data/models/quran_request_params.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_surah_with_tafsir_cubit.dart';
 
@@ -13,7 +12,6 @@ class TafsirPageController {
 
   void initState(BuildContext context, TafsirRequestParams params,
       SurahRequestParams surahRequestParams) {
-    StatusBarUtils.hide();
     infoKey = GlobalKey();
     fontSizeNotifier = ValueNotifier(25.0);
     isShowed = ValueNotifier<bool>(false);
@@ -28,7 +26,6 @@ class TafsirPageController {
   void hideHighlight() => selectedAyah.value = null;
 
   void dispose() {
-    StatusBarUtils.show();
     fontSizeNotifier.dispose();
     isShowed.dispose();
     selectedAyah.dispose();

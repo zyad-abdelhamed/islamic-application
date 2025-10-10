@@ -42,14 +42,6 @@ class Apiconstants {
     return '$baseQuranApi/v1/ayah/$ayahNumber/$edition';
   }
 
-  static String buildAyahAudioUrl(AyahAudioRequestParams params) {
-    final bitrate = params.quality.value;
-    final edition = params.edition;
-    final ayahNumber = params.ayahGlobalNumber;
-
-    return 'https://cdn.islamic.network/quran/audio/$bitrate/$edition/$ayahNumber.mp3';
-  }
-
   static String buildSurahAudioEndpoint(SurahAudioRequestParams params) {
     return 'https://api.alquran.cloud/v1/surah/${params.surahNumber}/${params.edition}';
   }

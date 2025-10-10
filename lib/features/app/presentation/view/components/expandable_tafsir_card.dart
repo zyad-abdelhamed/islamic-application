@@ -53,16 +53,18 @@ class _ExpandableTafsirCardState extends State<ExpandableTafsirCard> {
         children: [
           Row(
             children: [
-              Text(
-                widget.title,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: "Cairo",
-                  color: widget.dataColor,
+              Expanded(
+                child: Text(
+                  widget.title,
+                  maxLines: 5,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "Cairo",
+                    color: widget.dataColor,
+                  ),
                 ),
               ),
-              const Spacer(),
               CopyButton(textToCopy: widget.tafsirText),
               ShareButton(text: widget.tafsirText)
             ],

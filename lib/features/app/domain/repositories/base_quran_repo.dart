@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:test_app/features/app/data/models/quran_audio_parameters.dart';
 import 'package:test_app/features/app/domain/entities/ayah_search_result_entity.dart';
 import 'package:test_app/features/app/domain/entities/book_mark_entity.dart';
 import 'package:test_app/features/app/data/models/quran_request_params.dart';
@@ -22,5 +23,6 @@ abstract class BaseQuranRepo {
       {required List<int> indexs});
   Future<Either<Failure, List<BookMarkEntity>>> getBookMarks();
   Future<Either<Failure, SearchAyahWithTafsirEntity>> search(String query);
-  
+  //   ===audio methodes===
+  String getAyahAudioUrl(AyahAudioRequestParams params);
 }

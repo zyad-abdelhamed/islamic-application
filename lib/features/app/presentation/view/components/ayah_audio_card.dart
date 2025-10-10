@@ -4,7 +4,7 @@ import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/ayah_audio_card_controller.dart';
 
-class AyahAudioCard extends StatelessWidget {
+class AyahAudioCard extends StatefulWidget {
   final AyahAudioCardController controller;
   final String reciterName;
   final String reciterImageUrl;
@@ -17,14 +17,20 @@ class AyahAudioCard extends StatelessWidget {
   });
 
   @override
+  State<AyahAudioCard> createState() => _AyahAudioCardState();
+}
+
+class _AyahAudioCardState extends State<AyahAudioCard> {
+  @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<Offset>(
-      valueListenable: controller.offset,
+      valueListenable: widget.controller.offset,
       builder: (_, offset, __) => Positioned(
         left: offset.dx,
         top: offset.dy,
         child: GestureDetector(
-          onPanUpdate: (details) => controller.updateOffset(details.delta),
+          onPanUpdate: (details) =>
+              widget.controller.updateOffset(details.delta),
           child: Material(
             color: Colors.transparent,
             child: Container(
@@ -46,93 +52,109 @@ class AyahAudioCard extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  ListTile(
-                    leading: ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: Image.network(
-                        reciterImageUrl,
-                        height: 40,
-                        width: 40,
+                  Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Image.asset(
+                          widget.reciterImageUrl,
+                          height: 40,
+                          width: 40,
+                        ),
                       ),
-                    ),
-                    title: Text(
-                      reciterName,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.primaryColor,
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          widget.reciterName,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
                       ),
-                    ),
-                    trailing: IconButton(
-                      icon: const Icon(
-                        Icons.close,
-                        color: Colors.grey,
+                      IconButton(
+                        icon: const Icon(
+                          Icons.close,
+                          color: Colors.grey,
+                        ),
+                        onPressed: widget.controller.removeCard,
                       ),
-                      onPressed: controller.removeCard,
-                    ),
+                    ],
                   ),
                   const SizedBox(height: 8),
-                  Row(
-                    spacing: 8,
-                    children: <ValueListenableBuilder>[
-                      ValueListenableBuilder<PlayerStatus>(
-                        valueListenable: controller.status,
-                        builder: (_, status, __) => Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: AppColors.primaryColorInActiveColor,
-                            shape: BoxShape.circle,
-                          ),
-                          child: IconButton(
-                            icon: Icon(
-                              status == PlayerStatus.playing
-                                  ? Icons.pause_circle_filled
-                                  : Icons.play_circle_fill,
-                            ),
-                            iconSize: 56,
-                            onPressed: controller.togglePlayPause,
-                          ),
-                        ),
-                      ),
-                      ValueListenableBuilder<Duration>(
-                        valueListenable: controller.position,
-                        builder: (_, pos, __) => Slider(
-                          activeColor: AppColors.primaryColor,
-                          inactiveColor: AppColors.primaryColorInActiveColor,
-                          value: pos.inSeconds.toDouble(),
-                          max: 1.0, // يمكن تعديله حسب مدة الصوت
-                          onChanged: (val) =>
-                              controller.seek(Duration(seconds: val.toInt())),
-                        ),
-                      ),
-                      ValueListenableBuilder<double>(
-                        valueListenable: controller.speed,
-                        builder: (_, speed, __) {
+                  ValueListenableBuilder<PlayerStatus>(
+                    valueListenable: widget.controller.status,
+                    builder: (_, status, __) =>
+                        ValueListenableBuilder<Duration>(
+                      valueListenable: widget.controller.position,
+                      builder: (_, pos, __) => ValueListenableBuilder<Duration>(
+                        valueListenable: widget.controller.duration,
+                        builder: (_, dur, __) {
                           final speeds = [0.5, 1.0, 1.5, 2.0];
-                          final currentIndex = speeds.indexOf(speed);
+                          final currentSpeed = widget.controller.speed.value;
+                          final currentIndex = speeds.indexOf(currentSpeed);
                           final nextIndex = (currentIndex + 1) % speeds.length;
                           final nextSpeed = speeds[nextIndex];
 
-                          return GestureDetector(
-                            onTap: () => controller.setSpeed(nextSpeed),
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                  color: AppColors.secondryColorInActiveColor,
-                                  shape: BoxShape.circle),
-                              child: Text(
-                                "${speed}x",
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.secondryColor,
+                          return Row(
+                            children: [
+                              Flexible(
+                                flex: 2,
+                                child: IconButton(
+                                  icon: Icon(
+                                    status == PlayerStatus.playing
+                                        ? Icons.pause_circle_filled
+                                        : Icons.play_circle_fill,
+                                  ),
+                                  iconSize: 48,
+                                  onPressed: widget.controller.togglePlayPause,
+                                  color: AppColors.primaryColor,
                                 ),
                               ),
-                            ),
+                              Expanded(
+                                flex: 5,
+                                child: Slider(
+                                  activeColor: AppColors.primaryColor,
+                                  inactiveColor:
+                                      AppColors.primaryColorInActiveColor,
+                                  value: pos.inSeconds
+                                      .toDouble()
+                                      .clamp(0.0, dur.inSeconds.toDouble()),
+                                  max: dur.inSeconds.toDouble(),
+                                  onChanged: (val) => widget.controller.seek(
+                                    Duration(seconds: val.toInt()),
+                                  ),
+                                ),
+                              ),
+                              Flexible(
+                                flex: 2,
+                                child: GestureDetector(
+                                  onTap: () =>
+                                      widget.controller.setSpeed(nextSpeed),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color:
+                                          AppColors.secondryColorInActiveColor,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Text(
+                                      "${currentSpeed}x",
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500,
+                                        color: AppColors.secondryColor,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           );
                         },
                       ),
-                    ],
+                    ),
                   ),
                 ],
               ),

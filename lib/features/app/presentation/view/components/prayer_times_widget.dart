@@ -37,44 +37,47 @@ class PrayerTimesWidget extends StatelessWidget {
           : Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          RoutesConstants.prayersTimePage,
-                          (route) => false,
-                        );
-                      },
-                      child: const Icon(Icons.settings_sharp),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Visibility(
-                          visible: controller.locationEntity!.name !=
-                              AppStrings.translate("unknownCity"),
-                          child: Text(
-                            controller.locationEntity!.name,
-                            style: TextStyles.bold20(context)
-                                .copyWith(color: Colors.grey),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            RoutesConstants.prayersTimePage,
+                            (route) => false,
+                          );
+                        },
+                        child: const Icon(Icons.settings_sharp),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Visibility(
+                            visible: controller.locationEntity!.name !=
+                                AppStrings.translate("unknownCity"),
+                            child: Text(
+                              controller.locationEntity!.name,
+                              style: TextStyles.bold20(context)
+                                  .copyWith(color: Colors.grey),
+                            ),
                           ),
-                        ),
-                        Text(
-                          '${controller.timings.hijriDay} '
-                          '${controller.timings.hijriMonthNameArabic} '
-                          '${controller.timings.hijriYear}',
-                          style: TextStyle(
-                            color: AppColors.grey400,
-                            fontFamily: 'DataFontFamily',
+                          Text(
+                            '${controller.timings.hijriDay} '
+                            '${controller.timings.hijriMonthNameArabic} '
+                            '${controller.timings.hijriYear}',
+                            style: TextStyle(
+                              color: AppColors.grey400,
+                              fontFamily: 'DataFontFamily',
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
                 const PrimaryPrayerTimesContainer(),
                 const RemainingTimeWidget(),

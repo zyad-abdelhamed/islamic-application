@@ -14,7 +14,7 @@ abstract class BaseQuranRemoteDataSource {
   Future<AyahSearchResultModel> searchInQuran(String keyword);
   Future<TafsirAyahModel> getAyahTafsir(int ayahNumber, String edition);
   Future<List<AyahAudioModel>> getSurahAudio(SurahAudioRequestParams params);
-  Future<AyahAudioModel> getAyahAudio(AyahAudioRequestParams params);
+  String getAyahAudioUrl(AyahAudioRequestParams params);
 }
 
 class QuranRemoteDataSource extends BaseQuranRemoteDataSource {
@@ -167,11 +167,11 @@ class QuranRemoteDataSource extends BaseQuranRemoteDataSource {
   */
 
   @override
-  Future<AyahAudioModel> getAyahAudio(AyahAudioRequestParams params) async {
-    final String url = Apiconstants.buildAyahAudioUrl(params);
+  String getAyahAudioUrl(AyahAudioRequestParams params) {
+    final int bitrate = params.quality.value;
+    final String edition = params.edition;
+    final int ayahNumber = params.ayahGlobalNumber;
 
-    return AyahAudioModel(
-      audioUrl: url,
-    );
+    return 'https://cdn.islamic.network/quran/audio/$bitrate/$edition/$ayahNumber.mp3';
   }
 }

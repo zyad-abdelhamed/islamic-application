@@ -34,7 +34,7 @@ class AppSnackBar extends StatelessWidget {
         break;
 
       case AppSnackBarType.error:
-        backgroundColor = AppColors.errorColor;
+        backgroundColor = Colors.black.withAlpha(190);
         icon = Icons.warning_amber_rounded;
         break;
 

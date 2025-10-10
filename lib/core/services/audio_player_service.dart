@@ -10,6 +10,7 @@ abstract class IAudioPlayer {
   Future<void> seek(Duration position);
   Stream<PlayerState> get playerStateStream;
   Stream<Duration> get positionStream;
+  Stream<Duration?> get durationStream;
   Future<void> dispose();
 }
 
@@ -24,7 +25,8 @@ class PlayerState {
 class JustAudioPlayer implements IAudioPlayer {
   final AudioPlayer _player;
 
-  JustAudioPlayer({AudioPlayer? audioPlayer}) : _player = audioPlayer ?? AudioPlayer();
+  JustAudioPlayer({AudioPlayer? audioPlayer})
+      : _player = audioPlayer ?? AudioPlayer();
 
   @override
   Future<void> setUrl(String url) async {
@@ -32,9 +34,9 @@ class JustAudioPlayer implements IAudioPlayer {
   }
 
   @override
-Future<void> setAudioSource(AudioSource source) async {
-  await _player.setAudioSource(source);
-}
+  Future<void> setAudioSource(AudioSource source) async {
+    await _player.setAudioSource(source);
+  }
 
   @override
   Future<void> play() => _player.play();
@@ -54,7 +56,8 @@ Future<void> setAudioSource(AudioSource source) async {
   @override
   Stream<PlayerState> get playerStateStream =>
       _player.playerStateStream.map((state) {
-        if (state.playing && state.processingState != ProcessingState.completed) {
+        if (state.playing &&
+            state.processingState != ProcessingState.completed) {
           return PlayerState(PlayerStatus.playing);
         }
         switch (state.processingState) {
@@ -64,7 +67,9 @@ Future<void> setAudioSource(AudioSource source) async {
           case ProcessingState.buffering:
             return PlayerState(PlayerStatus.loading);
           case ProcessingState.ready:
-            return state.playing ? PlayerState(PlayerStatus.playing) : PlayerState(PlayerStatus.paused);
+            return state.playing
+                ? PlayerState(PlayerStatus.playing)
+                : PlayerState(PlayerStatus.paused);
           case ProcessingState.completed:
             return PlayerState(PlayerStatus.completed);
         }
@@ -72,6 +77,9 @@ Future<void> setAudioSource(AudioSource source) async {
 
   @override
   Stream<Duration> get positionStream => _player.positionStream;
+
+  @override
+  Stream<Duration?> get durationStream => _player.durationStream;
 
   @override
   Future<void> dispose() => _player.dispose();

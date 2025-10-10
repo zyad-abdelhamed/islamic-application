@@ -19,8 +19,8 @@ class OnBoardingController {
 
   // Mark onboarding as displayed
   Future<void> markAsDisplayed() async {
-    await NotificationsBackgroundTasksRepoImpl
-        .registerDailyAdhkarNotificationsTask();
+    // await NotificationsBackgroundTasksRepoImpl
+    //     .registerDailyAdhkarNotificationsTask();
     await _cacheService.insertBoolToCache(
         key: CacheConstants.isDisplayed, value: true);
   }

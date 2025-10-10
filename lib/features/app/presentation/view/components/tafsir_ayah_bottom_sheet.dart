@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/widgets/app_divider.dart';
-import 'package:test_app/core/widgets/share_button.dart';
 import 'package:test_app/features/app/domain/entities/tafsir_ayah_entity.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/tafsir_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/tafsir_state.dart';
@@ -42,13 +41,7 @@ class TafsirBottomSheet extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const GoToTafsirEditPageButton(),
-                    ShareButton(text: ayahText),
-                  ],
-                ),
+                const GoToTafsirEditPageButton(),
                 const SizedBox(height: 12),
                 Center(
                   child: Text(

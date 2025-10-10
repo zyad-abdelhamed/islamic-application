@@ -9,8 +9,8 @@ class PrimaryPrayerTimesContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 210.0,
-      margin: const EdgeInsets.symmetric(vertical: 10.0),
+      height: 200.0,
+      margin: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(35),
         gradient: LinearGradient(

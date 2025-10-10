@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/features/app/data/datasources/quran_local_data_source.dart';
+import 'package:test_app/features/app/data/models/quran_audio_parameters.dart';
 import 'package:test_app/features/app/domain/entities/ayah_search_result_entity.dart';
 import 'package:test_app/features/app/domain/entities/book_mark_entity.dart';
 import 'package:test_app/features/app/data/datasources/quran_remote_data_source.dart';
@@ -313,5 +314,10 @@ class QuranRepo implements BaseQuranRepo {
     }
 
     return results;
+  }
+
+  @override
+  String getAyahAudioUrl(AyahAudioRequestParams params) {
+    return _baseQuranRemoteDataSource.getAyahAudioUrl(params);
   }
 }

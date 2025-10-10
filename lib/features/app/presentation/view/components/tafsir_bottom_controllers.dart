@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:test_app/core/utils/responsive_extention.dart';
 import 'controle_font_size_buttons.dart';
 
 class TafsirBottomControls extends StatelessWidget {
@@ -28,31 +27,25 @@ class TafsirBottomControls extends StatelessWidget {
         decoration: BoxDecoration(
           color: backgroundColor,
         ),
-        child: SizedBox(
-          width: context.width,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            physics: const BouncingScrollPhysics(),
-            child: Row(
-              children: [
-                _buildOption(
-                  Icons.search,
-                  onSearch,
-                ),
-                _buildOption(
-                  Icons.info_outline,
-                  onInfo,
-                  key: infoButtonKey,
-                ),
-                _buildOption(CupertinoIcons.headphones, () {}),
-                _buildOption(CupertinoIcons.group, () {}),
-                ControleFontSizeButtons(
-                  fontSizeNotfier: fontSizeNotfier,
-                  initialFontSize: 25,
-                ),
-              ],
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _buildOption(
+              Icons.search,
+              onSearch,
             ),
-          ),
+            _buildOption(
+              Icons.info_outline,
+              onInfo,
+              key: infoButtonKey,
+            ),
+            _buildOption(CupertinoIcons.headphones, () {}),
+            _buildOption(CupertinoIcons.group, () {}),
+            ControleFontSizeButtons(
+              fontSizeNotfier: fontSizeNotfier,
+              initialFontSize: 25,
+            ),
+          ],
         ));
   }
 

@@ -24,7 +24,7 @@ class ErrorWidgetIslamic extends StatelessWidget {
           maxWidth: 500, // يفضل يمنع الكارد من التمدد أوي في الشاشات الكبيرة
         ),
         child: Card(
-          color: AppColors.secondryColor.withValues(alpha: 0.1),
+          color: Colors.black.withAlpha(190),
           margin: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),

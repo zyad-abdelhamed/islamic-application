@@ -70,8 +70,8 @@ class LocationRepo extends BaseLocationRepo {
           );
         });
 
-        await NotificationsBackgroundTasksRepoImpl
-            .registerPrayerTimesNotificationsTask(); // register prayer times notifications
+        // await NotificationsBackgroundTasksRepoImpl
+        //     .registerPrayerTimesNotificationsTask(); // register prayer times notifications
         return Right(unit);
       } catch (e) {
         return Left(Failure(e.toString()));

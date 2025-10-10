@@ -25,6 +25,7 @@ class MainPage extends StatelessWidget {
             AppStrings.translate("welcome"),
             style: TextStyles.semiBold16(context: context, color: Colors.black),
           ),
+          const SizedBox(height: 10),
           Text(
             AppStrings.translate("appName"),
             style: TextStyles.bold20(context).copyWith(

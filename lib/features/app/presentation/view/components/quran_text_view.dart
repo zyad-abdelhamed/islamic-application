@@ -7,7 +7,7 @@ class QuranTextView extends StatelessWidget {
   final List<AyahEntity> ayat;
   final ValueNotifier<int?> selectedAyah;
   final ValueNotifier<double> fontSizeNotifier;
-  final void Function(int ayahNum) onLongPress;
+  final void Function(int ayahNum, Offset globalPosition) onLongPress;
 
   const QuranTextView({
     super.key,
@@ -65,10 +65,10 @@ class QuranTextView extends StatelessWidget {
                   backgroundColor: AppColors.successColor.withAlpha(75),
                 )
               : baseStyle,
-          recognizer: (LongPressGestureRecognizer()
-            ..onLongPress = () {
-              onLongPress(num);
-            }),
+          recognizer: LongPressGestureRecognizer()
+            ..onLongPressStart = (details) {
+              onLongPress(num, details.globalPosition);
+            },
         ),
       );
 
