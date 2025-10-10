@@ -1,0 +1,50 @@
+[
+    {
+        "identifier": "ar.alafasy",
+        "language": "العربية",
+        "name": "مشاري العفاسي",
+        "image": "assets/images/recitersImages/alafasy.jpg"
+    },
+    {
+        "identifier": "ar.mahermuaiqly",
+        "language": "العربية",
+        "name": "ماهر المعيقلي",
+        "image": "assets/images/recitersImages/maher_muaiqly.jpg"
+    },
+    {
+        "identifier": "ar.abdurrahmaansudais",
+        "language": "العربية",
+        "name": "عبدالرحمن السديس",
+        "image": "assets/images/recitersImages/alsudais.jpg"
+    },
+    {
+        "identifier": "ar.minshawi",
+        "language": "العربية",
+        "name": "محمد صديق المنشاوي",
+        "image": "assets/images/recitersImages/minshawi.jpeg"
+    },
+    {
+        "identifier": "ar.husary",
+        "language": "العربية",
+        "name": "محمود خليل الحصري",
+        "image": "assets/images/recitersImages/husary.png"
+    },
+    {
+        "identifier": "en.walk",
+        "language": "English",
+        "name": "Ibrahim Walk",
+        "image": "assets/images/recitersImages/reciter.png"
+    },
+    {
+        "identifier": "fr.leclerc",
+        "language": "French",
+        "name": "Youssouf Leclerc",
+        "image": "assets/images/recitersImages/reciter.png"
+    },
+    {
+        "identifier": "ur.khan",
+        "language": "Urdu",
+        "name": "Shamshad Ali Khan",
+        "image": "assets/images/recitersImages/reciter.png"
+    }
+]
