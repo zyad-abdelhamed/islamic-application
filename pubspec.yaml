@@ -63,6 +63,7 @@ dependencies:
   flutter_staggered_grid_view: ^0.7.0
   share_plus: ^12.0.0
   just_audio: ^0.10.5
+  flutter_native_splash: ^2.4.6
 
 dev_dependencies:
   flutter_test:
@@ -98,3 +99,11 @@ flutter:
       fonts:
         - asset: assets/fonts/Amiri-Regular.ttf
           weight: 700      
+flutter_native_splash:
+  color: "#1C4C48"          
+  image: assets/images/splash_image.jpg
+  android_12:
+    image: assets/images/splash_image.jpg
+    color: "#1C4C48"
+  android: true
+  ios: true
