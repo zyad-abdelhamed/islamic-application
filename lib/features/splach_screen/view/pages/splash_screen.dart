@@ -35,8 +35,8 @@ class _SplashScreenState extends State<SplashScreen> {
         showLoading.value = true;
 
         /// بعدها تبدأ تحميل البيانات
-        sl<GetPrayersTimesController>()
-            .getPrayersTimes(onTerminated: _goToHomePage);
+        // sl<GetPrayersTimesController>()
+        //     .getPrayersTimes(onTerminated: _goToHomePage);
       }
     });
   }

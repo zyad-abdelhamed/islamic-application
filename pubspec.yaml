@@ -65,6 +65,7 @@ dependencies:
   just_audio: ^0.10.5
   flutter_native_splash: ^2.4.6
   audio_video_progress_bar: ^2.0.3
+  flutter_launcher_icons: ^0.14.4
 
 dev_dependencies:
   flutter_test:
@@ -102,10 +103,10 @@ flutter:
         - asset: assets/fonts/Amiri-Regular.ttf
           weight: 700      
 flutter_native_splash:
-  color: "#1C4C48"          
-  image: assets/images/splash_image.jpg
+  color: "#E9F6F3"          
+  image: assets/images/soliman.png
   android_12:
-    image: assets/images/splash_image.jpg
-    color: "#1C4C48"
+    image: assets/images/soliman.png
+    color: "#E9F6F3"
   android: true
   ios: true
