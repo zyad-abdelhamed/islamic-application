@@ -1,18 +1,20 @@
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:test_app/core/errors/failures.dart';
 import 'package:test_app/features/app/domain/entities/reciters_entity.dart';
-import 'package:test_app/features/app/domain/repositories/base_reciters_repo.dart';
+import 'package:test_app/features/app/domain/repositories/base_quran_repo.dart';
 
 part 'reciters_state.dart';
 
 class RecitersCubit extends Cubit<RecitersState> {
-  RecitersCubit(this.baseRecitersRepo) : super(RecitersInitial());
-  final BaseRecitersRepo baseRecitersRepo;
-  Future<void> getReciters() async {
+  RecitersCubit(this._baseQuranRepo) : super(RecitersInitial());
+  final BaseQuranRepo _baseQuranRepo;
+  Future<void> getReciters({required String surahName}) async {
     emit(RecitersLoading());
-    final result = await baseRecitersRepo.getReciters();
+    final Either<Failure, List<ReciterEntity>> result =
+        await _baseQuranRepo.getReciters(surahName: surahName);
     result.fold((l) => emit(RecitersFailure(l.message)), (r) {
-      print("${r[1].image}=====================================");
       emit(RecitersLoaded(r));
     });
   }

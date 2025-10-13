@@ -81,7 +81,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     ? const ResetAppScreen()
                     : ModalProgressHUD(
                         inAsyncCall: value == SettingsPageState.loading,
-                        progressIndicator: const GetAdaptiveLoadingWidget(),
+                        progressIndicator: const AppLoadingWidget(),
                         opacity: .5,
                         child: child!,
                       );

@@ -31,8 +31,6 @@ class AyahsSearchResultPageView extends StatelessWidget {
   final Map<String, List<TafsirAyahEntity>> tafsirAyahs;
   final bool showExtraInfo;
 
-  static AyahAudioCardController? _activeController;
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider<TafsirEditCubit>(
@@ -45,7 +43,7 @@ class AyahsSearchResultPageView extends StatelessWidget {
             controller: _pageController,
             itemCount: ayahs.length,
             itemBuilder: (context, index) {
-              final SearchAyahEntity ayah = ayahs[index] as SearchAyahEntity;
+              final ayah = ayahs[index];
               final Map<String, TafsirAyahEntity> allTafsir = Map.fromEntries(
                 selectedTafsirs.map((editionName) {
                   return MapEntry(
@@ -160,25 +158,18 @@ class AyahsSearchResultPageView extends StatelessWidget {
   }
 
   void onPressed(BuildContext context, SearchAyahEntity ayah) {
-    // ✅ 1. فك الكنترولر السابق لو موجود
-    _activeController?.dispose();
-    _activeController = null;
-
-    // ✅ 2. بناء رابط الصوت
     final String audioUrl = sl<BaseQuranRepo>().getAyahAudioUrl(
       AyahAudioRequestParams(
-        edition: "ar.alafasy",
+        reciterId: "ar.alafasy",
         ayahGlobalNumber: ayah.number,
       ),
     );
 
     final AudioSource source = AudioSource.uri(Uri.parse(audioUrl));
 
-    // ✅ 3. إنشاء الكنترولر الجديد
-    final controller = AyahAudioCardController(audioSource: source);
-    _activeController = controller;
+    final AyahAudioCardController controller =
+        AyahAudioCardController(audioSource: source);
 
-    // ✅ 4. بناء الكارد وربطه بالكنترولر
     final entry = OverlayEntry(
       builder: (_) => AyahAudioCard(
         key: ValueKey<int>(ayah.number),

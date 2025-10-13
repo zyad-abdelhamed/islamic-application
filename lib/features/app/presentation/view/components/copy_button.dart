@@ -4,10 +4,12 @@ import 'package:test_app/core/theme/app_colors.dart';
 
 class CopyButton extends StatefulWidget {
   final String textToCopy;
+  final Color color;
 
   const CopyButton({
     super.key,
     required this.textToCopy,
+    this.color = Colors.grey,
   });
 
   @override
@@ -44,7 +46,7 @@ class _CopyButtonState extends State<CopyButton> {
           onPressed: _copy,
           icon: Icon(
             Icons.copy,
-            color: isCopied ? AppColors.successColor : Colors.grey,
+            color: isCopied ? AppColors.successColor : widget.color,
           ),
         ),
       ],

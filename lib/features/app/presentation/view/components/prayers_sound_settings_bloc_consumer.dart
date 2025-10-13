@@ -38,7 +38,7 @@ class PrayersSoundsSettingsBlocConsumer extends StatelessWidget {
       },
       builder: (context, state) {
         if (controller.prayerSoundSettingsEntityNotifier.value == null) {
-          return const GetAdaptiveLoadingWidget();
+          return const AppLoadingWidget();
         }
 
         return ValueListenableBuilder<PrayerSoundSettingsEntity?>(

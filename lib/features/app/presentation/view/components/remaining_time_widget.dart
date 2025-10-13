@@ -15,6 +15,7 @@ class RemainingTimeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
+        const SizedBox(width: 10),
         Text(
           AppStrings.translate("remainingTime"),
           style: TextStyles.bold20(context),

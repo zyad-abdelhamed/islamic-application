@@ -91,7 +91,7 @@ class _PrayerTimesPageState extends State<PrayerTimesPage> {
         ),
         builder: (_, bool isLoading, Widget? scaffold) => ModalProgressHUD(
           inAsyncCall: isLoading,
-          progressIndicator: const GetAdaptiveLoadingWidget(),
+          progressIndicator: const AppLoadingWidget(),
           opacity: .5,
           child: scaffold!,
         ),

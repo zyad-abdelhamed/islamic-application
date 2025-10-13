@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
-import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/features/app/data/models/number_animation_model.dart';
 import 'package:test_app/features/app/domain/entities/adhkar_entity.dart';
-import 'package:test_app/features/app/presentation/controller/controllers/get_adhkar_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/adhkar_widget.dart';
 
 class AdhkarPageController {
   late final ScrollController adhkarScrollController;
   late final GlobalKey<AnimatedListState> animatedLIstKey;
-  final ValueNotifier<int> lengthNotfier =
-      ValueNotifier(sl<GetAdhkarController>().adhkar.length);
+  late final ValueNotifier<int> lengthNotfier;
   late final ValueNotifier<double> progressNotfier;
   late final ValueNotifier<bool> switchNotfier;
   late final ValueNotifier<double> fontSizeNotfier;
   double maxProgress = 0.0;
-
-  initState(BuildContext context) {
+  late final Set<AdhkarEntity> adhkar;
+  void initState(BuildContext context, Set<AdhkarEntity> adhkar) {
+    this.adhkar = adhkar;
+    lengthNotfier = ValueNotifier<int>(adhkar.length);
     progressNotfier = ValueNotifier<double>(0.0);
     switchNotfier = ValueNotifier<bool>(true);
     fontSizeNotfier = ValueNotifier<double>(20.0);
@@ -108,16 +107,17 @@ class AdhkarPageController {
   }
 
   void _removeAnimation(int index, AdhkarEntity adhkarEntity) {
-    sl<GetAdhkarController>().adhkar.remove(adhkarEntity);
+    adhkar.remove(adhkarEntity);
     animatedLIstKey.currentState!.removeItem(
       duration: AppDurations.mediumDuration,
-      index,
+      index + 1,
       (context, animation) => SlideTransition(
         position: animation.drive(Tween<Offset>(
           begin: Offset(1, 0),
           end: Offset(0, 0),
         )),
         child: AdhkarWidget(
+          key: ObjectKey(adhkarEntity),
           adhkarPageController: this,
           index: index,
           adhkarEntity: adhkarEntity.copyWith(

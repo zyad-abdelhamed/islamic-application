@@ -169,7 +169,7 @@ class QuranRemoteDataSource extends BaseQuranRemoteDataSource {
   @override
   String getAyahAudioUrl(AyahAudioRequestParams params) {
     final int bitrate = params.quality.value;
-    final String edition = params.edition;
+    final String edition = params.reciterId;
     final int ayahNumber = params.ayahGlobalNumber;
 
     return 'https://cdn.islamic.network/quran/audio/$bitrate/$edition/$ayahNumber.mp3';

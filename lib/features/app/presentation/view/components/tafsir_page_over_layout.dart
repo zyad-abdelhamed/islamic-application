@@ -50,7 +50,7 @@ class TafsirPageOverLayout extends StatelessWidget {
           child: TafsirBottomControls(
             backgroundColor: backgroundColor,
             textColor: textColor,
-            fontSizeNotfier: _controller.fontSizeNotifier,
+            controller: _controller,
             onSearch: () {
               Navigator.push(context, MaterialPageRoute(builder: (_) {
                 return QAndAPage(cubit: _controller.tafsirCubit);

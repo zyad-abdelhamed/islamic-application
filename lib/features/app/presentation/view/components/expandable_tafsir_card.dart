@@ -56,7 +56,6 @@ class _ExpandableTafsirCardState extends State<ExpandableTafsirCard> {
               Expanded(
                 child: Text(
                   widget.title,
-                  maxLines: 5,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/features/app/domain/entities/reciters_entity.dart';
 import 'package:test_app/core/theme/app_colors.dart';
-import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
 
 class ReciterCheckTile extends StatelessWidget {
@@ -20,32 +19,36 @@ class ReciterCheckTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final imageRadius = context.width * 0.07;
 
-    return Card(
-      color: AppColors.primaryColor,
-      elevation: 3,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      child: ListTile(
-        leading: CircleAvatar(
+    return Row(
+      children: [
+        CircleAvatar(
           radius: imageRadius,
           backgroundImage: AssetImage(reciter.image),
         ),
-        title: Text(
-          reciter.name,
-          style: TextStyles.semiBold18(context, AppColors.darkModeTextColor),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                reciter.name,
+              ),
+              Text(
+                reciter.language,
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          ),
         ),
-        subtitle: Text(
-          reciter.language,
-          style: TextStyles.regular14_150(
-            context,
-          ).copyWith(color: AppColors.lightModeScaffoldBackGroundColor),
-        ),
-        trailing: Checkbox(
+        Checkbox.adaptive(
           value: isSelected,
-          activeColor: Colors.white,
-          checkColor: AppColors.primaryColor,
+          activeColor: AppColors.primaryColor,
           onChanged: onChanged,
         ),
-      ),
+      ],
     );
   }
 }

@@ -5,8 +5,8 @@ import 'package:test_app/core/adaptive/adaptive_widget_depending_on_os.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 
-class GetAdaptiveLoadingWidget extends StatelessWidget {
-  const GetAdaptiveLoadingWidget({super.key});
+class AppLoadingWidget extends StatelessWidget {
+  const AppLoadingWidget({super.key});
   @override
   Widget build(BuildContext context) {
     return Center(

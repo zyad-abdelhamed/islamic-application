@@ -13,6 +13,7 @@ import 'package:test_app/features/app/domain/entities/location_entity.dart';
 import 'package:test_app/features/app/domain/entities/location_type_adapter.dart';
 import 'package:test_app/features/app/domain/entities/prayer_sound_settings_entity.dart';
 import 'package:test_app/features/app/domain/entities/prayer_sounds_type_adapter.dart';
+import 'package:test_app/features/app/domain/entities/surah_audio_dwonload_entity.dart';
 import 'package:test_app/features/app/domain/entities/surah_with_tafsir_entity.dart';
 import 'package:test_app/features/app/domain/entities/tafsir_ayah_entity.dart';
 import 'package:test_app/features/app/domain/entities/timings.dart';
@@ -32,6 +33,8 @@ Future<void> setupHive() async {
   Hive.registerAdapter(TypeAdapterForAyahEntity());
   Hive.registerAdapter(TafsirAyahEntityAdapter());
   Hive.registerAdapter(SurahWithTafsirEntityAdapter());
+  Hive.registerAdapter(SurahAudioDownloadEntityAdapter());
+  Hive.registerAdapter(SurahAudioDownloadStatusAdapter());
   await Hive.openBox<DailyAdhkarEntity>(DailyAdhkarLocalDataSourceImpl.boxName);
   await Hive.openBox<FeaturedRecordEntity>(
       DataBaseConstants.featuerdRecordsHiveKey);
@@ -43,4 +46,6 @@ Future<void> setupHive() async {
   await Hive.openBox<BookMarkEntity>(QuranLocalDataSourceImpl.bookMarksBoxName);
   await Hive.openBox<SurahWithTafsirEntity>(
       QuranLocalDataSourceImpl.quranWithTafsirBoxName);
+  await Hive.openBox<SurahAudioDownloadEntity>(
+      QuranLocalDataSourceImpl.audioDownloadBoxName);
 }

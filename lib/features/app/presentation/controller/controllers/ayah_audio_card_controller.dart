@@ -68,6 +68,7 @@ class AyahAudioCardController {
   void updateOffset(Offset delta) => offset.value += delta;
 
   void removeCard() {
+    dispose();
     _entry.remove();
   }
 

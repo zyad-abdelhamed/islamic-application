@@ -28,7 +28,7 @@ class DuaasWidget extends StatelessWidget {
         child: BlocBuilder<DuaaCubit, DuaaState>(
           builder: (context, state) {
             if (state.duaaRequestState == RequestStateEnum.loading) {
-              return const GetAdaptiveLoadingWidget();
+              return const AppLoadingWidget();
             }
             if (state.duaaRequestState == RequestStateEnum.failed &&
                 state.duaas.isEmpty) {

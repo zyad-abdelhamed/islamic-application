@@ -62,7 +62,7 @@ class FeaturedRecordesBlocListener extends StatelessWidget {
             current is LoadFeaturedRecordsError,
         builder: (_, state) {
           if (state is FeaturedRecordsLoading) {
-            return const GetAdaptiveLoadingWidget();
+            return const AppLoadingWidget();
           } else if (state is LoadFeaturedRecordsError) {
             return FittedBox(
               fit: BoxFit.scaleDown,
@@ -71,7 +71,7 @@ class FeaturedRecordesBlocListener extends StatelessWidget {
           } else if (state is FeaturedRecordsLoaded) {
             return FeaturedRecordsAnimatedList(controller: controller);
           }
-          return const GetAdaptiveLoadingWidget();
+          return const AppLoadingWidget();
         });
   }
 }

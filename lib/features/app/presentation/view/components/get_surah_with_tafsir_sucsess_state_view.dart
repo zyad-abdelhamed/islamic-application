@@ -48,7 +48,7 @@ class GetSurahWithTafsirSuccessStateView extends StatelessWidget {
         if (state.isLoadingMore)
           const Padding(
             padding: EdgeInsets.all(16.0),
-            child: GetAdaptiveLoadingWidget(),
+            child: AppLoadingWidget(),
           ),
         if (state.hasMore)
           Align(

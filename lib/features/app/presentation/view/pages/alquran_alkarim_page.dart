@@ -48,7 +48,7 @@ class _AlquranAlkarimPageState extends State<AlquranAlkarimPage> {
         buildWhen: (previous, current) => previous.filePath != current.filePath,
         builder: (context, state) {
           return state.filePath == null
-              ? GetAdaptiveLoadingWidget()
+              ? AppLoadingWidget()
               : PDFView(
                   filePath: state.filePath,
                   nightMode: Theme.of(context).brightness == Brightness.dark,

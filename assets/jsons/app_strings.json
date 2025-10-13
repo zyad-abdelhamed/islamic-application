@@ -95,6 +95,16 @@
     "أدعية قرآنية",
     "أدعية الأنبياء"
   ],
+  "adhkarButtonsPhotos": [
+    "assets/images/adhkar_photos/morning.jpg",
+    "assets/images/adhkar_photos/evening.jpg",
+    "assets/images/adhkar_photos/after_praying.jpg",
+    "assets/images/adhkar_photos/tasabeeh.jpg",
+    "assets/images/adhkar_photos/sleeping.jpg",
+    "assets/images/adhkar_photos/waking_up.jpg",
+    "assets/images/adhkar_photos/adayeh_quraneyah.jpg",
+    "assets/images/adhkar_photos/adayeh_alanbeyah.jpg"
+  ],
   "chooseDate": "اختر التاريخ",
   "prayerTimesOfMonthInfoText": "يمكنك عرض مواعيد الصلاة لليوم الذي تحدده، أو تصفح مواعيد الصلاة لجميع أيام الشهر بكل سهولة، وذلك من خلال اختيار التاريخ ثم الضغط على زر الإرسال.",
   "noTafsirAvailable": "لا يوجد تفسير متاح حالياً، حاول استخدام تفسير آخر.",

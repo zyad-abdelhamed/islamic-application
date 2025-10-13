@@ -64,6 +64,7 @@ dependencies:
   share_plus: ^12.0.0
   just_audio: ^0.10.5
   flutter_native_splash: ^2.4.6
+  audio_video_progress_bar: ^2.0.3
 
 dev_dependencies:
   flutter_test:
@@ -77,6 +78,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/recitersImages/
+    - assets/images/adhkar_photos/
     - assets/pdfs/
     - assets/jsons/
     - assets/fonts/

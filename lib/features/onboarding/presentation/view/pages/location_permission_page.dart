@@ -77,7 +77,7 @@ class _LocationPermissionPageState extends State<LocationPermissionPage> {
                   children: [
                     const Spacer(),
                     ...value == null
-                        ? [const GetAdaptiveLoadingWidget()]
+                        ? [const AppLoadingWidget()]
                         : shouldShowLocationButton
                             ? activateLocationPermissionColumn(context)
                             : saveLocationColumn(context),

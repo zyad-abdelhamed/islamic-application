@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/features/app/data/models/quran_request_params.dart';
+import 'package:test_app/features/app/domain/entities/surah_entity.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_surah_with_tafsir_cubit.dart';
 
 class TafsirPageController {
@@ -10,15 +11,24 @@ class TafsirPageController {
   late final ValueNotifier<int?> selectedAyah;
   late final GlobalKey infoKey;
 
-  void initState(BuildContext context, TafsirRequestParams params,
-      SurahRequestParams surahRequestParams) {
+  late final TafsirRequestParams tafsirRequestParams;
+  late final SurahRequestParams surahParams;
+  late final SurahEntity surahEntity;
+
+  TafsirPageController(
+    BuildContext context, {
+    required this.tafsirRequestParams,
+    required this.surahParams,
+    required this.surahEntity,
+  }) {
     infoKey = GlobalKey();
     fontSizeNotifier = ValueNotifier(25.0);
     isShowed = ValueNotifier<bool>(false);
     selectedAyah = ValueNotifier<int?>(null);
     tafsirCubit = context.read<GetSurahWithTafsirCubit>();
     tafsirCubit.getSurahWithTafsir(
-        surahRequestParams: surahRequestParams, tafsirRequestParams: params);
+        surahRequestParams: surahParams,
+        tafsirRequestParams: tafsirRequestParams);
   }
 
   void toggleTopBar() => isShowed.value = !isShowed.value;

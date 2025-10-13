@@ -25,12 +25,12 @@ enum AudioQuality {
 }
 
 abstract class BaseAudioRequestParams {
-  final String edition;
+  final String reciterId;
   final AudioQuality quality;
   final int? surahNumber;
 
   const BaseAudioRequestParams({
-    required this.edition,
+    required this.reciterId,
     this.surahNumber,
     this.quality = AudioQuality.q128,
   });
@@ -42,16 +42,21 @@ class AyahAudioRequestParams extends BaseAudioRequestParams {
   final int ayahGlobalNumber; // رقم الآية في المصحف بالكامل (1–6236)
 
   const AyahAudioRequestParams({
-    required super.edition,
+    required super.reciterId,
     super.quality,
     required this.ayahGlobalNumber,
   });
 }
 
 class SurahAudioRequestParams extends BaseAudioRequestParams {
+  final String surahName;
+  final String reciterName;
+
   const SurahAudioRequestParams({
-    required super.edition,
+    required super.reciterId,
+    required this.reciterName,
     super.quality,
     required super.surahNumber,
+    required this.surahName,
   });
 }

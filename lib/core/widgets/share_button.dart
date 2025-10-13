@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -9,12 +8,15 @@ import 'package:share_plus/share_plus.dart';
 class ShareButton extends StatelessWidget {
   final String text;
   final String? subject;
+  final Color color;
+
   final void Function(ShareResult? result)? onComplete;
 
   const ShareButton({
     super.key,
     required this.text,
     this.subject,
+    this.color = Colors.grey,
     this.onComplete,
   });
 
@@ -48,8 +50,9 @@ class ShareButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () => _share(context),
-      icon: const Icon(
+      icon: Icon(
         Icons.share,
+        color: color,
       ),
     );
   }
