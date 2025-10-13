@@ -21,7 +21,7 @@ class SaveLocationButton extends StatelessWidget {
       ]),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const GetAdaptiveLoadingWidget();
+          return const AppLoadingWidget();
         }
         if (snapshot.hasError) {
           return const ErrorWidgetIslamic(

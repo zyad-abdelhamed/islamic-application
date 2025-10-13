@@ -43,6 +43,6 @@ class Apiconstants {
   }
 
   static String buildSurahAudioEndpoint(SurahAudioRequestParams params) {
-    return 'https://api.alquran.cloud/v1/surah/${params.surahNumber}/${params.edition}';
+    return 'https://api.alquran.cloud/v1/surah/${params.surahNumber}/${params.reciterId}';
   }
 }

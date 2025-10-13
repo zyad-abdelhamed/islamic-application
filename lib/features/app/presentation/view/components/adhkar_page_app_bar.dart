@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/core/adaptive/adaptive_widgets/adaptive_switch.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
-import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/adhkar_page_controller.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/features/app/presentation/view/components/controle_font_size_buttons.dart';
@@ -40,35 +38,19 @@ class AdhkarPageAppBar extends StatelessWidget implements PreferredSizeWidget {
             builder: (_, __, ___) => Text(
               adhkarPageController.lengthNotfier.value.toString(),
               style: TextStyles.semiBold16_120(context).copyWith(
-                color: Colors.white,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.black
+                    : Colors.white,
                 fontFamily: 'normal',
               ),
             ),
           ),
         ),
       ],
-      bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(72),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: ValueListenableBuilder(
-              valueListenable: adhkarPageController.switchNotfier,
-              builder: (context, value, child) {
-                return AdaptiveSwitch(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  name: AppStrings.translate("adhkarPageSwitchText"),
-                  onChanged: (_) {
-                    adhkarPageController.toggleIsDeletedSwitch();
-                  },
-                  value: adhkarPageController.switchNotfier.value,
-                );
-              }),
-        ),
-      ),
     );
   }
 
   /// لازم نحدد الـ preferredSize عشان الكلاس يشتغل كـ AppBar
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight + 72);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

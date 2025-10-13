@@ -45,7 +45,7 @@ class AppFunctionaltyButton<C extends StateStreamable<S>, S>
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text("جارٍ المعالجة ..."),
-                      const GetAdaptiveLoadingWidget(),
+                      const AppLoadingWidget(),
                     ],
                   )
                 : Text(

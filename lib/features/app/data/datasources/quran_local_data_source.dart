@@ -1,9 +1,13 @@
 import 'package:hive/hive.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/helper_function/get_from_json.dart';
+import 'package:test_app/features/app/data/models/reciters_model.dart';
 import 'package:test_app/features/app/data/models/surah_model.dart';
 import 'package:test_app/features/app/domain/entities/book_mark_entity.dart';
+import 'package:test_app/features/app/domain/entities/surah_audio_dwonload_entity.dart';
 import 'package:test_app/features/app/domain/entities/surah_with_tafsir_entity.dart';
+
+// ------------------ Interface ------------------
 
 abstract class QuranLocalDataSource {
   Future<List<SurahModel>> getSurahsInfo();
@@ -19,16 +23,41 @@ abstract class QuranLocalDataSource {
   Future<List<BookMarkEntity>> getBookMarks();
   Future<void> deleteBookmarksList({required List<int> indexes});
   Future<void> clearBookMarks();
+
+  // حالة تحميل الصوتيات
+  Future<List<RecitersModel>> getReciters({required String surahName});
+
+  Future<void> markSurahAudioAsDownloaded({
+    required String edition,
+    required String surahName,
+    required bool isComplete,
+    required List<int> failedAyahs,
+  });
+
+  Future<SurahAudioDownloadEntity?> getSurahAudioDownloadInfo({
+    required String edition,
+    required String surahName,
+  });
+
+  Future<void> unmarkSurahAudioDownloaded({
+    required String edition,
+    required String surahName,
+  });
 }
+
+// ------------------ Implementation ------------------
 
 class QuranLocalDataSourceImpl implements QuranLocalDataSource {
   static const String bookMarksBoxName = 'book_mark_box';
   static const String quranWithTafsirBoxName = 'quran_with_tafsir_box';
+  static const String audioDownloadBoxName = 'audio_download_box';
 
   final Box<BookMarkEntity> bookMarksBox =
       Hive.box<BookMarkEntity>(bookMarksBoxName);
   final Box<SurahWithTafsirEntity> quranWithTafsirBox =
       Hive.box<SurahWithTafsirEntity>(quranWithTafsirBoxName);
+  final Box<SurahAudioDownloadEntity> audioDownloadBox =
+      Hive.box<SurahAudioDownloadEntity>(audioDownloadBoxName);
 
   // ------------------ سور مع التفسير ------------------
 
@@ -52,19 +81,15 @@ class QuranLocalDataSourceImpl implements QuranLocalDataSource {
   @override
   Future<List<SurahModel>> getSurahsInfo() async {
     final List data = await getJson(RoutesConstants.surahsJsonRouteName);
-
-    // كل المفاتيح اللي محفوظة في الصندوق (يعني السور اللي نزلت بالتفسير)
     final Set downloadedKeys = quranWithTafsirBox.keys.toSet();
 
     return List.from(
-      data
-          .map(
-            (json) => SurahModel.fromJson(
-              json: json,
-              isDwonloaded: downloadedKeys.contains(json['name']),
-            ),
-          )
-          .toList(),
+      data.map(
+        (json) => SurahModel.fromJson(
+          json: json,
+          isDwonloaded: downloadedKeys.contains(json['name']),
+        ),
+      ),
     );
   }
 
@@ -89,5 +114,63 @@ class QuranLocalDataSourceImpl implements QuranLocalDataSource {
   @override
   Future<void> clearBookMarks() async {
     await bookMarksBox.clear();
+  }
+
+  // ------------------ حالة تحميل الصوتيات ------------------
+
+  @override
+  Future<List<RecitersModel>> getReciters({required String surahName}) async {
+    final data = await getJson(RoutesConstants.recitersJsonRouteName);
+
+    final List<RecitersModel> reciters = await Future.wait(
+      (data as List).map((e) async {
+        final surahAudioDownloadInfo = await getSurahAudioDownloadInfo(
+          edition: e['name'],
+          surahName: surahName,
+        );
+
+        return RecitersModel.fromJson(
+          e,
+          surahAudioDownloadInfo: surahAudioDownloadInfo,
+        );
+      }),
+    );
+
+    return reciters;
+  }
+
+  @override
+  Future<void> markSurahAudioAsDownloaded({
+    required String edition,
+    required String surahName,
+    required bool isComplete,
+    required List<int> failedAyahs,
+  }) async {
+    final key = "${edition}_$surahName";
+    final entity = SurahAudioDownloadEntity(
+      status: isComplete
+          ? SurahAudioDownloadStatus.complete
+          : SurahAudioDownloadStatus.partial,
+      failedAyahs: failedAyahs,
+    );
+    await audioDownloadBox.put(key, entity);
+  }
+
+  @override
+  Future<SurahAudioDownloadEntity?> getSurahAudioDownloadInfo({
+    required String edition,
+    required String surahName,
+  }) async {
+    final key = "${edition}_$surahName";
+    return audioDownloadBox.get(key);
+  }
+
+  @override
+  Future<void> unmarkSurahAudioDownloaded({
+    required String edition,
+    required String surahName,
+  }) async {
+    final key = "${edition}_$surahName";
+    await audioDownloadBox.delete(key);
   }
 }

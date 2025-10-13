@@ -1,12 +1,18 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:test_app/core/constants/app_strings.dart';
+import 'package:test_app/core/services/download_service.dart';
+import 'package:test_app/core/services/file_storage_service.dart';
 import 'package:test_app/features/app/data/datasources/quran_local_data_source.dart';
 import 'package:test_app/features/app/data/models/quran_audio_parameters.dart';
+import 'package:test_app/features/app/domain/entities/ayah_audio_entity.dart';
 import 'package:test_app/features/app/domain/entities/ayah_search_result_entity.dart';
 import 'package:test_app/features/app/domain/entities/book_mark_entity.dart';
 import 'package:test_app/features/app/data/datasources/quran_remote_data_source.dart';
 import 'package:test_app/features/app/data/models/quran_request_params.dart';
+import 'package:test_app/features/app/domain/entities/reciters_entity.dart';
 import 'package:test_app/features/app/domain/entities/surah_entity.dart';
 import 'package:test_app/features/app/domain/entities/ayah_entity.dart';
 import 'package:test_app/features/app/domain/entities/surah_with_tafsir_entity.dart';
@@ -22,11 +28,15 @@ class QuranRepo implements BaseQuranRepo {
   final QuranLocalDataSource _quranLocalDataSource;
   final BaseQuranRemoteDataSource _baseQuranRemoteDataSource;
   final QuranLocalDataSource quranLocalDataSource;
+  final IFileStorageService _fileStorageService;
+  final IDownloadService _downloadService;
 
   QuranRepo(
     this._baseQuranRemoteDataSource,
     this._quranLocalDataSource,
     this.quranLocalDataSource,
+    this._fileStorageService,
+    this._downloadService,
   );
 
   @override
@@ -317,7 +327,133 @@ class QuranRepo implements BaseQuranRepo {
   }
 
   @override
+  Future<Either<Failure, List<ReciterEntity>>> getReciters(
+      {required String surahName}) async {
+    try {
+      final result =
+          await _quranLocalDataSource.getReciters(surahName: surahName);
+      return right(result);
+    } catch (_) {
+      return left(Failure(AppStrings.translate("unExpectedError")));
+    }
+  }
+
+  @override
   String getAyahAudioUrl(AyahAudioRequestParams params) {
     return _baseQuranRemoteDataSource.getAyahAudioUrl(params);
   }
+
+  @override
+  Future<Either<Failure, SurahDownloadResult>> downloadSurahAudio(
+      SurahAudioRequestParams params) async {
+    try {
+      // 1. جلب الصوتيات من المصدر البعيد
+      final List<AyahAudioEntity> ayahs =
+          await _baseQuranRemoteDataSource.getSurahAudio(params);
+
+      // 2. تحديد اسم المجلد بناءً على القارئ والسورة
+      final folderName = "${params.reciterName}_${params.surahName}";
+
+      // 3. إنشاء المجلد (بدون حذف مسبق)
+      await _fileStorageService.createFolder(folderName: folderName);
+
+      final List<int> failedAyahs = [];
+
+      // 4. دالة لاختيار أول رابط صوتي صالح من القائمة
+      String? getValidAudioUrl(AyahAudioEntity ayah) {
+        final List<String> allUrls = [
+          if (ayah.audioUrl.isNotEmpty) ayah.audioUrl,
+          ...ayah.audioSecondary.where((url) => url.isNotEmpty),
+        ];
+        for (final url in allUrls) {
+          return url;
+        }
+        return null;
+      }
+
+      // 5. تحميل آية واحدة مع إعادة المحاولة 3 مرات
+      Future<void> downloadSingleAyah(AyahAudioEntity ayah) async {
+        final String? url = getValidAudioUrl(ayah);
+
+        if (url == null) {
+          failedAyahs.add(ayah.numberInSurah);
+          return;
+        }
+
+        final File file = await _fileStorageService.getFile(
+          folderName: folderName,
+          fileName: ayah.numberInSurah.toString(),
+          extension: "mp3",
+        );
+
+        int attempts = 0;
+        while (attempts < 3) {
+          try {
+            await _downloadService.downloadToFile(url: url, targetFile: file);
+            return;
+          } catch (e) {
+            // 6. لو فشل التحميل بسبب المساحة، نحذف المجلد ونرمي خطأ واضح
+            if (e is FileSystemException &&
+                e.osError?.message.toLowerCase().contains("space") == true) {
+              await _fileStorageService.deleteFolder(folderName: folderName);
+              throw Exception(
+                "فشل تحميل الآية بسبب عدم وجود مساحة كافية على الجهاز. يرجى تحرير بعض المساحة وإعادة المحاولة.",
+              );
+            }
+
+            attempts++;
+            if (attempts >= 3) {
+              failedAyahs.add(ayah.numberInSurah);
+            } else {
+              await Future.delayed(const Duration(seconds: 1));
+            }
+          }
+        }
+      }
+
+      // 7. تحديد حجم الدفعة حسب عدد الآيات
+      int batchSize;
+      if (ayahs.length < 50) {
+        batchSize = 10;
+      } else if (ayahs.length < 150) {
+        batchSize = 25;
+      } else {
+        batchSize = 50;
+      }
+
+      // 8. تحميل الآيات على دفعات
+      for (int i = 0; i < ayahs.length; i += batchSize) {
+        final batch = ayahs.skip(i).take(batchSize);
+        await Future.wait(batch.map(downloadSingleAyah));
+      }
+
+      // 9. حفظ حالة التحميل في Hive
+      await _quranLocalDataSource.markSurahAudioAsDownloaded(
+        edition: params.reciterName,
+        surahName: params.surahName,
+        isComplete: failedAyahs.isEmpty,
+        failedAyahs: failedAyahs,
+      );
+
+      // 10. بناء نتيجة التحميل
+      final result = SurahDownloadResult(
+        success: failedAyahs.isEmpty,
+        failedAyahs: failedAyahs,
+      );
+
+      return Right(result);
+    } catch (e) {
+      return Left(Failure("فشل تحميل السورة: ${e.toString()}"));
+    }
+  }
+}
+
+class SurahDownloadResult {
+  final bool success;
+  final List<int> failedAyahs;
+
+  const SurahDownloadResult({
+    required this.success,
+    required this.failedAyahs,
+  });
 }

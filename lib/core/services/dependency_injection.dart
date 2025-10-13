@@ -5,7 +5,9 @@ import 'package:test_app/core/services/arabic_converter_service.dart';
 import 'package:test_app/core/services/audio_player_service.dart';
 import 'package:test_app/core/services/cache_service.dart';
 import 'package:test_app/core/services/city_name_service.dart';
+import 'package:test_app/core/services/download_service.dart';
 import 'package:test_app/core/services/exit_app_service.dart';
+import 'package:test_app/core/services/file_storage_service.dart';
 import 'package:test_app/core/services/image_picker_service.dart';
 import 'package:test_app/core/services/internet_connection.dart';
 import 'package:test_app/core/services/local_notifications_service.dart';
@@ -20,7 +22,6 @@ import 'package:test_app/features/app/data/datasources/prayers_remote_data_sourc
 import 'package:test_app/features/app/data/datasources/quran_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/quran_remote_data_source.dart';
 import 'package:test_app/features/app/data/datasources/r_table_local_data_source.dart';
-import 'package:test_app/features/app/data/datasources/reciters_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/records_local_data_source.dart';
 import 'package:test_app/features/app/data/repos/app_repo.dart';
 import 'package:test_app/features/app/data/repos/daily_adhkar_repo.dart';
@@ -30,14 +31,12 @@ import 'package:test_app/features/app/data/repos/prayer_repo.dart';
 import 'package:test_app/features/app/data/repos/qipla_repo.dart';
 import 'package:test_app/features/app/data/repos/quran_repo.dart';
 import 'package:test_app/features/app/data/repos/r_table_repo.dart';
-import 'package:test_app/features/app/data/repos/reciters_repo.dart';
 import 'package:test_app/features/app/data/repos/records_repo.dart';
 import 'package:test_app/features/app/domain/repositories/base_app_repo.dart';
 import 'package:test_app/features/app/domain/repositories/base_daily_adhkar_repo.dart';
 import 'package:test_app/features/app/domain/repositories/base_prayer_repo.dart';
 import 'package:test_app/features/app/domain/repositories/base_qipla_repo.dart';
 import 'package:test_app/features/app/domain/repositories/base_quran_repo.dart';
-import 'package:test_app/features/app/domain/repositories/base_reciters_repo.dart';
 import 'package:test_app/features/app/domain/repositories/base_records_repo.dart';
 import 'package:test_app/features/app/domain/repositories/home_repo.dart';
 import 'package:test_app/features/app/domain/repositories/location_repo.dart';
@@ -54,11 +53,11 @@ import 'package:test_app/features/app/domain/usecases/reset_booleans_use_case.da
 import 'package:test_app/features/app/domain/usecases/update_booleans_use_case.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/book_mark_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/daily_adhkar_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/download_surah_audio_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/download_surah_with_tafsir_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_surah_with_tafsir_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_surahs_info_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/location_cubit.dart';
-import 'package:test_app/features/app/presentation/controller/controllers/get_adhkar_controller.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_prayer_times_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_prayer_times_of_month_cubit.dart';
 import 'package:test_app/features/app/domain/usecases/get_records_use_case.dart';
@@ -87,6 +86,7 @@ Future<void> initDependencyInjection() async {
   sl.registerLazySingleton(() => GetPrayersTimesController(
       getPrayersTimesUseCase: sl(), baseLocationRepo: sl()));
   // cubits
+  sl.registerFactory(() => DownloadSurahAudioCubit(sl()));
   sl.registerFactory(() => RecitersCubit(sl()));
   sl.registerFactory(() => TafsirEditCubit());
   sl.registerFactory(() => GetSurahsInfoCubit(sl()));
@@ -105,7 +105,6 @@ Future<void> initDependencyInjection() async {
   sl.registerFactory(() => FeaturedRecordsCubit(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => RtabelCubit(sl(), sl(), sl()));
   //controllers
-  sl.registerLazySingleton(() => GetAdhkarController(getAdhkarUseCase: sl()));
   sl.registerLazySingleton<OnBoardingController>(() => OnBoardingController());
   //usecases
   sl.registerLazySingleton(() => GetInfoQuranUseCase(sl()));
@@ -126,8 +125,6 @@ Future<void> initDependencyInjection() async {
   sl.registerLazySingleton<GetRecordsUseCase>(
       () => GetRecordsUseCase(baseRecordsRepo: sl()));
   //repositories
-  sl.registerLazySingleton<BaseRecitersRepo>(
-      () => RecitersRepo(recitersLocalDataSource: sl()));
   sl.registerLazySingleton<BaseDailyAdhkarNotificationsRepo>(
     () => DailyAdhkarNotificationsRepoImpl(sl(), sl()),
   );
@@ -139,13 +136,10 @@ Future<void> initDependencyInjection() async {
   sl.registerLazySingleton<BaseDailyAdhkarRepo>(
       () => DailyAdhkarRepo(localDataSource: sl()));
   sl.registerLazySingleton<BaseQiblaRepository>(() => QiblaRepository(sl()));
-  sl.registerLazySingleton<BaseQuranRepo>(() => QuranRepo(sl(), sl(), sl()));
-  sl.registerLazySingleton<BaseLocationRepo>(() => LocationRepo(
-        sl(),
-        sl(),
-        sl(),
-        sl(),
-      ));
+  sl.registerLazySingleton<BaseQuranRepo>(
+      () => QuranRepo(sl(), sl(), sl(), sl(), sl()));
+  sl.registerLazySingleton<BaseLocationRepo>(
+      () => LocationRepo(sl(), sl(), sl(), sl()));
   sl.registerLazySingleton<BaseRTableRepo>(
       () => RTableRepo(rTableLocalDataSource: sl()));
   sl.registerLazySingleton<BaseHomeRepo>(() => HomeRepo(sl(), sl()));
@@ -154,16 +148,13 @@ Future<void> initDependencyInjection() async {
   );
   sl.registerLazySingleton<BasePrayerRepo>(
     () => PrayerRepo(
-      prayersRemoteDataSource: sl(),
-      prayersLocalDataSource: sl(),
-      internetConnection: sl(),
-      baseLocationRepo: sl(),
-      baseLocationService: sl(),
-    ),
+        prayersRemoteDataSource: sl(),
+        prayersLocalDataSource: sl(),
+        internetConnection: sl(),
+        baseLocationRepo: sl(),
+        baseLocationService: sl()),
   );
   // data sources
-  sl.registerLazySingleton<RecitersLocalDataSource>(
-      () => RecitersLocalDataSourceImpl());
   sl.registerLazySingleton<BaseDailyAdhkarNotificationsLocalDataSource>(
     () => DailyAdhkarNotificationsLocalDataSourceImpl(cache: sl()),
   );
@@ -195,6 +186,10 @@ Future<void> initDependencyInjection() async {
       () => PrayersRemoteDataSourceImpl(sl()));
 
   // services
+  sl.registerLazySingleton<IFileStorageService>(
+      () => FileStorageServiceByPathProvider());
+  sl.registerLazySingleton<IDownloadService>(
+      () => DownloadServiceByDio(dio: sl<Dio>()));
   sl.registerLazySingleton<BaseExitAppService>(
     () => ExitAppServiceImplByFlutterExitA(),
   );
@@ -215,5 +210,6 @@ Future<void> initDependencyInjection() async {
   sl.registerLazySingleton<ApiService>(() => ApiService(sl()));
   sl.registerLazySingleton<Dio>(() => Dio());
   sl.registerLazySingleton<AudioPlayer>(() => AudioPlayer());
-  sl.registerLazySingleton<IAudioPlayer>(() => JustAudioPlayer(audioPlayer: sl<AudioPlayer>()));
+  sl.registerLazySingleton<IAudioPlayer>(
+      () => JustAudioPlayer(audioPlayer: sl<AudioPlayer>()));
 }

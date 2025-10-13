@@ -13,6 +13,6 @@ Widget getWidgetDependingOnReuestState(
     case RequestStateEnum.failed:
       return ErrorWidgetIslamic(message: erorrMessage!);
     case RequestStateEnum.loading:
-      return GetAdaptiveLoadingWidget();
+      return const AppLoadingWidget();
   }
 }

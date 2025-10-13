@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
 import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
+import 'package:test_app/core/widgets/app_loading_widget.dart';
 import 'package:test_app/features/splach_screen/view/components/app_animated_logo_widget.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/get_prayer_times_controller.dart';
 
@@ -69,7 +69,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   child: child!,
                 );
               },
-              child: const GetAdaptiveLoadingWidget(),
+              child: const AppLoadingWidget(),
             ),
           ),
         ],

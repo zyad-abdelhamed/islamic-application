@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/tafsir_page_controller.dart';
+import 'package:test_app/features/app/presentation/view/pages/reciters_page.dart';
 import 'controle_font_size_buttons.dart';
 
 class TafsirBottomControls extends StatelessWidget {
   final Color backgroundColor;
   final Color textColor;
-  final ValueNotifier<double> fontSizeNotfier;
+  final TafsirPageController controller;
   final VoidCallback onSearch;
   final VoidCallback onInfo;
   final GlobalKey infoButtonKey;
@@ -14,7 +16,7 @@ class TafsirBottomControls extends StatelessWidget {
     super.key,
     required this.backgroundColor,
     required this.textColor,
-    required this.fontSizeNotfier,
+    required this.controller,
     required this.onSearch,
     required this.onInfo,
     required this.infoButtonKey,
@@ -40,9 +42,16 @@ class TafsirBottomControls extends StatelessWidget {
               key: infoButtonKey,
             ),
             _buildOption(CupertinoIcons.headphones, () {}),
-            _buildOption(CupertinoIcons.group, () {}),
+            _buildOption(CupertinoIcons.group, () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => RecitersPage(
+                            controller: controller,
+                          )));
+            }),
             ControleFontSizeButtons(
-              fontSizeNotfier: fontSizeNotfier,
+              fontSizeNotfier: controller.fontSizeNotifier,
               initialFontSize: 25,
             ),
           ],

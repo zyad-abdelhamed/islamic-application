@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/features/app/data/models/quran_request_params.dart';
@@ -34,56 +35,59 @@ class _TafsirPageState extends State<TafsirPage> {
   void initState() {
     super.initState();
 
-    _controller = TafsirPageController();
-    _controller.initState(
+    _controller = TafsirPageController(
       context,
-      widget.tafsirRequestParams,
-      widget.surahParams,
+      tafsirRequestParams: widget.tafsirRequestParams,
+      surahParams: widget.surahParams,
+      surahEntity: widget.surahEntity,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          BlocBuilder<GetSurahWithTafsirCubit, GetSurahWithTafsirState>(
-              builder: (context, state) {
-            if (state is GetSurahWithTafsirLoading) {
-              return const Center(child: GetAdaptiveLoadingWidget());
-            } else if (state is GetSurahWithTafsirFailure) {
-              return ErrorWidgetIslamic(
-                message: state.message,
-                buttonWidget: Text(AppStrings.translate("tryAgain")),
-                onPressed: () => _controller.tafsirCubit.retry(),
-              );
-            } else if (state is GetSurahWithTafsirSuccess) {
-              return GetSurahWithTafsirSuccessStateView(
-                state: state,
-                controller: _controller,
-              );
-            } else {
-              return const SizedBox.shrink();
-            }
-          }),
-          // Overlay جديد ب GestureDetector
-          Positioned.fill(
-            child: GestureDetector(
-              behavior:
-                  HitTestBehavior.translucent, // يسمح بمرور longPress للي تحت
-              onDoubleTap: _controller.toggleTopBar, // toggle للتوب بار
-              child: const SizedBox.expand(), // يملأ الشاشة كلها
+    return Provider(
+      create: (_) => _controller,
+      child: Scaffold(
+        body: Stack(
+          children: [
+            BlocBuilder<GetSurahWithTafsirCubit, GetSurahWithTafsirState>(
+                builder: (context, state) {
+              if (state is GetSurahWithTafsirLoading) {
+                return const Center(child: AppLoadingWidget());
+              } else if (state is GetSurahWithTafsirFailure) {
+                return ErrorWidgetIslamic(
+                  message: state.message,
+                  buttonWidget: Text(AppStrings.translate("tryAgain")),
+                  onPressed: () => _controller.tafsirCubit.retry(),
+                );
+              } else if (state is GetSurahWithTafsirSuccess) {
+                return GetSurahWithTafsirSuccessStateView(
+                  state: state,
+                  controller: _controller,
+                );
+              } else {
+                return const SizedBox.shrink();
+              }
+            }),
+            // Overlay جديد ب GestureDetector
+            Positioned.fill(
+              child: GestureDetector(
+                behavior:
+                    HitTestBehavior.translucent, // يسمح بمرور longPress للي تحت
+                onDoubleTap: _controller.toggleTopBar, // toggle للتوب بار
+                child: const SizedBox.expand(), // يملأ الشاشة كلها
+              ),
             ),
-          ),
 
-          ValueListenableBuilder<bool>(
-            valueListenable: _controller.isShowed,
-            builder: (context, visible, child) {
-              return TafsirPageOverLayout(
-                  widget: widget, controller: _controller);
-            },
-          ),
-        ],
+            ValueListenableBuilder<bool>(
+              valueListenable: _controller.isShowed,
+              builder: (context, visible, child) {
+                return TafsirPageOverLayout(
+                    widget: widget, controller: _controller);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

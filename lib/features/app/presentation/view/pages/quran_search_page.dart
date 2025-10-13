@@ -96,7 +96,7 @@ class _QuranSearchPageState extends State<QuranSearchPage> {
 
         return const SizedBox.shrink();
       case QuranSearchStatus.loading:
-        return const GetAdaptiveLoadingWidget();
+        return const AppLoadingWidget();
       case QuranSearchStatus.failure:
         return ErrorWidgetIslamic(message: state.errorMessage!);
       case QuranSearchStatus.success:

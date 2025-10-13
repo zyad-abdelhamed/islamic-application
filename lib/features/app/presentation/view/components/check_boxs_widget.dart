@@ -17,7 +17,7 @@ class CheckBoxsWidget extends StatelessWidget {
         builder: (context, state) {
           // ===== حالة التحميل =====
           if (state.requestState == RequestStateEnum.loading) {
-            return const GetAdaptiveLoadingWidget();
+            return const AppLoadingWidget();
           }
 
           // ===== حالة الخطأ =====
@@ -29,15 +29,16 @@ class CheckBoxsWidget extends StatelessWidget {
           if (state.requestState == RequestStateEnum.success &&
               state.checkBoxsValues.isNotEmpty) {
             return SingleChildScrollView(
-      child: Wrap(
-        children: List.generate(
-          30 * 16, // إجمالي عدد الـ Checkboxes
-          (index) {
-            return RTableCheckBox(constraints: constraints,state: state, index: index);
-          },
-        ),
-      ),
-    );
+              child: Wrap(
+                children: List.generate(
+                  30 * 16, // إجمالي عدد الـ Checkboxes
+                  (index) {
+                    return RTableCheckBox(
+                        constraints: constraints, state: state, index: index);
+                  },
+                ),
+              ),
+            );
           }
 
           // ===== لو مفيش داتا =====
@@ -45,4 +46,5 @@ class CheckBoxsWidget extends StatelessWidget {
         },
       );
     });
-  }}
+  }
+}

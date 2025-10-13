@@ -63,6 +63,7 @@ dependencies:
   flutter_staggered_grid_view: ^0.7.0
   share_plus: ^12.0.0
   just_audio: ^0.10.5
+  audio_video_progress_bar: ^2.0.3
 
 dev_dependencies:
   flutter_test:
@@ -76,6 +77,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/recitersImages/
+    - assets/images/adhkar_photos/
     - assets/pdfs/
     - assets/jsons/
     - assets/fonts/

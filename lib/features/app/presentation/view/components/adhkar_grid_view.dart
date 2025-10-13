@@ -3,10 +3,11 @@ import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/features/app/presentation/view/components/adhkar_button.dart';
 
 class AdhkarGridView extends StatelessWidget {
-  const AdhkarGridView(
-      {super.key,
-      required this.crossAxisCount,
-      this.physics = const NeverScrollableScrollPhysics()});
+  const AdhkarGridView({
+    super.key,
+    required this.crossAxisCount,
+    this.physics = const NeverScrollableScrollPhysics(),
+  });
 
   final int crossAxisCount;
   final ScrollPhysics? physics;
@@ -14,20 +15,27 @@ class AdhkarGridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List names = AppStrings.translate("adhkarButtonsNames");
+    List images = AppStrings.translate("adhkarButtonsPhotos");
 
     return GridView(
-        shrinkWrap: true,
-        physics: physics,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: crossAxisCount,
-            mainAxisSpacing: 15,
-            crossAxisSpacing: 15),
-        children: List<AdhkarButton>.generate(
-            8,
-            (index) => AdhkarButton(
-                  icon: _supplicationIcons[index],
-                  text: names[index],
-                )));
+      shrinkWrap: true,
+      physics: physics,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: crossAxisCount,
+        mainAxisSpacing: 15,
+        crossAxisSpacing: 15,
+        childAspectRatio: 0.75,
+      ),
+      children: List<AdhkarButton>.generate(
+        8,
+        (index) => AdhkarButton(
+          index: index,
+          imagePath: images[index],
+          icon: _supplicationIcons[index],
+          text: names[index],
+        ),
+      ),
+    );
   }
 }
 

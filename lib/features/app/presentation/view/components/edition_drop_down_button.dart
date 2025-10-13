@@ -14,8 +14,7 @@ class TafsirEditionDropdown extends StatelessWidget {
   });
 
   Future<List<TafsirEditionEntity>> loadTafsirEditions() async {
-    final List data =
-        await getJson(RoutesConstants.tafsirJsonRouteName);
+    final List data = await getJson(RoutesConstants.tafsirJsonRouteName);
 
     return data.map((map) => TafsirEditionModel.fromJson(map)).toList();
   }
@@ -26,7 +25,7 @@ class TafsirEditionDropdown extends StatelessWidget {
       future: loadTafsirEditions(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return GetAdaptiveLoadingWidget();
+          return AppLoadingWidget();
         } else if (snapshot.hasError) {
           return const Text('حدث خطأ أثناء تحميل التفاسير');
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {

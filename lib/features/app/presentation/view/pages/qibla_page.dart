@@ -25,7 +25,7 @@ class QiblaPage extends StatelessWidget {
         body: BlocBuilder<QiblaCubit, QiblaState>(
           builder: (context, state) {
             if (state is QiblaLoading) {
-              return const GetAdaptiveLoadingWidget();
+              return const AppLoadingWidget();
             }
             if (state is QiblaError) {
               return ErrorWidgetIslamic(message: state.message);

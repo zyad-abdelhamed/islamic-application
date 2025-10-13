@@ -24,7 +24,7 @@ ThemeData darkTheme = ThemeData(
         fontSize: 23,
       ),
       systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: AppColors.darkModeScaffoldBackGroundColor,
+        statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.light,
         statusBarBrightness: Brightness.dark,
       ),
