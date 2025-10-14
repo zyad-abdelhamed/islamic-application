@@ -6,6 +6,6 @@ String get getInitRoute {
   final OnBoardingController controller = sl<OnBoardingController>();
 
   return controller.loadState
-      ? RoutesConstants.homePageRouteName
+      ? RoutesConstants.testWidgets
       : RoutesConstants.mainPageOnBoarding;
 }

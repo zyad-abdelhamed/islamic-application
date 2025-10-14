@@ -13,6 +13,7 @@ import 'package:test_app/features/onboarding/presentation/view/pages/main_page.d
 import 'package:test_app/features/onboarding/presentation/view/pages/secondry_page.dart';
 import 'package:test_app/features/splach_screen/view/pages/splash_screen.dart';
 import 'package:test_app/features/app/presentation/view/pages/prayer_times_page.dart';
+import 'package:test_app/test_widgets.dart';
 
 Route<dynamic> onGenerateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -62,6 +63,10 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
     case RoutesConstants.settingsPage:
       return MaterialPageRoute<SettingsPage>(
         builder: (BuildContext context) => const SettingsPage(),
+      );
+    case RoutesConstants.testWidgets:
+      return MaterialPageRoute<TestWidgets>(
+        builder: (BuildContext context) => const TestWidgets(),
       );
     default:
       return MaterialPageRoute<Scaffold>(
