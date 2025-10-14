@@ -25,7 +25,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
-        android:label="نُور"
+        android:label="تطبيق نُور"
         android:icon="@mipmap/launcher_icon">
 
         <!-- MainActivity -->

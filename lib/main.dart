@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/helper_function/init_hydrated_bloc_storage.dart';
@@ -13,8 +14,8 @@ import 'package:test_app/features/app/presentation/view/components/ayah_audio_ca
 import 'package:test_app/noor_app.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
+  WidgetsBinding widgetsBindings = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBindings);
   await Future.wait([
     initDependencyInjection(),
     setupHive(),
@@ -28,6 +29,7 @@ Future<void> main() async {
     sl<BaseBackgroundTasksService>().init(),
     sl<GetPrayersTimesController>().getPrayersTimes(),
   ]);
+  FlutterNativeSplash.remove();
 
   runApp(const NoorApp());
 }
