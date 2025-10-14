@@ -3,6 +3,8 @@ import 'package:just_audio/just_audio.dart';
 abstract class IAudioPlayer {
   Future<void> setUrl(String url);
   Future<void> setAudioSource(AudioSource source);
+  Future<Duration?> setAudioSources(List<AudioSource> sources);
+
   Future<void> play();
   Future<void> pause();
   Future<void> setSpeed(double speed);
@@ -83,4 +85,9 @@ class JustAudioPlayer implements IAudioPlayer {
 
   @override
   Future<void> dispose() => _player.dispose();
+
+  @override
+  Future<Duration?> setAudioSources(List<AudioSource> sources) async {
+    return Future.value(_player.setAudioSources(sources));
+  }
 }
