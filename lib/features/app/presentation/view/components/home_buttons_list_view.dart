@@ -12,6 +12,7 @@ import 'package:test_app/features/app/presentation/view/pages/alquran_alkarim_pa
 import 'package:test_app/features/app/presentation/view/pages/elec_rosary_page.dart';
 import 'package:test_app/features/app/presentation/view/pages/other_page.dart';
 import 'package:test_app/features/app/presentation/view/pages/qibla_page.dart';
+import 'package:test_app/features/app/presentation/view/pages/quran_hifz_page.dart';
 import 'package:test_app/features/app/presentation/view/pages/quran_search_page.dart';
 import 'package:test_app/features/app/presentation/view/pages/rtabel_page.dart';
 import 'package:test_app/features/app/presentation/view/pages/surahs_page.dart';
@@ -86,6 +87,7 @@ const List<String?> homeButtonDescriptions = [
   null, // السبحة
   null, // جدول رمضان
   null, // القبلة
+  null, // تحفيظ القرآن
   "مزيد من الأدوات", // أخرى
 ];
 
@@ -97,6 +99,7 @@ const List<List<Color>> homeButtonGradientsDarkLux = <List<Color>>[
   [Color(0xFF335880), Color(0xFF1A2C4D)], // أزرق داكن ناعم
   [Color(0xFF8C6173), Color(0xFF523946)], // وردي/بنفسجي عميق
   [Color(0xFF3E6043), Color(0xFF1B2E21)], // أخضر داكن هادئ
+  [Color(0xFF704214), Color(0xFF3E250B)], // نحاسي داكن فخم ودافئ
   [Color(0xFF52585E), Color(0xFF1C2124)], // رمادي داكن فخم
 ];
 
@@ -108,6 +111,7 @@ const List<List<Color>> homeButtonGradientsLightLux = <List<Color>>[
   [Color(0xFF90CAF9), Color(0xFF42A5F5)], // أزرق سماوي هادئ
   [Color(0xFFF8BBD0), Color(0xFFF48FB1)], // وردي ناعم
   [Color(0xFF81C784), Color(0xFF388E3C)], // أخضر طبيعي هادئ
+  [Color(0xFFFFD180), Color(0xFFFFB74D)], // نحاسي فاتح دافئ وراقي
   [Color(0xFF90A4AE), Color(0xFF455A64)], // رمادي أزرق هادئ
 ];
 
@@ -128,5 +132,6 @@ List _pages = [
   const ElecRosaryPage(),
   const RamadanTabelPage(),
   const QiblaPage(),
+  const QuranHifzPage(),
   const OtherPage(),
 ];
