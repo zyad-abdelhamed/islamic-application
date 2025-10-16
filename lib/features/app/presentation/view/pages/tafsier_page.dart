@@ -5,6 +5,7 @@ import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_wid
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/features/app/data/models/quran_request_params.dart';
 import 'package:test_app/features/app/domain/entities/surah_entity.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/surah_audio_controller.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/tafsir_page_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_surah_with_tafsir_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_surah_with_tafsir_state.dart';
@@ -30,6 +31,7 @@ class TafsirPage extends StatefulWidget {
 
 class _TafsirPageState extends State<TafsirPage> {
   late final TafsirPageController _controller;
+  late final SurahAudioController _surahAudioController;
 
   @override
   void initState() {
@@ -41,6 +43,9 @@ class _TafsirPageState extends State<TafsirPage> {
       surahParams: widget.surahParams,
       surahEntity: widget.surahEntity,
     );
+
+    _surahAudioController =
+        SurahAudioController(tafsirPageController: _controller);
   }
 
   @override
@@ -48,6 +53,9 @@ class _TafsirPageState extends State<TafsirPage> {
     return Provider(
       create: (_) => _controller,
       child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 0.0,
+        ),
         body: Stack(
           children: [
             BlocBuilder<GetSurahWithTafsirCubit, GetSurahWithTafsirState>(
@@ -64,6 +72,7 @@ class _TafsirPageState extends State<TafsirPage> {
                 return GetSurahWithTafsirSuccessStateView(
                   state: state,
                   controller: _controller,
+                  surahAudioController: _surahAudioController,
                 );
               } else {
                 return const SizedBox.shrink();
@@ -95,6 +104,7 @@ class _TafsirPageState extends State<TafsirPage> {
   @override
   void dispose() {
     _controller.dispose();
+    _surahAudioController.dispose();
     super.dispose();
   }
 }

@@ -7,16 +7,18 @@ import 'package:test_app/features/app/presentation/view/components/is_playing_an
 class CurrentReciter extends StatelessWidget {
   final ValueNotifier<bool> isPlayingNotifier = ValueNotifier<bool>(false);
   final ReciterEntity reciter;
+  final double size;
   CurrentReciter({
     super.key,
     required this.reciter,
+    this.size = 100,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 130,
-      height: 180,
+      width: size,
+      height: size,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         boxShadow: [

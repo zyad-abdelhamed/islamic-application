@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:test_app/core/services/arabic_converter_service.dart';
-import 'package:test_app/core/services/audio_player_service.dart';
 import 'package:test_app/core/services/cache_service.dart';
 import 'package:test_app/core/services/city_name_service.dart';
 import 'package:test_app/core/services/download_service.dart';
@@ -209,7 +207,4 @@ Future<void> initDependencyInjection() async {
   sl.registerLazySingleton<InternetConnection>(() => InternetConnectionImpl2());
   sl.registerLazySingleton<ApiService>(() => ApiService(sl()));
   sl.registerLazySingleton<Dio>(() => Dio());
-  sl.registerLazySingleton<AudioPlayer>(() => AudioPlayer());
-  sl.registerLazySingleton<IAudioPlayer>(
-      () => JustAudioPlayer(audioPlayer: sl<AudioPlayer>()));
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:test_app/core/constants/constants_values.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 
 ThemeData darkTheme = ThemeData(
@@ -27,14 +28,18 @@ ThemeData darkTheme = ThemeData(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.light,
         statusBarBrightness: Brightness.dark,
+        systemNavigationBarColor: AppColors.darkModeScaffoldBackGroundColor,
+        systemNavigationBarDividerColor:
+            AppColors.darkModeScaffoldBackGroundColor,
+        systemNavigationBarIconBrightness: Brightness.light,
       ),
     ),
     drawerTheme: const DrawerThemeData(
       backgroundColor: AppColors.primaryColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30),
-          bottomLeft: Radius.circular(30),
+          topLeft: Radius.circular(ConstantsValues.cardBorderRadius),
+          bottomLeft: Radius.circular(ConstantsValues.cardBorderRadius),
         ),
       ),
     ),
@@ -44,18 +49,18 @@ ThemeData darkTheme = ThemeData(
       contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       hintStyle: TextStyle(color: Colors.grey[400], fontSize: 15),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(ConstantsValues.fullCircularRadius),
         borderSide: BorderSide.none,
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(ConstantsValues.fullCircularRadius),
         borderSide: BorderSide(
           color: AppColors.successColor,
           width: 1.5,
         ),
       ),
       errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(ConstantsValues.fullCircularRadius),
         borderSide: BorderSide(
           color: AppColors.errorColor,
           width: 1.5,
@@ -66,7 +71,8 @@ ThemeData darkTheme = ThemeData(
       style: ButtonStyle(
         shape: WidgetStatePropertyAll(
           ContinuousRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15.0)),
+            borderRadius: BorderRadius.all(
+                Radius.circular(ConstantsValues.fullCircularRadius)),
           ),
         ),
       ),

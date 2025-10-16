@@ -42,8 +42,7 @@ class PrimaryPrayerTimesContainerController {
 
   BoxDecoration boxDecoration({required Color color}) {
     return BoxDecoration(
-      borderRadius:
-          BorderRadius.circular(ConstantsValues.prayerTimesWidgetBorderRadius),
+      borderRadius: BorderRadius.circular(ConstantsValues.cardBorderRadius),
       color: color,
     );
   }

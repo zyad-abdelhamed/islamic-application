@@ -27,8 +27,7 @@ class PlayerState {
 class JustAudioPlayer implements IAudioPlayer {
   final AudioPlayer _player;
 
-  JustAudioPlayer({AudioPlayer? audioPlayer})
-      : _player = audioPlayer ?? AudioPlayer();
+  JustAudioPlayer(this._player);
 
   @override
   Future<void> setUrl(String url) async {

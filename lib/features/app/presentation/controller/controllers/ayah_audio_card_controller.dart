@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart' hide PlayerState;
 import 'package:test_app/core/services/audio_player_service.dart';
-import 'package:test_app/core/services/dependency_injection.dart';
 
 class AyahAudioCardController {
   final AudioSource audioSource;
@@ -22,7 +21,7 @@ class AyahAudioCardController {
   StreamSubscription<PlayerState>? _stateSub;
 
   AyahAudioCardController({required this.audioSource}) {
-    _audioPlayer = sl<IAudioPlayer>();
+    _audioPlayer = JustAudioPlayer(AudioPlayer());
     _init();
   }
 
