@@ -116,41 +116,53 @@ class _AudioControls extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        StreamBuilder<double>(
-          stream: controller.audioPositionStream,
-          builder: (_, snapshot) {
-            final progress = snapshot.data ?? 0.0;
-            return CircularPercentIndicator(
-              radius: imageSize / 2,
-              lineWidth: 3,
-              percent: progress.clamp(0.0, 1.0),
-              backgroundColor: AppColors.primaryColor.withAlpha(50),
-              progressColor: AppColors.primaryColor,
-              center: GestureDetector(
-                onTap: () async {
-                  if (!controller.isPrepared) {
-                    await controller.prepareSurahAudio();
-                  } else {
-                    final isPlaying = controller.isAudioPlayingNotifier.value;
-                    isPlaying
-                        ? await controller.pauseSurah()
-                        : await controller.resumeSurah();
-                  }
-                },
-                child: Transform.rotate(
+        ListenableBuilder(
+          listenable: Listenable.merge([
+            controller.positionNotifier,
+            controller.isPreparingNotifier,
+          ]),
+          builder: (_, __) {
+            final isPreparing = controller.isPreparingNotifier.value;
+
+            return GestureDetector(
+              onTap: () async {
+                if (isPreparing) return; // منع الضغط أثناء التحضير
+
+                final isPlaying = controller.isAudioPlayingNotifier.value;
+                isPlaying
+                    ? await controller.pauseSurah()
+                    : await controller.resumeSurah();
+              },
+              child: CircularPercentIndicator(
+                radius: imageSize / 2,
+                lineWidth: 3,
+                percent: controller.positionNotifier.value,
+                backgroundColor: AppColors.primaryColor.withAlpha(50),
+                progressColor: AppColors.primaryColor,
+                center: Transform.rotate(
                   angle: 90 * pi / 2,
-                  child: ValueListenableBuilder<bool>(
-                    valueListenable: controller.isAudioPlayingNotifier,
-                    builder: (context, isPlaying, _) {
-                      return Icon(
-                        isPlaying
-                            ? CupertinoIcons.pause
-                            : CupertinoIcons.play_arrow_solid,
-                        color: actionsColor,
-                        size: imageSize * 0.6,
-                      );
-                    },
-                  ),
+                  child: isPreparing
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor:
+                                AlwaysStoppedAnimation(AppColors.primaryColor),
+                          ),
+                        )
+                      : ValueListenableBuilder<bool>(
+                          valueListenable: controller.isAudioPlayingNotifier,
+                          builder: (context, isPlaying, _) {
+                            return Icon(
+                              isPlaying
+                                  ? CupertinoIcons.pause
+                                  : CupertinoIcons.play_arrow_solid,
+                              color: actionsColor,
+                              size: imageSize * 0.6,
+                            );
+                          },
+                        ),
                 ),
               ),
             );

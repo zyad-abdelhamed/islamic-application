@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/core/services/audio_player_service.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/utils/responsive_extention.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/ayah_audio_card_controller.dart';
@@ -96,13 +95,14 @@ class _AudioCard extends StatelessWidget {
             const SizedBox(height: 8),
             ListenableBuilder(
               listenable: Listenable.merge([
-                widget.controller.status,
+                widget.controller.isAudioPlayingNotifier,
                 widget.controller.position,
                 widget.controller.duration,
                 widget.controller.speed,
               ]),
               builder: (_, __) {
-                final PlayerStatus status = widget.controller.status.value;
+                final bool isAudioPlaying =
+                    widget.controller.isAudioPlayingNotifier.value;
                 final Duration pos = widget.controller.position.value;
                 final Duration dur = widget.controller.duration.value;
                 final List<double> speeds = [0.5, 1.0, 1.5, 2.0];
@@ -117,12 +117,14 @@ class _AudioCard extends StatelessWidget {
                       flex: 2,
                       child: IconButton(
                         icon: Icon(
-                          status == PlayerStatus.playing
+                          isAudioPlaying
                               ? Icons.pause_circle_filled
                               : Icons.play_circle_fill,
                         ),
                         iconSize: 48,
-                        onPressed: widget.controller.togglePlayPause,
+                        onPressed: isAudioPlaying
+                            ? widget.controller.pause
+                            : widget.controller.resume,
                         color: AppColors.primaryColor,
                       ),
                     ),

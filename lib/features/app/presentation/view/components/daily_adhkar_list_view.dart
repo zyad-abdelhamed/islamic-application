@@ -64,8 +64,6 @@ class DailyAdhkarListView extends StatelessWidget {
                 }
               },
               builder: (context, state) {
-                final bool isLoading =
-                    state is DailyAdhkarLoading || state is DailyAdhkarError;
                 final List<DailyAdhkarEntity> adhkar =
                     state is DailyAdhkarLoaded
                         ? state.adhkar
@@ -83,50 +81,48 @@ class DailyAdhkarListView extends StatelessWidget {
 
                 final int length = adhkar.length;
 
-                return Skeletonizer(
-                  enabled: isLoading,
-                  child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: length,
-                    itemBuilder: (context, index) {
-                      final DailyAdhkarEntity entity = adhkar[index];
-                      return DailyAdhkarCard(
-                        dailyAdhkarEntity: entity,
-                        index: index,
-                        onTap: () => Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DailyAdhkarPage(
-                                      entities: adhkar,
-                                      index: index,
-                                    ))),
-                        onLongPress: () => showModalBottomSheet(
-                          context: context,
-                          builder: (context) => Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              ListTile(
-                                leading: const Icon(CupertinoIcons.delete,
-                                    color: AppColors.errorColor),
-                                title: Text(
-                                  "حذف",
-                                  style: TextStyles.bold20(context)
-                                      .copyWith(color: AppColors.errorColor),
-                                ),
-                                onTap: () => showDeleteAlertDialog(
-                                  context,
-                                  deleteFunction: () =>
-                                      DailyAdhkarCubit.get(context)
-                                          .deleteDailyAdhkar(index),
-                                ),
+                return ListView.separated(
+                  physics: const BouncingScrollPhysics(),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: length,
+                  separatorBuilder: (_, __) => const SizedBox(width: 10),
+                  itemBuilder: (context, index) {
+                    final DailyAdhkarEntity entity = adhkar[index];
+                    return DailyAdhkarCard(
+                      dailyAdhkarEntity: entity,
+                      index: index,
+                      onTap: () => Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DailyAdhkarPage(
+                                    entities: adhkar,
+                                    index: index,
+                                  ))),
+                      onLongPress: () => showModalBottomSheet(
+                        context: context,
+                        builder: (context) => Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ListTile(
+                              leading: const Icon(CupertinoIcons.delete,
+                                  color: AppColors.errorColor),
+                              title: Text(
+                                "حذف",
+                                style: TextStyles.bold20(context)
+                                    .copyWith(color: AppColors.errorColor),
                               ),
-                            ],
-                          ),
+                              onTap: () => showDeleteAlertDialog(
+                                context,
+                                deleteFunction: () =>
+                                    DailyAdhkarCubit.get(context)
+                                        .deleteDailyAdhkar(index),
+                              ),
+                            ),
+                          ],
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 );
               },
             ),

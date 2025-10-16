@@ -73,8 +73,8 @@ class SlidableItem extends StatelessWidget {
           ),
           if (showSaveIcon)
             Positioned(
-              right: -4,
-              top: -4,
+              right: 3,
+              top: 3,
               child: isDownloaded
                   ? const DownloadedMark()
                   : const SizedBox.shrink(), // لو مش متحمل نخفيها
@@ -104,7 +104,6 @@ class DownloadedMark extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(4),
       decoration: const BoxDecoration(
         color: AppColors.successColor,
         shape: BoxShape.circle,

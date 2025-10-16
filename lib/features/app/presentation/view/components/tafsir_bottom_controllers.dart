@@ -41,7 +41,6 @@ class TafsirBottomControls extends StatelessWidget {
               onInfo,
               key: infoButtonKey,
             ),
-            _buildOption(CupertinoIcons.headphones, () {}),
             _buildOption(CupertinoIcons.group, () {
               Navigator.push(
                   context,

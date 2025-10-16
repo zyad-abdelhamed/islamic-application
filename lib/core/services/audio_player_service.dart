@@ -10,9 +10,11 @@ abstract class IAudioPlayer {
   Future<void> setSpeed(double speed);
   Future<void> stop();
   Future<void> seek(Duration position);
+  Future<void> seekToIndex(Duration position, int index);
   Stream<PlayerState> get playerStateStream;
   Stream<Duration> get positionStream;
   Stream<Duration?> get durationStream;
+  int? get currentIndex;
   Future<void> dispose();
 }
 
@@ -52,7 +54,15 @@ class JustAudioPlayer implements IAudioPlayer {
   Future<void> stop() => _player.stop();
 
   @override
+  int? get currentIndex => _player.currentIndex;
+
+  @override
   Future<void> seek(Duration position) => _player.seek(position);
+
+  @override
+  Future<void> seekToIndex(Duration position, int index) async {
+    await _player.seek(position, index: index);
+  }
 
   @override
   Stream<PlayerState> get playerStateStream =>

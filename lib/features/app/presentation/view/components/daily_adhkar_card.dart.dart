@@ -41,8 +41,8 @@ class DailyAdhkarCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
             border: Border.all(
                 color: dailyAdhkarEntity.isShowed
-                    ? AppColors.grey2
-                    : Theme.of(context).primaryColor,
+                    ? Colors.grey
+                    : AppColors.primaryColor,
                 width: 3.0),
           ),
           child: Text(

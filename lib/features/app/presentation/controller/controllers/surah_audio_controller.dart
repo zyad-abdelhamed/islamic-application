@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:just_audio/just_audio.dart' hide PlayerState;
 import 'package:test_app/core/services/audio_player_service.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/services/file_storage_service.dart';
@@ -8,48 +8,65 @@ import 'package:test_app/features/app/presentation/controller/controllers/tafsir
 
 class SurahAudioController {
   late final ValueNotifier<bool> isAudioPlayingNotifier;
-  final StreamController<double> _audioProgressController =
-      StreamController<double>.broadcast();
-  Stream<double> get audioPositionStream => _audioProgressController.stream;
+  late final ValueNotifier<bool> isPreparingNotifier;
+  late final ValueNotifier<double> positionNotifier;
 
   late final TafsirPageController tafsirPageController;
   late final IAudioPlayer audioPlayer;
   late final IFileStorageService fileStorage;
 
+  StreamSubscription<Duration>? _positionSub;
+  StreamSubscription<PlayerState>? _playerStateSub;
+
   bool _isPrepared = false;
-  bool get isPrepared => _isPrepared;
+  bool _isDisposed = false;
 
   SurahAudioController({required this.tafsirPageController}) {
     isAudioPlayingNotifier = ValueNotifier<bool>(false);
-
+    isPreparingNotifier = ValueNotifier<bool>(false);
+    positionNotifier = ValueNotifier<double>(0.0);
     audioPlayer = JustAudioPlayer(AudioPlayer());
     fileStorage = sl<IFileStorageService>();
   }
 
   void dispose() {
+    _isDisposed = true;
+
+    _positionSub?.cancel();
+    _playerStateSub?.cancel();
+
+    positionNotifier.dispose();
     isAudioPlayingNotifier.dispose();
-    _audioProgressController.close();
+    isPreparingNotifier.dispose();
+
     audioPlayer.dispose();
   }
 
-// لما شغلت الصوت وجيت اطلع مالصفحه جه كده انا عامل  ديسبوس للصوت فالديسبوس بس لما رجعت والصوت اما كنت وقفت الصوت بعد مشغلته مجابش الايرور دهه Exception has occurred.
-// FlutterError (A ValueNotifier<bool> was used after being disposed.
-// Once you have called dispose() on a ValueNotifier<bool>, it can no longer be used.)
   Future<void> prepareSurahAudio() async {
-    if (_isPrepared) return;
+    if (_isPrepared || isPreparingNotifier.value || _isDisposed) return;
+
+    isPreparingNotifier.value = true;
 
     List<Duration> ayahDurations = [];
 
     final reciter = tafsirPageController.currentReciterNotifier.value;
-    if (reciter == null) return;
+    if (reciter == null) {
+      if (!_isDisposed) isPreparingNotifier.value = false;
+      return;
+    }
 
     final folderName =
         "${reciter.name}_${tafsirPageController.surahEntity.name}";
     final totalAyahs = tafsirPageController.surahEntity.numberOfAyat;
-    if (totalAyahs <= 0) return;
+    if (totalAyahs <= 0) {
+      if (!_isDisposed) isPreparingNotifier.value = false;
+      return;
+    }
 
-    isAudioPlayingNotifier.value = false;
-    tafsirPageController.selectedAyah.value = null;
+    if (!_isDisposed) {
+      isAudioPlayingNotifier.value = false;
+      tafsirPageController.selectedAyah.value = null;
+    }
 
     final resolvedFiles = await Future.wait(
       List.generate(
@@ -77,52 +94,102 @@ class SurahAudioController {
           .map((file) => Future.value(AudioSource.uri(Uri.file(file.path)))),
     );
 
-    final duration = await audioPlayer.setAudioSources(sources);
-    await audioPlayer.play();
+    await audioPlayer.setAudioSources(sources);
 
-    isAudioPlayingNotifier.value = true;
-    _isPrepared = true;
+    // احسب once بعد التحضير
+    final totalDuration = ayahDurations.fold<Duration>(
+      Duration.zero,
+      (prev, d) => prev + d,
+    );
 
-    audioPlayer.positionStream.listen((pos) {
-      Duration cumulative = Duration.zero;
-      int currentAyah = 1;
-
-      for (int i = 0; i < ayahDurations.length; i++) {
-        cumulative += ayahDurations[i];
-        if (pos < cumulative) {
-          currentAyah = i + 1;
-          break;
-        }
+// helper to sum durations up to index (exclusive)
+    Duration sumBefore(int index) {
+      if (index <= 0) return Duration.zero;
+      Duration s = Duration.zero;
+      for (int i = 0; i < index && i < ayahDurations.length; i++) {
+        s += ayahDurations[i];
       }
+      return s;
+    }
 
+// استخدام currentIndex + position داخل الـ item
+    _positionSub ??= audioPlayer.positionStream.listen((pos) async {
+      if (_isDisposed) return;
+
+      // currentIndex يعطينا رقم الـ item الحالي (آية - 0-based)
+      final currentIndex =
+          (audioPlayer.currentIndex ?? 0).clamp(0, ayahDurations.length - 1);
+
+      // حساب الزمن الكلي = زمن كل الآيات السابقة + الموضع الحالي داخل الآية
+      final before = sumBefore(currentIndex);
+      final overallPosition = before + pos;
+
+      // تعيين الآية الحالية (1-based)
+      final currentAyah = (currentIndex + 1).clamp(1, ayahDurations.length);
+
+      // تحديث الآية بطريقة آمنة
       tafsirPageController.selectedAyah.value = currentAyah;
 
-      final totalMs = duration?.inMilliseconds ?? cumulative.inMilliseconds;
-      final percent = (pos.inMilliseconds / totalMs).clamp(0.0, 1.0);
-      _audioProgressController.add(percent);
+      // حساب النسبة على أساس مجموع المدد الكامل (حماية من صفر)
+      final totalMs =
+          totalDuration.inMilliseconds == 0 ? 1 : totalDuration.inMilliseconds;
+      final percent =
+          (overallPosition.inMilliseconds / totalMs).clamp(0.0, 1.0);
+
+      positionNotifier.value = percent;
     });
 
-    audioPlayer.playerStateStream.listen((state) {
-      if (state.status == PlayerStatus.completed) {
+    _playerStateSub ??= audioPlayer.playerStateStream.listen((state) async {
+      if (_isDisposed) return;
+
+      if (state.status == PlayerStatus.error) {
         isAudioPlayingNotifier.value = false;
         tafsirPageController.selectedAyah.value = null;
-        audioPlayer.stop();
+        await audioPlayer.stop();
+      } else if (state.status == PlayerStatus.completed) {
+        tafsirPageController.selectedAyah.value = null;
+        isAudioPlayingNotifier.value = false;
+      } else if (state.status == PlayerStatus.playing) {
+        isAudioPlayingNotifier.value = true;
+      } else if (state.status == PlayerStatus.paused) {
+        isAudioPlayingNotifier.value = false;
       }
     });
+
+    if (!_isDisposed) isAudioPlayingNotifier.value = true;
+
+    _isPrepared = true;
+    if (!_isDisposed) isPreparingNotifier.value = false;
+    await audioPlayer.play();
   }
 
   Future<void> resumeSurah() async {
-    isAudioPlayingNotifier.value = true;
+    if (_isDisposed) return;
+
+    if (!_isPrepared) {
+      await prepareSurahAudio();
+      return;
+    }
+
+    // ضع المؤشر في البداية قبل التشغيل لضمان أن play يعمل بعد الاكتمال
+    try {
+      await audioPlayer.seekToIndex(Duration.zero, 0); // الرجوع لأول آية
+    } catch (_) {
+      // ignore seek errors, بعد ذلك نجرب التشغيل
+    }
+
     await audioPlayer.play();
   }
 
   Future<void> pauseSurah() async {
-    isAudioPlayingNotifier.value = false;
+    if (_isDisposed) return;
     await audioPlayer.pause();
   }
 
-  Future<void> stopSurah() async {
-    isAudioPlayingNotifier.value = false;
-    await audioPlayer.stop();
+  void resetPreparation() {
+    if (_isDisposed) return;
+    audioPlayer.stop();
+    isPreparingNotifier.value = false;
+    _isPrepared = false;
   }
 }
