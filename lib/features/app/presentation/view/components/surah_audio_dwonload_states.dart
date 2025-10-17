@@ -5,19 +5,20 @@ import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/widgets/app_sneak_bar.dart';
 import 'package:test_app/features/app/data/models/quran_audio_parameters.dart';
 import 'package:test_app/features/app/domain/entities/surah_audio_dwonload_entity.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/tafsir_page_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/download_surah_audio_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/dwonload_icon_with_loading_effect.dart.dart';
 
 class SurahAudioDownloadStates extends StatelessWidget {
   final SurahAudioDownloadEntity? downloadInfo;
   final SurahAudioRequestParams params;
-  final int totalAyahs;
+  final TafsirPageController controller;
 
   const SurahAudioDownloadStates({
     super.key,
     required this.downloadInfo,
     required this.params,
-    required this.totalAyahs,
+    required this.controller,
   });
 
   @override
@@ -30,6 +31,8 @@ class SurahAudioDownloadStates extends StatelessWidget {
             final bool isComplete = state.failedAyahs.isEmpty;
 
             if (isComplete) {
+              controller.getReciters(context, isRefresh: true);
+
               AppSnackBar(
                 message:
                     "تم تنزيل سورة ${params.surahName} بصوت القارئ ${params.reciterName} بنجاح",
@@ -58,6 +61,7 @@ class SurahAudioDownloadStates extends StatelessWidget {
           final bool isPartial =
               downloadInfo?.status == SurahAudioDownloadStatus.partial;
           final int failedCount = downloadInfo?.failedAyahs.length ?? 0;
+          final int totalAyahs = controller.surahEntity.numberOfAyat;
           final int downloadedCount = totalAyahs - failedCount;
           final double progress = downloadedCount / totalAyahs.toDouble();
 

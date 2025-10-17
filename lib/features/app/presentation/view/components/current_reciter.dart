@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/features/app/domain/entities/reciters_entity.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/tafsir_page_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/is_playing_animation.dart';
 
 class CurrentReciter extends StatelessWidget {
-  final ValueNotifier<bool> isPlayingNotifier = ValueNotifier<bool>(false);
+  final TafsirPageController tafsirPageController;
   final ReciterEntity reciter;
   final double size;
-  CurrentReciter({
+
+  const CurrentReciter({
     super.key,
     required this.reciter,
+    required this.tafsirPageController,
     this.size = 100,
   });
 
@@ -70,12 +73,14 @@ class CurrentReciter extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(
-                    child: ValueListenableBuilder(
-                      valueListenable: isPlayingNotifier,
-                      builder: (context, value, child) {
+                    child: ValueListenableBuilder<ReciterEntity?>(
+                      valueListenable:
+                          tafsirPageController.currentReciterNotifier,
+                      builder: (context, ReciterEntity? currentReciter, child) {
+                        final bool isActive = currentReciter == reciter;
                         return Visibility(
-                          visible: value,
-                          child: IsPlayingAnimation(isActive: value),
+                          visible: isActive,
+                          child: IsPlayingAnimation(isActive: isActive),
                         );
                       },
                     ),

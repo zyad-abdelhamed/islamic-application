@@ -41,10 +41,10 @@ class TafsirPageController {
         surahRequestParams: surahParams,
         tafsirRequestParams: tafsirRequestParams);
 
-    getReciters(context);
+    getReciters(context, isRefresh: false);
   }
 
-  void getReciters(BuildContext context) async {
+  void getReciters(BuildContext context, {required bool isRefresh}) async {
     final Either<Failure, List<ReciterEntity>> result =
         await sl<BaseQuranRepo>().getReciters(surahName: surahEntity.name);
     result.fold(
@@ -52,6 +52,8 @@ class TafsirPageController {
             AppSnackBar(message: l.message, type: AppSnackBarType.error)
                 .show(context), (List<ReciterEntity> reciters) {
       recitersNotifier.value = reciters;
+
+      if (isRefresh) return;
 
       try {
         final firstComplete = reciters.firstWhere(

@@ -37,7 +37,7 @@ class SlidableItem extends StatelessWidget {
         extentRatio: 0.25,
         children: [
           SlidableAction(
-            onPressed: (context) async {
+            onPressed: (ctx) async {
               final bool? changed = await showDownloadDialog(
                 context: context,
                 surah: surah,

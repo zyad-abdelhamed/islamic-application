@@ -8,6 +8,7 @@ import 'package:test_app/features/app/domain/entities/reciters_entity.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/surah_audio_controller.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/tafsir_page_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/playing_reciters_bottom_sheet.dart';
+import 'package:test_app/features/app/presentation/view/components/surah_audio_full_bottom_sheet.dart';
 
 class PlaySurahAudioWidget extends StatelessWidget {
   final double imageSize;
@@ -38,7 +39,7 @@ class PlaySurahAudioWidget extends StatelessWidget {
             visualDensity: VisualDensity(horizontal: -2, vertical: -2),
             tileColor: isDark(context) ? Colors.black : Colors.white,
             contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
-            onTap: isActive ? () => _openBottomSheet(context) : null,
+            onTap: isActive ? () => openSurahPlayerBottomSheet(context) : null,
             leading: Container(
               width: imageSize,
               height: imageSize,
@@ -68,23 +69,11 @@ class PlaySurahAudioWidget extends StatelessWidget {
     );
   }
 
-  void _openBottomSheet(BuildContext context) {
-    final reciter = tafsirPageController.currentReciterNotifier.value;
+  void openSurahPlayerBottomSheet(BuildContext context) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      builder: (_) => Container(
-        height: MediaQuery.of(context).size.height,
-        padding: const EdgeInsets.all(24),
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-        ),
-        child: Center(
-          child: Text(
-            "تشغيل سورة ${tafsirPageController.surahEntity.name} بصوت ${reciter?.name ?? "غير متاح"}",
-          ),
-        ),
-      ),
+      builder: (_) => SurahPlayerBottomSheet(controller: controller),
     );
   }
 
@@ -92,7 +81,10 @@ class PlaySurahAudioWidget extends StatelessWidget {
     await showModalBottomSheet(
       context: context,
       builder: (context) {
-        return PlayingRecitersBottomSheet(controller: tafsirPageController);
+        return PlayingRecitersBottomSheet(
+          controller: tafsirPageController,
+          surahAudioController: controller,
+        );
       },
     );
   }

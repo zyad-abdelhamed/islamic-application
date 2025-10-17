@@ -13,6 +13,7 @@ abstract class IAudioPlayer {
   Future<void> seekToIndex(Duration position, int index);
   Stream<PlayerState> get playerStateStream;
   Stream<Duration> get positionStream;
+  Stream<Duration> get bufferedPositionStream;
   Stream<Duration?> get durationStream;
   int? get currentIndex;
   Future<void> dispose();
@@ -88,6 +89,9 @@ class JustAudioPlayer implements IAudioPlayer {
 
   @override
   Stream<Duration> get positionStream => _player.positionStream;
+
+  @override
+  Stream<Duration> get bufferedPositionStream => _player.bufferedPositionStream;
 
   @override
   Stream<Duration?> get durationStream => _player.durationStream;
