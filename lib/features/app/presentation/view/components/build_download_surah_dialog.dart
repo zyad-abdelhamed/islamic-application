@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:test_app/features/app/data/models/quran_request_params.dart';
+import 'package:test_app/features/app/domain/entities/reciters_entity.dart';
 import 'package:test_app/features/app/domain/entities/surah_entity.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/download_surah_with_tafsir_cubit.dart';
+import 'package:test_app/features/app/presentation/view/components/show_reciters_selection_dialog.dart';
 
 Widget buildDownloadDialog(
   BuildContext context,
@@ -79,18 +81,25 @@ Widget buildDownloadDialog(
               : Colors.white,
         ),
         onPressed: () {
-          context.read<DownloadSurahWithTafsirCubit>().downloadSurahWithTafsir(
-                tafsirRequestParams: TafsirRequestParams(
-                  surah: surah,
-                  surahNumber: surahNumber,
-                  limit: surah.numberOfAyat,
+          showRecitersSelectionDialog(
+            context: context,
+            desc: 'يمكنك اختيار قراء لتنزيل الصوت للسورة',
+            onConfirm: (List<ReciterEntity> selectedReciters) => context
+                .read<DownloadSurahWithTafsirCubit>()
+                .downloadSurahWithTafsir(
+                  tafsirRequestParams: TafsirRequestParams(
+                    surah: surah,
+                    surahNumber: surahNumber,
+                    limit: surah.numberOfAyat,
+                  ),
+                  surahRequestParams: SurahRequestParams(
+                    surah: surah,
+                    surahNumber: surahNumber,
+                    limit: surah.numberOfAyat,
+                  ),
+                  selectedReciters: selectedReciters,
                 ),
-                surahRequestParams: SurahRequestParams(
-                  surah: surah,
-                  surahNumber: surahNumber,
-                  limit: surah.numberOfAyat,
-                ),
-              );
+          );
         },
       ),
       TextButton(

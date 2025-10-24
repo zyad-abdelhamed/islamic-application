@@ -10,10 +10,10 @@ part 'reciters_state.dart';
 class RecitersCubit extends Cubit<RecitersState> {
   RecitersCubit(this._baseQuranRepo) : super(RecitersInitial());
   final BaseQuranRepo _baseQuranRepo;
-  Future<void> getReciters({required String surahName}) async {
+  Future<void> getReciters({String? surahName}) async {
     emit(RecitersLoading());
     final Either<Failure, List<ReciterEntity>> result =
-        await _baseQuranRepo.getReciters(surahName: surahName);
+        await _baseQuranRepo.getReciters(surahName: surahName ?? '');
     result.fold((l) => emit(RecitersFailure(l.message)), (r) {
       emit(RecitersLoaded(r));
     });

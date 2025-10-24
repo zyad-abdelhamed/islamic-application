@@ -46,6 +46,7 @@ class ReciterCheckTile extends StatelessWidget {
         Checkbox.adaptive(
           value: isSelected,
           activeColor: AppColors.primaryColor,
+          checkColor: Colors.white,
           onChanged: onChanged,
         ),
       ],

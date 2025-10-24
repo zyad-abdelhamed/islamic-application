@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:just_audio/just_audio.dart';
-//import 'package:just_audio_background/just_audio_background.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/helper_function/init_hydrated_bloc_storage.dart';
 import 'package:test_app/core/helper_function/setup_hive.dart';
@@ -15,8 +15,19 @@ import 'package:test_app/features/app/presentation/view/components/ayah_audio_ca
 import 'package:test_app/noor_app.dart';
 
 Future<void> main() async {
-  WidgetsBinding widgetsBindings = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBindings);
+  // تهيئة الـ Widgets Binding والسلاش
+  final WidgetsBinding widgetsBinding =
+      WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  // تهيئة Just Audio Background قبل أي تشغيل للتطبيق
+  // await JustAudioBackground.init(
+  //   androidNotificationChannelId: 'com.quran.audio',
+  //   androidNotificationChannelName: 'Quran Audio',
+  //   androidNotificationOngoing: true,
+  // );
+
+  // التحميلات الأولية (DI / Hive / Bloc / Strings)
   await Future.wait([
     initDependencyInjection(),
     setupHive(),
@@ -24,6 +35,7 @@ Future<void> main() async {
     AppStrings.load(),
   ]);
 
+  // الخدمات المحلية والمهام الخلفية
   await Future.wait([
     sl<BaseCacheService>().cacheintIalization(),
     sl<LocalNotificationsService>().init(),
@@ -31,12 +43,7 @@ Future<void> main() async {
     sl<GetPrayersTimesController>().getPrayersTimes(),
   ]);
 
-  // await JustAudioBackground.init(
-  //   androidNotificationChannelId: 'com.quran.audio',
-  //   androidNotificationChannelName: 'Quran Audio',
-  //   androidNotificationOngoing: true,
-  // );
-
+  // إزالة شاشة السلاش وتشغيل التطبيق
   FlutterNativeSplash.remove();
   runApp(const NoorApp());
 }

@@ -64,7 +64,6 @@ class AppSnackBar extends StatelessWidget {
           Expanded(
             child: Text(
               message,
-              textAlign: TextAlign.justify,
               style: const TextStyle(
                 color: Colors.white,
                 fontFamily: "DataFontFamily",

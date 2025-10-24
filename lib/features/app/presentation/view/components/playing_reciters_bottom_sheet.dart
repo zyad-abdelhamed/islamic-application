@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/features/app/domain/entities/reciters_entity.dart';
 import 'package:test_app/features/app/domain/entities/surah_audio_dwonload_entity.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/surah_audio_controller.dart';
@@ -35,16 +34,11 @@ class PlayingRecitersBottomSheet extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 16),
-
-          Text(
-            "القراء المتاحين الآن",
-            style: TextStyles.bold20(context),
-          ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 32),
 
           // Reciters List
-          Expanded(
+          SizedBox(
+            height: 180,
             child: ValueListenableBuilder(
                 valueListenable: controller.recitersNotifier,
                 builder: (_, List<ReciterEntity>? reciters, __) {
@@ -55,6 +49,13 @@ class PlayingRecitersBottomSheet extends StatelessWidget {
                                   SurahAudioDownloadStatus.complete)
                           .toList() ??
                       [];
+
+                  if (availableReciters.isEmpty) {
+                    return const Center(
+                      child: Text(
+                          "لا يوجد قراء متاحين، يمكنك تنزيل السوره بأكثر من قارئ"),
+                    );
+                  }
 
                   return ListView.separated(
                     scrollDirection: Axis.horizontal,

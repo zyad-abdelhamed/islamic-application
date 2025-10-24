@@ -82,36 +82,36 @@ class HomeButtonsListView extends StatelessWidget {
 const List<String?> homeButtonDescriptions = [
   "بدون انترنت", // القرآن الكريم
   "تصفح أو حمل السورة", // السور
+  "ابدأ خطه جديده", // حفظ القرآن
   null, // بحث في القرآن
   null, // الأذكار
   null, // السبحة
   null, // جدول رمضان
   null, // القبلة
-  null, // تحفيظ القرآن
   "مزيد من الأدوات", // أخرى
 ];
 
 const List<List<Color>> homeButtonGradientsDarkLux = <List<Color>>[
   [Color(0xFF336666), Color(0xFF1A3F3F)], // تيل داكن أنيق
   [Color(0xFF5A3E7F), Color(0xFF2E1A4B)], // بنفسجي عميق وفخم
+  [Color(0xFF704214), Color(0xFF3E250B)], // نحاسي داكن فخم ودافئ
   [Color(0xFF997A4D), Color(0xFF5C4329)], // برتقالي/ذهبي داكن أنيق
   [Color(0xFF267373), Color(0xFF004D4D)], // أزرق تيل هادئ وراقي
   [Color(0xFF335880), Color(0xFF1A2C4D)], // أزرق داكن ناعم
   [Color(0xFF8C6173), Color(0xFF523946)], // وردي/بنفسجي عميق
   [Color(0xFF3E6043), Color(0xFF1B2E21)], // أخضر داكن هادئ
-  [Color(0xFF704214), Color(0xFF3E250B)], // نحاسي داكن فخم ودافئ
   [Color(0xFF52585E), Color(0xFF1C2124)], // رمادي داكن فخم
 ];
 
 const List<List<Color>> homeButtonGradientsLightLux = <List<Color>>[
   [Color(0xFF80CBC4), Color(0xFF4DB6AC)], // تيل هادئ وراقي
   [Color(0xFFB39DDB), Color(0xFF7E57C2)], // بنفسجي ناعم وفخم
+  [Color(0xFFFFD180), Color(0xFFFFB74D)], // نحاسي فاتح دافئ وراقي
   [Color(0xFFFFC870), Color(0xFFFFA000)], // ذهبي/برتقالي فاتح أنيق
   [Color(0xFF4DD0E1), Color(0xFF0097A7)], // أزرق تيل متدرج
   [Color(0xFF90CAF9), Color(0xFF42A5F5)], // أزرق سماوي هادئ
   [Color(0xFFF8BBD0), Color(0xFFF48FB1)], // وردي ناعم
   [Color(0xFF81C784), Color(0xFF388E3C)], // أخضر طبيعي هادئ
-  [Color(0xFFFFD180), Color(0xFFFFB74D)], // نحاسي فاتح دافئ وراقي
   [Color(0xFF90A4AE), Color(0xFF455A64)], // رمادي أزرق هادئ
 ];
 
@@ -124,6 +124,7 @@ List _pages = [
     create: (_) => sl<GetSurahsInfoCubit>(),
     child: const SurahListPage(),
   ),
+  const QuranHifzPage(),
   BlocProvider(
     create: (context) => QuranSearchCubit(sl()),
     child: const QuranSearchPage(),
@@ -132,6 +133,5 @@ List _pages = [
   const ElecRosaryPage(),
   const RamadanTabelPage(),
   const QiblaPage(),
-  const QuranHifzPage(),
   const OtherPage(),
 ];

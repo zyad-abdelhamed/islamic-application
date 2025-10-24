@@ -11,13 +11,16 @@ import 'package:test_app/features/app/domain/entities/surah_with_tafsir_entity.d
 
 abstract class BaseQuranRepo {
   Future<Either<Failure, List<SurahEntity>>> getSurahsInfo();
-  Future<Either<Failure, Unit>> downloadSurahWithTafsir(
-      {required TafsirRequestParams tafsirRequestParams,
-      required SurahRequestParams surahRequestParams});
+  Future<Either<Failure, Unit>> downloadSurahWithTafsir({
+    required TafsirRequestParams tafsirRequestParams,
+    required SurahRequestParams surahRequestParams,
+    required List<ReciterEntity> selectedReciters,
+  });
   Future<Either<Failure, SurahWithTafsirEntity>> getSurahWithTafsir(
       {required TafsirRequestParams tafsirRequestParams,
       required SurahRequestParams surahRequestParams});
   Future<Either<Failure, Unit>> deleteSurahWithTafsir({required String key});
+  //   ===bookMarks methodes===
   Future<Either<Failure, Unit>> saveBookMark(
       {required BookMarkEntity bookmarkentity});
   Future<Either<Failure, Unit>> clearBookMarks();
@@ -31,4 +34,9 @@ abstract class BaseQuranRepo {
   String getAyahAudioUrl(AyahAudioRequestParams params);
   Future<Either<Failure, SurahDownloadResult>> downloadSurahAudio(
       SurahAudioRequestParams params);
+  Future<Either<Failure, Unit>> deleteSurahAudio(
+      SurahAudioRequestParams params);
+  Future<Either<Failure, SurahDownloadResult>> downloadFailedAyahsAudio(
+      {required SurahAudioRequestParams params,
+      required List<int> failedAyahs});
 }

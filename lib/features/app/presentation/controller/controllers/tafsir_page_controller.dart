@@ -53,7 +53,7 @@ class TafsirPageController {
                 .show(context), (List<ReciterEntity> reciters) {
       recitersNotifier.value = reciters;
 
-      if (isRefresh) return;
+      if (isRefresh && currentReciterNotifier.value != null) return;
 
       try {
         final firstComplete = reciters.firstWhere(

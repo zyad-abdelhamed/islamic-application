@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/theme/app_colors.dart';
@@ -15,15 +14,14 @@ class MainPage extends StatelessWidget {
       body: Column(
         children: [
           SizedBox(height: context.height * 0.1),
-          SvgPicture.asset(
-            'assets/images/Vector.svg',
+          Image.asset(
+            'assets/images/app_logo.png',
             height: context.height * 0.3,
-            color: AppColors.primaryColor,
           ),
           const SizedBox(height: 20),
           Text(
             AppStrings.translate("welcome"),
-            style: TextStyles.semiBold16(context: context, color: Colors.black),
+            style: TextStyles.semiBold16(context: context, color: Colors.white),
           ),
           const SizedBox(height: 10),
           Text(
