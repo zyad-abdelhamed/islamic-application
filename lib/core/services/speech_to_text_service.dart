@@ -2,41 +2,51 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 abstract class ISpeechToTextService {
   Future<bool> initialize();
-  Future<void> startListening(Function(String text) onResult);
-  void stopListening();
-  bool get isListening;
+  Future<void> startListening({
+    required Function(String text) onResult,
+    required Function(double level) onSoundLevelChange,
+  });
+  Future<void> stopListening();
 }
 
 class SpeechToTextService implements ISpeechToTextService {
   final stt.SpeechToText _speech = stt.SpeechToText();
-  bool _isListening = false;
 
   @override
   Future<bool> initialize() async {
     return await _speech.initialize(
-      onError: (error) => print('Speech error: $error'),
-      onStatus: (status) => print('Speech status: $status'),
+      onStatus: (status) {
+        print('🎙️ Speech status: $status');
+      },
+      onError: (error) {
+        print('❌ Speech error: $error');
+      },
     );
   }
 
   @override
-  Future<void> startListening(Function(String text) onResult) async {
-    bool available = await initialize();
-    if (available) {
-      _isListening = true;
-      _speech.listen(
-        localeId: 'ar-SA',
-        onResult: (val) => onResult(val.recognizedWords),
-      );
-    }
+  Future<void> startListening({
+    required Function(String text) onResult,
+    required Function(double level) onSoundLevelChange,
+  }) async {
+    await _speech.listen(
+      onResult: (result) {
+        print('🟢 Partial result: ${result.recognizedWords}');
+        onResult(result.recognizedWords);
+      },
+      localeId: 'ar-EG', // ✅ مهم علشان العربية
+
+      listenMode: stt.ListenMode.dictation,
+      partialResults: true, // ✅ مهم جدًا
+      onSoundLevelChange: (level) => onSoundLevelChange(level),
+      cancelOnError: false,
+      listenFor: const Duration(minutes: 60),
+      pauseFor: const Duration(minutes: 3),
+    );
   }
 
   @override
-  void stopListening() {
-    _isListening = false;
-    _speech.stop();
+  Future<void> stopListening() async {
+    await _speech.stop();
   }
-
-  @override
-  bool get isListening => _isListening;
 }

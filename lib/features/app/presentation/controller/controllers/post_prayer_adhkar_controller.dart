@@ -6,7 +6,7 @@ class PostPrayerAdhkarController {
   late final ValueNotifier<double> progressNotifier;
   final List _tsabeehList = AppStrings.translate("adhkarList");
 
-  initState() {
+  void initState() {
     progressNotifier = ValueNotifier<double>(0);
   }
 

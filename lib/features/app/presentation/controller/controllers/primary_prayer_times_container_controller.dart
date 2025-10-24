@@ -24,7 +24,7 @@ class PrimaryPrayerTimesContainerController {
         fontWeight: FontWeight.bold);
   }
 
-  get timings => null;
+  Null get timings => null;
 
   BoxDecoration highlightBoxDecoration(BuildContext context, int i) {
     return BoxDecoration(

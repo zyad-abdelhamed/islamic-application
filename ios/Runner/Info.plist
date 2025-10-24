@@ -6,6 +6,8 @@
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
 		<string>نُور</string>
+		<key>NSMicrophoneUsageDescription</key>
+        <string>نحتاج إذن الميكروفون لتفعيل ميزة التسميع الصوتي.</string>
 		<key>CFBundleExecutable</key>
 		<string>$(EXECUTABLE_NAME)</string>
 		<key>CFBundleIdentifier</key>

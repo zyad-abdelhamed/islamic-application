@@ -50,7 +50,7 @@ class TafsirEditionDropdown extends StatelessWidget {
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
                 ),
-                value: selectedEdition?.identifier,
+                initialValue: selectedEdition?.identifier,
                 items: editions.map((edition) {
                   return DropdownMenuItem<String>(
                     value: edition.identifier,

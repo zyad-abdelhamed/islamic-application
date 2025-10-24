@@ -19,7 +19,7 @@ class CounterController {
   late final ValueNotifier<NumberAnimationModel> counterNotifier;
   late final ValueNotifier<bool> isfeatuerdRecordsWidgetShowedNotifier;
 
-  dispose() {
+  void dispose() {
     vibrationNotifier.dispose();
     counterNotifier.dispose();
   }

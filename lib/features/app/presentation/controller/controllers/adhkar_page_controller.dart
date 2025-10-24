@@ -41,7 +41,7 @@ class AdhkarPageController {
     });
   }
 
-  dispose() {
+  void dispose() {
     lengthNotfier.dispose();
     progressNotfier.dispose();
     switchNotfier.dispose();

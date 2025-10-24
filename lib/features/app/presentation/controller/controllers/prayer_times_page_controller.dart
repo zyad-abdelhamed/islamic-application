@@ -25,7 +25,7 @@ class PrayerTimesPageController {
 
   late ValueNotifier<PrayerSoundSettingsEntity?> originalPrayerSoundSettings;
 
-  initState(BuildContext context) async {
+  Future<void> initState(BuildContext context) async {
     loadingNotifier = ValueNotifier<bool>(false);
     isSwitchsShowedNotifier = ValueNotifier<bool>(false);
 
@@ -82,7 +82,7 @@ class PrayerTimesPageController {
 
   // ----- نهاية دوال إعدادات صوت الصلاة -----
 
-  dispose() {
+  void dispose() {
     pageController.dispose();
     nextButtonVisibleNotifier.dispose();
     previousButtonVisibleNotifier.dispose();
@@ -156,17 +156,17 @@ class PrayerTimesPageController {
           .length -
       1;
 
-  animateToNextPage() {
+  void animateToNextPage() {
     pageController.nextPage(
         duration: AppDurations.lowDuration, curve: Curves.linear);
   }
 
-  animateTopreviousPage() {
+  void animateTopreviousPage() {
     pageController.previousPage(
         duration: AppDurations.lowDuration, curve: Curves.linear);
   }
 
-  updateLocation(BuildContext context) async {
+  Future<void> updateLocation(BuildContext context) async {
     loadingNotifier.value = true;
     final bool isConnected =
         await sl<InternetConnection>().checkInternetConnection();

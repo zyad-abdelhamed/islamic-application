@@ -12,6 +12,8 @@ import 'package:test_app/core/services/image_picker_service.dart';
 import 'package:test_app/core/services/internet_connection.dart';
 import 'package:test_app/core/services/local_notifications_service.dart';
 import 'package:test_app/core/services/position_service.dart';
+import 'package:test_app/core/services/speech_to_text_service.dart';
+import 'package:test_app/core/services/string_similarity.dart';
 import 'package:test_app/core/services/work_manger_service.dart';
 import 'package:test_app/features/app/data/datasources/daily_adhkar_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/home_local_data_source.dart';
@@ -212,4 +214,7 @@ Future<void> initDependencyInjection() async {
   sl.registerLazySingleton<AudioPlayer>(() => AudioPlayer());
   sl.registerLazySingleton<IAudioPlayer>(
       () => JustAudioPlayer(audioPlayer: sl<AudioPlayer>()));
+  sl.registerLazySingleton<ISpeechToTextService>(() => SpeechToTextService());
+  sl.registerLazySingleton<IStringSimilarityService>(
+      () => StringSimilarityService());
 }
