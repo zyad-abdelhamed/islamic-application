@@ -18,5 +18,4 @@ abstract class RoutesConstants {
   static const String quranAndTafsirPage = "quranAndTafsirPage";
   static const String editTafsirPage = "editTafsirPage";
   static const String recitersPage = "recitersPage";
-  static const String testWidgets = "testWidgets";
 }

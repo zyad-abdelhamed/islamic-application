@@ -8,9 +8,11 @@ class FeatureDescriptionWidget extends StatelessWidget {
     required this.image,
     required this.title,
     required this.description,
+    this.imageColor,
   });
 
   final String image, title, description;
+  final Color? imageColor;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,7 @@ class FeatureDescriptionWidget extends StatelessWidget {
           radius: 90,
           child: Image.asset(
             image,
+            color: imageColor,
             fit: BoxFit.fill,
           ),
         ),

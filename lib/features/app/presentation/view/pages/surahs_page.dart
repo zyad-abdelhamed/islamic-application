@@ -41,8 +41,7 @@ class _SurahListPageState extends State<SurahListPage> {
             Column(
               children: const [
                 Padding(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
+                  padding: EdgeInsets.all(16.0),
                   child: SurahsSearchTextFiled(),
                 ),
                 Expanded(

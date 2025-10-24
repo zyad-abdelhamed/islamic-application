@@ -1,201 +1,176 @@
+import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:test_app/core/services/audio_player_service.dart';
-import 'package:test_app/core/services/dependency_injection.dart';
-import 'package:test_app/core/services/file_storage_service.dart';
+import 'package:test_app/core/helper_function/is_dark.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/features/app/domain/entities/reciters_entity.dart';
+import 'package:test_app/features/app/presentation/controller/controllers/surah_audio_controller.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/tafsir_page_controller.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:test_app/features/app/presentation/view/components/playing_reciters_bottom_sheet.dart';
+import 'package:test_app/features/app/presentation/view/components/surah_audio_full_bottom_sheet.dart';
 
-class PlaySurahAudioWidget extends StatefulWidget {
+class PlaySurahAudioWidget extends StatelessWidget {
   final double imageSize;
-  final TafsirPageController controller;
+  final SurahAudioController controller;
+  final TafsirPageController tafsirPageController;
 
   const PlaySurahAudioWidget({
     super.key,
-    this.imageSize = 50,
+    this.imageSize = 30,
     required this.controller,
+    required this.tafsirPageController,
   });
-
-  @override
-  State<PlaySurahAudioWidget> createState() => _PlaySurahAudioWidgetState();
-}
-
-class _PlaySurahAudioWidgetState extends State<PlaySurahAudioWidget> {
-  late final IAudioPlayer audioPlayer;
-  late final IFileStorageService fileStorage;
-  late final List<Duration> ayahDurations;
-
-  @override
-  void initState() {
-    super.initState();
-    audioPlayer = sl<IAudioPlayer>();
-    fileStorage = sl<IFileStorageService>();
-    ayahDurations = [];
-  }
-
-  Future<void> _prepareSurahAudio() async {
-    final reciter = widget.controller.currentReciterNotifier.value;
-    if (reciter == null) return;
-
-    final folderName = "${reciter.name}_${widget.controller.surahEntity.name}";
-    final totalAyahs = widget.controller.surahEntity.numberOfAyat;
-    if (totalAyahs <= 0) return;
-
-    widget.controller.isAudioPlayingNotifier.value = false;
-    widget.controller.selectedAyah.value = null;
-
-    final resolvedFiles = await Future.wait(
-      List.generate(
-        totalAyahs,
-        (i) => fileStorage.getFile(
-          folderName: folderName,
-          fileName: '${i + 1}',
-          extension: 'mp3',
-        ),
-      ),
-    );
-
-    ayahDurations = await Future.wait(
-      resolvedFiles.map((file) async {
-        final tempPlayer = AudioPlayer();
-        await tempPlayer.setFilePath(file.path);
-        final duration = tempPlayer.duration ?? Duration.zero;
-        await tempPlayer.dispose();
-        return duration;
-      }),
-    );
-
-    final sources = await Future.wait(
-      resolvedFiles
-          .map((file) => Future.value(AudioSource.uri(Uri.file(file.path)))),
-    );
-
-    final duration = await audioPlayer.setAudioSources(sources);
-    await audioPlayer.play();
-
-    widget.controller.isAudioPlayingNotifier.value = true;
-
-    widget.controller.audioPositionStream =
-        audioPlayer.positionStream.map<double>((pos) {
-      Duration cumulative = Duration.zero;
-      int currentAyah = 1;
-
-      for (int i = 0; i < ayahDurations.length; i++) {
-        cumulative += ayahDurations[i];
-        if (pos < cumulative) {
-          currentAyah = i + 1;
-          break;
-        }
-      }
-
-      widget.controller.selectedAyah.value = currentAyah;
-
-      final totalMs = duration?.inMilliseconds ?? cumulative.inMilliseconds;
-      return (pos.inMilliseconds / totalMs).clamp(0.0, 1.0);
-    });
-
-    audioPlayer.playerStateStream.listen((state) {
-      if (state.status == PlayerStatus.completed) {
-        widget.controller.isAudioPlayingNotifier.value = false;
-        widget.controller.selectedAyah.value = null;
-        audioPlayer.stop();
-      }
-    });
-  }
-
-  Future<void> _resumeSurah() async {
-    widget.controller.isAudioPlayingNotifier.value = true;
-    await audioPlayer.play();
-  }
-
-  Future<void> _stopSurah() async {
-    widget.controller.isAudioPlayingNotifier.value = false;
-    await audioPlayer.stop();
-  }
-
-  void _openBottomSheet(BuildContext context) {
-    final reciter = widget.controller.currentReciterNotifier.value;
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      builder: (_) => Container(
-        height: MediaQuery.of(context).size.height,
-        padding: const EdgeInsets.all(24),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-        ),
-        child: Center(
-          child: Text(
-            "تشغيل سورة ${widget.controller.surahEntity.name} بصوت ${reciter?.name ?? "غير متاح"}",
-          ),
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<ReciterEntity?>(
-      valueListenable: widget.controller.currentReciterNotifier,
+      valueListenable: tafsirPageController.currentReciterNotifier,
       builder: (context, reciter, child) {
-        final isActive = reciter != null;
+        final bool isActive = reciter != null;
+        final Color actionsColor =
+            isActive ? AppColors.primaryColor : Colors.grey;
 
         return AbsorbPointer(
           absorbing: !isActive,
-          child: Opacity(
-            opacity: isActive ? 1.0 : 0.5,
-            child: ListTile(
-              onTap: isActive ? () => _openBottomSheet(context) : null,
-              leading: StreamBuilder<double>(
-                stream: widget.controller.audioPositionStream,
-                builder: (_, snapshot) {
-                  final progress = snapshot.data ?? 0.0;
-                  return CircularPercentIndicator(
-                    radius: widget.imageSize,
-                    lineWidth: 4,
-                    percent: progress,
-                    backgroundColor: Colors.grey.shade400,
-                    progressColor: AppColors.primaryColor,
-                    center: ValueListenableBuilder<bool>(
-                      valueListenable: widget.controller.isAudioPlayingNotifier,
-                      builder: (_, isPlaying, __) {
-                        return IconButton(
-                          icon: Icon(
-                            isPlaying
-                                ? CupertinoIcons.pause
-                                : CupertinoIcons.play_arrow_solid,
-                            color: Colors.white,
-                            size: 20,
-                          ),
-                          onPressed: isPlaying ? _stopSurah : _resumeSurah,
-                        );
-                      },
-                    ),
-                  );
-                },
-              ),
-              title: Text(reciter?.name ?? "غير متاح"),
-              subtitle: ValueListenableBuilder<int?>(
-                valueListenable: widget.controller.selectedAyah,
-                builder: (_, ayah, __) => Text(
-                  ayah != null
-                      ? "الآية الحالية: $ayah"
-                      : reciter?.language ?? "",
-                ),
-              ),
-              trailing: IconButton(
-                icon: const Icon(CupertinoIcons.headphones,
-                    color: AppColors.primaryColor),
-                onPressed: _prepareSurahAudio,
-              ),
+          child: ListTile(
+            minVerticalPadding: 0,
+            dense: true,
+            visualDensity: VisualDensity(horizontal: -2, vertical: -2),
+            tileColor: isDark(context) ? Colors.black : Colors.white,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+            onTap: isActive ? () => openSurahPlayerBottomSheet(context) : null,
+            leading: Container(
+              width: imageSize,
+              height: imageSize,
+              decoration: isActive
+                  ? BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(reciter.image),
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  : const BoxDecoration(color: Colors.grey),
+            ),
+            title: Text(isActive
+                ? "${reciter.name}_${tafsirPageController.surahEntity.name}"
+                : "غير متاح"),
+            subtitle: Text(isActive ? reciter.language : ""),
+            trailing: _AudioControls(
+              controller: controller,
+              imageSize: imageSize,
+              actionsColor: actionsColor,
+              onHeadphonesPressed: () =>
+                  showPlayingRecitersBottomSheet(context),
             ),
           ),
         );
       },
+    );
+  }
+
+  void openSurahPlayerBottomSheet(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (_) => SurahPlayerBottomSheet(controller: controller),
+    );
+  }
+
+  void showPlayingRecitersBottomSheet(BuildContext context) async {
+    await showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return PlayingRecitersBottomSheet(
+          controller: tafsirPageController,
+          surahAudioController: controller,
+        );
+      },
+    );
+  }
+}
+
+class _AudioControls extends StatelessWidget {
+  final SurahAudioController controller;
+  final double imageSize;
+  final Color actionsColor;
+  final VoidCallback onHeadphonesPressed;
+
+  const _AudioControls({
+    required this.controller,
+    required this.imageSize,
+    required this.actionsColor,
+    required this.onHeadphonesPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ListenableBuilder(
+          listenable: Listenable.merge([
+            controller.positionNotifier,
+            controller.isPreparingNotifier,
+          ]),
+          builder: (_, __) {
+            final isPreparing = controller.isPreparingNotifier.value;
+
+            return GestureDetector(
+              onTap: () async {
+                if (isPreparing) return; // منع الضغط أثناء التحضير
+
+                final isPlaying = controller.isAudioPlayingNotifier.value;
+                isPlaying
+                    ? await controller.pauseSurah()
+                    : await controller.resumeSurah();
+              },
+              child: CircularPercentIndicator(
+                radius: imageSize / 2,
+                lineWidth: 3,
+                percent: controller.positionNotifier.value,
+                backgroundColor: AppColors.primaryColor.withAlpha(50),
+                progressColor: AppColors.primaryColor,
+                center: Transform.rotate(
+                  angle: 90 * pi / 2,
+                  child: isPreparing
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor:
+                                AlwaysStoppedAnimation(AppColors.primaryColor),
+                          ),
+                        )
+                      : ValueListenableBuilder<bool>(
+                          valueListenable: controller.isAudioPlayingNotifier,
+                          builder: (context, isPlaying, _) {
+                            return Icon(
+                              isPlaying
+                                  ? CupertinoIcons.pause
+                                  : CupertinoIcons.play_arrow_solid,
+                              color: actionsColor,
+                              size: imageSize * 0.6,
+                            );
+                          },
+                        ),
+                ),
+              ),
+            );
+          },
+        ),
+        const SizedBox(width: 8),
+        IconButton(
+          padding: EdgeInsets.zero,
+          icon: Icon(
+            CupertinoIcons.headphones,
+            color: actionsColor,
+            size: imageSize,
+          ),
+          onPressed: onHeadphonesPressed,
+        ),
+      ],
     );
   }
 }

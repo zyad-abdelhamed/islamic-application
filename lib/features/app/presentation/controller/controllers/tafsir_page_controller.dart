@@ -6,6 +6,7 @@ import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/widgets/app_sneak_bar.dart';
 import 'package:test_app/features/app/data/models/quran_request_params.dart';
 import 'package:test_app/features/app/domain/entities/reciters_entity.dart';
+import 'package:test_app/features/app/domain/entities/surah_audio_dwonload_entity.dart';
 import 'package:test_app/features/app/domain/entities/surah_entity.dart';
 import 'package:test_app/features/app/domain/repositories/base_quran_repo.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_surah_with_tafsir_cubit.dart';
@@ -17,8 +18,6 @@ class TafsirPageController {
   late final ValueNotifier<int?> selectedAyah;
   late final ValueNotifier<List<ReciterEntity>?> recitersNotifier;
   late final ValueNotifier<ReciterEntity?> currentReciterNotifier;
-  late final ValueNotifier<bool> isAudioPlayingNotifier;
-  late final Stream<double> audioPositionStream;
   late final GlobalKey infoKey;
 
   late final TafsirRequestParams tafsirRequestParams;
@@ -37,25 +36,35 @@ class TafsirPageController {
     selectedAyah = ValueNotifier<int?>(null);
     recitersNotifier = ValueNotifier<List<ReciterEntity>?>(null);
     currentReciterNotifier = ValueNotifier<ReciterEntity?>(null);
-    isAudioPlayingNotifier = ValueNotifier<bool>(false);
-    audioPositionStream = const Stream<double>.empty();
     tafsirCubit = context.read<GetSurahWithTafsirCubit>();
     tafsirCubit.getSurahWithTafsir(
         surahRequestParams: surahParams,
         tafsirRequestParams: tafsirRequestParams);
 
-    getReciters(context);
+    getReciters(context, isRefresh: false);
   }
 
-  void getReciters(BuildContext context) async {
+  void getReciters(BuildContext context, {required bool isRefresh}) async {
     final Either<Failure, List<ReciterEntity>> result =
         await sl<BaseQuranRepo>().getReciters(surahName: surahEntity.name);
     result.fold(
-      (Failure l) =>
-          AppSnackBar(message: l.message, type: AppSnackBarType.error)
-              .show(context),
-      (List<ReciterEntity> reciters) => recitersNotifier.value = reciters,
-    );
+        (Failure l) =>
+            AppSnackBar(message: l.message, type: AppSnackBarType.error)
+                .show(context), (List<ReciterEntity> reciters) {
+      recitersNotifier.value = reciters;
+
+      if (isRefresh && currentReciterNotifier.value != null) return;
+
+      try {
+        final firstComplete = reciters.firstWhere(
+          (r) =>
+              r.surahAudioDownloadInfo != null &&
+              r.surahAudioDownloadInfo?.status ==
+                  SurahAudioDownloadStatus.complete,
+        );
+        currentReciterNotifier.value = firstComplete;
+      } catch (_) {}
+    });
   }
 
   void toggleTopBar() => isShowed.value = !isShowed.value;
@@ -66,5 +75,7 @@ class TafsirPageController {
     fontSizeNotifier.dispose();
     isShowed.dispose();
     selectedAyah.dispose();
+    recitersNotifier.dispose();
+    currentReciterNotifier.dispose();
   }
 }

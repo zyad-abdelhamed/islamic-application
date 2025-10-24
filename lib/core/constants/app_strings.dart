@@ -7,12 +7,12 @@ abstract class AppStrings {
     return <String>[
       'القرآن${getNewlineOrWightSpace()}الكريم',
       'القرآن${getNewlineOrWightSpace()}و التفسير',
+      'حفظ${getNewlineOrWightSpace()}القرآن',
       'البحث${getNewlineOrWightSpace()}في القرآن',
       'الأذكار${getNewlineOrWightSpace()}اليومية',
       'السبحه${getNewlineOrWightSpace()}الالكترونيه',
       'جدول${getNewlineOrWightSpace()}رمضان',
       'اتجاه${getNewlineOrWightSpace()}القبله',
-      'تحفيظ${getNewlineOrWightSpace()}القرآن',
       'اخرى'
     ];
   }

@@ -47,6 +47,7 @@ class _SecondryPageState extends State<SecondryPage> {
                 itemBuilder: (context, index) {
                   return FeatureDescriptionWidget(
                     image: AppStrings.translate("imagesOfOnBorading")[index],
+                    imageColor: index == 2 ? Colors.white : null,
                     title: AppStrings.translate("features")[index],
                     description:
                         AppStrings.translate("textsOfOnBorading")[index],

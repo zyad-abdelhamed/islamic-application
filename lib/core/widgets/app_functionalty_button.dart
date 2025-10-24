@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
+import 'package:test_app/core/constants/constants_values.dart';
 
 class AppFunctionaltyButton<C extends StateStreamable<S>, S>
     extends StatelessWidget {
@@ -27,7 +28,8 @@ class AppFunctionaltyButton<C extends StateStreamable<S>, S>
 
         return MaterialButton(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius:
+                BorderRadius.circular(ConstantsValues.fullCircularRadius),
           ),
           onPressed: disabled
               ? null

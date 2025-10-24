@@ -22,7 +22,7 @@ class HomeDrawerWidget extends StatelessWidget {
             Expanded(
               child: BlocProvider<DuaaCubit>(
                 create: (_) => sl<DuaaCubit>(),
-                child: DuaasWidget(),
+                child: const DuaasWidget(),
               ),
             ),
 
@@ -36,10 +36,11 @@ class HomeDrawerWidget extends StatelessWidget {
               child: Row(
                 spacing: 8,
                 children: [
-                  const Icon(Icons.settings),
+                  const Icon(Icons.settings, color: Colors.white),
                   Text(
                     AppStrings.translate("settings"),
-                    style: TextStyles.bold20(context).copyWith(fontSize: 23),
+                    style: TextStyles.bold20(context)
+                        .copyWith(fontSize: 23, color: Colors.white),
                   ),
                 ],
               ),

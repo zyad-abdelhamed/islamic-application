@@ -40,7 +40,9 @@ class _AdhkarButtonState extends State<AdhkarButton>
     _animation = Tween<double>(begin: 0, end: 1).animate(_controller);
 
     // تحميل الصورة مسبقًا لتسريع العرض
-    precacheImage(AssetImage(widget.imagePath), context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      precacheImage(AssetImage(widget.imagePath), context);
+    });
   }
 
   @override
@@ -107,8 +109,6 @@ class _AdhkarButtonState extends State<AdhkarButton>
                   widget.imagePath,
                   fit: BoxFit.cover,
                   width: double.infinity,
-                  cacheWidth: 300,
-                  cacheHeight: 200,
                 ),
               ),
             ),

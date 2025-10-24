@@ -77,7 +77,7 @@ class ReciterCardWidget extends StatelessWidget {
                         surahNumber: controller.tafsirRequestParams.surahNumber,
                         surahName: controller.surahParams.surah.name,
                       ),
-                      totalAyahs: controller.surahParams.surah.numberOfAyat,
+                      controller: controller,
                     ),
                   ],
                 ),

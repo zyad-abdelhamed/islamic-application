@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 
 class DuaaDisplay extends StatefulWidget {
@@ -37,7 +36,7 @@ class _DuaaDisplayState extends State<DuaaDisplay> {
               widget.duaaTitle,
               style: TextStyles.semiBold16(
                 context: context,
-                color: AppColors.secondryColor,
+                color: Colors.white,
               ),
             ),
             ValueListenableBuilder<bool>(
@@ -73,16 +72,17 @@ class _DuaaDisplayState extends State<DuaaDisplay> {
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: AppColors.secondryColor,
+                            color: Colors.white,
                             width: 1,
                           ),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
                           widget.duaaBody,
-                          style: TextStyles.semiBold16_120(context).copyWith(
-                              color: Colors.white,
-                              fontFamily: 'DataFontFamily'),
+                          style: TextStyles.semiBold16(
+                            context: context,
+                            color: Colors.grey,
+                          ),
                         ),
                       )
                     : const SizedBox.shrink(),

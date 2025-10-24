@@ -4,9 +4,11 @@ import 'package:just_audio/just_audio.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/widgets/app_divider.dart';
+import 'package:test_app/core/widgets/app_sneak_bar.dart';
 import 'package:test_app/core/widgets/share_button.dart';
 import 'package:test_app/features/app/data/models/quran_audio_parameters.dart';
 import 'package:test_app/features/app/domain/entities/ayah_search_result_entity.dart';
+import 'package:test_app/features/app/domain/entities/reciters_entity.dart';
 import 'package:test_app/features/app/domain/entities/tafsir_ayah_entity.dart';
 import 'package:test_app/features/app/domain/repositories/base_quran_repo.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/ayah_audio_card_controller.dart';
@@ -16,6 +18,7 @@ import 'package:test_app/features/app/presentation/view/components/ayah_audio_ca
 import 'package:test_app/features/app/presentation/view/components/ayah_extra_info_wrap.dart';
 import 'package:test_app/features/app/presentation/view/components/copy_button.dart';
 import 'package:test_app/features/app/presentation/view/components/go_to_Tafsir_edit_page_button.dart';
+import 'package:test_app/features/app/presentation/view/components/show_reciters_selection_dialog.dart';
 
 class AyahsSearchResultPageView extends StatelessWidget {
   const AyahsSearchResultPageView({
@@ -158,10 +161,37 @@ class AyahsSearchResultPageView extends StatelessWidget {
   }
 
   void onPressed(BuildContext context, SearchAyahEntity ayah) {
+    showRecitersSelectionDialog(
+      context: context,
+      desc: "اختر القارئ",
+      onConfirm: (List<ReciterEntity> selectedReciters) {
+        if (selectedReciters.isNotEmpty) {
+          _playAyahAudio(
+            context,
+            ayahGlobalNumber: ayah.number,
+            reciter: selectedReciters.first,
+          );
+
+          return;
+        }
+
+        AppSnackBar(
+          message: "يرجى اختيار قارئ",
+          type: AppSnackBarType.info,
+        ).show(
+          context,
+        );
+      },
+      allowMultipleSelection: false,
+    );
+  }
+
+  void _playAyahAudio(BuildContext context,
+      {required int ayahGlobalNumber, required ReciterEntity reciter}) async {
     final String audioUrl = sl<BaseQuranRepo>().getAyahAudioUrl(
       AyahAudioRequestParams(
-        reciterId: "ar.alafasy",
-        ayahGlobalNumber: ayah.number,
+        reciterId: reciter.identifier,
+        ayahGlobalNumber: ayahGlobalNumber,
       ),
     );
 
@@ -172,10 +202,10 @@ class AyahsSearchResultPageView extends StatelessWidget {
 
     final entry = OverlayEntry(
       builder: (_) => AyahAudioCard(
-        key: ValueKey<int>(ayah.number),
+        key: ValueKey<int>(ayahGlobalNumber),
         controller: controller,
-        reciterName: "مشاري راشد العفاسي",
-        reciterImageUrl: "assets/images/book.png",
+        reciterName: reciter.name,
+        reciterImageUrl: reciter.image,
       ),
     );
 

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
+import 'package:test_app/core/helper_function/is_dark.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/core/widgets/app_sneak_bar.dart';
@@ -20,23 +21,28 @@ class DailyAdhkarListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 130,
+      height: 100,
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 10,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          const SizedBox.shrink(),
+
           /// زر الإضافة ثابت
-          CircleAvatar(
-            radius: circleSize / 2,
-            backgroundColor: Colors.grey.withAlpha(30),
+          Container(
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: (isDark(context) ? Colors.white : Colors.black)
+                    .withAlpha(20)),
             child: IconButton(
               onPressed: () => Navigator.pushReplacementNamed(
                 context,
                 RoutesConstants.addDailyAdhkarPage,
               ),
-              icon: const Icon(
+              icon: Icon(
                 Icons.add,
                 color: Colors.grey,
-                size: 30,
+                size: 40,
               ),
             ),
           ),
@@ -58,8 +64,6 @@ class DailyAdhkarListView extends StatelessWidget {
                 }
               },
               builder: (context, state) {
-                final bool isLoading =
-                    state is DailyAdhkarLoading || state is DailyAdhkarError;
                 final List<DailyAdhkarEntity> adhkar =
                     state is DailyAdhkarLoaded
                         ? state.adhkar
@@ -77,50 +81,48 @@ class DailyAdhkarListView extends StatelessWidget {
 
                 final int length = adhkar.length;
 
-                return Skeletonizer(
-                  enabled: isLoading,
-                  child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: length,
-                    itemBuilder: (context, index) {
-                      final DailyAdhkarEntity entity = adhkar[index];
-                      return DailyAdhkarCard(
-                        dailyAdhkarEntity: entity,
-                        index: index,
-                        onTap: () => Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DailyAdhkarPage(
-                                      entities: adhkar,
-                                      index: index,
-                                    ))),
-                        onLongPress: () => showModalBottomSheet(
-                          context: context,
-                          builder: (context) => Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              ListTile(
-                                leading: const Icon(CupertinoIcons.delete,
-                                    color: AppColors.errorColor),
-                                title: Text(
-                                  "حذف",
-                                  style: TextStyles.bold20(context)
-                                      .copyWith(color: AppColors.errorColor),
-                                ),
-                                onTap: () => showDeleteAlertDialog(
-                                  context,
-                                  deleteFunction: () =>
-                                      DailyAdhkarCubit.get(context)
-                                          .deleteDailyAdhkar(index),
-                                ),
+                return ListView.separated(
+                  physics: const BouncingScrollPhysics(),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: length,
+                  separatorBuilder: (_, __) => const SizedBox(width: 10),
+                  itemBuilder: (context, index) {
+                    final DailyAdhkarEntity entity = adhkar[index];
+                    return DailyAdhkarCard(
+                      dailyAdhkarEntity: entity,
+                      index: index,
+                      onTap: () => Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DailyAdhkarPage(
+                                    entities: adhkar,
+                                    index: index,
+                                  ))),
+                      onLongPress: () => showModalBottomSheet(
+                        context: context,
+                        builder: (context) => Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ListTile(
+                              leading: const Icon(CupertinoIcons.delete,
+                                  color: AppColors.errorColor),
+                              title: Text(
+                                "حذف",
+                                style: TextStyles.bold20(context)
+                                    .copyWith(color: AppColors.errorColor),
                               ),
-                            ],
-                          ),
+                              onTap: () => showDeleteAlertDialog(
+                                context,
+                                deleteFunction: () =>
+                                    DailyAdhkarCubit.get(context)
+                                        .deleteDailyAdhkar(index),
+                              ),
+                            ),
+                          ],
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 );
               },
             ),

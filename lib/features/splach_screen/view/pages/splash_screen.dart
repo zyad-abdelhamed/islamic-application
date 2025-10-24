@@ -32,9 +32,9 @@ class _SplashScreenState extends State<SplashScreen> {
       if (mounted) {
         showLoading.value = true;
 
-        /// بعدها تبدأ تحميل البيانات
-        // sl<GetPrayersTimesController>()
-        //     .getPrayersTimes(onTerminated: _goToHomePage);
+        // بعدها تبدأ تحميل البيانات
+        sl<GetPrayersTimesController>()
+            .getPrayersTimes(onTerminated: _goToHomePage);
       }
     });
   }

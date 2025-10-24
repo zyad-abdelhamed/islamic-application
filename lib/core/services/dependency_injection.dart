@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:test_app/core/services/arabic_converter_service.dart';
-import 'package:test_app/core/services/audio_player_service.dart';
 import 'package:test_app/core/services/cache_service.dart';
 import 'package:test_app/core/services/city_name_service.dart';
 import 'package:test_app/core/services/download_service.dart';
@@ -57,6 +55,7 @@ import 'package:test_app/features/app/presentation/controller/cubit/book_mark_cu
 import 'package:test_app/features/app/presentation/controller/cubit/daily_adhkar_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/download_surah_audio_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/download_surah_with_tafsir_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/get_speciffic_ayahs_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_surah_with_tafsir_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_surahs_info_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/location_cubit.dart';
@@ -88,6 +87,7 @@ Future<void> initDependencyInjection() async {
   sl.registerLazySingleton(() => GetPrayersTimesController(
       getPrayersTimesUseCase: sl(), baseLocationRepo: sl()));
   // cubits
+  sl.registerFactory(() => GetSpecifficAyahsCubit(sl()));
   sl.registerFactory(() => DownloadSurahAudioCubit(sl()));
   sl.registerFactory(() => RecitersCubit(sl()));
   sl.registerFactory(() => TafsirEditCubit());
@@ -211,9 +211,7 @@ Future<void> initDependencyInjection() async {
   sl.registerLazySingleton<InternetConnection>(() => InternetConnectionImpl2());
   sl.registerLazySingleton<ApiService>(() => ApiService(sl()));
   sl.registerLazySingleton<Dio>(() => Dio());
-  sl.registerLazySingleton<AudioPlayer>(() => AudioPlayer());
-  sl.registerLazySingleton<IAudioPlayer>(
-      () => JustAudioPlayer(audioPlayer: sl<AudioPlayer>()));
+
   sl.registerLazySingleton<ISpeechToTextService>(() => SpeechToTextService());
   sl.registerLazySingleton<IStringSimilarityService>(
       () => StringSimilarityService());
