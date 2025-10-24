@@ -53,6 +53,7 @@ import 'package:test_app/features/app/presentation/controller/cubit/book_mark_cu
 import 'package:test_app/features/app/presentation/controller/cubit/daily_adhkar_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/download_surah_audio_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/download_surah_with_tafsir_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/get_speciffic_ayahs_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_surah_with_tafsir_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_surahs_info_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/location_cubit.dart';
@@ -84,6 +85,7 @@ Future<void> initDependencyInjection() async {
   sl.registerLazySingleton(() => GetPrayersTimesController(
       getPrayersTimesUseCase: sl(), baseLocationRepo: sl()));
   // cubits
+  sl.registerFactory(() => GetSpecifficAyahsCubit(sl()));
   sl.registerFactory(() => DownloadSurahAudioCubit(sl()));
   sl.registerFactory(() => RecitersCubit(sl()));
   sl.registerFactory(() => TafsirEditCubit());

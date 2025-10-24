@@ -39,6 +39,50 @@ class QuranRepo implements BaseQuranRepo {
     this._downloadService,
   );
 
+  //   ===================== BookMarks =======================
+  @override
+  Future<Either<Failure, List<BookMarkEntity>>> getBookMarks() async {
+    try {
+      final result = await quranLocalDataSource.getBookMarks();
+      return right(result);
+    } catch (e) {
+      return left(Failure('خطأ فى تحميل العلامات'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> saveBookMark(
+      {required BookMarkEntity bookmarkentity}) async {
+    try {
+      await quranLocalDataSource.saveBookMark(bookmarkentity: bookmarkentity);
+      return right(unit);
+    } catch (e) {
+      return left(Failure('خطأ ف حفظ العلامة'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> clearBookMarks() async {
+    try {
+      await quranLocalDataSource.clearBookMarks();
+      return right(unit);
+    } catch (e) {
+      return left(Failure('خطأ ف مسح العلامات'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> deleteBookmarksList(
+      {required List<int> indexs}) async {
+    try {
+      await quranLocalDataSource.deleteBookmarksList(indexes: indexs);
+      return right(unit);
+    } catch (e) {
+      return left(Failure('خطأ في مسح العلامة'));
+    }
+  }
+
+  //   ===================== SurahWithTafsir =======================
   @override
   Future<Either<Failure, SurahWithTafsirEntity>> getSurahWithTafsir(
       {required TafsirRequestParams tafsirRequestParams,
@@ -60,7 +104,6 @@ class QuranRepo implements BaseQuranRepo {
       if (e is DioException) {
         return Left(ServerFailure.fromDiorError(e));
       }
-      print("❌ getSurahWithTafsir error: $e");
       return Left(ServerFailure(AppStrings.translate(e.toString())));
     }
   }
@@ -108,44 +151,31 @@ class QuranRepo implements BaseQuranRepo {
   }
 
   @override
-  Future<Either<Failure, List<BookMarkEntity>>> getBookMarks() async {
+  Future<Either<Failure, List<AyahEntity>>> getSpecificAyahs(
+      {required SurahRequestParams surahRequestParams}) async {
     try {
-      final result = await quranLocalDataSource.getBookMarks();
-      return right(result);
-    } catch (e) {
-      return left(Failure('خطأ فى تحميل العلامات'));
-    }
-  }
+      final List<AyahEntity> ayahs;
+      final SurahWithTafsirEntity? cachedSurahWithTafsir =
+          await _quranLocalDataSource.getSurahWithTafsir(
+              key: surahRequestParams.surah.name);
 
-  @override
-  Future<Either<Failure, Unit>> saveBookMark(
-      {required BookMarkEntity bookmarkentity}) async {
-    try {
-      await quranLocalDataSource.saveBookMark(bookmarkentity: bookmarkentity);
-      return right(unit);
-    } catch (e) {
-      return left(Failure('خطأ ف حفظ العلامة'));
-    }
-  }
+      if (cachedSurahWithTafsir != null) {
+        final int start = surahRequestParams.offset;
+        final int end = start + surahRequestParams.limit;
+        ayahs = cachedSurahWithTafsir.ayahsList.sublist(start, end);
 
-  @override
-  Future<Either<Failure, Unit>> clearBookMarks() async {
-    try {
-      await quranLocalDataSource.clearBookMarks();
-      return right(unit);
-    } catch (e) {
-      return left(Failure('خطأ ف مسح العلامات'));
-    }
-  }
+        return Right(ayahs);
+      }
 
-  @override
-  Future<Either<Failure, Unit>> deleteBookmarksList(
-      {required List<int> indexs}) async {
-    try {
-      await quranLocalDataSource.deleteBookmarksList(indexes: indexs);
-      return right(unit);
+      ayahs = await _baseQuranRemoteDataSource.getAyahs(surahRequestParams);
+
+      return Right(ayahs);
     } catch (e) {
-      return left(Failure('خطأ في مسح العلامة'));
+      if (e is DioException) {
+        return Left(ServerFailure.fromDiorError(e));
+      }
+
+      return Left(ServerFailure(AppStrings.translate("unExpectedError")));
     }
   }
 
@@ -237,43 +267,7 @@ class QuranRepo implements BaseQuranRepo {
     }
   }
 
-  /// Safe tafsir fetch with retry + fallback
-  Future<TafsirAyahEntity> _safeGetAyahTafsir(
-    int ayahNumber,
-    String edition, {
-    int retries = 3,
-  }) async {
-    int attempt = 0;
-
-    while (attempt < retries) {
-      try {
-        final tafsir = await _baseQuranRemoteDataSource.getAyahTafsir(
-          ayahNumber,
-          edition,
-        );
-        return tafsir;
-      } catch (e) {
-        attempt++;
-        print(
-            "⚠️ Attempt $attempt failed for ayah=$ayahNumber, edition=$edition, error=$e");
-
-        if (attempt >= retries) {
-          return const TafsirAyahEntity(
-            text: "لا يوجد تفسير متاح لهذه الآية",
-          );
-        }
-
-        // delay قبل المحاولة التالية
-        await Future.delayed(const Duration(milliseconds: 500));
-      }
-    }
-
-    return const TafsirAyahEntity(
-      text: "لا يوجد تفسير متاح لهذه الآية",
-    );
-  }
-
-  // helper functions
+  // helper functions for surah with tafsir
   Future<SurahWithTafsirEntity> _getSurahWithTafsirFromRemoteDataSoruce(
     TafsirRequestParams tafsirRequestParams,
     SurahRequestParams surahRequestParams,
@@ -317,6 +311,42 @@ class QuranRepo implements BaseQuranRepo {
     return surahWithTafsir;
   }
 
+  /// Safe tafsir fetch with retry + fallback
+  Future<TafsirAyahEntity> _safeGetAyahTafsir(
+    int ayahNumber,
+    String edition, {
+    int retries = 3,
+  }) async {
+    int attempt = 0;
+
+    while (attempt < retries) {
+      try {
+        final tafsir = await _baseQuranRemoteDataSource.getAyahTafsir(
+          ayahNumber,
+          edition,
+        );
+        return tafsir;
+      } catch (e) {
+        attempt++;
+        print(
+            "⚠️ Attempt $attempt failed for ayah=$ayahNumber, edition=$edition, error=$e");
+
+        if (attempt >= retries) {
+          return const TafsirAyahEntity(
+            text: "لا يوجد تفسير متاح لهذه الآية",
+          );
+        }
+
+        // delay قبل المحاولة التالية
+        await Future.delayed(const Duration(milliseconds: 500));
+      }
+    }
+
+    return const TafsirAyahEntity(
+      text: "لا يوجد تفسير متاح لهذه الآية",
+    );
+  }
+
   Future<List<TafsirEditionEntity>> loadTafsirEditions() async {
     final List data = await getJson(RoutesConstants.tafsirJsonRouteName);
 
@@ -338,6 +368,7 @@ class QuranRepo implements BaseQuranRepo {
     return results;
   }
 
+  //   =====audio=====
   @override
   Future<Either<Failure, List<ReciterEntity>>> getReciters(
       {required String surahName}) async {
