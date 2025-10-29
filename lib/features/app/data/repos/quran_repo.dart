@@ -12,9 +12,11 @@ import 'package:test_app/features/app/domain/entities/ayah_search_result_entity.
 import 'package:test_app/features/app/domain/entities/book_mark_entity.dart';
 import 'package:test_app/features/app/data/datasources/quran_remote_data_source.dart';
 import 'package:test_app/features/app/data/models/quran_request_params.dart';
+import 'package:test_app/features/app/domain/entities/hifz_plan_entity.dart';
 import 'package:test_app/features/app/domain/entities/reciters_entity.dart';
 import 'package:test_app/features/app/domain/entities/surah_entity.dart';
 import 'package:test_app/features/app/domain/entities/ayah_entity.dart';
+import 'package:test_app/features/app/domain/entities/surah_prograss_entity.dart';
 import 'package:test_app/features/app/domain/entities/surah_with_tafsir_entity.dart';
 import 'package:test_app/features/app/domain/entities/tafsir_ayah_entity.dart';
 import 'package:test_app/features/app/domain/repositories/base_quran_repo.dart';
@@ -575,6 +577,75 @@ class QuranRepo implements BaseQuranRepo {
             folderName: folderName,
             failedAyahs: failedAyahs,
           )));
+    }
+  }
+
+  // === hifz plans ===
+  @override
+  Future<Either<Failure, Unit>> addPlan(HifzPlanEntity plan) async {
+    try {
+      await quranLocalDataSource.addPlan(plan);
+      return right(unit);
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> deleteMultiplePlans(
+      List<String> planNames) async {
+    try {
+      await quranLocalDataSource.deleteMultiplePlans(planNames);
+      return right(unit);
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<HifzPlanEntity>>> getAllPlans() async {
+    try {
+      final result = await quranLocalDataSource.getAllPlans();
+      return right(result);
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, HifzPlanEntity?>> getPlanByName(
+      String planName) async {
+    try {
+      final result = await quranLocalDataSource.getPlanByName(planName);
+      if (result == null) {
+        return left(Failure("plan not found"));
+      }
+      return right(result);
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> updatePlan(HifzPlanEntity plan) async {
+    try {
+      await quranLocalDataSource.updatePlan(plan);
+      return right(unit);
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> upsertSurahProgress(
+      {required String planName,
+      required SurahProgressEntity surahProgress}) async {
+    try {
+      await quranLocalDataSource.upsertSurahProgress(
+          planName: planName, surahProgress: surahProgress);
+      return right(unit);
+    } catch (e) {
+      return left(Failure(e.toString()));
     }
   }
 }

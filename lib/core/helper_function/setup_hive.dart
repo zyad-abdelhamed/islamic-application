@@ -9,11 +9,14 @@ import 'package:test_app/features/app/domain/entities/daily_adhkar_adapter.dart'
 import 'package:test_app/features/app/domain/entities/daily_adhkar_entity.dart';
 import 'package:test_app/features/app/domain/entities/featured_record_entity.dart';
 import 'package:test_app/features/app/domain/entities/featured_record_type_adapter.dart';
+import 'package:test_app/features/app/domain/entities/hifz_plan_adapter.dart';
+import 'package:test_app/features/app/domain/entities/hifz_plan_entity.dart';
 import 'package:test_app/features/app/domain/entities/location_entity.dart';
 import 'package:test_app/features/app/domain/entities/location_type_adapter.dart';
 import 'package:test_app/features/app/domain/entities/prayer_sound_settings_entity.dart';
 import 'package:test_app/features/app/domain/entities/prayer_sounds_type_adapter.dart';
 import 'package:test_app/features/app/domain/entities/surah_audio_dwonload_entity.dart';
+import 'package:test_app/features/app/domain/entities/surah_prograss_adapter.dart';
 import 'package:test_app/features/app/domain/entities/surah_with_tafsir_entity.dart';
 import 'package:test_app/features/app/domain/entities/tafsir_ayah_entity.dart';
 import 'package:test_app/features/app/domain/entities/timings.dart';
@@ -26,6 +29,8 @@ Future<void> setupHive() async {
   await Hive.initFlutter();
   Hive.registerAdapter(TypeAdapterForTimings());
   Hive.registerAdapter(LocationTypeAdapter());
+  Hive.registerAdapter(HifzPlanAdapter());
+  Hive.registerAdapter(SurahProgressAdapter());
   Hive.registerAdapter(PrayerSoundSettingsAdapter());
   Hive.registerAdapter(TypeAdapterForBookMark());
   Hive.registerAdapter(FeaturedRecordEntityAdapter());
@@ -48,4 +53,5 @@ Future<void> setupHive() async {
       QuranLocalDataSourceImpl.quranWithTafsirBoxName);
   await Hive.openBox<SurahAudioDownloadEntity>(
       QuranLocalDataSourceImpl.audioDownloadBoxName);
+  await Hive.openBox<HifzPlanEntity>(QuranLocalDataSourceImpl.hifzPlansBoxName);
 }

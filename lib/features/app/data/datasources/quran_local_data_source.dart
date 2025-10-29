@@ -4,7 +4,9 @@ import 'package:test_app/core/helper_function/get_from_json.dart';
 import 'package:test_app/features/app/data/models/reciters_model.dart';
 import 'package:test_app/features/app/data/models/surah_model.dart';
 import 'package:test_app/features/app/domain/entities/book_mark_entity.dart';
+import 'package:test_app/features/app/domain/entities/hifz_plan_entity.dart';
 import 'package:test_app/features/app/domain/entities/surah_audio_dwonload_entity.dart';
+import 'package:test_app/features/app/domain/entities/surah_prograss_entity.dart';
 import 'package:test_app/features/app/domain/entities/surah_with_tafsir_entity.dart';
 
 // ------------------ Interface ------------------
@@ -43,6 +45,21 @@ abstract class QuranLocalDataSource {
     required String edition,
     required String surahName,
   });
+  // ------------------ hifz plans  ------------------
+  Future<void> addPlan(HifzPlanEntity plan);
+
+  Future<void> updatePlan(HifzPlanEntity plan);
+
+  Future<void> upsertSurahProgress({
+    required String planName,
+    required SurahProgressEntity surahProgress,
+  });
+
+  Future<void> deleteMultiplePlans(List<String> planNames);
+
+  Future<List<HifzPlanEntity>> getAllPlans();
+
+  Future<HifzPlanEntity?> getPlanByName(String planName);
 }
 
 // ------------------ Implementation ------------------
@@ -51,7 +68,10 @@ class QuranLocalDataSourceImpl implements QuranLocalDataSource {
   static const String bookMarksBoxName = 'book_mark_box';
   static const String quranWithTafsirBoxName = 'quran_with_tafsir_box';
   static const String audioDownloadBoxName = 'audio_download_box';
+  static const String hifzPlansBoxName = 'hifz_plans_box';
 
+  final Box<HifzPlanEntity> hifzPlansBox =
+      Hive.box<HifzPlanEntity>(hifzPlansBoxName);
   final Box<BookMarkEntity> bookMarksBox =
       Hive.box<BookMarkEntity>(bookMarksBoxName);
   final Box<SurahWithTafsirEntity> quranWithTafsirBox =
@@ -172,5 +192,74 @@ class QuranLocalDataSourceImpl implements QuranLocalDataSource {
   }) async {
     final key = "${edition}_$surahName";
     await audioDownloadBox.delete(key);
+  }
+
+// ------------------ Plans ------------------
+  @override
+  Future<void> addPlan(HifzPlanEntity plan) async {
+    await hifzPlansBox.put(plan.planName, plan);
+  }
+
+  @override
+  Future<void> deleteMultiplePlans(List<String> planNames) async {
+    if (planNames.isEmpty) return;
+    await hifzPlansBox.deleteAll(planNames);
+  }
+
+  @override
+  Future<List<HifzPlanEntity>> getAllPlans() async {
+    return hifzPlansBox.values.toList(growable: false);
+  }
+
+  @override
+  Future<HifzPlanEntity?> getPlanByName(String planName) async {
+    return hifzPlansBox.get(planName);
+  }
+
+  @override
+  Future<void> updatePlan(HifzPlanEntity plan) async {
+    if (!hifzPlansBox.containsKey(plan.planName)) {
+      throw Exception('Plan not found: ${plan.planName}');
+    }
+    await hifzPlansBox.put(plan.planName, plan);
+  }
+
+  @override
+  Future<void> upsertSurahProgress({
+    required String planName,
+    required SurahProgressEntity surahProgress,
+  }) async {
+    final plan = hifzPlansBox.get(planName);
+    if (plan == null) throw Exception('Plan not found: $planName');
+
+    final updatedSurahs = List<SurahProgressEntity>.from(plan.surahsProgress);
+    final index = updatedSurahs.indexWhere(
+      (surah) => surah.surahName == surahProgress.surahName,
+    );
+
+    if (index != -1) {
+      //  دمج الآيات القديمة مع الجديدة بدون تكرار
+      final oldSurah = updatedSurahs[index];
+      final mergedAyahs = {
+        ...oldSurah.memorizedAyahs,
+        ...surahProgress.memorizedAyahs
+      }.toList()
+        ..sort(); // بنرتبهم تصاعديًا
+      updatedSurahs[index] = SurahProgressEntity(
+        surahName: surahProgress.surahName,
+        memorizedAyahs: mergedAyahs,
+      );
+    } else {
+      updatedSurahs.add(surahProgress);
+    }
+
+    final updatedPlan = HifzPlanEntity(
+      planName: plan.planName,
+      createdAt: plan.createdAt,
+      lastProgress: surahProgress.surahName,
+      surahsProgress: updatedSurahs,
+    );
+
+    await hifzPlansBox.put(planName, updatedPlan);
   }
 }

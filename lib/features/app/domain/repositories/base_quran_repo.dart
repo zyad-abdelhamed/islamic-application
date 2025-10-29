@@ -5,9 +5,11 @@ import 'package:test_app/features/app/domain/entities/ayah_entity.dart';
 import 'package:test_app/features/app/domain/entities/ayah_search_result_entity.dart';
 import 'package:test_app/features/app/domain/entities/book_mark_entity.dart';
 import 'package:test_app/features/app/data/models/quran_request_params.dart';
+import 'package:test_app/features/app/domain/entities/hifz_plan_entity.dart';
 import 'package:test_app/features/app/domain/entities/reciters_entity.dart';
 import 'package:test_app/features/app/domain/entities/surah_entity.dart';
 import 'package:test_app/core/errors/failures.dart';
+import 'package:test_app/features/app/domain/entities/surah_prograss_entity.dart';
 import 'package:test_app/features/app/domain/entities/surah_with_tafsir_entity.dart';
 
 abstract class BaseQuranRepo {
@@ -44,4 +46,24 @@ abstract class BaseQuranRepo {
   Future<Either<Failure, SurahDownloadResult>> downloadFailedAyahsAudio(
       {required SurahAudioRequestParams params,
       required List<int> failedAyahs});
+  //   ===hifz plans methodes===
+  Future<Either<Failure, Unit>> addPlan(HifzPlanEntity plan);
+
+  /// تحديث بيانات خطة كاملة (مثلاً إعادة حفظها بعد تعديل كبير)
+  Future<Either<Failure, Unit>> updatePlan(HifzPlanEntity plan);
+
+  /// إضافة أو تحديث سورة داخل خطة معينة
+  Future<Either<Failure, Unit>> upsertSurahProgress({
+    required String planName,
+    required SurahProgressEntity surahProgress,
+  });
+
+  /// حذف مجموعة خطط دفعة واحدة
+  Future<Either<Failure, Unit>> deleteMultiplePlans(List<String> planNames);
+
+  /// جلب كل الخطط
+  Future<Either<Failure, List<HifzPlanEntity>>> getAllPlans();
+
+  /// جلب خطة معينة بالاسم
+  Future<Either<Failure, HifzPlanEntity?>> getPlanByName(String planName);
 }
