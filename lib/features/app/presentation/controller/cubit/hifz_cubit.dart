@@ -48,21 +48,6 @@ class HifzCubit extends Cubit<HifzState> {
     );
   }
 
-  // تحديث خطة
-  Future<void> updatePlan(HifzPlanEntity plan) async {
-    emit(HifzActionLoading());
-
-    final result = await baseQuranRepo.updatePlan(plan);
-
-    result.fold(
-      (failure) => emit(HifzError(failure.message)),
-      (_) async {
-        await loadPlans();
-        emit(HifzActionSuccess("تم تعديل الخطة بنجاح"));
-      },
-    );
-  }
-
   // إضافة/تحديث سورة داخل خطة
   Future<void> upsertSurahProgress(
       String planName, SurahProgressEntity surah) async {
