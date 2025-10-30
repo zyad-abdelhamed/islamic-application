@@ -49,9 +49,6 @@ abstract class BaseQuranRepo {
   //   ===hifz plans methodes===
   Future<Either<Failure, Unit>> addPlan(HifzPlanEntity plan);
 
-  /// تحديث بيانات خطة كاملة (مثلاً إعادة حفظها بعد تعديل كبير)
-  Future<Either<Failure, Unit>> updatePlan(HifzPlanEntity plan);
-
   /// إضافة أو تحديث سورة داخل خطة معينة
   Future<Either<Failure, Unit>> upsertSurahProgress({
     required String planName,

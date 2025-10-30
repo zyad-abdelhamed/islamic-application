@@ -8,7 +8,7 @@ class SurahProgressAdapter extends TypeAdapter<SurahProgressEntity> {
   @override
   SurahProgressEntity read(BinaryReader reader) {
     final surahName = reader.readString();
-    final memorizedAyahs = (reader.read() as List).cast<int>();
+    final memorizedAyahs = (reader.read() as Set).cast<int>();
 
     return SurahProgressEntity(
       surahName: surahName,

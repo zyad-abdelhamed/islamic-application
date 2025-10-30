@@ -40,7 +40,6 @@ class TafsirPageSurahsListView extends StatelessWidget {
           requestStateEnum: state.state,
           widgetIncaseSuccess: ListView.builder(
             itemCount: filtered.length,
-            physics: const BouncingScrollPhysics(),
             itemBuilder: (BuildContext context, int index) {
               final SurahEntity surah = filtered[index];
 

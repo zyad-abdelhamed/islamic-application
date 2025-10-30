@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lottie/lottie.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/widgets/app_sneak_bar.dart';
@@ -168,18 +167,11 @@ class _DeleteSurahAudioButtonState extends State<_DeleteSurahAudioButton>
     return ScaleTransition(
       scale: _scale,
       child: IconButton(
-        icon: _isDeleting
-            ? SizedBox(
-                width: 28,
-                height: 28,
-                child:
-                    Lottie.asset('assets/animations/Delete.json', repeat: true),
-              )
-            : const Icon(
-                Icons.delete_forever,
-                color: AppColors.errorColor,
-                size: 28,
-              ),
+        icon: Icon(
+          Icons.delete_forever,
+          color: _isDeleting ? Colors.grey : AppColors.errorColor,
+          size: 28,
+        ),
         onPressed: _isDeleting ? null : _handleDelete,
       ),
     );

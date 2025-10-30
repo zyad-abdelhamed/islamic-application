@@ -7,9 +7,12 @@ import 'package:test_app/features/app/presentation/controller/controllers/prayer
 
 class GetPrayerTimesOfMonthButton extends StatelessWidget {
   const GetPrayerTimesOfMonthButton(
-      {super.key, required this.prayerTimesPageController});
+      {super.key,
+      required this.prayerTimesPageController,
+      this.sendIconSize = 40});
 
   final PrayerTimesPageController prayerTimesPageController;
+  final double sendIconSize;
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +20,7 @@ class GetPrayerTimesOfMonthButton extends StatelessWidget {
       spacing: 15.0,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        //send button
         GestureDetector(
           onTap: () => prayerTimesPageController.sendButtonOnTap(context),
           child: Container(
@@ -30,12 +34,15 @@ class GetPrayerTimesOfMonthButton extends StatelessWidget {
                 Image.asset(
                   "assets/images/send.png",
                   fit: BoxFit.contain,
+                  width: sendIconSize,
+                  height: sendIconSize,
                   color: Theme.of(context).primaryColor,
                 ),
               ],
             ),
           ),
         ),
+        //choose date
         Expanded(
           child: Container(
               padding: const EdgeInsets.all(10.0),

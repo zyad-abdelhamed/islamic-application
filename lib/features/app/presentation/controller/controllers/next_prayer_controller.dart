@@ -26,13 +26,7 @@ class NextPrayerController {
     required Timings timings,
     required BuildContext context,
   }) async {
-    final nextPrayerTime = _getNextPrayer(
-      fajr: timings.fajr,
-      dhuhr: timings.dhuhr,
-      asr: timings.asr,
-      maghrib: timings.maghrib,
-      isha: timings.isha,
-    );
+    final nextPrayerTime = _getNextPrayer(timings);
 
     nextPrayerNotifier.value = nextPrayerTime;
 
@@ -46,13 +40,7 @@ class NextPrayerController {
   void _initializeTimeListener(BuildContext context) {
     context.read<TimerCubit>().onTimerFinished = () {
       final Timings timings = sl<GetPrayersTimesController>().timings;
-      final NextPrayer nextPrayerTime = _getNextPrayer(
-        fajr: timings.fajr,
-        dhuhr: timings.dhuhr,
-        asr: timings.asr,
-        maghrib: timings.maghrib,
-        isha: timings.isha,
-      );
+      final NextPrayer nextPrayerTime = _getNextPrayer(timings);
 
       nextPrayerNotifier.value = nextPrayerTime;
       context.read<TimerCubit>().startTimerUntil("${nextPrayerTime.time}:00");
@@ -98,22 +86,17 @@ class NextPrayerController {
   }
 
   /// تحديد الصلاة القادمة
-  NextPrayer _getNextPrayer({
-    required String fajr,
-    required String dhuhr,
-    required String asr,
-    required String maghrib,
-    required String isha,
-  }) {
+  NextPrayer _getNextPrayer(Timings timings) {
     DateTime now = DateTime.now();
     DateFormat format = DateFormat("HH:mm");
 
     Map<String, DateTime> prayers = {
-      "فجر": format.parse(fajr),
-      "ظهر": format.parse(dhuhr),
-      "عصر": format.parse(asr),
-      "مغرب": format.parse(maghrib),
-      "عشاء": format.parse(isha),
+      "فجر": format.parse(timings.fajr),
+      "شروق": format.parse(timings.sunrise),
+      "ظهر": format.parse(timings.dhuhr),
+      "عصر": format.parse(timings.asr),
+      "مغرب": format.parse(timings.maghrib),
+      "عشاء": format.parse(timings.isha),
     };
 
     prayers.forEach((key, value) {

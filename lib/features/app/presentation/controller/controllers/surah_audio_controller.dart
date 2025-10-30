@@ -161,12 +161,13 @@ class SurahAudioController {
     ));
   }
 
-  Future<void> prepareSurahAudio() async {
+  Future<void> prepareSurahAudio({required bool isChange}) async {
     if (_isPrepared || isPreparingNotifier.value || _isDisposed) return;
 
     isPreparingNotifier.value = true;
 
-    final reciter = tafsirPageController.currentReciterNotifier.value;
+    final ReciterEntity? reciter =
+        tafsirPageController.currentReciterNotifier.value;
     if (reciter == null) {
       isPreparingNotifier.value = false;
       return;
@@ -248,6 +249,8 @@ class SurahAudioController {
     _currentTotalDuration = totalDuration;
     _ensureSubscriptions();
 
+    if (isChange) return;
+
     isAudioPlayingNotifier.value = true;
     _isPrepared = true;
     isPreparingNotifier.value = false;
@@ -260,158 +263,43 @@ class SurahAudioController {
     final wasPlaying = isAudioPlayingNotifier.value;
 
     Duration currentPosInItem = Duration.zero;
-    try {
-      currentPosInItem = await audioPlayer.positionStream.first;
-    } catch (_) {}
+    currentPosInItem = await audioPlayer.positionStream.first;
 
     final oldIndex = (audioPlayer.currentIndex ?? 0);
     final beforeOld = _sumBefore(_currentAyahDurations, oldIndex);
     final overallMs = beforeOld + currentPosInItem;
 
-    try {
-      await audioPlayer.pause();
-    } catch (_) {}
+    await audioPlayer.pause();
 
     tafsirPageController.currentReciterNotifier.value = newReciter;
-    final cacheKey = newReciter.name;
-
-    if (_reciterCache.containsKey(cacheKey)) {
-      final cached = _reciterCache[cacheKey]!;
-      _currentAyahDurations = cached.ayahDurations;
-      _currentTotalDuration = cached.totalDuration;
-      await audioPlayer.setAudioSources(cached.sources);
-
-      _ensureSubscriptions();
-
-      int targetIndex = 0;
-      Duration offsetInside = Duration.zero;
-      Duration cumulative = Duration.zero;
-      for (int i = 0; i < _currentAyahDurations.length; i++) {
-        cumulative += _currentAyahDurations[i];
-        if (overallMs < cumulative) {
-          targetIndex = i;
-          final prev = cumulative - _currentAyahDurations[i];
-          offsetInside = Duration(
-            milliseconds: (overallMs - prev)
-                .inMilliseconds
-                .clamp(0, _currentAyahDurations[i].inMilliseconds),
-          );
-          break;
-        }
-      }
-      if (overallMs >= _currentTotalDuration) {
-        targetIndex = _currentAyahDurations.length - 1;
-        offsetInside = _currentAyahDurations.last;
-      }
-
-      try {
-        await audioPlayer.seekToIndex(offsetInside, targetIndex);
-      } catch (_) {
-        try {
-          await audioPlayer.seek(Duration.zero);
-        } catch (_) {}
-      }
-
-      if (wasPlaying) {
-        await audioPlayer.play();
-      }
-
-      return;
-    }
 
     _isPrepared = false;
     isPreparingNotifier.value = true;
 
-    final folderName =
-        "${newReciter.name}_${tafsirPageController.surahEntity.name}";
-    final totalAyahs = tafsirPageController.surahEntity.numberOfAyat;
-    if (totalAyahs <= 0) {
-      isPreparingNotifier.value = false;
-      return;
-    }
-
-    final resolvedFiles = await Future.wait(List.generate(
-      totalAyahs,
-      (i) => fileStorage.getFile(
-        folderName: folderName,
-        fileName: '${i + 1}',
-        extension: 'mp3',
-      ),
-    ));
-
-    final ayahDurations = await Future.wait(resolvedFiles.map((file) async {
-      final tempPlayer = AudioPlayer();
-      await tempPlayer.setFilePath(file.path);
-      final duration = tempPlayer.duration ?? Duration.zero;
-      await tempPlayer.dispose();
-      return duration;
-    }));
-
-    final sources = resolvedFiles.asMap().entries.map((entry) {
-      final index = entry.key;
-      final file = entry.value;
-
-      return AudioSource.uri(
-        Uri.file(file.path),
-        tag: index == 0
-            ? MediaItem(
-                title: tafsirPageController.surahEntity.name,
-                id: resolvedFiles.first.uri.toString(),
-                artist: newReciter.name,
-                artUri: Uri.parse(newReciter.image),
-              )
-            : null,
-      );
-    }).toList();
-
-    await audioPlayer.setAudioSources(sources);
-
-    final totalDuration =
-        ayahDurations.fold(Duration.zero, (prev, d) => prev + d);
-
-    final prepared = PreparedReciterData(
-      sources: sources,
-      ayahDurations: ayahDurations,
-      totalDuration: totalDuration,
-      folderName: folderName,
-      firstUri: resolvedFiles.first.uri.toString(),
-    );
-    _reciterCache[cacheKey] = prepared;
-
-    _currentAyahDurations = ayahDurations;
-    _currentTotalDuration = totalDuration;
-    _ensureSubscriptions();
+    await prepareSurahAudio(isChange: true);
 
     int targetIndex = 0;
     Duration offsetInside = Duration.zero;
-    {
-      Duration cumulative = Duration.zero;
-      for (int i = 0; i < _currentAyahDurations.length; i++) {
-        cumulative += _currentAyahDurations[i];
-        if (overallMs < cumulative) {
-          targetIndex = i;
-          final prev = cumulative - _currentAyahDurations[i];
-          offsetInside = Duration(
-            milliseconds: (overallMs - prev)
-                .inMilliseconds
-                .clamp(0, _currentAyahDurations[i].inMilliseconds),
-          );
-          break;
-        }
+    Duration cumulative = Duration.zero;
+    for (int i = 0; i < _currentAyahDurations.length; i++) {
+      cumulative += _currentAyahDurations[i];
+      if (overallMs < cumulative) {
+        targetIndex = i;
+        final prev = cumulative - _currentAyahDurations[i];
+        offsetInside = Duration(
+          milliseconds: (overallMs - prev)
+              .inMilliseconds
+              .clamp(0, _currentAyahDurations[i].inMilliseconds),
+        );
+        break;
       }
-      if (overallMs >= _currentTotalDuration) {
-        targetIndex = _currentAyahDurations.length - 1;
-        offsetInside = _currentAyahDurations.last;
-      }
+    }
+    if (overallMs >= _currentTotalDuration) {
+      targetIndex = _currentAyahDurations.length - 1;
+      offsetInside = _currentAyahDurations.last;
     }
 
-    try {
-      await audioPlayer.seekToIndex(offsetInside, targetIndex);
-    } catch (_) {
-      try {
-        await audioPlayer.seek(Duration.zero);
-      } catch (_) {}
-    }
+    await audioPlayer.seekToIndex(offsetInside, targetIndex);
 
     _isPrepared = true;
     isPreparingNotifier.value = false;
@@ -425,7 +313,7 @@ class SurahAudioController {
     if (_isDisposed) return;
 
     if (!_isPrepared) {
-      await prepareSurahAudio();
+      await prepareSurahAudio(isChange: false);
       return;
     }
 

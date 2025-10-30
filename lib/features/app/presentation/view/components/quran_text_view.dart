@@ -20,7 +20,7 @@ class QuranTextView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: ListenableBuilder(
         listenable: Listenable.merge([fontSizeNotifier, selectedAyah]),
         builder: (context, _) {
@@ -46,7 +46,7 @@ class QuranTextView extends StatelessWidget {
 
     TextStyle baseStyle = TextStyle(
       fontSize: fontSizeNotifier.value,
-      height: 1.9,
+      height: 3.0,
       fontFamily: 'Amiri',
       color: dataColor,
     );
