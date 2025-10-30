@@ -627,16 +627,6 @@ class QuranRepo implements BaseQuranRepo {
   }
 
   @override
-  Future<Either<Failure, Unit>> updatePlan(HifzPlanEntity plan) async {
-    try {
-      await quranLocalDataSource.updatePlan(plan);
-      return right(unit);
-    } catch (e) {
-      return left(Failure(e.toString()));
-    }
-  }
-
-  @override
   Future<Either<Failure, Unit>> upsertSurahProgress(
       {required String planName,
       required SurahProgressEntity surahProgress}) async {

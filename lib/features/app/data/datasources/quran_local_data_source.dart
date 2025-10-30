@@ -48,8 +48,6 @@ abstract class QuranLocalDataSource {
   // ------------------ hifz plans  ------------------
   Future<void> addPlan(HifzPlanEntity plan);
 
-  Future<void> updatePlan(HifzPlanEntity plan);
-
   Future<void> upsertSurahProgress({
     required String planName,
     required SurahProgressEntity surahProgress,
@@ -217,14 +215,6 @@ class QuranLocalDataSourceImpl implements QuranLocalDataSource {
   }
 
   @override
-  Future<void> updatePlan(HifzPlanEntity plan) async {
-    if (!hifzPlansBox.containsKey(plan.planName)) {
-      throw Exception('Plan not found: ${plan.planName}');
-    }
-    await hifzPlansBox.put(plan.planName, plan);
-  }
-
-  @override
   Future<void> upsertSurahProgress({
     required String planName,
     required SurahProgressEntity surahProgress,
@@ -238,16 +228,9 @@ class QuranLocalDataSourceImpl implements QuranLocalDataSource {
     );
 
     if (index != -1) {
-      //  دمج الآيات القديمة مع الجديدة بدون تكرار
-      final oldSurah = updatedSurahs[index];
-      final mergedAyahs = {
-        ...oldSurah.memorizedAyahs,
-        ...surahProgress.memorizedAyahs
-      }.toList()
-        ..sort(); // بنرتبهم تصاعديًا
       updatedSurahs[index] = SurahProgressEntity(
         surahName: surahProgress.surahName,
-        memorizedAyahs: mergedAyahs,
+        memorizedAyahs: surahProgress.memorizedAyahs,
       );
     } else {
       updatedSurahs.add(surahProgress);

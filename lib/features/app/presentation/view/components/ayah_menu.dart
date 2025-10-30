@@ -54,6 +54,7 @@ class AyahMenu {
                 color: Colors.transparent,
                 child: Container(
                   width: dialogWidth,
+                  margin: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
                       color: isDark(context) ? Colors.black : Colors.white,
                       borderRadius: BorderRadius.circular(

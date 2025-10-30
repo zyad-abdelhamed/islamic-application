@@ -1,6 +1,6 @@
 class SurahProgressEntity {
   final String surahName; // اسم السورة
-  final List<int> memorizedAyahs; // الآيات اللى سمعها المستخدم منها
+  final Set<int> memorizedAyahs; // الآيات اللى سمعها المستخدم منها
 
   const SurahProgressEntity({
     required this.surahName,

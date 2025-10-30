@@ -53,7 +53,7 @@ class GetSurahWithTafsirCubit extends Cubit<GetSurahWithTafsirState> {
         }
       },
       (data) {
-        _icreaseNumOfCurrentAyahs();
+        _icreaseNumOfCurrentAyahs(data.ayahsList.length);
 
         _firstBatch = data;
         if (!isClosed) {
@@ -80,10 +80,13 @@ class GetSurahWithTafsirCubit extends Cubit<GetSurahWithTafsirState> {
     );
 
     result.fold((failure) {
+      _currentOffset -= _limit;
+
       if (!isClosed) {
         if (state is GetSurahWithTafsirSuccess) {
           // لو في بيانات قديمة، منفضلها ونعلم بس إن في error في اللود مور
-          final current = state as GetSurahWithTafsirSuccess;
+          final GetSurahWithTafsirSuccess current =
+              state as GetSurahWithTafsirSuccess;
           emit(current.copyWith(
             isLoadingMore: false,
             loadMoreError: failure.message,
@@ -95,7 +98,7 @@ class GetSurahWithTafsirCubit extends Cubit<GetSurahWithTafsirState> {
       }
     }, (newData) {
       if (!isClosed) {
-        _icreaseNumOfCurrentAyahs();
+        _icreaseNumOfCurrentAyahs(newData.ayahsList.length);
         final SurahWithTafsirEntity merged = SurahWithTafsirEntity(
           ayahsList: [
             ..._firstBatch.ayahsList,
@@ -197,8 +200,8 @@ class GetSurahWithTafsirCubit extends Cubit<GetSurahWithTafsirState> {
         .trim();
   }
 
-  void _icreaseNumOfCurrentAyahs() {
-    numOfCurrentAyahs += _limit;
+  void _icreaseNumOfCurrentAyahs(int value) {
+    numOfCurrentAyahs += value;
   }
 
   bool get hasMore {
