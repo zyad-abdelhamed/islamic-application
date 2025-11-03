@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
 import 'package:test_app/core/helper_function/get_from_json.dart';
 import 'package:test_app/features/app/data/models/reciters_model.dart';
@@ -220,27 +221,35 @@ class QuranLocalDataSourceImpl implements QuranLocalDataSource {
     required SurahProgressEntity surahProgress,
   }) async {
     final plan = hifzPlansBox.get(planName);
-    if (plan == null) throw Exception('Plan not found: $planName');
+    if (plan == null) throw Exception(AppStrings.translate("unExpectedError"));
 
-    final updatedSurahs = List<SurahProgressEntity>.from(plan.surahsProgress);
-    final index = updatedSurahs.indexWhere(
-      (surah) => surah.surahName == surahProgress.surahName,
+    // استرجاع التقدم القديم للسورة إن وجد
+    final oldSurah = plan.surahsProgress[surahProgress.surahName];
+
+    // دمج الآيات القديمة مع الجديدة بدون تكرار
+    final mergedAyahs = {
+      ...?oldSurah?.memorizedAyahs,
+      ...surahProgress.memorizedAyahs,
+    }.toList()
+      ..sort();
+
+    // إنشاء نسخة محدثة من السورة
+    final updatedSurah = SurahProgressEntity(
+      surahName: surahProgress.surahName,
+      memorizedAyahs: mergedAyahs,
     );
 
-    if (index != -1) {
-      updatedSurahs[index] = SurahProgressEntity(
-        surahName: surahProgress.surahName,
-        memorizedAyahs: surahProgress.memorizedAyahs,
-      );
-    } else {
-      updatedSurahs.add(surahProgress);
-    }
+    // تحديث الخريطة
+    final updatedSurahsProgress =
+        Map<String, SurahProgressEntity>.from(plan.surahsProgress)
+          ..[surahProgress.surahName] = updatedSurah;
 
+    // إنشاء نسخة محدثة من الخطة
     final updatedPlan = HifzPlanEntity(
       planName: plan.planName,
       createdAt: plan.createdAt,
       lastProgress: surahProgress.surahName,
-      surahsProgress: updatedSurahs,
+      surahsProgress: updatedSurahsProgress,
     );
 
     await hifzPlansBox.put(planName, updatedPlan);

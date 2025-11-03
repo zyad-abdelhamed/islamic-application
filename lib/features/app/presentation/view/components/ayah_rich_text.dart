@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/features/app/domain/entities/ayah_entity.dart';
 
 class AyahRichText extends StatelessWidget {
   final bool hideText;
   final int? selectedAyah;
   final Map<int, int> progress;
-  final List<Map<String, dynamic>> ayat;
+  final List<AyahEntity> ayat;
 
   const AyahRichText({
     super.key,
@@ -25,8 +26,8 @@ class AyahRichText extends StatelessWidget {
 
     final spans = <InlineSpan>[];
     for (var ayah in ayat) {
-      final num = ayah['num'] as int;
-      final text = ayah['text'] as String;
+      final num = ayah.number;
+      final text = ayah.text;
       final isSelected = selectedAyah == num;
       final words = text.split(" ");
       final currentProgress = progress[num] ?? 0;

@@ -118,32 +118,46 @@ class MemorizedAyatDashedLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      final double totalWidth = constraints.maxWidth;
-      final double dashSpace = 2.0;
-      final double dashWidth =
-          (totalWidth - (dashSpace * (totalAyat - 1))) / totalAyat;
-
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: List.generate(totalAyat, (index) {
+    return SizedBox(
+      height: 48,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: totalAyat,
+        padding: const EdgeInsets.only(right: 8),
+        itemBuilder: (context, index) {
           final int ayahNumber = index + 1;
           final bool isMemorized = memorizedAyat.contains(ayahNumber);
 
           return Container(
-            width: dashWidth,
-            height: 4,
-            margin:
-                EdgeInsets.only(right: index == totalAyat - 1 ? 0 : dashSpace),
-            decoration: BoxDecoration(
-              color: isMemorized
-                  ? AppColors.successColor
-                  : AppColors.successColor.withAlpha(25),
-              borderRadius: BorderRadius.circular(2),
+            width: 36,
+            margin: const EdgeInsets.only(left: 6),
+            child: Column(
+              children: [
+                Container(
+                  height: 6,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: isMemorized
+                        ? AppColors.successColor
+                        : AppColors.successColor.withAlpha(25),
+                    borderRadius: BorderRadius.circular(3),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  "$ayahNumber",
+                  style: TextStyle(
+                    fontSize: 10,
+                    color:
+                        isMemorized ? AppColors.successColor : AppColors.grey2,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
             ),
           );
-        }),
-      );
-    });
+        },
+      ),
+    );
   }
 }

@@ -4,6 +4,7 @@ import 'package:test_app/core/widgets/app_divider.dart';
 
 class QuranMemorizationPlanTile extends StatelessWidget {
   final String title;
+  final String? subtitle;
   final Widget? leading, trailing;
   final double progress;
   final void Function()? onTap;
@@ -11,6 +12,7 @@ class QuranMemorizationPlanTile extends StatelessWidget {
   const QuranMemorizationPlanTile({
     super.key,
     required this.title,
+    this.subtitle,
     this.leading,
     this.trailing,
     required this.progress,
@@ -36,6 +38,7 @@ class QuranMemorizationPlanTile extends StatelessWidget {
               child: ListTile(
                 contentPadding: EdgeInsets.zero,
                 title: Text(title),
+                subtitle: subtitle != null ? Text(subtitle!) : null,
                 trailing: trailing,
                 onTap: onTap,
               ),

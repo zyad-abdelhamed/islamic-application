@@ -4,6 +4,18 @@ abstract class SpeechState {}
 
 class SpeechInitial extends SpeechState {}
 
+class GetAyahsLoading extends SpeechState {}
+
+class GetAyahsSuccess extends SpeechState {
+  final List<AyahEntity> ayahs;
+  GetAyahsSuccess(this.ayahs);
+}
+
+class GetAyahsFailure extends SpeechState {
+  final String failure;
+  GetAyahsFailure(this.failure);
+}
+
 class SpeechUpdated extends SpeechState {
   final String spokenText;
   final double soundLevel;

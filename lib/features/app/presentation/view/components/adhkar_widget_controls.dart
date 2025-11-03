@@ -25,10 +25,6 @@ class AdhkarWidgetControls extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        _DecreaseButton(
-          decreaseCount: decreaseCount,
-          countNotifier: countNotifier,
-        ),
         Container(
           width: double.infinity,
           decoration: BoxDecoration(
@@ -56,6 +52,10 @@ class AdhkarWidgetControls extends StatelessWidget {
             ],
           ),
         ),
+        _DecreaseButton(
+          decreaseCount: decreaseCount,
+          countNotifier: countNotifier,
+        ),
       ],
     );
   }
@@ -69,7 +69,7 @@ class _DecreaseButton extends StatelessWidget {
 
   final void Function() decreaseCount;
   final ValueNotifier<NumberAnimationModel> countNotifier;
-  final double size = 80.0;
+  final double size = 60.0;
 
   @override
   Widget build(BuildContext context) {

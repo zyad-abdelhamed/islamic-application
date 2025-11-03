@@ -6,8 +6,6 @@ class HifzInitial extends HifzState {}
 
 class HifzLoading extends HifzState {}
 
-class HifzActionLoading extends HifzState {}
-
 class HifzLoaded extends HifzState {
   final List<HifzPlanEntity> plans;
   HifzLoaded(this.plans);

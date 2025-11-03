@@ -3,12 +3,12 @@ import 'package:test_app/features/app/domain/entities/surah_prograss_entity.dart
 
 class SurahProgressAdapter extends TypeAdapter<SurahProgressEntity> {
   @override
-  final int typeId = 3;
+  final int typeId = 101;
 
   @override
   SurahProgressEntity read(BinaryReader reader) {
     final surahName = reader.readString();
-    final memorizedAyahs = (reader.read() as Set).cast<int>();
+    final memorizedAyahs = (reader.read() as List).cast<int>();
 
     return SurahProgressEntity(
       surahName: surahName,

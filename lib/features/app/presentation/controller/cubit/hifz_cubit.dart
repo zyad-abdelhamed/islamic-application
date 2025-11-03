@@ -7,8 +7,6 @@ import '../../../domain/entities/surah_prograss_entity.dart';
 class HifzCubit extends Cubit<HifzState> {
   final BaseQuranRepo baseQuranRepo;
 
-  List<HifzPlanEntity> plans = [];
-
   HifzCubit(this.baseQuranRepo) : super(HifzInitial());
 
   // تحميل كل الخطط
@@ -19,7 +17,6 @@ class HifzCubit extends Cubit<HifzState> {
     result.fold(
       (failure) => emit(HifzError(failure.message)),
       (data) {
-        plans = data;
         emit(HifzLoaded(data));
       },
     );
@@ -27,13 +24,11 @@ class HifzCubit extends Cubit<HifzState> {
 
   // إضافة خطة جديدة
   Future<void> addPlan(String planName) async {
-    emit(HifzActionLoading());
-
-    final newPlan = HifzPlanEntity(
+    final HifzPlanEntity newPlan = HifzPlanEntity(
       planName: planName,
       createdAt: DateTime.now(),
       lastProgress: "",
-      surahsProgress: const [],
+      surahsProgress: const {},
     );
 
     final result = await baseQuranRepo.addPlan(newPlan);
@@ -41,9 +36,7 @@ class HifzCubit extends Cubit<HifzState> {
     result.fold(
       (failure) => emit(HifzError(failure.message)),
       (_) {
-        plans.add(newPlan);
         emit(HifzActionSuccess("تمت اضافة الخطة بنجاح"));
-        emit(HifzLoaded(plans));
       },
     );
   }
@@ -51,8 +44,6 @@ class HifzCubit extends Cubit<HifzState> {
   // إضافة/تحديث سورة داخل خطة
   Future<void> upsertSurahProgress(
       String planName, SurahProgressEntity surah) async {
-    emit(HifzActionLoading());
-
     final result = await baseQuranRepo.upsertSurahProgress(
       planName: planName,
       surahProgress: surah,
@@ -69,26 +60,13 @@ class HifzCubit extends Cubit<HifzState> {
 
   // حذف خطط متعددة
   Future<void> deletePlans(List<String> planNames) async {
-    emit(HifzActionLoading());
-
     final result = await baseQuranRepo.deleteMultiplePlans(planNames);
 
     result.fold(
       (failure) => emit(HifzError(failure.message)),
       (_) async {
-        plans.removeWhere((plan) => planNames.contains(plan.planName));
         emit(HifzActionSuccess("تم حذف الخطط بنجاح"));
-        emit(HifzLoaded(plans));
       },
     );
-  }
-
-  // الحصول على خطة واحدة
-  HifzPlanEntity? getPlan(String name) {
-    try {
-      return plans.firstWhere((e) => e.planName == name);
-    } catch (_) {
-      return null;
-    }
   }
 }

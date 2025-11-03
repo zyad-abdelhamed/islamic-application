@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/features/app/domain/entities/ayah_entity.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/speech_cubit.dart';
 
 class SpeechHandler {
   static void handleSpeechUpdate({
     required SpeechUpdated state,
     required SpeechCubit cubit,
-    required List<Map<String, dynamic>> ayat,
+    required List<AyahEntity> ayat,
     required ValueNotifier<String> displayedTextNotifier,
     required ValueNotifier<Map<int, int>> ayahProgressNotifier,
     required ValueNotifier<int?> selectedAyahNotifier,
@@ -28,8 +29,7 @@ class SpeechHandler {
     final ayahNum = selectedAyahNotifier.value;
     if (ayahNum == null) return;
 
-    final ayahText =
-        ayat.firstWhere((a) => a['num'] == ayahNum)['text'] as String;
+    final ayahText = ayat.firstWhere((a) => a.number == ayahNum).text;
     final ayahWords = ayahText.split(" ");
     final currentProgress = ayahProgressNotifier.value[ayahNum] ?? 0;
 
@@ -51,9 +51,9 @@ class SpeechHandler {
       });
 
       if (updatedMap[ayahNum]! >= ayahWords.length) {
-        final idx = ayat.indexWhere((a) => a['num'] == ayahNum);
+        final idx = ayat.indexWhere((a) => a.number == ayahNum);
         if (idx < ayat.length - 1) {
-          selectedAyahNotifier.value = ayat[idx + 1]['num'];
+          selectedAyahNotifier.value = ayat[idx + 1].number;
         }
       }
     } else if (similarity > 0.3) {

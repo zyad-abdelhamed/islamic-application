@@ -4,14 +4,14 @@ import 'package:test_app/features/app/domain/entities/surah_prograss_entity.dart
 
 class HifzPlanAdapter extends TypeAdapter<HifzPlanEntity> {
   @override
-  final int typeId = 2;
+  final int typeId = 201;
 
   @override
   HifzPlanEntity read(BinaryReader reader) {
     final planName = reader.readString();
     final createdAt = reader.read() as DateTime;
     final lastProgress = reader.readString();
-    final surahsProgress = reader.readList().cast<SurahProgressEntity>();
+    final surahsProgress = reader.readMap().cast<String, SurahProgressEntity>();
 
     return HifzPlanEntity(
       planName: planName,
@@ -26,6 +26,6 @@ class HifzPlanAdapter extends TypeAdapter<HifzPlanEntity> {
     writer.writeString(obj.planName);
     writer.write(obj.createdAt);
     writer.writeString(obj.lastProgress);
-    writer.writeList(obj.surahsProgress);
+    writer.writeMap(obj.surahsProgress);
   }
 }
