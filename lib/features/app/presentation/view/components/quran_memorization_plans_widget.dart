@@ -157,41 +157,44 @@ class _AddPlanDialogState extends State<AddPlanDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomAlertDialog(
-      title: AppStrings.translate("createNewPlan"),
-      iconWidget: (_) => const Icon(
-        Icons.add,
-        size: 32,
-        color: AppColors.secondryColor,
-      ),
-      alertDialogContent: (_) => Form(
-        key: formKey,
-        child: KeyboardListener(
-          focusNode: focusNode,
-          onKeyEvent: (KeyEvent event) {
-            if (event is KeyDownEvent) {
-              if (event.logicalKey == LogicalKeyboardKey.backspace) {
-                if (!backspacePressedOnce) {
-                  controller.clear();
-                  backspacePressedOnce = true;
+    return BlocProvider(
+      create: (context) => sl<HifzCubit>(),
+      child: CustomAlertDialog(
+        title: AppStrings.translate("createNewPlan"),
+        iconWidget: (_) => const Icon(
+          Icons.add,
+          size: 32,
+          color: AppColors.secondryColor,
+        ),
+        alertDialogContent: (_) => Form(
+          key: formKey,
+          child: KeyboardListener(
+            focusNode: focusNode,
+            onKeyEvent: (KeyEvent event) {
+              if (event is KeyDownEvent) {
+                if (event.logicalKey == LogicalKeyboardKey.backspace) {
+                  if (!backspacePressedOnce) {
+                    controller.clear();
+                    backspacePressedOnce = true;
+                  }
+                }
+
+                if (event.logicalKey == LogicalKeyboardKey.enter ||
+                    event.logicalKey == LogicalKeyboardKey.numpadEnter ||
+                    event.logicalKey == LogicalKeyboardKey.execute) {
+                  _submit();
                 }
               }
-
-              if (event.logicalKey == LogicalKeyboardKey.enter ||
-                  event.logicalKey == LogicalKeyboardKey.numpadEnter ||
-                  event.logicalKey == LogicalKeyboardKey.execute) {
-                _submit();
-              }
-            }
-          },
-          child: TextFormField(
-            controller: controller,
-            autofocus: true,
-            maxLength: 20,
-            textInputAction: TextInputAction.done,
-            onFieldSubmitted: (_) => _submit(),
-            onChanged: (_) => backspacePressedOnce = false,
-            validator: (value) => _validator(value, widget.existingPlans),
+            },
+            child: TextFormField(
+              controller: controller,
+              autofocus: true,
+              maxLength: 20,
+              textInputAction: TextInputAction.done,
+              onFieldSubmitted: (_) => _submit(),
+              onChanged: (_) => backspacePressedOnce = false,
+              validator: (value) => _validator(value, widget.existingPlans),
+            ),
           ),
         ),
       ),

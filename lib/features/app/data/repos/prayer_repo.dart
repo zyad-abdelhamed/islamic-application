@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:geolocator/geolocator.dart';
@@ -32,40 +34,76 @@ class PrayerRepo extends BasePrayerRepo {
   @override
   Future<Either<Failure, Timings>> getPrayerTimes() async {
     try {
+      final Timings? localTimings =
+          await prayersLocalDataSource.getLocalPrayersTimes();
+
+      if (localTimings != null) {
+        final bool isConnected =
+            await internetConnection.checkInternetConnection();
+
+        if (isConnected) {
+          unawaited(_updateLocalData());
+        }
+
+        return Right(localTimings);
+      }
+
       final bool isConnected =
           await internetConnection.checkInternetConnection();
 
-      if (isConnected) {
-        final Either<Failure, LocationEntity> locationResult =
-            await baseLocationRepo.getCurrentLocation();
-
-        return await locationResult.fold<Future<Either<Failure, Timings>>>(
-          (failure) async => left(Failure(failure.message)),
-          (location) async {
-            try {
-              final timings = await prayersRemoteDataSource.getPrayersTimes(
-                latitude: location.latitude,
-                longitude: location.longitude,
-              );
-
-              await prayersLocalDataSource.putPrayersTimes(timings);
-              return Right(timings);
-            } on DioException catch (dioError) {
-              return await _getLocalTimingsWithFallbackOrReturnOriginal(
-                ServerFailure.fromDiorError(dioError),
-              );
-            } catch (e) {
-              return await _getLocalTimingsWithFallbackOrReturnOriginal(
-                  Failure('$e'));
-            }
-          },
-        );
-      } else {
-        return await _getLocalTimingsFallback(); // no internet, return cached only
+      if (!isConnected) {
+        return await _getLocalTimingsFallback();
       }
+
+      final Either<Failure, LocationEntity> locationResult =
+          await baseLocationRepo.getCurrentLocation();
+
+      return await locationResult.fold<Future<Either<Failure, Timings>>>(
+        (failure) async => left(Failure(failure.message)),
+        (location) async {
+          try {
+            final timings = await prayersRemoteDataSource.getPrayersTimes(
+              latitude: location.latitude,
+              longitude: location.longitude,
+            );
+
+            await prayersLocalDataSource.putPrayersTimes(timings);
+
+            return Right(timings);
+          } on DioException catch (dioError) {
+            return await _getLocalTimingsWithFallbackOrReturnOriginal(
+              ServerFailure.fromDiorError(dioError),
+            );
+          } catch (e) {
+            return await _getLocalTimingsWithFallbackOrReturnOriginal(
+              Failure('$e'),
+            );
+          }
+        },
+      );
     } catch (e) {
       return Left(Failure('$e'));
     }
+  }
+
+  // تحديث البيانات في الخلفية لو النت شغال
+  Future<void> _updateLocalData() async {
+    try {
+      final eitherLocation = await baseLocationRepo.getCurrentLocation();
+
+      await eitherLocation.fold(
+        (_) async {},
+        (location) async {
+          try {
+            final remote = await prayersRemoteDataSource.getPrayersTimes(
+              latitude: location.latitude,
+              longitude: location.longitude,
+            );
+            await prayersLocalDataSource.putPrayersTimes(remote);
+          } catch (_) {}
+        },
+      );
+    } catch (_) {}
   }
 
   Future<Either<Failure, Timings>> _getLocalTimingsWithFallbackOrReturnOriginal(
@@ -75,7 +113,7 @@ class PrayerRepo extends BasePrayerRepo {
       if (timings != null) {
         return Right(timings);
       } else {
-        return Left(originalFailure); // نرجع الخطأ الأصلي
+        return Left(originalFailure);
       }
     } catch (e) {
       return Left(Failure('$e'));
