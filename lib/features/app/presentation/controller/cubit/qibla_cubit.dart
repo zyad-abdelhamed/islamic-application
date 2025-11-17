@@ -12,25 +12,23 @@ class QiblaCubit extends Cubit<QiblaState> {
 
   QiblaCubit(this.qiblaRepository) : super(QiblaInitial());
 
-  void startQibla({LocationAccuracy accuracy = LocationAccuracy.high}) {
-    if (!isClosed) {
-      emit(QiblaLoading());
-    }
+  void startQibla({LocationAccuracy accuracy = LocationAccuracy.high}) async {
+    await _subscription?.cancel();
+
+    if (!isClosed) emit(QiblaLoading());
+
     _subscription = qiblaRepository.listenToQibla(accuracy).listen((result) {
       result.fold((failure) {
-        if (!isClosed) {
-          emit(QiblaError(failure.message));
-        }
+        if (!isClosed) emit(QiblaError(failure.message));
       }, (entity) {
-        if (!isClosed) {
-          emit(QiblaLoaded(entity, accuracy));
-        }
+        if (!isClosed) emit(QiblaLoaded(entity, accuracy));
       });
     });
   }
 
   void changeAccuracy(LocationAccuracy currentAccuracy) {
-    startQibla(accuracy: _getNextAccuracy(currentAccuracy));
+    final next = _getNextAccuracy(currentAccuracy);
+    startQibla(accuracy: next);
   }
 
   LocationAccuracy _getNextAccuracy(LocationAccuracy current) {
