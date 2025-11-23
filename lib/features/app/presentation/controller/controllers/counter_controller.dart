@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/core/helper_function/is_land_scape_orintation.dart';
-import 'package:test_app/core/utils/responsive_extention.dart';
-import 'package:test_app/features/app/data/models/number_animation_model.dart';
+import 'package:test_app/core/utils/extentions/media_query_extention.dart';
 import 'package:test_app/features/app/presentation/view/components/counter_widget.dart';
 import 'package:test_app/features/app/presentation/view/components/featured_records_widget.dart';
+import 'package:test_app/features/app/presentation/view/components/rolling_counter.dart';
 import 'package:vibration/vibration.dart';
 
 class CounterController {
   CounterController(ValueNotifier<bool> notifier) {
     scaleNotifier = ValueNotifier(1.0);
     vibrationNotifier = ValueNotifier<bool>(true);
-    counterNotifier = ValueNotifier(NumberAnimationModel(number: 0));
+    counterKey = GlobalKey<RollingCounterState>();
     isfeatuerdRecordsWidgetShowedNotifier = notifier;
   }
 
   late final ValueNotifier<double> scaleNotifier;
   late final ValueNotifier<bool> vibrationNotifier;
-  late final ValueNotifier<NumberAnimationModel> counterNotifier;
+  late final GlobalKey<RollingCounterState> counterKey;
   late final ValueNotifier<bool> isfeatuerdRecordsWidgetShowedNotifier;
 
   void dispose() {
     vibrationNotifier.dispose();
-    counterNotifier.dispose();
   }
 
   double get getMargine => isfeatuerdRecordsWidgetShowedNotifier.value
@@ -34,36 +32,22 @@ class CounterController {
         : (context.width * 1 / 3) * 1 / 2;
   }
 
-  double increaseButtonSize(BuildContext context) =>
-      isLandScapeOrientation(context)
-          ? (context.height) - (100 + 100 + 20 + 15)
-          : !isfeatuerdRecordsWidgetShowedNotifier.value
-              ? ((context.width - 20))
-              : (context.width * 2 / 3) * .70;
+  double increaseButtonSize(BuildContext context) => context.isLandScape
+      ? (context.height) - (100 + 100 + 20 + 15)
+      : !isfeatuerdRecordsWidgetShowedNotifier.value
+          ? ((context.width - 20))
+          : (context.width * 2 / 3) * .70;
 
   void increaseCounter() {
-    counterNotifier.value.slideAnimation(
-      notifier: counterNotifier,
-      slideValue: -.7,
-      newValue: counterNotifier.value.number + 1,
-    );
+    counterKey.currentState?.increase(-1.0);
   }
 
   void resetCounter() {
-    if (counterNotifier.value.number != 0) {
-      counterNotifier.value.slideAnimation(
-        notifier: counterNotifier,
-        slideValue: .7,
-        newValue: 0,
-      );
-    }
-
-    return;
+    counterKey.currentState?.reset(0);
   }
 
-  void onTapDown({required ValueNotifier<double> scaleNotifier}) async {
+  void onTapDown() async {
     if (vibrationNotifier.value) {
-      print('vibration');
       if (await Vibration.hasVibrator()) {
         Vibration.vibrate(duration: 20, amplitude: 130);
       }
@@ -71,7 +55,7 @@ class CounterController {
     scaleNotifier.value = 0.9;
   }
 
-  void onTapUp({required ValueNotifier<double> scaleNotifier}) async {
+  void onTapUp() async {
     if (vibrationNotifier.value) {
       if (await Vibration.hasVibrator()) {
         Vibration.vibrate(duration: 30, amplitude: 200);

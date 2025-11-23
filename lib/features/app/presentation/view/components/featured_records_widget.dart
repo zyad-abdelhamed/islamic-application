@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/theme/app_colors.dart';
-import 'package:test_app/core/utils/responsive_extention.dart';
-import 'package:test_app/features/app/data/models/number_animation_model.dart';
+import 'package:test_app/core/utils/extentions/media_query_extention.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/featured_records_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/featured_records_cubit.dart';
 import 'package:test_app/features/app/presentation/view/pages/elec_rosary_page.dart';
+import 'package:test_app/features/app/presentation/view/components/rolling_counter.dart';
 import 'fetured_records_container.dart';
 
 const double featuerdRecordsWidgetHight = 50 + 150 * 1.5 + 10.0;
 const double showedFeatuerdRecordsWidgetButtonHight = 35;
 
 class FeatuerdRecordsWidget extends StatelessWidget {
-  const FeatuerdRecordsWidget({
+  FeatuerdRecordsWidget({
     super.key,
     required this.controller,
-    required this.counterNotifier,
   });
 
   final FeaturedRecordsController controller;
-  final ValueNotifier<NumberAnimationModel> counterNotifier;
+  final GlobalKey<RollingCounterState> counterKey =
+      GlobalKey<RollingCounterState>();
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +39,9 @@ class FeatuerdRecordsWidget extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
+                  final count = counterKey.currentState?.value ?? 0;
                   FeaturedRecordsCubit.controller(context)
-                      .addFeaturedRecord(counterNotifier.value.number);
+                      .addFeaturedRecord(count);
                 },
                 child: Container(
                   padding: const EdgeInsets.all(20),
@@ -48,13 +49,16 @@ class FeatuerdRecordsWidget extends StatelessWidget {
                     color: AppColors.primaryColorInActiveColor,
                     borderRadius: BorderRadius.circular(23),
                   ),
-                  child: Icon(Icons.save,
-                      color: Theme.of(context).primaryColor, size: 40),
+                  child: Icon(
+                    Icons.save,
+                    color: Theme.of(context).primaryColor,
+                    size: 40,
+                  ),
                 ),
               ),
               FeturedRecordsContainer(
                 controller: controller,
-                counterNotifier: counterNotifier,
+                counterKey: counterKey,
               ),
             ],
           ),

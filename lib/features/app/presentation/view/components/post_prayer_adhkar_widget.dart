@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/core/helper_function/is_land_scape_orintation.dart';
+import 'package:test_app/core/utils/extentions/media_query_extention.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/post_prayer_adhkar_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/common_circle_layout.dart';
 
@@ -36,7 +36,7 @@ class _PostPrayerAdhkarWidgetState extends State<PostPrayerAdhkarWidget> {
 
         // حجم الدائرة
         final double targetSize =
-            availableSize * (isLandScapeOrientation(context) ? 0.45 : 0.55);
+            availableSize * (context.isLandScape ? 0.45 : 0.55);
         final double safeCircleSize = targetSize.clamp(100.0, 200.0);
 
         return Center(

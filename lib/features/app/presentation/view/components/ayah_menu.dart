@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/constants_values.dart';
-import 'package:test_app/core/helper_function/is_dark.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/services/file_storage_service.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:test_app/core/theme/app_colors.dart';
+import 'package:test_app/core/utils/extentions/theme_extention.dart';
 import 'package:test_app/core/widgets/share_button.dart';
 import 'package:test_app/features/app/domain/entities/ayah_entity.dart';
 import 'package:test_app/features/app/domain/entities/reciters_entity.dart';
@@ -32,12 +32,8 @@ class AyahMenu {
         Overlay.of(context).context.findRenderObject() as RenderBox;
 
     final Size screenSize = overlay.size;
-    final double dialogWidth = 320;
-    final double dialogHeight = 80;
+    final double dialogHeight = 24 + 16;
 
-    // حساب الموضع المناسب للعرض داخل الشاشة
-    final double left =
-        globalPosition.dx.clamp(0.0, screenSize.width - dialogWidth);
     final double top =
         globalPosition.dy.clamp(0.0, screenSize.height - dialogHeight);
 
@@ -48,20 +44,18 @@ class AyahMenu {
         return Stack(
           children: [
             Positioned(
-              left: left,
               top: top,
               child: Material(
                 color: Colors.transparent,
                 child: Container(
-                  width: dialogWidth,
                   margin: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
-                      color: isDark(context) ? Colors.black : Colors.white,
+                      color: context.isDarkMode ? Colors.black : Colors.white,
                       borderRadius: BorderRadius.circular(
                           ConstantsValues.fullCircularRadius),
                       boxShadow: [
                         BoxShadow(
-                          color: isDark(context)
+                          color: context.isDarkMode
                               ? Colors.black.withAlpha((0.3 * 255).toInt())
                               : Colors.black.withAlpha((0.15 * 255).toInt()),
                           blurRadius: 12,
@@ -70,12 +64,13 @@ class AyahMenu {
                         ),
                       ]),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    spacing: 8.0,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
                         tooltip: 'تفسير الآية',
                         icon: const Icon(Icons.menu_book_outlined,
-                            color: AppColors.primaryColor),
+                            color: AppColors.teal),
                         onPressed: () {
                           Navigator.pop(context);
                           _showTafsirBottomSheet(context, ayahNum, items, data);
@@ -83,8 +78,7 @@ class AyahMenu {
                       ),
                       IconButton(
                         tooltip: 'تكرار تشغيل الصوت',
-                        icon: const Icon(Icons.repeat,
-                            color: AppColors.primaryColor),
+                        icon: const Icon(Icons.repeat, color: AppColors.teal),
                         onPressed: () {
                           Navigator.pop(context);
                           _playAyahAudio(context,
@@ -93,8 +87,8 @@ class AyahMenu {
                       ),
                       IconButton(
                         tooltip: 'تشغيل الصوت',
-                        icon: const Icon(Icons.play_arrow,
-                            color: AppColors.primaryColor),
+                        icon:
+                            const Icon(Icons.play_arrow, color: AppColors.teal),
                         onPressed: () {
                           Navigator.pop(context);
                           _playAyahAudio(context,
@@ -104,13 +98,12 @@ class AyahMenu {
                       Tooltip(
                         message: 'نسخ الآية',
                         child: CopyButton(
-                            textToCopy: ayahText,
-                            color: AppColors.primaryColor),
+                            textToCopy: ayahText, color: AppColors.teal),
                       ),
                       Tooltip(
                         message: 'مشاركة الآية',
-                        child: ShareButton(
-                            text: ayahText, color: AppColors.primaryColor),
+                        child:
+                            ShareButton(text: ayahText, color: AppColors.teal),
                       ),
                     ],
                   ),

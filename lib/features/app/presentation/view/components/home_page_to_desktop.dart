@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/utils/sized_boxs.dart';
+import 'package:test_app/core/widgets/custom_scaffold.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/next_prayer_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/adhkar_grid_view.dart';
 import 'package:test_app/features/app/presentation/view/components/home_button.dart';
@@ -17,7 +18,7 @@ class HomePageToDesktop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return CustomScaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         bottom: PreferredSize(

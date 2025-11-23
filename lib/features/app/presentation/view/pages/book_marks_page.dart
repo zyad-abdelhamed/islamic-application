@@ -5,6 +5,7 @@ import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_wid
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/widgets/app_sneak_bar.dart';
+import 'package:test_app/core/widgets/custom_scaffold.dart';
 import 'package:test_app/core/widgets/empty_list_text_widget.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/book_marks_controller.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/quran_page_controller.dart';
@@ -48,7 +49,7 @@ class _BookmarksPageState extends State<BookmarksPage> {
           inAsyncCall: controller.loadingNotifier.value,
           progressIndicator: const AppLoadingWidget(),
           opacity: .5,
-          child: Scaffold(
+          child: CustomScaffold(
             appBar: BookMarksPageAppBar(controller: controller),
             body: BlocConsumer<BookmarksCubit, BookmarksState>(
               listener: (ctx, state) {

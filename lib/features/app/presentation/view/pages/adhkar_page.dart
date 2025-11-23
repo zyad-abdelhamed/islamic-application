@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/adaptive_switch.dart';
 import 'package:test_app/core/constants/app_strings.dart';
-import 'package:test_app/core/utils/responsive_extention.dart';
+import 'package:test_app/core/utils/extentions/media_query_extention.dart';
 import 'package:test_app/core/widgets/app_main_container.dart';
+import 'package:test_app/core/widgets/custom_scaffold.dart';
 import 'package:test_app/features/app/domain/entities/adhkar_entity.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/adhkar_page_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/adhkar_widget.dart';
@@ -75,14 +76,14 @@ class _AdhkarPageState extends State<AdhkarPage> {
 
   @override
   void dispose() {
-    _overlayEntry?.remove();
+    //_overlayEntry?.remove();
     adhkarPageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return CustomScaffold(
       appBar: AdhkarPageAppBar(
         appBarTitle: widget.nameOfAdhkar,
         adhkarPageController: adhkarPageController,

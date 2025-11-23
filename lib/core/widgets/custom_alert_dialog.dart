@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:test_app/core/helper_function/is_land_scape_orintation.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
+import 'package:test_app/core/utils/extentions/media_query_extention.dart';
 import 'package:test_app/core/widgets/app_divider.dart';
 
 class CustomAlertDialog extends StatelessWidget {
@@ -21,7 +21,7 @@ class CustomAlertDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       backgroundColor: Theme.of(context).cardColor,
-      insetPadding: isLandScapeOrientation(context)
+      insetPadding: context.isLandScape
           ? const EdgeInsets.all(8.0)
           : const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
       shape: RoundedRectangleBorder(

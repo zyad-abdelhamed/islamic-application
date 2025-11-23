@@ -5,6 +5,7 @@ import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
+import 'package:test_app/core/widgets/custom_scaffold.dart';
 import 'package:test_app/features/app/domain/repositories/base_qipla_repo.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/qibla_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/erorr_widget.dart';
@@ -17,7 +18,7 @@ class QiblaPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => QiblaCubit(sl<BaseQiblaRepository>())..startQibla(),
-      child: Scaffold(
+      child: CustomScaffold(
         appBar: AppBar(
           title: Text(AppStrings.appBarTitles(withTwoLines: false)[6]),
           leading: const GetAdaptiveBackButtonWidget(),

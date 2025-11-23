@@ -8,6 +8,7 @@ import 'package:test_app/core/services/image_picker_service.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/widgets/app_functionalty_button.dart';
 import 'package:test_app/core/widgets/app_sneak_bar.dart';
+import 'package:test_app/core/widgets/custom_scaffold.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/add_daily_adhkar_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/daily_adhkar_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/daily_adhkar_state.dart';
@@ -39,7 +40,7 @@ class _AddDailyAdhkarPageState extends State<AddDailyAdhkarPage> {
   Widget build(BuildContext context) {
     return ValueListenableBuilder<bool>(
         valueListenable: _controller.isLoading,
-        child: Scaffold(
+        child: CustomScaffold(
           appBar: AppBar(
             leading: const GetAdaptiveBackButtonWidget(),
           ),

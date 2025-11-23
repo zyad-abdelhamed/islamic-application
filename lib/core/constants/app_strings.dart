@@ -9,6 +9,7 @@ abstract class AppStrings {
       'القرآن${getNewlineOrWightSpace()}و التفسير',
       'حفظ${getNewlineOrWightSpace()}القرآن',
       'البحث${getNewlineOrWightSpace()}في القرآن',
+      "إذاعة القرآن الكريم",
       'الأذكار${getNewlineOrWightSpace()}اليومية',
       'السبحه${getNewlineOrWightSpace()}الالكترونيه',
       'جدول${getNewlineOrWightSpace()}رمضان',

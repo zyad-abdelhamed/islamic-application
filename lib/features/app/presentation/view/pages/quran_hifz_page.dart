@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
+import 'package:test_app/core/widgets/custom_scaffold.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/hifz_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/quran_memorization_plans_widget.dart';
 
@@ -29,7 +30,7 @@ class _QuranHifzPageState extends State<QuranHifzPage> {
   Widget build(BuildContext context) {
     return BlocProvider<HifzCubit>(
       create: (context) => sl<HifzCubit>()..loadPlans(),
-      child: Scaffold(
+      child: CustomScaffold(
         appBar: AppBar(
             title: Text(AppStrings.appBarTitles(withTwoLines: false)[2]),
             leading: const GetAdaptiveBackButtonWidget(

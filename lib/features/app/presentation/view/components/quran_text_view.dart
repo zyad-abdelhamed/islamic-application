@@ -46,7 +46,7 @@ class QuranTextView extends StatelessWidget {
 
     TextStyle baseStyle = TextStyle(
       fontSize: fontSizeNotifier.value,
-      height: 3.0,
+      height: 2.3,
       fontFamily: 'Amiri',
       color: dataColor,
     );

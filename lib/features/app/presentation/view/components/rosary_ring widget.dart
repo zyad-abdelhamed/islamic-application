@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_durations.dart';
-import 'package:test_app/core/helper_function/is_land_scape_orintation.dart';
+import 'package:test_app/core/utils/extentions/media_query_extention.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/rosary_ring_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/common_circle_layout.dart';
 
@@ -29,7 +29,7 @@ class _DrawRosaryRingWidgetState extends State<DrawRosaryRingWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isLandscape = isLandScapeOrientation(context);
+    final bool isLandscape = context.isLandScape;
 
     return LayoutBuilder(
       builder: (context, constraints) {

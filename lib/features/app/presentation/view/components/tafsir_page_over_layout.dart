@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
+import 'package:test_app/core/utils/extentions/media_query_extention.dart';
+import 'package:test_app/core/utils/extentions/theme_extention.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/tafsir_page_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/surah_info_tool_tip.dart';
 import 'package:test_app/features/app/presentation/view/components/tafsir_bottom_controllers.dart';
@@ -18,16 +20,16 @@ class TafsirPageOverLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isDark = Theme.of(context).brightness == Brightness.dark;
-    final Color backgroundColor = isDark ? Colors.black : Colors.white;
-    final Color textColor = isDark ? Colors.white : Colors.black;
+    final Color backgroundColor =
+        context.isDarkMode ? Colors.black : Colors.white;
+    final Color textColor = context.isDarkMode ? Colors.white : Colors.black;
 
     return Stack(
       children: [
         // AppBar
         AnimatedPositioned(
           duration: const Duration(milliseconds: 300),
-          top: _controller.isShowed.value ? 0 : -80,
+          top: _controller.isShowed.value ? 0 : -(80 + context.statusBarHeight),
           left: 0,
           right: 0,
           child: AppBar(

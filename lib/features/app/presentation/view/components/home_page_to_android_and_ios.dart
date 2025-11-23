@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/core/utils/responsive_extention.dart';
+import 'package:test_app/core/utils/extentions/media_query_extention.dart';
+import 'package:test_app/core/widgets/custom_scaffold.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/next_prayer_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/daily_adhkar_list_view.dart';
 import 'package:test_app/features/app/presentation/view/components/home_buttons_list_view.dart';
@@ -19,11 +20,8 @@ class HomePageToAndroidAndIos extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isPortraitOrientation =
-        MediaQuery.of(context).orientation == Orientation.portrait;
-
-    return Scaffold(
-      key: scaffoldKey,
+    return CustomScaffold(
+      scaffoldKey: scaffoldKey,
       drawer: Drawer(child: HomeDrawerWidget()),
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
@@ -58,7 +56,7 @@ class HomePageToAndroidAndIos extends StatelessWidget {
           /// ========== Prayer Times ==========
           SliverToBoxAdapter(
             child: SizedBox(
-              width: isPortraitOrientation
+              width: context.isLandScape
                   ? double.infinity
                   : (context.width * 3 / 4) - 20,
               child:

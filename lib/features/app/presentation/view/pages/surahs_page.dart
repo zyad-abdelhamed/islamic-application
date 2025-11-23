@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/theme/app_colors.dart';
+import 'package:test_app/core/widgets/custom_scaffold.dart';
 import 'package:test_app/features/app/presentation/view/components/surahs_search_text_filed.dart';
 import 'package:test_app/features/app/presentation/view/components/tafsir_page_surahs_list_view.dart';
 
@@ -17,7 +18,7 @@ class _SurahListPageState extends State<SurahListPage> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
-      child: Scaffold(
+      child: CustomScaffold(
         appBar: AppBar(
           leading: const GetAdaptiveBackButtonWidget(),
           title: Text(AppStrings.appBarTitles(withTwoLines: false)[1]),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/core/helper_function/is_dark.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
+import 'package:test_app/core/utils/extentions/theme_extention.dart';
 import 'package:test_app/features/app/domain/entities/reciters_entity.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/tafsir_page_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/is_playing_animation.dart';
@@ -28,7 +28,7 @@ class CurrentReciter extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: isDark(context)
+              color: context.isDarkMode
                   ? Colors.black.withOpacity(0.3)
                   : Colors.grey.shade300,
               blurRadius: 20,

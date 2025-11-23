@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
-import 'package:test_app/features/app/data/models/number_animation_model.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/featured_records_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/delete_all_featured_records_button.dart';
 import 'package:test_app/features/app/presentation/view/components/featured_recordes_bloc_listener.dart';
+import 'package:test_app/features/app/presentation/view/components/rolling_counter.dart';
 
 class FeturedRecordsContainer extends StatelessWidget {
   const FeturedRecordsContainer({
     super.key,
     required this.controller,
-    required this.counterNotifier,
+    required this.counterKey,
   });
 
   final FeaturedRecordsController controller;
-  final ValueNotifier<NumberAnimationModel> counterNotifier;
+  final GlobalKey<RollingCounterState> counterKey;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class FeturedRecordsContainer extends StatelessWidget {
           Expanded(
             child: FeaturedRecordesBlocListener(
               controller: controller,
-              counterNotifier: counterNotifier,
+              counterKey: counterKey,
             ),
           ),
         ],

@@ -39,6 +39,13 @@ class AyahAudioCardController {
 
   Future<void> _init() async {
     await _audioPlayer.setAudioSource(audioSource);
+
+    _prepareSubscribtions();
+
+    await _audioPlayer.play();
+  }
+
+  void _prepareSubscribtions() {
     _positionSub = _audioPlayer.positionStream.listen((pos) {
       position.value = pos;
     });
@@ -60,8 +67,6 @@ class AyahAudioCardController {
         isAudioPlayingNotifier.value = false;
       }
     });
-
-    await _audioPlayer.play();
   }
 
   void pause() async {
