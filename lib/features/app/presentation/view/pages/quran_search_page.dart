@@ -4,6 +4,7 @@ import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/widgets/app_sneak_bar.dart';
+import 'package:test_app/core/widgets/custom_scaffold.dart';
 import 'package:test_app/features/app/domain/entities/ayah_search_result_entity.dart';
 import 'package:test_app/features/app/domain/entities/tafsir_ayah_entity.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/quran_search_cubit.dart';
@@ -34,7 +35,7 @@ class _QuranSearchPageState extends State<QuranSearchPage> {
   Widget build(BuildContext context) {
     final QuranSearchCubit cubit = context.read<QuranSearchCubit>();
 
-    return Scaffold(
+    return CustomScaffold(
       appBar: AppBar(
         title: Text(AppStrings.appBarTitles(withTwoLines: false)[2]),
         leading: const GetAdaptiveBackButtonWidget(),

@@ -14,6 +14,7 @@ import 'package:test_app/features/app/presentation/view/pages/other_page.dart';
 import 'package:test_app/features/app/presentation/view/pages/qibla_page.dart';
 import 'package:test_app/features/app/presentation/view/pages/quran_hifz_page.dart';
 import 'package:test_app/features/app/presentation/view/pages/quran_search_page.dart';
+import 'package:test_app/features/app/presentation/view/pages/radio_stream_station.dart';
 import 'package:test_app/features/app/presentation/view/pages/rtabel_page.dart';
 import 'package:test_app/features/app/presentation/view/pages/surahs_page.dart';
 
@@ -84,6 +85,7 @@ const List<String?> homeButtonDescriptions = [
   "تصفح أو حمل السورة", // السور
   "ابدأ خطه جديده", // حفظ القرآن
   null, // بحث في القرآن
+  null, // اذاعه القرآن الكريم
   null, // الأذكار
   null, // السبحة
   null, // جدول رمضان
@@ -92,27 +94,29 @@ const List<String?> homeButtonDescriptions = [
 ];
 
 const List<List<Color>> homeButtonGradientsDarkLux = <List<Color>>[
-  [Color(0xFF336666), Color(0xFF1A3F3F)], // تيل داكن أنيق
-  [Color(0xFF5A3E7F), Color(0xFF2E1A4B)], // بنفسجي عميق وفخم
-  [Color(0xFF704214), Color(0xFF3E250B)], // نحاسي داكن فخم ودافئ
-  [Color(0xFF997A4D), Color(0xFF5C4329)], // برتقالي/ذهبي داكن أنيق
-  [Color(0xFF267373), Color(0xFF004D4D)], // أزرق تيل هادئ وراقي
-  [Color(0xFF335880), Color(0xFF1A2C4D)], // أزرق داكن ناعم
-  [Color(0xFF8C6173), Color(0xFF523946)], // وردي/بنفسجي عميق
-  [Color(0xFF3E6043), Color(0xFF1B2E21)], // أخضر داكن هادئ
-  [Color(0xFF52585E), Color(0xFF1C2124)], // رمادي داكن فخم
+  [Color(0xFF336666), Color(0xFF1A3F3F)],
+  [Color(0xFF5A3E7F), Color(0xFF2E1A4B)],
+  [Color(0xFFB85C38), Color(0xFF7A321F)],
+  [Color(0xFF997A4D), Color(0xFF5C4329)],
+  [Color(0xFF3B3F5C), Color(0xFF1C1F33)],
+  [Color(0xFF267373), Color(0xFF004D4D)],
+  [Color(0xFF335880), Color(0xFF1A2C4D)],
+  [Color(0xFF8C6173), Color(0xFF523946)],
+  [Color(0xFF3E6043), Color(0xFF1B2E21)],
+  [Color(0xFF52585E), Color(0xFF1C2124)],
 ];
 
 const List<List<Color>> homeButtonGradientsLightLux = <List<Color>>[
-  [Color(0xFF80CBC4), Color(0xFF4DB6AC)], // تيل هادئ وراقي
-  [Color(0xFFB39DDB), Color(0xFF7E57C2)], // بنفسجي ناعم وفخم
-  [Color(0xFFFFD180), Color(0xFFFFB74D)], // نحاسي فاتح دافئ وراقي
-  [Color(0xFFFFC870), Color(0xFFFFA000)], // ذهبي/برتقالي فاتح أنيق
-  [Color(0xFF4DD0E1), Color(0xFF0097A7)], // أزرق تيل متدرج
-  [Color(0xFF90CAF9), Color(0xFF42A5F5)], // أزرق سماوي هادئ
-  [Color(0xFFF8BBD0), Color(0xFFF48FB1)], // وردي ناعم
-  [Color(0xFF81C784), Color(0xFF388E3C)], // أخضر طبيعي هادئ
-  [Color(0xFF90A4AE), Color(0xFF455A64)], // رمادي أزرق هادئ
+  [Color(0xFF80CBC4), Color(0xFF4DB6AC)],
+  [Color(0xFFB39DDB), Color(0xFF7E57C2)],
+  [Color(0xFFFF8A50), Color(0xFFFF5E22)],
+  [Color(0xFFFFC870), Color(0xFFFFA000)],
+  [Color(0xFFBBDEFB), Color(0xFF64B5F6)],
+  [Color(0xFF4DD0E1), Color(0xFF0097A7)],
+  [Color(0xFF90CAF9), Color(0xFF42A5F5)],
+  [Color(0xFFF8BBD0), Color(0xFFF48FB1)],
+  [Color(0xFF81C784), Color(0xFF388E3C)],
+  [Color(0xFF90A4AE), Color(0xFF455A64)],
 ];
 
 List _pages = [
@@ -129,6 +133,7 @@ List _pages = [
     create: (context) => QuranSearchCubit(sl()),
     child: const QuranSearchPage(),
   ),
+  const RadioStationPage(),
   const AlAdhkarPage(),
   const ElecRosaryPage(),
   const RamadanTabelPage(),

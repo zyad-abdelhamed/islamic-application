@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
 import 'package:test_app/core/helper_function/get_widget_depending_on_reuest_state.dart';
+import 'package:test_app/core/widgets/custom_scaffold.dart';
 import 'package:test_app/features/app/domain/entities/hifz_plan_entity.dart';
 import 'package:test_app/features/app/domain/entities/surah_entity.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_surahs_info_cubit.dart';
@@ -15,7 +16,7 @@ class QuranMemorizationPlanPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return CustomScaffold(
       appBar: AppBar(
         leading:
             const GetAdaptiveBackButtonWidget(backBehavior: BackBehavior.pop),

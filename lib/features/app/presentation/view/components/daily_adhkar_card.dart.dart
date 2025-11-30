@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/core/helper_function/is_dark.dart';
 import 'package:test_app/core/theme/app_colors.dart';
+import 'package:test_app/core/utils/extentions/theme_extention.dart';
 import 'package:test_app/features/app/domain/entities/daily_adhkar_entity.dart';
 
 class DailyAdhkarCard extends StatelessWidget {
@@ -30,8 +30,9 @@ class DailyAdhkarCard extends StatelessWidget {
           width: width,
           padding: const EdgeInsets.all(5.0),
           decoration: BoxDecoration(
-            color:
-                isDark(context) ? Colors.grey.shade800 : Colors.grey.shade300,
+            color: context.isDarkMode
+                ? Colors.grey.shade800
+                : Colors.grey.shade300,
             image: dailyAdhkarEntity.image != null
                 ? DecorationImage(
                     image: MemoryImage(dailyAdhkarEntity.image!),

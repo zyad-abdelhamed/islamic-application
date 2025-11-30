@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
 import 'package:test_app/core/constants/app_strings.dart';
+import 'package:test_app/core/widgets/custom_scaffold.dart';
 import 'package:test_app/features/app/data/models/quran_request_params.dart';
 import 'package:test_app/features/app/domain/entities/surah_entity.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/surah_audio_controller.dart';
@@ -52,10 +53,7 @@ class _TafsirPageState extends State<TafsirPage> {
   Widget build(BuildContext context) {
     return Provider(
       create: (_) => _controller,
-      child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 0.0,
-        ),
+      child: CustomScaffold(
         body: Stack(
           children: [
             BlocBuilder<GetSurahWithTafsirCubit, GetSurahWithTafsirState>(

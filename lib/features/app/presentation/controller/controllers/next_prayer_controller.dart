@@ -146,7 +146,6 @@ class NextPrayerController {
     );
   }
 
-  /// تدمير الكنترولر
   void dispose() {
     nextPrayerNotifier.dispose();
   }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/constants/routes_constants.dart';
-import 'package:test_app/features/app/data/models/number_animation_model.dart';
 import 'package:test_app/features/app/domain/entities/adhkar_entity.dart';
 import 'package:test_app/features/app/presentation/view/components/adhkar_widget.dart';
+import 'package:test_app/features/app/presentation/view/components/rolling_counter.dart';
 
 class AdhkarPageController {
   late final ScrollController adhkarScrollController;
@@ -14,6 +14,7 @@ class AdhkarPageController {
   late final ValueNotifier<double> fontSizeNotfier;
   double maxProgress = 0.0;
   late final Set<AdhkarEntity> adhkar;
+
   void initState(BuildContext context, Set<AdhkarEntity> adhkar) {
     this.adhkar = adhkar;
     lengthNotfier = ValueNotifier<int>(adhkar.length);
@@ -32,10 +33,14 @@ class AdhkarPageController {
       if (lengthNotfier.value == 0 && switchNotfier.value == true) {
         Future.delayed(
           AppDurations.longDuration,
-          () => Navigator.pushReplacementNamed(
-            context,
-            RoutesConstants.homePageRouteName,
-          ),
+          () {
+            if (context.mounted) {
+              Navigator.pushReplacementNamed(
+                context,
+                RoutesConstants.homePageRouteName,
+              );
+            }
+          },
         );
       }
     });
@@ -50,82 +55,63 @@ class AdhkarPageController {
   }
 
   void toggleIsDeletedSwitch() {
-    if (switchNotfier.value) {
-      switchNotfier.value = false;
-    } else {
-      switchNotfier.value = true;
-    }
+    switchNotfier.value = !switchNotfier.value;
   }
 
   bool get isCircleSliderShowed => adhkarScrollController.hasClients
       ? adhkarScrollController.position.isScrollingNotifier.value
-          ? true
-          : false
       : false;
 
   void decreaseCount({required CountPrameters countPrameters}) {
-    final int count = countPrameters.adhkarEntity.countNotifier.value.number;
+    final counter = countPrameters.counterKey.currentState;
+    final int count = counter?.value ?? 0;
 
     if (count > 1) {
-      _decreaseWithAnimation(countPrameters.adhkarEntity.countNotifier);
+      counter?.decrease(1.0);
     } else if (count == 1 && switchNotfier.value) {
-      _decreaseWithAnimation(countPrameters.adhkarEntity.countNotifier);
-
+      counter?.decrease(1.0);
       Future.delayed(AppDurations.mediumDuration, () {
         _removeAnimation(countPrameters.index, countPrameters.adhkarEntity);
       });
     } else if (count == 1 && !switchNotfier.value) {
-      _decreaseWithAnimation(countPrameters.adhkarEntity.countNotifier);
-
+      counter?.decrease(1.0);
       _reduceLengthNotifierValue();
     }
-
-    return;
-  }
-
-  void _decreaseWithAnimation(ValueNotifier<NumberAnimationModel> notifier) {
-    notifier.value.slideAnimation(
-      newValue: notifier.value.number - 1,
-      notifier: notifier,
-      slideValue: .3,
-    );
   }
 
   void resetCount({required CountPrameters countPrameters}) {
-    if (countPrameters.countNotifier.value.number !=
-        countPrameters.adhkarEntity.count) {
-      countPrameters.countNotifier.value.slideAnimation(
-          slideValue: -.3,
-          newValue: countPrameters.adhkarEntity.count,
-          notifier: countPrameters.countNotifier);
-      if (countPrameters.countNotifier.value.number == 0) {
+    final counter = countPrameters.counterKey.currentState;
+    final int current = counter?.value ?? 0;
+    final int target = countPrameters.adhkarEntity.count;
+
+    if (current != target) {
+      counter?.reset(target);
+      if (current == 0) {
         _increaseLengthNotifierValue();
       }
     }
-
-    return;
   }
 
   void _removeAnimation(int index, AdhkarEntity adhkarEntity) {
     adhkar.remove(adhkarEntity);
+
     animatedLIstKey.currentState!.removeItem(
-      duration: AppDurations.mediumDuration,
       index + 1,
+      duration: AppDurations.mediumDuration,
       (context, animation) => SlideTransition(
         position: animation.drive(Tween<Offset>(
-          begin: Offset(1, 0),
-          end: Offset(0, 0),
+          begin: const Offset(1, 0),
+          end: Offset.zero,
         )),
         child: AdhkarWidget(
           key: ObjectKey(adhkarEntity),
           adhkarPageController: this,
           index: index,
-          adhkarEntity: adhkarEntity.copyWith(
-              countNotifier: ValueNotifier<NumberAnimationModel>(
-                  NumberAnimationModel(number: 0))),
+          adhkarEntity: adhkarEntity,
         ),
       ),
     );
+
     _reduceLengthNotifierValue();
   }
 
@@ -139,12 +125,13 @@ class AdhkarPageController {
 }
 
 class CountPrameters {
-  const CountPrameters(
-      {required this.index,
-      required this.countNotifier,
-      required this.adhkarEntity});
+  const CountPrameters({
+    required this.index,
+    required this.counterKey,
+    required this.adhkarEntity,
+  });
 
   final int index;
-  final ValueNotifier<NumberAnimationModel> countNotifier;
+  final GlobalKey<RollingCounterState> counterKey;
   final AdhkarEntity adhkarEntity;
 }

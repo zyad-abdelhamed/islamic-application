@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
+import 'package:test_app/core/widgets/custom_scaffold.dart';
 import 'package:test_app/features/app/data/models/quran_request_params.dart';
 import 'package:test_app/features/app/domain/entities/ayah_entity.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/speech_cubit.dart';
@@ -60,7 +61,7 @@ class _SpeechPageState extends State<SpeechPage> {
   Widget build(BuildContext context) {
     final cubit = context.read<SpeechCubit>();
 
-    return Scaffold(
+    return CustomScaffold(
       body: BlocConsumer<SpeechCubit, SpeechState>(
         listener: (context, state) {
           if (state is GetAyahsSuccess) {

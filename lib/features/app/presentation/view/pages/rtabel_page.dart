@@ -4,6 +4,7 @@ import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button
 import 'package:test_app/core/adaptive/orentation_layout.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/theme/text_styles.dart';
+import 'package:test_app/core/widgets/custom_scaffold.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/rtabel_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/land_scape_ramadan_table.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
@@ -17,7 +18,7 @@ class RamadanTabelPage extends StatelessWidget {
       create: (context) => RtabelCubit(sl(), sl(), sl())..loadCheckBoxValues(),
       child: Builder(
         builder: (context) {
-          return Scaffold(
+          return CustomScaffold(
             appBar: AppBar(
               leading: const GetAdaptiveBackButtonWidget(),
               actions: [

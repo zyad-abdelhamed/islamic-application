@@ -28,9 +28,8 @@ ThemeData darkTheme = ThemeData(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.light,
         statusBarBrightness: Brightness.dark,
-        systemNavigationBarColor: AppColors.darkModeScaffoldBackGroundColor,
-        systemNavigationBarDividerColor:
-            AppColors.darkModeScaffoldBackGroundColor,
+        systemNavigationBarColor: AppColors.primaryColor,
+        systemNavigationBarDividerColor: AppColors.primaryColor,
         systemNavigationBarIconBrightness: Brightness.light,
       ),
     ),

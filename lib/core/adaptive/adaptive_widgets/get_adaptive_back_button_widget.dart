@@ -26,27 +26,24 @@ class GetAdaptiveBackButtonWidget extends StatelessWidget {
   }
 
   Widget _getDefaultBackButton(BuildContext context) {
-    return OpacityLayout(
-      child: GestureDetector(
-        child: const Icon(
-          Icons.arrow_back,
-          color: AppColors.primaryColor,
-        ),
-        onTap: () => _back(context, backBehavior),
+    return GestureDetector(
+      child: const Icon(
+        Icons.arrow_back,
+        color: AppColors.primaryColor,
       ),
+      onTap: () => _back(context, backBehavior),
     );
   }
 
   Widget _getCupertinoBackButton(BuildContext context) {
-    return OpacityLayout(
-        child: CupertinoButton(
+    return CupertinoButton(
       padding: EdgeInsets.zero,
       onPressed: () => _back(context, backBehavior),
       child: const Icon(
         CupertinoIcons.back,
         color: AppColors.primaryColor,
       ),
-    ));
+    );
   }
 
   Widget _getWindowsBackButton(BuildContext context) {
@@ -60,7 +57,7 @@ class GetAdaptiveBackButtonWidget extends StatelessWidget {
     );
   }
 
-  void _back(context, BackBehavior backBehavior) {
+  void _back(BuildContext context, BackBehavior backBehavior) {
     switch (backBehavior) {
       case BackBehavior.pop:
         Navigator.maybePop(context);
@@ -68,26 +65,5 @@ class GetAdaptiveBackButtonWidget extends StatelessWidget {
         Navigator.pushNamedAndRemoveUntil(
             context, RoutesConstants.homePageRouteName, (route) => false);
     }
-  }
-}
-
-class OpacityLayout extends StatelessWidget {
-  const OpacityLayout({super.key, required this.child});
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: (Theme.of(context).brightness == Brightness.dark
-                      ? Colors.white
-                      : Colors.black)
-                  .withAlpha(35)),
-          child: child,
-        ));
   }
 }

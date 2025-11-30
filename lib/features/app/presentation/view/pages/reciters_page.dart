@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
 import 'package:test_app/core/theme/text_styles.dart';
+import 'package:test_app/core/widgets/custom_scaffold.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/tafsir_page_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/reciter_widget.dart';
 
@@ -11,7 +12,7 @@ class RecitersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return CustomScaffold(
         appBar: AppBar(
           leading:
               const GetAdaptiveBackButtonWidget(backBehavior: BackBehavior.pop),

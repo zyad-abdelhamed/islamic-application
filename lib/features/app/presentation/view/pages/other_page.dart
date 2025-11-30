@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/theme/text_styles.dart';
+import 'package:test_app/core/widgets/custom_scaffold.dart';
 import 'package:test_app/features/app/presentation/view/components/other_page_button.dart';
 import 'package:test_app/features/app/presentation/view/components/post_prayer_adhkar_widget.dart';
 import 'package:test_app/features/app/presentation/view/components/rosary_ring%20widget.dart';
@@ -28,7 +29,7 @@ class OtherPage extends StatelessWidget {
 
     const double spacing = 10.0;
 
-    return Scaffold(
+    return CustomScaffold(
       appBar: AppBar(
         title: Text(AppStrings.appBarTitles(withTwoLines: false)[7]),
         leading: const GetAdaptiveBackButtonWidget(),

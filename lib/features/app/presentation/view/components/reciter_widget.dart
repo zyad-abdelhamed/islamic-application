@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
-import 'package:test_app/core/utils/responsive_extention.dart';
+import 'package:test_app/core/utils/extentions/media_query_extention.dart';
 import 'package:test_app/features/app/data/models/quran_audio_parameters.dart';
 import 'package:test_app/features/app/domain/entities/reciters_entity.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/tafsir_page_controller.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/theme/app_colors.dart';
-import 'package:test_app/core/utils/responsive_extention.dart';
+import 'package:test_app/core/utils/extentions/media_query_extention.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/ayah_audio_card_controller.dart';
 
 class AyahAudioCard extends StatelessWidget {

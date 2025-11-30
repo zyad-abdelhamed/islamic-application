@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/constants/app_durations.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_colors.dart';
-import 'package:test_app/core/utils/responsive_extention.dart';
+import 'package:test_app/core/utils/extentions/media_query_extention.dart';
+import 'package:test_app/core/widgets/custom_scaffold.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/counter_controller.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/featured_records_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/featured_records_cubit.dart';
@@ -43,7 +44,7 @@ class _ElecRosaryPageState extends State<ElecRosaryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return CustomScaffold(
       appBar: ElecRosaryAppBar(counterController: counterController),
       body: isLandScapeOrientation(context)
           ? LandscapeLayout(
@@ -99,7 +100,6 @@ class PortraitLayout extends StatelessWidget {
             valueListenable: featuredRecordsController.isWidgetShowedNotifier,
             child: FeatuerdRecordsWidget(
               controller: featuredRecordsController,
-              counterNotifier: counterController.counterNotifier,
             ),
             builder: (context, value, child) {
               return AnimatedPositioned(
@@ -202,7 +202,6 @@ class LandscapeLayout extends StatelessWidget {
                   width: 350,
                   child: FeatuerdRecordsWidget(
                     controller: featuredRecordsController,
-                    counterNotifier: counterController.counterNotifier,
                   ),
                 ),
               );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/theme/app_colors.dart';
-import 'package:test_app/core/theme/text_styles.dart';
+import 'package:test_app/core/utils/extentions/theme_extention.dart';
 
 class AdhkarTextView extends StatelessWidget {
   const AdhkarTextView({
@@ -8,11 +8,13 @@ class AdhkarTextView extends StatelessWidget {
     required this.content,
     required this.desc,
     required this.fontSizeNotfier,
+    required this.spacing,
   });
 
   final String content;
   final String? desc;
   final ValueNotifier<double> fontSizeNotfier;
+  final double spacing;
 
   @override
   Widget build(BuildContext context) {
@@ -23,17 +25,22 @@ class AdhkarTextView extends StatelessWidget {
         children: [
           Text(
             content,
-            style: TextStyles.bold20(context)
-                .copyWith(fontFamily: 'DataFontFamily', fontSize: val),
+            style: context.headlineLarge.copyWith(
+              fontSize: val,
+              fontFamily: 'dataFontFamily',
+              color: AppColors.primaryColor,
+            ),
           ),
           if (desc != null && desc!.trim().isNotEmpty)
             Padding(
-              padding: const EdgeInsets.only(top: 8.0),
+              padding: EdgeInsets.only(top: spacing),
               child: Text(
                 desc!,
-                style: TextStyles.regular16_120(context,
-                        color: AppColors.secondryColor)
-                    .copyWith(fontFamily: 'Amiri', fontSize: val - 4),
+                style: context.labelLarge.copyWith(
+                  fontSize: val - 4,
+                  fontFamily: 'Amiri',
+                  color: AppColors.primaryColor,
+                ),
               ),
             ),
         ],

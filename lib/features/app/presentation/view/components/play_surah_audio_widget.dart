@@ -2,8 +2,8 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:test_app/core/helper_function/is_dark.dart';
 import 'package:test_app/core/theme/app_colors.dart';
+import 'package:test_app/core/utils/extentions/theme_extention.dart';
 import 'package:test_app/features/app/domain/entities/reciters_entity.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/surah_audio_controller.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/tafsir_page_controller.dart';
@@ -37,7 +37,7 @@ class PlaySurahAudioWidget extends StatelessWidget {
             minVerticalPadding: 0,
             dense: true,
             visualDensity: VisualDensity(horizontal: -2, vertical: -2),
-            tileColor: isDark(context) ? Colors.black : Colors.white,
+            tileColor: context.isDarkMode ? Colors.black : Colors.white,
             contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
             onTap: isActive ? () => openSurahPlayerBottomSheet(context) : null,
             leading: Container(

@@ -14,7 +14,7 @@ ThemeData lightTheme = ThemeData(
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: Colors.transparent,
     ),
-    appBarTheme: const AppBarTheme(
+    appBarTheme: AppBarThemeData(
       backgroundColor: Colors.transparent,
       centerTitle: true,
       scrolledUnderElevation: 0,
@@ -29,9 +29,14 @@ ThemeData lightTheme = ThemeData(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.dark,
         statusBarBrightness: Brightness.light,
-        systemNavigationBarColor: AppColors.lightModeScaffoldBackGroundColor,
-        systemNavigationBarDividerColor:
-            AppColors.lightModeScaffoldBackGroundColor,
+        systemNavigationBarColor: [
+          Color(0xFFE8F4F7),
+          Color(0xFFF2FAF7),
+        ].last,
+        systemNavigationBarDividerColor: [
+          Color(0xFFE8F4F7),
+          Color(0xFFF2FAF7),
+        ].first,
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
     ),

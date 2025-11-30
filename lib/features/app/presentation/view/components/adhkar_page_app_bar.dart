@@ -50,7 +50,6 @@ class AdhkarPageAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  /// لازم نحدد الـ preferredSize عشان الكلاس يشتغل كـ AppBar
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

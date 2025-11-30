@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
+import 'package:test_app/core/widgets/custom_scaffold.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/quran_page_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_surahs_info_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/quran_cubit.dart';
@@ -36,7 +37,7 @@ class _AlquranAlkarimPageState extends State<AlquranAlkarimPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return CustomScaffold(
       appBar: QuranPageAppBar(quranPageController: _quranPageController),
       drawer: Drawer(
         child: BlocProvider<GetSurahsInfoCubit>(
