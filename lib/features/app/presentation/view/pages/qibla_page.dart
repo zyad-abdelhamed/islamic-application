@@ -5,14 +5,24 @@ import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_loading_widget.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
+import 'package:test_app/core/widgets/vibration_button.dart';
 import 'package:test_app/features/app/domain/repositories/base_qipla_repo.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/qibla_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/erorr_widget.dart';
 import 'package:test_app/features/app/presentation/view/components/qibla_arrow.dart';
 import 'package:test_app/features/app/presentation/view/components/qipla_accuracy_button.dart';
+import 'package:vibration/vibration.dart';
 
-class QiblaPage extends StatelessWidget {
+class QiblaPage extends StatefulWidget {
   const QiblaPage({super.key});
+
+  @override
+  State<QiblaPage> createState() => _QiblaPageState();
+}
+
+class _QiblaPageState extends State<QiblaPage> {
+  final ValueNotifier<bool> vibrationNotifier = ValueNotifier(false);
+  double? lastAngle; // ← نحتفظ بأخر زاوية للسهم
 
   @override
   Widget build(BuildContext context) {
@@ -22,23 +32,52 @@ class QiblaPage extends StatelessWidget {
         appBar: AppBar(
           title: Text(AppStrings.appBarTitles(withTwoLines: false)[6]),
           leading: const GetAdaptiveBackButtonWidget(),
+          actions: [
+            VibrationButton(vibrationNotifier: vibrationNotifier),
+          ],
         ),
         body: BlocBuilder<QiblaCubit, QiblaState>(
           builder: (context, state) {
+            print('kfjkdjfj');
             if (state is QiblaLoading) {
               return const AppLoadingWidget();
             }
+
             if (state is QiblaError) {
               return ErrorWidgetIslamic(message: state.message);
             }
+
             if (state is QiblaLoaded) {
-              // زاوية للـ Transform.rotate تحتاج راديان؛ نحسب الفرق الأقصر بين القيمتين
+              // نحسب فرق الزاوية الأقصر
               double diff = ((state.qibla.qiblaDirection -
                           state.qibla.deviceDirection +
                           540) %
                       360) -
                   180;
+
               final double angle = diff * (pi / 180);
+
+              if (vibrationNotifier.value) {
+                // أول مرة نحفظ الزاوية
+                if (lastAngle == null) {
+                  lastAngle = angle;
+                } else {
+                  // لو السهم فعلاً اتحرك حركة واضحة (threshold = 0.02 rad ≈ 1°)
+                  if ((angle - lastAngle!).abs() > 0.02) {
+                    print("vibration");
+
+                    // استخدم مكتبة Vibration
+                    Vibration.hasVibrator().then((hasVibrator) {
+                      if (hasVibrator ?? false) {
+                        Vibration.vibrate(duration: 20, amplitude: 130);
+                      }
+                    });
+
+                    // حدّث آخر زاوية
+                    lastAngle = angle;
+                  }
+                }
+              }
 
               return Padding(
                 padding: const EdgeInsets.all(12.0),
@@ -49,29 +88,32 @@ class QiblaPage extends StatelessWidget {
                     Align(
                       alignment: Alignment.topRight,
                       child: QiplaAccuracyButton(
-                          state: state, isLoading: state is QiblaLoading),
-                    ),
-                    const SizedBox(height: 12),
-
-                    // تنبيه صغير لو لازم معايرة (لو كانت القراءة غير ثابتة فهو فعلاً ينبّه من الريبو)
-                    // خطأ المعايرة يظهر فى QiblaError لذا لا نحتاج شرط هنا.
-
-                    Expanded(
-                      child: Center(
-                        child: QiblaArrow(angle: angle, size: 260),
+                        state: state,
+                        isLoading: state is QiblaLoading,
                       ),
                     ),
-
+                    const SizedBox(height: 12),
+                    Expanded(
+                      child: Center(
+                        child: QiblaArrow(
+                          angle: angle,
+                          size: 260,
+                        ),
+                      ),
+                    ),
                     const SizedBox(height: 12),
                     Text(
-                        'زاوية القبلة: ${state.qibla.qiblaDirection.toStringAsFixed(2)}°'),
+                      'زاوية القبلة: ${state.qibla.qiblaDirection.toStringAsFixed(2)}°',
+                    ),
                     Text(
-                        'اتجاه الجهاز: ${state.qibla.deviceDirection.toStringAsFixed(2)}°'),
+                      'اتجاه الجهاز: ${state.qibla.deviceDirection.toStringAsFixed(2)}°',
+                    ),
                     const SizedBox(height: 18),
                   ],
                 ),
               );
             }
+
             return const SizedBox();
           },
         ),
