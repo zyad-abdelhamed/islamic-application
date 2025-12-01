@@ -69,7 +69,7 @@ class _QiblaPageState extends State<QiblaPage> {
 
                     // استخدم مكتبة Vibration
                     Vibration.hasVibrator().then((hasVibrator) {
-                      if (hasVibrator ?? false) {
+                      if (hasVibrator) {
                         Vibration.vibrate(duration: 20, amplitude: 130);
                       }
                     });

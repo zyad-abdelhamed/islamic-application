@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/utils/extentions/media_query_extention.dart';
+import 'package:test_app/core/utils/extentions/theme_extention.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/ayah_audio_card_controller.dart';
 
 class AyahAudioCard extends StatelessWidget {
@@ -46,9 +47,7 @@ class _AudioCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Theme.of(context).brightness == Brightness.dark
-              ? Colors.black
-              : Colors.white,
+          color: context.isDarkMode ? Colors.black : Colors.white,
           borderRadius: BorderRadius.circular(20),
           boxShadow: const [
             BoxShadow(
@@ -131,8 +130,6 @@ class _AudioCard extends StatelessWidget {
                     Expanded(
                       flex: 5,
                       child: Slider(
-                        activeColor: AppColors.primaryColor,
-                        inactiveColor: AppColors.primaryColorInActiveColor,
                         value: pos.inSeconds
                             .toDouble()
                             .clamp(0.0, dur.inSeconds.toDouble()),

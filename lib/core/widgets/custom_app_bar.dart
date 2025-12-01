@@ -17,7 +17,7 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
 
       return SafeArea(
         child: Container(
-          height: preferredSize.height,
+          height: kToolbarHeight,
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Row(
             children: [
@@ -40,7 +40,7 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
     // لو الودجت مش AppBar → أعرضه زي ما هو
     return SafeArea(
       child: SizedBox(
-        height: preferredSize.height,
+        height: kToolbarHeight,
         child: appBar!,
       ),
     );
@@ -52,9 +52,7 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
 
     if (appBar is AppBar) {
       final real = appBar as AppBar;
-      return Size.fromHeight(
-        kToolbarHeight + (real.bottom?.preferredSize.height ?? 0.0),
-      );
+      return Size(double.infinity, real.preferredSize.height);
     }
 
     // الحالات اللي الودجت فيها PreferredSizeWidget غير AppBar

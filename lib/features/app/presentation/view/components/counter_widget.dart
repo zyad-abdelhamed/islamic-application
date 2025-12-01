@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_durations.dart';
+import 'package:test_app/core/constants/font_familys.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/utils/extentions/media_query_extention.dart';
 import 'package:test_app/core/utils/extentions/theme_extention.dart';
@@ -42,7 +43,7 @@ class CounterWidget extends StatelessWidget {
             Container(
               alignment: Alignment.center,
               width: double.infinity,
-              height: 100,
+              height: 80,
               decoration: BoxDecoration(
                 border: Border.all(
                   width: 3,
@@ -53,8 +54,8 @@ class CounterWidget extends StatelessWidget {
               child: RollingCounter(
                 key: controller.counterKey,
                 initialNumber: 0,
-                textStyle: context.displayLarge.copyWith(
-                  fontFamily: 'normal',
+                textStyle: context.titleLarge.copyWith(
+                  fontFamily: FontFamilys.normal,
                   fontWeight: FontWeight.bold,
                 ),
               ),

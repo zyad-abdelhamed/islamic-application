@@ -28,8 +28,8 @@ class HomePageToAndroidAndIos extends StatelessWidget {
         slivers: [
           SliverAppBar(
               title: Text(AppStrings.translate("mainPage")),
-              floating: true, // يبان أول ما تسكرول لفوق
-              snap: true, // حركة سريعة
+              floating: true,
+              snap: true,
               leading: IconButton(
                 onPressed: () => scaffoldKey.currentState?.openDrawer(),
                 icon: Column(
@@ -54,15 +54,15 @@ class HomePageToAndroidAndIos extends StatelessWidget {
           const SliverPadding(padding: EdgeInsets.only(top: 20)),
 
           /// ========== Prayer Times ==========
-          SliverToBoxAdapter(
-            child: SizedBox(
-              width: context.isLandScape
-                  ? double.infinity
-                  : (context.width * 3 / 4) - 20,
-              child:
-                  PrayerTimesWidget(nextPrayerController: nextPrayerController),
-            ),
-          ),
+          // SliverToBoxAdapter(
+          //   child: SizedBox(
+          //     width: context.isLandScape
+          //         ? double.infinity
+          //         : (context.width * 3 / 4) - 20,
+          //     child:
+          //         PrayerTimesWidget(nextPrayerController: nextPrayerController),
+          //   ),
+          // ),
 
           const SliverPadding(padding: EdgeInsets.only(top: 20)),
 

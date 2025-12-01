@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/core/constants/font_familys.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/utils/extentions/theme_extention.dart';
 
@@ -27,7 +28,8 @@ class AdhkarTextView extends StatelessWidget {
             content,
             style: context.headlineLarge.copyWith(
               fontSize: val,
-              fontFamily: 'dataFontFamily',
+              fontWeight: FontWeight.bold,
+              fontFamily: FontFamilys.dataFontFamily,
               color: AppColors.primaryColor,
             ),
           ),
@@ -36,9 +38,9 @@ class AdhkarTextView extends StatelessWidget {
               padding: EdgeInsets.only(top: spacing),
               child: Text(
                 desc!,
-                style: context.labelLarge.copyWith(
+                style: context.labelSmall.copyWith(
                   fontSize: val - 4,
-                  fontFamily: 'Amiri',
+                  fontFamily: FontFamilys.amiri,
                   color: AppColors.primaryColor,
                 ),
               ),

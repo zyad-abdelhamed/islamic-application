@@ -3,8 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:test_app/core/helper_function/get_init_route.dart';
 import 'package:test_app/core/helper_function/onGenerateRoute.dart';
-import 'package:test_app/core/theme/dark_theme.dart';
-import 'package:test_app/core/theme/light_theme.dart';
+import 'package:test_app/core/theme/app_theme.dart';
 import 'package:test_app/core/theme/theme_provider.dart';
 
 class NoorApp extends StatelessWidget {
@@ -26,8 +25,8 @@ class NoorApp extends StatelessWidget {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            theme: lightTheme,
-            darkTheme: darkTheme,
+            theme: AppTheme.light,
+            darkTheme: AppTheme.dark,
             themeMode: themeMode,
             debugShowCheckedModeBanner: false,
             initialRoute: getInitRoute,

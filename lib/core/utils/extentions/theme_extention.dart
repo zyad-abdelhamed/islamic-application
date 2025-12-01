@@ -10,6 +10,7 @@ extension ThemeExtention on BuildContext {
   Color get secondaryColor => colorScheme.secondary;
   Color get backgroundColor => colorScheme.surface;
   Color get errorColor => colorScheme.error;
+  Color get dividerColor => Theme.of(this).dividerColor;
 
   // TextStyle
   TextStyle get displayLarge => textTheme.displayLarge!;

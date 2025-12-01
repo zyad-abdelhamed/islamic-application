@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
+import 'package:test_app/core/services/arabic_converter_service.dart';
+import 'package:test_app/core/services/dependency_injection.dart';
+import 'package:test_app/core/theme/app_colors.dart';
+import 'package:test_app/core/utils/extentions/theme_extention.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/adhkar_page_controller.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/features/app/presentation/view/components/controle_font_size_buttons.dart';
@@ -30,20 +34,22 @@ class AdhkarPageAppBar extends StatelessWidget implements PreferredSizeWidget {
           margin: const EdgeInsets.symmetric(horizontal: 15.0),
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 3.0),
           decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
+            color: AppColors.primaryColor,
             borderRadius: BorderRadius.circular(8.0),
           ),
           child: ValueListenableBuilder<int>(
             valueListenable: adhkarPageController.lengthNotfier,
-            builder: (_, __, ___) => Text(
-              adhkarPageController.lengthNotfier.value.toString(),
-              style: TextStyles.semiBold16_120(context).copyWith(
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.black
-                    : Colors.white,
-                fontFamily: 'normal',
-              ),
-            ),
+            builder: (_, int value, ___) {
+              final String currentCount = sl<BaseArabicConverterService>()
+                  .convertToArabicDigits(value.toString());
+              return Text(
+                currentCount,
+                style: TextStyles.semiBold16_120(context).copyWith(
+                  color: context.isDarkMode ? Colors.black : Colors.white,
+                  fontFamily: 'normal',
+                ),
+              );
+            },
           ),
         ),
       ],

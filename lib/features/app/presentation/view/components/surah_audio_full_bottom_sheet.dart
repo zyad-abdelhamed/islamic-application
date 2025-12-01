@@ -1,21 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
-import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:test_app/core/services/arabic_converter_service.dart';
+import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/surah_audio_controller.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
 import 'package:test_app/features/app/presentation/view/components/ayahs_flow_widget.dart';
 
-class SurahPlayerBottomSheet extends StatelessWidget {
+class SurahPlayerBottomSheet extends StatefulWidget {
   final SurahAudioController controller;
 
   const SurahPlayerBottomSheet({super.key, required this.controller});
 
   @override
+  State<SurahPlayerBottomSheet> createState() => _SurahPlayerBottomSheetState();
+}
+
+class _SurahPlayerBottomSheetState extends State<SurahPlayerBottomSheet> {
+  double _selectedSpeed = 1.0;
+
+  @override
   Widget build(BuildContext context) {
     final reciter =
-        controller.tafsirPageController.currentReciterNotifier.value;
+        widget.controller.tafsirPageController.currentReciterNotifier.value;
     if (reciter == null) return const SizedBox.shrink();
 
     return SafeArea(
@@ -24,6 +32,7 @@ class SurahPlayerBottomSheet extends StatelessWidget {
         padding: const EdgeInsets.all(24),
         child: Column(
           children: [
+            // Header
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -34,14 +43,12 @@ class SurahPlayerBottomSheet extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.speed),
                   tooltip: 'سرعة التشغيل',
-                  onPressed: () => showPlaybackSpeedDialog(
-                    context,
-                    (newSpeed) => controller.setSpeed(newSpeed),
-                  ),
+                  onPressed: () => showPlaybackSpeedDialog(context),
                 ),
               ],
             ),
 
+            // صورة المقرئ
             ClipOval(
               child: Image.asset(
                 reciter.image,
@@ -53,11 +60,12 @@ class SurahPlayerBottomSheet extends StatelessWidget {
 
             const SizedBox(height: 12),
 
+            // Marquee باسم السورة والمقرئ
             SizedBox(
               height: 48,
               child: Marquee(
                 text:
-                    "${reciter.name} - سورة ${controller.tafsirPageController.surahEntity.name}",
+                    "${reciter.name} - سورة ${widget.controller.tafsirPageController.surahEntity.name}",
                 style: TextStyles.semiBold32auto(context),
                 velocity: 40.0,
                 blankSpace: 60.0,
@@ -71,15 +79,16 @@ class SurahPlayerBottomSheet extends StatelessWidget {
 
             const SizedBox(height: 12),
 
+            // AyahsFlowWidget
             AyahsFlowWidget(
-              tafsirPageController: controller.tafsirPageController,
+              tafsirPageController: widget.controller.tafsirPageController,
             ),
 
             const Spacer(),
 
-            // ProgressBar مع Stream واحد من controller.progressStream
+            // ProgressBar مع أرقام عربية
             StreamBuilder<ProgressData>(
-              stream: controller.progressStream,
+              stream: widget.controller.progressStream,
               builder: (context, snapshot) {
                 final ProgressData data = snapshot.data ??
                     ProgressData(
@@ -87,16 +96,50 @@ class SurahPlayerBottomSheet extends StatelessWidget {
                         buffered: Duration.zero,
                         total: Duration.zero);
 
-                return ProgressBar(
-                  total: data.total,
-                  progress: data.position,
-                  buffered: data.buffered,
-                  progressBarColor: AppColors.primaryColor,
-                  bufferedBarColor: AppColors.primaryColor.withAlpha(50),
-                  baseBarColor: Theme.of(context).dividerColor,
-                  thumbColor: AppColors.primaryColor,
-                  onSeek: (newPosition) async =>
-                      await controller.audioPlayer.seek(newPosition),
+                final positionMs = (data.position.inMilliseconds
+                        .clamp(0, data.total.inMilliseconds))
+                    .toDouble();
+                final totalMs = data.total.inMilliseconds.toDouble();
+
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Slider RTL
+                    Slider(
+                      min: 0,
+                      max: totalMs > 0 ? totalMs : 1.0,
+                      value: positionMs,
+                      onChanged: (value) async {
+                        await widget.controller.audioPlayer
+                            .seek(Duration(milliseconds: value.toInt()));
+                      },
+                    ),
+
+                    // الوقت العربي أسفل Slider
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            sl<BaseArabicConverterService>()
+                                .convertTimeToArabic(
+                                    data.position.toString().split('.').first),
+                            style:
+                                const TextStyle(color: AppColors.primaryColor),
+                          ),
+                          Text(
+                            sl<BaseArabicConverterService>()
+                                .convertTimeToArabic(
+                                    data.total.toString().split('.').first),
+                            style:
+                                const TextStyle(color: AppColors.primaryColor),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 );
               },
             ),
@@ -110,10 +153,10 @@ class SurahPlayerBottomSheet extends StatelessWidget {
                 IconButton(
                   iconSize: 32,
                   icon: const Icon(Icons.skip_next),
-                  onPressed: () async => controller.seekToNextAyah(),
+                  onPressed: () async => widget.controller.seekToNextAyah(),
                 ),
                 ValueListenableBuilder<bool>(
-                  valueListenable: controller.isAudioPlayingNotifier,
+                  valueListenable: widget.controller.isAudioPlayingNotifier,
                   builder: (context, playing, _) {
                     return IconButton(
                       iconSize: 80,
@@ -122,15 +165,15 @@ class SurahPlayerBottomSheet extends StatelessWidget {
                           ? Icons.pause_circle_filled
                           : Icons.play_circle_fill),
                       onPressed: () async => playing
-                          ? await controller.pauseSurah()
-                          : await controller.resumeSurah(),
+                          ? await widget.controller.pauseSurah()
+                          : await widget.controller.resumeSurah(),
                     );
                   },
                 ),
                 IconButton(
                   iconSize: 32,
                   icon: const Icon(Icons.skip_previous),
-                  onPressed: () async => controller.seekToPreviousAyah(),
+                  onPressed: () async => widget.controller.seekToPreviousAyah(),
                 ),
               ],
             ),
@@ -142,46 +185,49 @@ class SurahPlayerBottomSheet extends StatelessWidget {
     );
   }
 
-  final double _selectedSpeed = 1.0;
-  set selectedSpeed(double value) {
-    selectedSpeed = value;
-  }
-
-  double get selectedSpeed => _selectedSpeed;
-
-  Future<void> showPlaybackSpeedDialog(
-      BuildContext context, void Function(double) onSpeedSelected) async {
-    final speeds = [0.5, 0.75, 1.0, 1.25, 1.5, 2.0];
+  // Dialog ضبط السرعة مع StatefulBuilder
+  Future<void> showPlaybackSpeedDialog(BuildContext context) async {
+    final List<double> speeds = [0.5, 0.75, 1.0, 1.25, 1.5, 2.0];
+    double tempSelectedSpeed = _selectedSpeed;
 
     await showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: const Text('سرعة التشغيل', textAlign: TextAlign.center),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              for (final speed in speeds)
-                RadioListTile<double>(
-                  title: Text('${speed}x'),
-                  value: speed,
-                  groupValue: selectedSpeed,
-                  onChanged: (value) {
-                    if (value != null) {
-                      selectedSpeed = value;
-                      Navigator.of(context).pop();
-                      onSpeedSelected(value);
-                    }
-                  },
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text('سرعة التشغيل', textAlign: TextAlign.center),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  for (final double speed in speeds)
+                    RadioListTile<double>(
+                      title: Text('${speed}x'),
+                      value: speed,
+                      groupValue: tempSelectedSpeed,
+                      onChanged: (value) {
+                        if (value != null) {
+                          setState(() {
+                            tempSelectedSpeed = value;
+                          });
+                          widget.controller.setSpeed(value);
+                          _selectedSpeed = value;
+
+                          Navigator.of(context).pop();
+                        }
+                      },
+                    ),
+                ],
+              ),
+              actionsAlignment: MainAxisAlignment.center,
+              actions: [
+                TextButton(
+                  onPressed: Navigator.of(context).pop,
+                  child: const Text('إلغاء'),
                 ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('إلغاء'),
-            ),
-          ],
+              ],
+            );
+          },
         );
       },
     );

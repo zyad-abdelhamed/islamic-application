@@ -32,7 +32,7 @@ class RadioStationStreamController extends ChangeNotifier {
     audioPlayer = JustAudioPlayer(AudioPlayer());
     station = RadioStationEntity(
       name: "القاهرة",
-      streamUrl: "https://stream.radiojar.com/8s5u5tpdtwzuv",
+      streamUrl: 'https://www.maspero.eg/stream/7',
     );
   }
 

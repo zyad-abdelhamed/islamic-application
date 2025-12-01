@@ -34,7 +34,7 @@ class QuranRemoteDataSource extends BaseQuranRemoteDataSource {
     final List ayahsList = jsonBody["data"]["ayahs"];
     if (ayahsList.isEmpty) {
       return List.generate(params.surah.numberOfAyat,
-          (e) => TafsirAyahModel(text: "لا يوجد تفسير متاح لهذه الآية"));
+          (e) => TafsirAyahModel(text: "لا يوجد تفسير لهذه الآية"));
     }
     return ayahsList.map((e) => TafsirAyahModel.fromJson(e)).toList();
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/constants_values.dart';
+import 'package:test_app/core/constants/font_familys.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/utils/extentions/theme_extention.dart';
 import 'package:test_app/core/widgets/share_button.dart';
@@ -32,6 +33,7 @@ class AdhkarWidgetControls extends StatelessWidget {
           child: Container(
             width: double.infinity,
             height: 30,
+            padding: const EdgeInsets.all(3.0),
             decoration: BoxDecoration(
               color: context.isDarkMode ? Colors.black : Colors.white,
               borderRadius: const BorderRadius.all(
@@ -39,7 +41,6 @@ class AdhkarWidgetControls extends StatelessWidget {
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 IconButton(
                   onPressed: () =>
@@ -93,7 +94,7 @@ class AdhkarWidgetControls extends StatelessWidget {
                 key: counterKey,
                 initialNumber: adhkarEntity.count,
                 textStyle: context.labelLarge.copyWith(
-                  fontFamily: 'dataFontFamily',
+                  fontFamily: FontFamilys.dataFontFamily,
                   color: Colors.white,
                 ),
               ),

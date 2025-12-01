@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/constants/app_durations.dart';
+import 'package:test_app/core/services/arabic_converter_service.dart';
+import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/features/app/data/models/number_animation_model.dart';
 
 class RollingCounter extends StatefulWidget {
@@ -10,7 +12,7 @@ class RollingCounter extends StatefulWidget {
   const RollingCounter({
     super.key,
     required this.initialNumber,
-    this.duration = AppDurations.mediumDuration,
+    this.duration = AppDurations.lowDuration,
     required this.textStyle,
   });
 
@@ -59,13 +61,15 @@ class RollingCounterState extends State<RollingCounter> {
         return Row(
           mainAxisSize: MainAxisSize.min,
           children: model.digits.map((DigitAnimationModel digitModel) {
+            final String digit = sl<BaseArabicConverterService>()
+                .convertToArabicDigits(digitModel.digit.toString());
             return AnimatedSlide(
               offset: digitModel.offset,
               duration: widget.duration,
               child: Visibility.maintain(
                 visible: !digitModel.offStage,
                 child: Text(
-                  digitModel.digit.toString(),
+                  digit,
                   style: widget.textStyle,
                 ),
               ),
