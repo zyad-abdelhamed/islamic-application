@@ -23,6 +23,7 @@ class RollingCounter extends StatefulWidget {
 class RollingCounterState extends State<RollingCounter> {
   late ValueNotifier<NumberAnimationModel> notifier;
   late int currentNumber;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -33,14 +34,33 @@ class RollingCounterState extends State<RollingCounter> {
     );
   }
 
+  // ======================
+  // Number Methods
+  // ======================
+
   void set(int newValue, {required double slideValue}) {
     if (newValue == currentNumber) return;
+
     notifier.value.slideAnimation(
       notifier: notifier,
       slideValue: slideValue,
       newValue: newValue,
     );
+
     currentNumber = newValue;
+
+    // Auto-scroll لآخر خانة
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients &&
+          _scrollController.position.maxScrollExtent > 0) {
+        // فيه scrollable content، نعمل animate
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: widget.duration,
+          curve: Curves.easeOut,
+        );
+      }
+    });
   }
 
   void increase(double slideValue) =>
@@ -53,36 +73,46 @@ class RollingCounterState extends State<RollingCounter> {
 
   int get value => currentNumber;
 
+  // ======================
+  // UI
+  // ======================
+
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<NumberAnimationModel>(
-      valueListenable: notifier,
-      builder: (_, NumberAnimationModel model, __) {
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: model.digits.map((DigitAnimationModel digitModel) {
-            final String digit = sl<BaseArabicConverterService>()
-                .convertToArabicDigits(digitModel.digit.toString());
-            return AnimatedSlide(
-              offset: digitModel.offset,
-              duration: widget.duration,
-              child: Visibility.maintain(
-                visible: !digitModel.offStage,
-                child: Text(
-                  digit,
-                  style: widget.textStyle,
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal, // handle big numbers cases.
+      controller: _scrollController,
+      child: ValueListenableBuilder<NumberAnimationModel>(
+        valueListenable: notifier,
+        builder: (_, NumberAnimationModel model, __) {
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: model.digits.map((DigitAnimationModel digitModel) {
+              final String digit = sl<BaseArabicConverterService>()
+                  .convertToArabicDigits(digitModel.digit.toString());
+
+              return AnimatedSlide(
+                offset: digitModel.offset,
+                duration: widget.duration,
+                child: Visibility.maintain(
+                  visible: !digitModel.offStage,
+                  child: Text(
+                    digit,
+                    style: widget.textStyle,
+                  ),
                 ),
-              ),
-            );
-          }).toList(),
-        );
-      },
+              );
+            }).toList(),
+          );
+        },
+      ),
     );
   }
 
   @override
   void dispose() {
     notifier.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 }
