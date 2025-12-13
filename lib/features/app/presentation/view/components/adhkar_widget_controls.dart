@@ -32,8 +32,7 @@ class AdhkarWidgetControls extends StatelessWidget {
         Center(
           child: Container(
             width: double.infinity,
-            height: 30,
-            padding: const EdgeInsets.all(3.0),
+            height: 40,
             decoration: BoxDecoration(
               color: context.isDarkMode ? Colors.black : Colors.white,
               borderRadius: const BorderRadius.all(
@@ -74,8 +73,8 @@ class AdhkarWidgetControls extends StatelessWidget {
                     counterKey: counterKey,
                     adhkarEntity: adhkarEntity)),
             child: Container(
-              width: 50,
-              height: 50,
+              width: 60,
+              height: 60,
               alignment: Alignment.center,
               padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(

@@ -3,16 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:test_app/core/helper_function/get_init_route.dart';
 import 'package:test_app/core/helper_function/onGenerateRoute.dart';
+import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/theme/app_theme.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
+import 'package:test_app/core/theme/theme_controller.dart';
 
 class NoorApp extends StatelessWidget {
   const NoorApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => ThemeCubit(),
+    return BlocProvider<ThemeCubit>(
+      create: (_) => sl<ThemeCubit>(),
       child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder: (_, ThemeMode themeMode) {
           return MaterialApp(

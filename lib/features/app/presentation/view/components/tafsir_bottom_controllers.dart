@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:test_app/core/widgets/toggle_theme_temporarily_button.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/tafsir_page_controller.dart';
 import 'package:test_app/features/app/presentation/view/pages/reciters_page.dart';
 import 'controle_font_size_buttons.dart';
@@ -49,6 +50,7 @@ class TafsirBottomControls extends StatelessWidget {
                             controller: controller,
                           )));
             }),
+            const ToggleThemeTemporarilyButton(),
             ControleFontSizeButtons(
               fontSizeNotfier: controller.fontSizeNotifier,
               initialFontSize: 25,

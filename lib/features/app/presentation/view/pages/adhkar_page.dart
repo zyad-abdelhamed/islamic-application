@@ -4,6 +4,7 @@ import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/utils/extentions/media_query_extention.dart';
 import 'package:test_app/core/widgets/app_main_container.dart';
 import 'package:test_app/core/widgets/custom_scaffold.dart';
+import 'package:test_app/core/widgets/toggle_theme_temporarily_button.dart';
 import 'package:test_app/features/app/domain/entities/adhkar_entity.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/adhkar_page_controller.dart';
 import 'package:test_app/features/app/presentation/view/components/adhkar_widget.dart';
@@ -250,21 +251,27 @@ class _AdhkarPageState extends State<AdhkarPage> {
           return index == 0
               ? AppMainContainer(
                   height: 150,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 8.0),
-                    child: ValueListenableBuilder(
-                        valueListenable: adhkarPageController.switchNotfier,
-                        builder: (context, value, child) {
-                          return AdaptiveSwitch(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            name: AppStrings.translate("adhkarPageSwitchText"),
-                            onChanged: (_) {
-                              adhkarPageController.toggleIsDeletedSwitch();
-                            },
-                            value: adhkarPageController.switchNotfier.value,
-                          );
-                        }),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const ToggleThemeTemporarilyButton(),
+                      ValueListenableBuilder(
+                          valueListenable: adhkarPageController.switchNotfier,
+                          builder: (context, value, child) {
+                            return AdaptiveSwitch(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              name:
+                                  AppStrings.translate("adhkarPageSwitchText"),
+                              onChanged: (_) {
+                                adhkarPageController.toggleIsDeletedSwitch();
+                              },
+                              value: adhkarPageController.switchNotfier.value,
+                            );
+                          }),
+                    ],
                   ),
                 )
               : AdhkarWidget(

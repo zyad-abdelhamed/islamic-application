@@ -5,10 +5,26 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 class ThemeCubit extends HydratedCubit<ThemeMode> {
   ThemeCubit() : super(ThemeMode.dark);
 
+  bool enableSavingState = true;
   static ThemeCubit controller(BuildContext context) =>
       context.read<ThemeCubit>();
 
-  void toggleTheme(ThemeMode themeMode) => emit(themeMode);
+  /// Save theme state (Hydrated)
+  void toggleTheme(ThemeMode themeMode) {
+    emit(themeMode); // This will be saved automatically by HydratedCubit
+  }
+
+  /// Change theme WITHOUT saving state
+  void toggleThemeWithoutSaveState() {
+    final ThemeMode newMode;
+
+    enableSavingState = false; // Disable saving state temporarily.
+
+    newMode = (state == ThemeMode.light) ? ThemeMode.dark : ThemeMode.light;
+    emit(newMode); // toggle theme.
+
+    enableSavingState = true; // Enable saving state again.
+  }
 
   @override
   ThemeMode fromJson(Map<String, dynamic> json) {
@@ -27,6 +43,8 @@ class ThemeCubit extends HydratedCubit<ThemeMode> {
 
   @override
   Map<String, dynamic> toJson(ThemeMode state) {
+    if (!enableSavingState) return {}; // disable saving state
+
     String mode;
     switch (state) {
       case ThemeMode.light:

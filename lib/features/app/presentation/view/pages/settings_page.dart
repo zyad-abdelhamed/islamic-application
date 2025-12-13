@@ -16,7 +16,7 @@ import 'package:test_app/features/app/presentation/view/components/change_interv
 import 'package:test_app/features/app/presentation/view/components/notifications_settings_widget.dart';
 import 'package:test_app/features/app/presentation/view/components/reset_app_button.dart';
 import 'package:test_app/features/app/presentation/view/components/reset_app_screen.dart';
-import 'package:test_app/features/app/presentation/view/components/toggle_theme_button.dart';
+import 'package:test_app/features/app/presentation/view/components/theme_mode_options_widget.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -119,7 +119,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                       const SliverToBoxAdapter(child: SizedBox(height: 20)),
                       const SliverToBoxAdapter(
-                        child: ToggleThemeButton(),
+                        child: ThemeModeOptionsWidget(),
                       ),
                       SliverFillRemaining(
                         hasScrollBody: false,

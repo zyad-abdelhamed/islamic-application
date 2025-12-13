@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
-import 'package:test_app/core/theme/theme_provider.dart';
+import 'package:test_app/core/theme/theme_controller.dart';
 
-class ToggleThemeButton extends StatelessWidget {
-  const ToggleThemeButton({super.key});
+class ThemeModeOptionsWidget extends StatelessWidget {
+  const ThemeModeOptionsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class RadioButton extends StatelessWidget {
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
       value: themeMode,
       groupValue: context.watch<ThemeCubit>().state,
-      onChanged: (val) => themeCubit.toggleTheme(themeMode),
+      onChanged: (_) => themeCubit.toggleTheme(themeMode),
     );
   }
 }

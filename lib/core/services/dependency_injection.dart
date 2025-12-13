@@ -13,6 +13,7 @@ import 'package:test_app/core/services/position_service.dart';
 import 'package:test_app/core/services/speech_to_text_service.dart';
 import 'package:test_app/core/services/string_similarity.dart';
 import 'package:test_app/core/services/work_manger_service.dart';
+import 'package:test_app/core/theme/theme_controller.dart';
 import 'package:test_app/features/app/data/datasources/daily_adhkar_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/home_local_data_source.dart';
 import 'package:test_app/features/app/data/datasources/home_remote_data_source.dart';
@@ -88,6 +89,7 @@ Future<void> initDependencyInjection() async {
   sl.registerLazySingleton(() => GetPrayersTimesController(
       getPrayersTimesUseCase: sl(), baseLocationRepo: sl()));
   // cubits
+  sl.registerFactory(() => ThemeCubit());
   sl.registerFactory(() => HifzCubit(sl()));
   sl.registerFactory(() => GetSpecifficAyahsCubit(sl()));
   sl.registerFactory(() => DownloadSurahAudioCubit(sl()));
