@@ -54,15 +54,13 @@ class HomePageToAndroidAndIos extends StatelessWidget {
           const SliverPadding(padding: EdgeInsets.only(top: 20)),
 
           /// ========== Prayer Times ==========
-          // SliverToBoxAdapter(
-          //   child: SizedBox(
-          //     width: context.isLandScape
-          //         ? double.infinity
-          //         : (context.width * 3 / 4) - 20,
-          //     child:
-          //         PrayerTimesWidget(nextPrayerController: nextPrayerController),
-          //   ),
-          // ),
+          SliverToBoxAdapter(
+            child: SizedBox(
+              width: context.isLandScape ? 300 : (context.width * 3 / 4) - 20,
+              child:
+                  PrayerTimesWidget(nextPrayerController: nextPrayerController),
+            ),
+          ),
 
           const SliverPadding(padding: EdgeInsets.only(top: 20)),
 

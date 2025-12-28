@@ -4,4 +4,5 @@ abstract class FontFamilys {
   static const String semiBoldCairo = 'SemiBoldCairo';
   static const String dataFontFamily = 'DataFontFamily';
   static const String amiri = 'Amiri';
+  static const String fingerPaint = 'fingerPaintRegular';
 }
