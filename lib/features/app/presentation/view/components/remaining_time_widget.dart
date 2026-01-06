@@ -45,6 +45,7 @@ class RemainingTimeWidget extends StatelessWidget {
                     ),
                     Center(
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: List.generate(
                           2,
                           (_) => const SizedBox(

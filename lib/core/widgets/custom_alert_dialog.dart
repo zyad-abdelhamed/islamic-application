@@ -11,6 +11,7 @@ class CustomAlertDialog extends StatelessWidget {
     required this.title,
     required this.alertDialogContent,
     required this.iconWidget,
+    List<ButtonStyleButton>? actions,
   });
 
   final String title;

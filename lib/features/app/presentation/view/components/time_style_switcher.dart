@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/time_style_cubit.dart';
 
 class TimeStyleSwitcher extends StatelessWidget {
@@ -10,7 +11,7 @@ class TimeStyleSwitcher extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<TimeNumberStyle>(
-      icon: const Icon(Icons.style, color: Colors.white),
+      icon: const Icon(Icons.style),
       onSelected: context.read<TimeStyleCubit>().changeStyle,
       itemBuilder: (_) => [
         _buildItem(
@@ -72,7 +73,7 @@ class TimeStyleSwitcher extends StatelessWidget {
           if (isSelected)
             const Icon(
               Icons.check_circle,
-              color: Colors.green,
+              color: AppColors.primaryColor,
               size: 20,
             ),
         ],

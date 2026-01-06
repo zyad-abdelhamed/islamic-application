@@ -22,47 +22,64 @@ class HomePageToAndroidAndIos extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScaffold(
       scaffoldKey: scaffoldKey,
-      drawer: Drawer(child: HomeDrawerWidget()),
+      drawer: const Drawer(child: HomeDrawerWidget()),
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
+          /// ========== App Bar ==========
           SliverAppBar(
-              title: Text(AppStrings.translate("mainPage")),
-              floating: true,
-              snap: true,
-              leading: IconButton(
-                onPressed: () => scaffoldKey.currentState?.openDrawer(),
-                icon: Column(
-                  spacing: 3,
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: List.generate(
-                      3,
-                      (i) => Container(
-                            width: i == 0 ? 20 : 15,
-                            height: 3,
-                            color: Color(0xFF004D40),
-                          )),
+            title: Text(AppStrings.translate("mainPage")),
+            floating: true,
+            snap: true,
+            leading: IconButton(
+              onPressed: () => scaffoldKey.currentState?.openDrawer(),
+              icon: Column(
+                spacing: 3,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: List.generate(
+                  3,
+                  (i) => Container(
+                    width: i == 0 ? 20 : 15,
+                    height: 3,
+                    color: const Color(0xFF004D40),
+                  ),
                 ),
-              )),
-
-          /// ========== Stories ==========
-          SliverToBoxAdapter(
-            child: DailyAdhkarListView(),
-          ),
-
-          const SliverPadding(padding: EdgeInsets.only(top: 20)),
-
-          /// ========== Prayer Times ==========
-          SliverToBoxAdapter(
-            child: SizedBox(
-              width: context.isLandScape ? 300 : (context.width * 3 / 4) - 20,
-              child:
-                  PrayerTimesWidget(nextPrayerController: nextPrayerController),
+              ),
             ),
           ),
 
-          const SliverPadding(padding: EdgeInsets.only(top: 20)),
+          /// ========== Stories ==========
+          const SliverToBoxAdapter(
+            child: DailyAdhkarListView(),
+          ),
+
+          const SliverPadding(
+            padding: EdgeInsets.only(top: 20),
+          ),
+
+          /// ========== Prayer Times ==========
+          SliverToBoxAdapter(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final double width =
+                    context.isLandScape ? 300 : constraints.maxWidth * 0.75;
+
+                return Center(
+                  child: SizedBox(
+                    width: width,
+                    child: PrayerTimesWidget(
+                      nextPrayerController: nextPrayerController,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+
+          const SliverPadding(
+            padding: EdgeInsets.only(top: 20),
+          ),
 
           /// ========== Home Buttons ==========
           const SliverToBoxAdapter(
