@@ -11,7 +11,7 @@ class TimeStyleSwitcher extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<TimeNumberStyle>(
-      icon: const Icon(Icons.style),
+      icon: const Icon(Icons.style, color: Colors.grey),
       onSelected: context.read<TimeStyleCubit>().changeStyle,
       itemBuilder: (_) => [
         _buildItem(

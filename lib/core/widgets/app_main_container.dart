@@ -8,17 +8,18 @@ class AppMainContainer extends StatelessWidget {
     required this.height,
     required this.child,
     this.padding,
+    this.margine,
   });
 
   final Widget child;
   final double? height;
-  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? padding, margine;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: height,
-      margin: const EdgeInsets.all(10.0),
+      margin: margine ?? const EdgeInsets.all(10.0),
       padding: padding,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(35),

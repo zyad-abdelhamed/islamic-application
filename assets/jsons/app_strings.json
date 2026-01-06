@@ -8,6 +8,7 @@
   "unknownCity": "مدينة غير معروفة",
   "skip": "تخطى",
   "next": "التالى",
+  "cancel": "إلغاء",
   "tryAgain": "إعاده المحاوله",
   "theIndex": "الفهرس",
   "settings": "الاعدادات",
@@ -62,7 +63,7 @@
   "darkMode": "الوضع الداكن",
   "mainPage": "الصفحة الرئيسية",
   "nextPrayer": "الصلاة القادمة",
-  "remainingTime": "الوقت المتبقي : ",
+  "remainingTime": "الوقت المتبقي",
   "todayHadith": "حديث اليوم",
   "homeDrawerTextButtons": [
     "ختم القرآن",

@@ -32,14 +32,14 @@ class PrayerTimesWidget extends StatelessWidget {
 
     return Provider(
       create: (context) => nextPrayerController,
-      child: hasError
-          ? ErrorWidgetIslamic(message: errorMessage)
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Row(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        child: hasError
+            ? ErrorWidgetIslamic(message: errorMessage)
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
@@ -78,11 +78,11 @@ class PrayerTimesWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                ),
-                const PrimaryPrayerTimesContainer(),
-                const RemainingTimeWidget(),
-              ],
-            ),
+                  const PrimaryPrayerTimesContainer(),
+                  const RemainingTimeWidget(),
+                ],
+              ),
+      ),
     );
   }
 }

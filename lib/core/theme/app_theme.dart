@@ -52,6 +52,10 @@ class AppTheme {
         ),
       ),
     ),
+    checkboxTheme: CheckboxThemeData(
+      fillColor: WidgetStateProperty.all(Colors.transparent),
+      checkColor: WidgetStateProperty.all(AppColors.primaryColor),
+    ),
   );
 
   // Light Theme

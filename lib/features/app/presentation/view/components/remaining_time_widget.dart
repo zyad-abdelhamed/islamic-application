@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/core/constants/app_strings.dart';
-import 'package:test_app/core/theme/text_styles.dart';
+import 'package:test_app/core/utils/extentions/theme_extention.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/time_style_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/display_time_container.dart';
 import 'package:test_app/features/app/presentation/view/components/time_style_switcher.dart';
@@ -18,12 +18,12 @@ class RemainingTimeWidget extends StatelessWidget {
         builder: (context, currStyle) {
           return Row(
             children: [
-              const SizedBox(width: 10),
-
               /// عنوان
-              Text(
-                AppStrings.translate("remainingTime"),
-                style: TextStyles.bold20(context),
+              Flexible(
+                child: Text(
+                  AppStrings.translate("remainingTime"),
+                  style: context.bodyLarge,
+                ),
               ),
 
               const SizedBox(width: 8),
@@ -45,7 +45,7 @@ class RemainingTimeWidget extends StatelessWidget {
                     ),
                     Center(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: List.generate(
                           2,
                           (_) => const SizedBox(

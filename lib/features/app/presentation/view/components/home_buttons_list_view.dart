@@ -4,6 +4,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:test_app/core/services/dependency_injection.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/get_surahs_info_cubit.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/hifz_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/quran_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/quran_search_cubit.dart';
 import 'package:test_app/features/app/presentation/view/components/android_and_ios_home_card_button.dart';
@@ -128,7 +129,10 @@ List _pages = [
     create: (_) => sl<GetSurahsInfoCubit>(),
     child: const SurahListPage(),
   ),
-  const QuranHifzPage(),
+  BlocProvider<HifzCubit>(
+    create: (context) => sl<HifzCubit>()..loadPlans(),
+    child: const QuranHifzPage(),
+  ),
   BlocProvider(
     create: (context) => QuranSearchCubit(sl()),
     child: const QuranSearchPage(),

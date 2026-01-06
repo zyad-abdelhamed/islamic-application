@@ -84,11 +84,10 @@ class DisplayTimeContainer extends StatelessWidget {
   LinearGradient get _gradient => LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
-        stops: const [0, 0.5, 1],
         colors: [
+          AppColors.secondryColorInActiveColor,
           AppColors.secondryColorInActiveColor.withAlpha(70),
           AppColors.secondryColorInActiveColor.withAlpha(170),
-          AppColors.secondryColorInActiveColor,
         ],
       );
 

@@ -7,7 +7,7 @@ class QuranMemorizationPlanTile extends StatelessWidget {
   final String? subtitle;
   final Widget? leading, trailing;
   final double progress;
-  final void Function()? onTap;
+  final void Function()? onTap, onLongPress;
 
   const QuranMemorizationPlanTile({
     super.key,
@@ -17,6 +17,7 @@ class QuranMemorizationPlanTile extends StatelessWidget {
     this.trailing,
     required this.progress,
     this.onTap,
+    this.onLongPress,
   });
 
   @override
@@ -41,6 +42,7 @@ class QuranMemorizationPlanTile extends StatelessWidget {
                 subtitle: subtitle != null ? Text(subtitle!) : null,
                 trailing: trailing,
                 onTap: onTap,
+                onLongPress: onLongPress,
               ),
             ),
           ],

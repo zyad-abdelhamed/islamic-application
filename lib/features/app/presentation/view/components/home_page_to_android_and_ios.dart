@@ -60,20 +60,11 @@ class HomePageToAndroidAndIos extends StatelessWidget {
 
           /// ========== Prayer Times ==========
           SliverToBoxAdapter(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final double width =
-                    context.isLandScape ? 300 : constraints.maxWidth * 0.75;
-
-                return Center(
-                  child: SizedBox(
-                    width: width,
-                    child: PrayerTimesWidget(
-                      nextPrayerController: nextPrayerController,
-                    ),
-                  ),
-                );
-              },
+            child: SizedBox(
+              width: context.isLandScape ? 300 : double.maxFinite,
+              child: PrayerTimesWidget(
+                nextPrayerController: nextPrayerController,
+              ),
             ),
           ),
 

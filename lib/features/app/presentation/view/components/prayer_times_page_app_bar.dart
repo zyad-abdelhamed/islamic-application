@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/core/adaptive/adaptive_widgets/get_adaptive_back_button_widget.dart';
-import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/theme/text_styles.dart';
+import 'package:test_app/core/widgets/cancel_button.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/prayer_times_page_controller.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/prayers_sound_settings_cubit.dart';
 
@@ -27,26 +27,8 @@ class PrayerTimesPageAppBar extends StatelessWidget
           prayerTimesPageController.prayerSoundSettingsEntityNotifier,
           prayerTimesPageController.originalPrayerSoundSettings
         ]),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(10),
-          onTap: prayerTimesPageController.cancelPrayerSoundChanges,
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              spacing: 3,
-              children: [
-                const SizedBox(width: 8),
-                Icon(Icons.close, color: AppColors.errorColor, size: 16),
-                Text(
-                  "الغاء",
-                  style: TextStyles.regular16_120(context,
-                      color: AppColors.errorColor),
-                ),
-              ],
-            ),
-          ),
-        ),
+        child: CancelButton(
+            onTap: prayerTimesPageController.cancelPrayerSoundChanges),
         builder: (_, Widget? child) {
           if (prayerTimesPageController.hasPrayerSoundChanges) {
             return child!;
