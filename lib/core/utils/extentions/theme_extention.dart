@@ -4,6 +4,8 @@ extension ThemeExtention on BuildContext {
   TextTheme get textTheme => Theme.of(this).textTheme;
   bool get isDarkMode => Theme.of(this).brightness == Brightness.dark;
   ColorScheme get colorScheme => Theme.of(this).colorScheme;
+  double get appBarHeight => Theme.of(this).appBarTheme.toolbarHeight!;
+  double get bottomNavBarHeight => Theme.of(this).bottomAppBarTheme.height!;
 
   // Color
   Color get primaryColor => colorScheme.primary;

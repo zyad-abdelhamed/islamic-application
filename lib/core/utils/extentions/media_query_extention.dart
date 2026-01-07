@@ -7,6 +7,7 @@ extension MediaQueryExtention on BuildContext {
       MediaQuery.of(this).orientation == Orientation.landscape;
   bool get isPotrait => MediaQuery.of(this).orientation == Orientation.portrait;
   double get statusBarHeight => MediaQuery.of(this).padding.top;
+  double get bottomBarStatusHeight => MediaQuery.of(this).padding.bottom;
   double get bottomPadding => MediaQuery.of(this).padding.bottom;
   double get safeHeight => height - statusBarHeight - bottomPadding;
   double get safeWidth => width;

@@ -32,39 +32,43 @@ class PlaySurahAudioWidget extends StatelessWidget {
             isActive ? AppColors.primaryColor : Colors.grey;
 
         return AbsorbPointer(
-          absorbing: !isActive,
-          child: ListTile(
-            minVerticalPadding: 0,
-            dense: true,
-            visualDensity: VisualDensity(horizontal: -2, vertical: -2),
-            tileColor: context.isDarkMode ? Colors.black : Colors.white,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
-            onTap: isActive ? () => openSurahPlayerBottomSheet(context) : null,
-            leading: Container(
-              width: imageSize,
-              height: imageSize,
-              decoration: isActive
-                  ? BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(reciter.image),
-                        fit: BoxFit.cover,
-                      ),
-                    )
-                  : const BoxDecoration(color: Colors.grey),
-            ),
-            title: Text(isActive
-                ? "${reciter.name}_${tafsirPageController.surahEntity.name}"
-                : "غير متاح"),
-            subtitle: Text(isActive ? reciter.language : ""),
-            trailing: _AudioControls(
-              controller: controller,
-              imageSize: imageSize,
-              actionsColor: actionsColor,
-              onHeadphonesPressed: () =>
-                  showPlayingRecitersBottomSheet(context),
-            ),
-          ),
-        );
+            absorbing: !isActive,
+            child: Material(
+              color: context.isDarkMode ? Colors.black : Colors.white,
+              child: ListTile(
+                minVerticalPadding: 0,
+                dense: true,
+                visualDensity:
+                    const VisualDensity(horizontal: -2, vertical: -2),
+                tileColor: Colors.transparent,
+                contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+                onTap:
+                    isActive ? () => openSurahPlayerBottomSheet(context) : null,
+                leading: Container(
+                  width: imageSize,
+                  height: imageSize,
+                  decoration: isActive
+                      ? BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(reciter.image),
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      : const BoxDecoration(color: Colors.grey),
+                ),
+                title: Text(isActive
+                    ? "${reciter.name}_${tafsirPageController.surahEntity.name}"
+                    : "غير متاح"),
+                subtitle: Text(isActive ? reciter.language : ""),
+                trailing: _AudioControls(
+                  controller: controller,
+                  imageSize: imageSize,
+                  actionsColor: actionsColor,
+                  onHeadphonesPressed: () =>
+                      showPlayingRecitersBottomSheet(context),
+                ),
+              ),
+            ));
       },
     );
   }

@@ -17,16 +17,15 @@ class RemainingTimeWidget extends StatelessWidget {
       child: BlocBuilder<TimeStyleCubit, TimeNumberStyle>(
         builder: (context, currStyle) {
           return Row(
+            spacing: 8.0,
             children: [
               /// عنوان
               Flexible(
                 child: Text(
                   AppStrings.translate("remainingTime"),
-                  style: context.bodyLarge,
+                  style: context.labelLarge,
                 ),
               ),
-
-              const SizedBox(width: 8),
 
               /// عرض الوقت
               SizedBox(
@@ -64,8 +63,6 @@ class RemainingTimeWidget extends StatelessWidget {
                   ],
                 ),
               ),
-
-              const SizedBox(width: 8),
 
               /// زر تغيير شكل الأرقام
               TimeStyleSwitcher(

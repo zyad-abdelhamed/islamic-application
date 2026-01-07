@@ -17,16 +17,20 @@ class TafsirContent extends StatelessWidget {
         const SizedBox(height: 8),
         BlocSelector<TafsirEditCubit, TafsirEditState, List<String>>(
           selector: (state) => state.selected,
-          builder: (context, selected) =>
-              SelectedTafsirList(selected: selected),
+          builder: (_, selected) => TafsirListView(
+            items: selected,
+            mode: TafsirListMode.reorderable,
+          ),
         ),
         const SizedBox(height: 20),
         Text('التفاسير', style: TextStyles.semiBold16_120(context)),
         const SizedBox(height: 8),
         BlocSelector<TafsirEditCubit, TafsirEditState, List<String>>(
           selector: (state) => state.available,
-          builder: (context, available) =>
-              AvailableTafsirList(available: available),
+          builder: (_, available) => TafsirListView(
+            items: available,
+            mode: TafsirListMode.normal,
+          ),
         ),
         const SizedBox(height: 20),
         const InfoRow(),
@@ -35,89 +39,123 @@ class TafsirContent extends StatelessWidget {
   }
 }
 
-class SelectedTafsirList extends StatelessWidget {
-  final List<String> selected;
-  const SelectedTafsirList({super.key, required this.selected});
+// =======================================================
+// Unified List View
+// =======================================================
+
+enum TafsirListMode { normal, reorderable }
+
+class TafsirListView extends StatelessWidget {
+  final List<String> items;
+  final TafsirListMode mode;
+
+  const TafsirListView({
+    super.key,
+    required this.items,
+    required this.mode,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final TafsirEditCubit cubit = context.read<TafsirEditCubit>();
+    if (items.isEmpty) return const SizedBox.shrink();
+
+    final cubit = context.read<TafsirEditCubit>();
 
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: AppColors.primaryColor,
       ),
-      child: ReorderableListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: selected.length,
-        onReorder: cubit.reorder,
-        buildDefaultDragHandles: false,
-        proxyDecorator: (child, index, animation) {
-          return Material(
-            color: Colors.transparent,
-            child: child,
-          );
-        },
-        itemBuilder: (context, index) {
-          final tafsir = selected[index];
-          return ListTile(
-            key: ValueKey(tafsir),
-            trailing: ReorderableDragStartListener(
-              index: index,
-              child: Icon(Icons.drag_handle_rounded, color: Colors.white),
-            ),
-            leading: IconButton(
-              onPressed: () => cubit.removeTafsir(tafsir),
-              icon: const Icon(Icons.remove_circle),
-              color: Colors.grey,
-            ),
-            title: Text(
-              tafsir,
-              style: TextStyles.semiBold18(context, Colors.white),
-            ),
-          );
-        },
-      ),
+      child: mode == TafsirListMode.reorderable
+          ? _buildReorderable(cubit)
+          : _buildNormal(cubit),
     );
   }
-}
 
-class AvailableTafsirList extends StatelessWidget {
-  final List<String> available;
-  const AvailableTafsirList({super.key, required this.available});
+  Widget _buildReorderable(TafsirEditCubit cubit) {
+    return ReorderableListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: items.length,
+      onReorder: cubit.reorder,
+      buildDefaultDragHandles: false,
+      proxyDecorator: (child, _, __) =>
+          Material(color: Colors.transparent, child: child),
+      itemBuilder: (_, index) {
+        final tafsir = items[index];
+        return TafsirTile(
+          key: ValueKey(tafsir),
+          title: tafsir,
+          leading: IconButton(
+            icon: const Icon(Icons.remove_circle, color: Colors.grey),
+            onPressed: () => cubit.removeTafsir(tafsir),
+          ),
+          trailing: ReorderableDragStartListener(
+            index: index,
+            child: const Icon(
+              Icons.drag_handle_rounded,
+              color: Colors.white,
+            ),
+          ),
+        );
+      },
+    );
+  }
 
-  @override
-  Widget build(BuildContext context) {
-    final cubit = context.read<TafsirEditCubit>();
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: AppColors.primaryColor,
-      ),
-      child: ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: available.length,
-        itemBuilder: (context, index) {
-          final tafsir = available[index];
-          return ListTile(
-            leading: IconButton(
-              onPressed: () => cubit.addTafsir(tafsir),
-              icon: const Icon(Icons.add_circle),
+  Widget _buildNormal(TafsirEditCubit cubit) {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: items.length,
+      itemBuilder: (_, index) {
+        final tafsir = items[index];
+        return TafsirTile(
+          title: tafsir,
+          leading: IconButton(
+            icon: const Icon(
+              Icons.add_circle,
               color: AppColors.successColor,
             ),
-            title: Text(
-              tafsir,
-              style: TextStyles.semiBold18(context, Colors.white),
-            ),
-          );
-        },
+            onPressed: () => cubit.addTafsir(tafsir),
+          ),
+        );
+      },
+    );
+  }
+}
+
+// =======================================================
+// Shared Tile
+// =======================================================
+
+class TafsirTile extends StatelessWidget {
+  final String title;
+  final Widget? leading;
+  final Widget? trailing;
+
+  const TafsirTile({
+    super.key,
+    required this.title,
+    this.leading,
+    this.trailing,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: leading,
+      trailing: trailing,
+      title: Text(
+        title,
+        style: TextStyles.semiBold18(context, Colors.white),
       ),
     );
   }
 }
+
+// =======================================================
+// Info Row
+// =======================================================
 
 class InfoRow extends StatelessWidget {
   const InfoRow({super.key});
@@ -127,10 +165,7 @@ class InfoRow extends StatelessWidget {
     return const Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(
-          Icons.info_outline,
-          color: AppColors.primaryColor,
-        ),
+        Icon(Icons.info_outline, color: AppColors.primaryColor),
         SizedBox(width: 5),
         Expanded(
           child: Text(

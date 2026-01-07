@@ -23,14 +23,14 @@ class TimeStyleSwitcher extends StatelessWidget {
         ),
         _buildItem(
           context,
-          value: TimeNumberStyle.normal,
-          title: 'أرقام عادية',
+          value: TimeNumberStyle.sevenSegment,
+          title: 'أرقام رقمية',
           currentStyle: currentStyle,
         ),
         _buildItem(
           context,
-          value: TimeNumberStyle.sevenSegment,
-          title: 'أرقام رقمية',
+          value: TimeNumberStyle.normal,
+          title: 'أرقام عادية',
           currentStyle: currentStyle,
         ),
       ],

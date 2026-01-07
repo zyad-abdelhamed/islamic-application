@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:test_app/core/utils/extentions/media_query_extention.dart';
+import 'package:test_app/core/utils/extentions/theme_extention.dart';
 import 'package:test_app/core/widgets/toggle_theme_temporarily_button.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/tafsir_page_controller.dart';
 import 'package:test_app/features/app/presentation/view/pages/reciters_page.dart';
@@ -26,36 +28,39 @@ class TafsirBottomControls extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+        height: context.bottomNavBarHeight + context.bottomBarStatusHeight,
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         decoration: BoxDecoration(
           color: backgroundColor,
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            _buildOption(
-              Icons.search,
-              onSearch,
-            ),
-            _buildOption(
-              Icons.info_outline,
-              onInfo,
-              key: infoButtonKey,
-            ),
-            _buildOption(CupertinoIcons.group, () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => RecitersPage(
-                            controller: controller,
-                          )));
-            }),
-            const ToggleThemeTemporarilyButton(),
-            ControleFontSizeButtons(
-              fontSizeNotfier: controller.fontSizeNotifier,
-              initialFontSize: 25,
-            ),
-          ],
+        child: SafeArea(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildOption(
+                Icons.search,
+                onSearch,
+              ),
+              _buildOption(
+                Icons.info_outline,
+                onInfo,
+                key: infoButtonKey,
+              ),
+              _buildOption(CupertinoIcons.group, () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => RecitersPage(
+                              controller: controller,
+                            )));
+              }),
+              const ToggleThemeTemporarilyButton(),
+              ControleFontSizeButtons(
+                fontSizeNotfier: controller.fontSizeNotifier,
+                initialFontSize: 25,
+              ),
+            ],
+          ),
         ));
   }
 

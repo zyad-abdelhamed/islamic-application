@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/core/theme/app_colors.dart';
 import 'package:vibration/vibration.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/core/utils/extentions/theme_extention.dart';
@@ -104,6 +105,7 @@ class QuranMemorizationPlansWidget extends StatelessWidget {
                   leading: isSelectionMode
                       ? Checkbox.adaptive(
                           value: isSelected,
+                          activeColor: AppColors.primaryColor,
                           onChanged: (_) {
                             isSelected
                                 ? selectedPlans.remove(plan.planName)

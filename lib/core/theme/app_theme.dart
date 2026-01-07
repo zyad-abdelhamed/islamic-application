@@ -4,9 +4,23 @@ import 'package:test_app/core/constants/constants_values.dart';
 import 'package:test_app/core/theme/app_colors.dart';
 
 class AppTheme {
-  // common atributes
+  // ================= Common =================
+
   static final ThemeData _common = ThemeData(
+    primaryColor: AppColors.primaryColor,
     fontFamily: 'SemiBoldCairo',
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Colors.transparent,
+      centerTitle: true,
+      scrolledUnderElevation: 0,
+      surfaceTintColor: Colors.transparent,
+      titleTextStyle: TextStyle(
+        fontFamily: "Cairo",
+        color: AppColors.primaryColor,
+        fontWeight: FontWeight.bold,
+        fontSize: 23,
+      ),
+    ),
     drawerTheme: const DrawerThemeData(
       backgroundColor: AppColors.primaryColor,
       shape: RoundedRectangleBorder(
@@ -16,10 +30,10 @@ class AppTheme {
         ),
       ),
     ),
-    chipTheme: ChipThemeData(
+    chipTheme: const ChipThemeData(
       backgroundColor: AppColors.primaryColor,
     ),
-    radioTheme: RadioThemeData(
+    radioTheme: const RadioThemeData(
       fillColor: WidgetStatePropertyAll(AppColors.primaryColor),
       overlayColor: WidgetStatePropertyAll(Colors.transparent),
     ),
@@ -52,34 +66,20 @@ class AppTheme {
         ),
       ),
     ),
-    checkboxTheme: CheckboxThemeData(
-      fillColor: WidgetStateProperty.all(Colors.transparent),
-      checkColor: WidgetStateProperty.all(AppColors.primaryColor),
-    ),
   );
 
-  // Light Theme
+  // ================= Light Theme =================
+
   static final ThemeData light = _common.copyWith(
     brightness: Brightness.light,
     scaffoldBackgroundColor: AppColors.lightModeScaffoldBackGroundColor,
-    primaryColor: AppColors.primaryColor,
-    appBarTheme: AppBarTheme(
-      backgroundColor: Colors.transparent,
-      centerTitle: true,
-      scrolledUnderElevation: 0,
-      surfaceTintColor: Colors.transparent,
-      titleTextStyle: const TextStyle(
-        fontFamily: "Cairo",
-        color: AppColors.primaryColor,
-        fontWeight: FontWeight.bold,
-        fontSize: 23,
-      ),
-      systemOverlayStyle: SystemUiOverlayStyle(
+    appBarTheme: _common.appBarTheme.copyWith(
+      systemOverlayStyle: const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.dark,
         statusBarBrightness: Brightness.light,
-        systemNavigationBarColor: Colors.white,
-        systemNavigationBarDividerColor: Colors.grey[300],
+        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarDividerColor: Colors.transparent,
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
     ),
@@ -91,50 +91,38 @@ class AppTheme {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
         foregroundColor: const WidgetStatePropertyAll(Colors.black),
-        textStyle: const WidgetStatePropertyAll(TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-        )),
+        textStyle: const WidgetStatePropertyAll(
+          TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        ),
       ),
     ),
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
         foregroundColor: const WidgetStatePropertyAll(Colors.black),
-        textStyle: const WidgetStatePropertyAll(TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-        )),
+        textStyle: const WidgetStatePropertyAll(
+          TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        ),
       ),
     ),
   );
 
-  // Dark Theme
+  // ================= Dark Theme =================
+
   static final ThemeData dark = _common.copyWith(
     brightness: Brightness.dark,
     scaffoldBackgroundColor: AppColors.darkModeScaffoldBackGroundColor,
-    primaryColor: AppColors.primaryColor,
     textTheme: ThemeData.light().textTheme.apply(
           bodyColor: AppColors.darkModeTextColor,
           displayColor: AppColors.darkModeTextColor,
           fontFamily: 'SemiBoldCairo',
         ),
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.transparent,
-      centerTitle: true,
-      scrolledUnderElevation: 0,
-      surfaceTintColor: Colors.transparent,
-      titleTextStyle: TextStyle(
-        fontFamily: "Cairo",
-        color: AppColors.primaryColor,
-        fontWeight: FontWeight.bold,
-        fontSize: 23,
-      ),
-      systemOverlayStyle: SystemUiOverlayStyle(
+    appBarTheme: _common.appBarTheme.copyWith(
+      systemOverlayStyle: const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.light,
         statusBarBrightness: Brightness.dark,
-        systemNavigationBarColor: AppColors.primaryColor,
-        systemNavigationBarDividerColor: AppColors.primaryColor,
+        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarDividerColor: Colors.transparent,
         systemNavigationBarIconBrightness: Brightness.light,
       ),
     ),
@@ -146,19 +134,17 @@ class AppTheme {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
         foregroundColor: const WidgetStatePropertyAll(Colors.white),
-        textStyle: const WidgetStatePropertyAll(TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-        )),
+        textStyle: const WidgetStatePropertyAll(
+          TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        ),
       ),
     ),
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
         foregroundColor: const WidgetStatePropertyAll(Colors.white),
-        textStyle: const WidgetStatePropertyAll(TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-        )),
+        textStyle: const WidgetStatePropertyAll(
+          TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        ),
       ),
     ),
   );

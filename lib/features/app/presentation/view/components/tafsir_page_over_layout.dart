@@ -29,12 +29,13 @@ class TafsirPageOverLayout extends StatelessWidget {
         // AppBar
         AnimatedPositioned(
           duration: const Duration(milliseconds: 300),
-          top: _controller.isShowed.value ? 0 : -(80 + context.statusBarHeight),
+          top: _controller.isShowed.value
+              ? 0
+              : -(context.appBarHeight + context.statusBarHeight),
           left: 0,
           right: 0,
           child: AppBar(
             backgroundColor: backgroundColor,
-            toolbarHeight: 80,
             leading: const GetAdaptiveBackButtonWidget(
                 backBehavior: BackBehavior.pop),
             title: Text(
@@ -46,7 +47,9 @@ class TafsirPageOverLayout extends StatelessWidget {
         // BottomControls
         AnimatedPositioned(
           duration: const Duration(milliseconds: 300),
-          bottom: _controller.isShowed.value ? 0 : -100,
+          bottom: _controller.isShowed.value
+              ? 0
+              : -(context.bottomBarStatusHeight + context.bottomNavBarHeight),
           left: 0,
           right: 0,
           child: TafsirBottomControls(
