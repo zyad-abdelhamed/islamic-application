@@ -8,9 +8,9 @@ import 'package:test_app/features/app/presentation/controller/cubit/allah_names_
 
 class AllahNamesCubit extends Cubit<AllahNamesState> {
   AllahNamesCubit() : super(AllahNamesStateInitial());
-  List<AllahNameEntity> _names = [];
+  List<AllahNameEntity> names = [];
   void init() {
-    _names = [
+    names = [
       AllahNameModel.fromJson({
         "name": "الرَّحْمَنُ",
         "transliteration": "Ar Rahmaan",
@@ -58,11 +58,11 @@ class AllahNamesCubit extends Cubit<AllahNamesState> {
       BlocProvider.of<AllahNamesCubit>(context);
 
   void getRandomName() {
-    if (_names.isEmpty) return;
+    if (names.isEmpty) return;
 
     AllahNameEntity newName;
     do {
-      newName = _names[getRandomNumber(_names.length)];
+      newName = names[getRandomNumber(names.length)];
     } while (current != null && newName.name == current!.name); // do not repeat
     /// why we use do while here specifically?
     /// the main reason => for first time, we need to make condition finnaly because we don't have current name.
@@ -73,7 +73,7 @@ class AllahNamesCubit extends Cubit<AllahNamesState> {
   }
 
   void toggleFavorite() {
-    /// do toggleFavorite states here.
+    /// do toggleFavorite states here and alter list in here.
 
     emit(AllahNamesStateIsToggleFavoriteSuccess()); // these for test.
   }

@@ -52,6 +52,7 @@ import 'package:test_app/features/app/domain/usecases/get_prayer_times_of_month_
 import 'package:test_app/features/app/domain/usecases/get_prayers_times_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/reset_booleans_use_case.dart';
 import 'package:test_app/features/app/domain/usecases/update_booleans_use_case.dart';
+import 'package:test_app/features/app/presentation/controller/cubit/allah_names_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/book_mark_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/daily_adhkar_cubit.dart';
 import 'package:test_app/features/app/presentation/controller/cubit/download_surah_audio_cubit.dart';
@@ -90,6 +91,7 @@ Future<void> initDependencyInjection() async {
       getPrayersTimesUseCase: sl(), baseLocationRepo: sl()));
   // cubits
   sl.registerFactory(() => ThemeCubit());
+  sl.registerFactory(() => AllahNamesCubit());
   sl.registerFactory(() => HifzCubit(sl()));
   sl.registerFactory(() => GetSpecifficAyahsCubit(sl()));
   sl.registerFactory(() => DownloadSurahAudioCubit(sl()));
