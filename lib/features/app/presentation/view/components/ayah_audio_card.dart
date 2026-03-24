@@ -3,6 +3,7 @@ import 'package:test_app/core/theme/app_colors.dart';
 import 'package:test_app/core/utils/extentions/media_query_extention.dart';
 import 'package:test_app/core/utils/extentions/theme_extention.dart';
 import 'package:test_app/features/app/presentation/controller/controllers/ayah_audio_card_controller.dart';
+import 'package:test_app/features/app/presentation/view/components/play_button.dart';
 
 class AyahAudioCard extends StatelessWidget {
   final AyahAudioCardController controller;
@@ -114,17 +115,9 @@ class _AudioCard extends StatelessWidget {
                   children: [
                     Flexible(
                       flex: 2,
-                      child: IconButton(
-                        icon: Icon(
-                          isAudioPlaying
-                              ? Icons.pause_circle_filled
-                              : Icons.play_circle_fill,
-                        ),
-                        iconSize: 48,
-                        onPressed: isAudioPlaying
-                            ? widget.controller.pause
-                            : widget.controller.resume,
-                        color: AppColors.primaryColor,
+                      child: PlayButton(
+                        initialValue: isAudioPlaying,
+                        player: widget.controller.audioPlayer,
                       ),
                     ),
                     Expanded(

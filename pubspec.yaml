@@ -71,6 +71,7 @@ dependencies:
   permission_handler: ^12.0.1
   marquee: ^2.3.0
   just_audio_background: ^0.0.1-beta.17
+  bloc: ^9.2.0
 
 dev_dependencies:
   flutter_test:

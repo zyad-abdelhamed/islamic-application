@@ -13,7 +13,7 @@ class AyahAudioCardController {
   late final ValueNotifier<double> speed;
   late final ValueNotifier<Offset> offset;
 
-  late final IAudioPlayer _audioPlayer;
+  late final IAudioPlayer audioPlayer;
   late OverlayEntry _entry;
 
   bool isCompleted = false;
@@ -29,7 +29,7 @@ class AyahAudioCardController {
     speed = ValueNotifier<double>(1.0);
     offset = ValueNotifier(const Offset(50, 100));
 
-    _audioPlayer = JustAudioPlayer(AudioPlayer());
+    audioPlayer = JustAudioPlayer(AudioPlayer());
     _init();
   }
 
@@ -38,25 +38,25 @@ class AyahAudioCardController {
   }
 
   Future<void> _init() async {
-    await _audioPlayer.setAudioSource(audioSource);
+    await audioPlayer.setAudioSource(audioSource);
 
     _prepareSubscribtions();
 
-    await _audioPlayer.play();
+    await audioPlayer.play();
   }
 
   void _prepareSubscribtions() {
-    _positionSub = _audioPlayer.positionStream.listen((pos) {
+    _positionSub = audioPlayer.positionStream.listen((pos) {
       position.value = pos;
     });
 
-    _durationSub = _audioPlayer.durationStream.listen((dur) {
+    _durationSub = audioPlayer.durationStream.listen((dur) {
       if (dur != null) duration.value = dur;
     });
 
-    _stateSub = _audioPlayer.playerStateStream.listen((state) {
+    _stateSub = audioPlayer.playerStateStream.listen((state) {
       if (state.status == PlayerStatus.completed) {
-        if (isRepeat) _audioPlayer.seek(Duration.zero);
+        if (isRepeat) audioPlayer.seek(Duration.zero);
         isCompleted = true;
         isAudioPlayingNotifier.value = false;
       } else if (state.status == PlayerStatus.playing) {
@@ -70,24 +70,24 @@ class AyahAudioCardController {
   }
 
   void pause() async {
-    await _audioPlayer.pause();
+    await audioPlayer.pause();
   }
 
   void resume() async {
     if (isCompleted) {
-      await _audioPlayer.seek(Duration.zero);
+      await audioPlayer.seek(Duration.zero);
       isCompleted = false;
     }
 
-    await _audioPlayer.play();
+    await audioPlayer.play();
   }
 
   Future<void> setSpeed(double newSpeed) async {
     speed.value = newSpeed;
-    await _audioPlayer.setSpeed(newSpeed);
+    await audioPlayer.setSpeed(newSpeed);
   }
 
-  void seek(Duration pos) => _audioPlayer.seek(pos);
+  void seek(Duration pos) => audioPlayer.seek(pos);
 
   void updateOffset(Offset delta) => offset.value += delta;
 
@@ -106,6 +106,6 @@ class AyahAudioCardController {
     isAudioPlayingNotifier.dispose();
     offset.dispose();
     speed.dispose();
-    _audioPlayer.dispose();
+    audioPlayer.dispose();
   }
 }

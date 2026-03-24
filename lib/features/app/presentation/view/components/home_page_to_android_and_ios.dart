@@ -7,6 +7,7 @@ import 'package:test_app/features/app/presentation/view/components/home_buttons_
 import 'package:test_app/features/app/presentation/view/components/home_page_drawer.dart';
 import 'package:test_app/core/constants/app_strings.dart';
 import 'package:test_app/features/app/presentation/view/components/prayer_times_widget.dart';
+import 'package:test_app/features/app/presentation/view/components/random_allah_name_widget.dart';
 
 class HomePageToAndroidAndIos extends StatelessWidget {
   const HomePageToAndroidAndIos({
@@ -75,6 +76,15 @@ class HomePageToAndroidAndIos extends StatelessWidget {
           /// ========== Home Buttons ==========
           const SliverToBoxAdapter(
             child: HomeButtonsListView(),
+          ),
+
+          const SliverPadding(
+            padding: EdgeInsets.only(top: 20),
+          ),
+
+          /// ========== Random Allah Name ==========
+          const SliverToBoxAdapter(
+            child: RandomAllahNameCard(),
           ),
         ],
       ),
